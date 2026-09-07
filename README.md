@@ -3,63 +3,56 @@
 AWS와 클라우드 인프라를 학습하고 직접 구축하며,
 Cloud Engineer 취업에 필요한 기반 역량을 만드는 저장소.
 
-단기적으로는 AWS Certified Solutions Architect - Associate(SAA) 취득,
-중기적으로는 AWS 기반 쇼핑몰 인프라 포트폴리오 완성을 목표로 한다.
+현재 우선순위는 **AWS Certified Solutions Architect - Associate(SAA) 취득**이다.
+SAA 취득 전에는 강의 커버리지와 강의 Hands-on에 집중하고,
+취득 후 Java/Spring 기반 Cloud Shop 포트폴리오를 본격적으로 진행한다.
 
-## 프로젝트의 두 축
+## 진행 원칙
 
-이 저장소는 단순 강의 필기 저장소가 아니다.
+이 저장소는 두 단계로 운영한다.
 
-### 1. SAA Coverage
+### Phase 1 — SAA Certification
 
-Stéphane Maarek SAA-C03 강의를 기준으로 시험 범위를 가능한 한 빠짐없이 매핑한다.
+Stéphane Maarek SAA-C03 강의를 기준으로 시험 범위를 가능한 한 빠짐없이 세밀하게 매핑한다.
 
-강의에서 연속적으로 배우는 내용은 학습 순서도 가급적 강의 흐름을 따른다.
-다만 저장소의 디렉터리 구조는 개념과 실무 활용성을 기준으로 정리할 수 있다.
+시험 전에는 다음에 집중한다.
 
-### 2. Cloud Engineer Lab
+- 강의 진도
+- 강의에서 다루는 AWS 서비스와 선택 기준 정리
+- 강의 Hands-on
+- 중요한 개념의 최소 관측/확인
 
-실무적으로 중요한 서비스는 강의 Hands-on에서 끝내지 않고 다음 단계까지 확장한다.
+별도의 대형 프로젝트, Terraform 심화, GitHub Actions 기반 CI/CD, Spring 학습은 이 단계에서 진행하지 않는다.
+강의 이후의 복습, 모의고사, 종합 문제 풀이는 별도 시험 강의를 활용하므로 이 저장소의 커리큘럼에서 관리하지 않는다.
+
+### Phase 2 — Portfolio after SAA
+
+SAA 취득 후에는 강의에서 배운 AWS 지식을 실제 운영 가능한 시스템으로 확장한다.
 
 > 이해 → 구축 → 예측 → 관측 → 장애 → 분석 → 복구 → 자동화
 
-모든 AWS 서비스를 같은 깊이로 실습하지 않는다.
+이 단계에서 다음을 본격적으로 진행한다.
 
-- **Coverage**: SAA 선택 기준과 개념을 이해하면 충분한 주제
-- **Lab**: 직접 구축하고 상태를 관측할 주제
-- **Core Lab**: 장애 실험, 복구, 자동화, 포트폴리오까지 연결할 핵심 주제
+- Java 21 / Spring Boot 최소 학습
+- Cloud Shop 구현
+- Docker / ECR / ECS
+- Terraform
+- GitHub Actions CI/CD
+- CloudWatch 기반 운영/장애 실험
+- 취업용 포트폴리오 문서화
 
-예를 들어 Rekognition이나 Polly는 Coverage 중심으로 학습하고,
-EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
+자세한 계획은 [portfolio/README.md](./portfolio/README.md)와 [spring_minimum/README.md](./spring_minimum/README.md)에 보관한다.
 
-## 목표 역량
+## 학습 깊이
 
-1. AWS 주요 서비스를 어떤 상황에서 왜 선택하는지 설명할 수 있다.
-2. SAA 강의와 시험 범위를 누락 없이 따라갈 수 있다.
-3. 쇼핑몰 웹 서비스를 AWS에 직접 배포하고 네트워크, 컴퓨팅, 데이터베이스, 보안 구조를 설계할 수 있다.
-4. 장애 상황을 관측하고 원인을 추적하여 복구할 수 있다.
-5. Docker, Terraform, CI/CD를 이용해 인프라 구축과 배포를 자동화할 수 있다.
-6. 비용, 가용성, 보안, 운영 복잡도 사이의 trade-off를 설명할 수 있다.
+모든 AWS 서비스를 같은 깊이로 다루지 않는다.
 
-## 학습 방식
+- **Coverage**: 개념과 SAA 선택 기준을 이해하면 충분한 주제
+- **Hands-on**: 강의 실습을 따라 직접 확인할 주제
+- **Core Lab (시험 후)**: 구축, 관측, 장애 실험, 복구, 자동화, 포트폴리오까지 연결할 핵심 주제
 
-각 주제는 Unit 단위로 진행한다.
-
-기본적인 Unit은 필요에 따라 다음 요소를 가진다.
-
-- **지도 확인**: 전체 아키텍처에서 이 주제가 어디에 위치하는지 확인
-- **개념**: 서비스가 해결하는 문제와 동작 원리
-- **강의 커버리지**: 강의에서 다루는 핵심 포인트 확인
-- **SAA 연결**: 문제에서 서비스 선택 기준과 비교 포인트
-- **최소 예제**: 정상 동작 환경 구축
-- **관측**: CLI, 로그, 메트릭, 상태 확인
-- **유제**: 스스로 판단하거나 구성
-- **장애 실험**: 설정을 의도적으로 망가뜨리고 분석/복구
-- **포트폴리오 반영**: 메인 쇼핑몰 프로젝트에 적용
-- **3문장 요약**: 중요한 Unit에서 자신의 언어로 정리
-
-쉬운 Coverage 주제는 개념 + SAA 연결만 보고 빠르게 지나간다.
-중요한 Core Lab 주제는 실제 구축과 장애 실험까지 진행한다.
+Rekognition, Polly 같은 서비스는 Coverage 중심으로 빠르게 지나가고,
+EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊게 다룬다.
 
 ## 학습 자료
 
@@ -71,11 +64,11 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
 
 ---
 
-# Curriculum
+# Phase 1 Curriculum — SAA Coverage
 
 ## 0부 — Cloud & System Foundation
 
-강의 외 보강 파트. 이후 EC2/VPC 장애 분석을 위한 최소 기반이다.
+강의 외 최소 보강 파트. 이미 학습한 기반은 이후 AWS 개념을 이해하는 데 활용한다.
 
 - [ ] 00. AWS와 클라우드의 전체 그림
   - [ ] u1. 클라우드란 무엇인가
@@ -96,8 +89,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
   - [ ] u3. TLS와 HTTPS
 
 ## 1부 — IAM & EC2 Basics
-
-강의 초반 흐름을 최대한 그대로 따라간다.
 
 - [ ] 04. IAM
   - [ ] u1. Users, Groups, Policies
@@ -123,13 +114,10 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
   - [ ] Instance Store
   - [ ] AMI
   - [ ] EFS 기초 연결
-- [ ] 07. Security Group 심화 / 운영
+- [ ] 07. Security Group 심화 개념
   - [ ] Stateful 동작
   - [ ] Security Group Reference
-  - [ ] ALB → Application → DB 계층 권한
-  - [ ] 접근 장애 실험
-
-> EC2 Basics 단계에서 Security Group 기초를 먼저 배우고, 07에서 운영 관점으로 다시 확장한다.
+  - [ ] 계층별 접근 제어 개념
 
 ## 2부 — High Availability & Scalability
 
@@ -191,8 +179,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
 
 ## 5부 — Storage Extras
 
-강의 커버리지 중심. 필요한 항목만 짧게 실습한다.
-
 - [ ] 18. EFS
 - [ ] 19. FSx
 - [ ] 20. Storage Gateway
@@ -213,7 +199,9 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
 
 ## 7부 — Containers
 
-- [ ] 28. Docker
+SAA 시험 전에는 강의가 요구하는 AWS 컨테이너 서비스의 개념과 선택 기준이 우선이다.
+
+- [ ] 28. Docker 최소 개념
 - [ ] 29. ECR
 - [ ] 30. ECS
   - [ ] EC2 Launch Type / Fargate
@@ -237,8 +225,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
 
 ## 9부 — Databases, Data & Analytics
 
-강의 커버리지 중심. 서비스 이름과 사용 사례를 구분하는 것이 우선이다.
-
 - [ ] 36. AWS Database 선택 지도
   - [ ] RDS / Aurora
   - [ ] DynamoDB
@@ -246,7 +232,7 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 Core Lab 수준까지 진행한다.
   - [ ] DocumentDB
   - [ ] Neptune
   - [ ] Keyspaces
-  - [ ] QLDB 등 강의 등장 서비스
+  - [ ] 기타 강의 등장 서비스
 - [ ] 37. Athena
 - [ ] 38. Redshift
 - [ ] 39. EMR
@@ -289,8 +275,6 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 
 ## 12부 — VPC & Networking
 
-Core Lab 파트.
-
 - [ ] 59. VPC
 - [ ] 60. Subnet과 Route Table
 - [ ] 61. Internet Gateway와 NAT Gateway
@@ -310,47 +294,48 @@ Core Lab 파트.
 - [ ] 72. DMS / SCT
 - [ ] 73. Application Migration Service / Migration Strategies
 
-## 14부 — Infrastructure as Code
+## 14부 — Remaining SAA Architecture & Services
 
-강의 + 취업 포트폴리오 확장.
+강의 후반의 Architecture / Other Services / White Papers 관련 **강의 커버리지**를 매핑한다.
+별도의 모의고사나 종합 문제 세트는 이 저장소에서 만들지 않는다.
 
-- [ ] 74. CloudFormation
-- [ ] 75. Terraform
+- [ ] 74. CloudFormation / AWS IaC 개념
+- [ ] 75. Classic Solutions Architecture에서 등장하는 패턴
+- [ ] 76. More Solutions Architecture에서 등장하는 패턴
+- [ ] 77. High Availability / Scalability 선택 기준
+- [ ] 78. 비용 최적화
+- [ ] 79. AWS Well-Architected Framework
+- [ ] 80. Other Services / White Papers에서 강의가 다루는 시험 포인트
 
-## 15부 — CI/CD
-
-강의 범위를 넘어 Cloud Engineer 포트폴리오를 위한 확장 파트.
-
-- [ ] 76. GitHub Actions
-- [ ] 77. Docker Image Build / ECR Push
-- [ ] 78. ECS Deployment Pipeline
-- [ ] 79. Rollback Strategy
-
-## 16부 — Architecture & Well-Architected
-
-강의의 Classic Solutions Architecture, More Solutions Architecture,
-Disaster Recovery, White Papers / Architectures를 종합하는 파트다.
-
-- [ ] 80. Classic Architecture Patterns
-- [ ] 81. High Availability
-- [ ] 82. Scalability / Decoupling
-- [ ] 83. Serverless Architecture
-- [ ] 84. Global Architecture
-- [ ] 85. 비용 최적화
-- [ ] 86. AWS Well-Architected Framework
-- [ ] 87. SAA 종합 설계 문제
-- [ ] 88. Final Architecture Review
+> 강의 1회독 이후 시험 복습, 모의고사와 종합 문제 풀이는 별도 시험 강의를 사용한다.
 
 ---
 
-# Portfolio — Cloud Shop
+# Phase 2 — Portfolio after SAA Certification
 
-메인 포트폴리오 도메인은 **쇼핑몰**로 고정한다.
+SAA 취득 전에는 아래 항목을 본격적으로 진행하지 않는다.
+설계만 보존해두고 자격증 취득 후 하나씩 구현한다.
 
-애플리케이션 기능 자체보다 하나의 서비스를 AWS에서 어떻게 배포하고,
-확장하고, 보안하고, 관측하고, 자동화하는지를 보여주는 것이 목적이다.
+## Spring Minimum
 
-초기 도메인 모델은 최소한으로 유지한다.
+- Java 21 최소 기반
+- Spring Boot / Spring Web
+- Spring Data JPA / Transaction
+- Validation / Exception Handling
+- Spring Security 필요 범위
+- Actuator / 운영 연결
+
+## Cloud Shop
+
+백엔드 기본 스택:
+
+```text
+Java 21
+Spring Boot
+PostgreSQL
+```
+
+도메인:
 
 ```text
 User
@@ -360,130 +345,31 @@ Order
 OrderItem
 ```
 
-초기 API 예시:
+인프라 발전 흐름:
 
 ```text
-GET  /products
-GET  /products/{id}
-POST /cart
-POST /orders
-GET  /orders/{id}
-GET  /health
+Spring Boot + EC2
+→ RDS
+→ ALB + Auto Scaling
+→ S3 + CloudFront
+→ SQS + Worker
+→ Docker + ECR + ECS
+→ Terraform
+→ GitHub Actions
+→ CloudWatch + Failure Lab
+→ 취업용 포트폴리오 정리
 ```
 
-자세한 포트폴리오 계획은 [portfolio/README.md](./portfolio/README.md)에 관리한다.
+자세한 내용은 [portfolio/README.md](./portfolio/README.md)에 관리한다.
 
-## Portfolio Stages
+## 시험 이후 추가 학습
 
-### Stage 1 — Single EC2
+- Terraform
+- GitHub Actions / CI/CD
+- 장애 실험과 복구
+- 운영 관측 심화
+- 필요 시 EKS / Kubernetes
+- 필요 시 Spring 백엔드 심화
 
-FastAPI 쇼핑몰 API를 EC2 한 대에 배포한다.
-
-```text
-Internet → Security Group → EC2 → FastAPI
-```
-
-Linux process, systemd, Nginx, User Data, SSH, 로그와 포트를 직접 확인한다.
-
-### Stage 2 — Database Separation
-
-PostgreSQL을 RDS로 분리한다.
-
-```text
-Internet → EC2 → RDS
-```
-
-Application과 Database Security Group을 분리하고 접근 경로를 검증한다.
-
-### Stage 3 — High Availability
-
-ALB + Auto Scaling + Multi-AZ 구조로 확장한다.
-
-```text
-             ALB
-            /   \
-         App     App
-           \     /
-             RDS
-```
-
-Health Check와 인스턴스 장애 복구를 실험한다.
-
-### Stage 4 — Object Storage & CDN
-
-상품 이미지를 S3에 저장하고 CloudFront로 제공한다.
-
-### Stage 5 — Asynchronous Processing
-
-주문 후 이메일/후처리 작업을 SQS와 Worker로 분리한다.
-
-```text
-Order API → SQS → Worker
-```
-
-### Stage 6 — Containers
-
-애플리케이션과 Worker를 Docker로 만들고 ECR/ECS로 이전한다.
-
-### Stage 7 — Infrastructure as Code
-
-VPC, Subnet, Security Group, ALB, ECS, RDS 등을 Terraform으로 코드화한다.
-
-### Stage 8 — CI/CD
-
-GitHub Actions로 테스트 → 이미지 빌드 → ECR → ECS 배포 파이프라인을 구성한다.
-
-### Stage 9 — Observability & Failure Lab
-
-CloudWatch 기반 로그, 메트릭, Alarm을 구성하고 장애 실험을 수행한다.
-
-예:
-
-```text
-DB Security Group 차단
-→ DB connection 실패
-→ 로그/메트릭 관측
-→ 원인 진단
-→ 복구
-
-ALB Health Check 경로 오류
-→ Target unhealthy
-→ 요청 실패
-→ Target Group 관측
-→ 수정
-
-Application process 종료
-→ Health Check 실패
-→ 서비스 복구 과정 관측
-```
-
-### Stage 10 — Portfolio Polish
-
-학습용 프로젝트를 취업용 포트폴리오로 재가공한다.
-
-- Architecture Diagram
-- Requirements
-- AWS Service 선택 이유
-- Network / Security Design
-- CI/CD
-- Terraform 구조
-- Monitoring
-- Failure Experiments
-- Troubleshooting 기록
-- 비용 / 가용성 trade-off
-- 개선 가능성
-
-필요하면 이후 AI 추천, 상품 설명 생성, 이미지 태깅 등의 기능을 선택적으로 붙일 수 있지만,
-프로젝트의 본체는 AWS 인프라와 운영이다.
-
-## 최종적으로 답할 수 있어야 하는 질문
-
-- 왜 이 AWS 서비스를 선택했는가?
-- 다른 대안 대신 이것을 선택한 이유는 무엇인가?
-- 장애가 발생하면 어떤 현상이 나타나는가?
-- 어디에서 문제를 관측할 수 있는가?
-- 어떤 순서로 원인을 좁히는가?
-- 어떻게 복구하는가?
-- 더 많은 트래픽을 처리하려면 어떻게 변경해야 하는가?
-- 비용과 안정성 사이에 어떤 trade-off가 존재하는가?
-- 이 인프라를 다시 만들거나 배포하려면 얼마나 자동화되어 있는가?
+최종 목표는 단순히 AWS 서비스를 사용한 기록이 아니라,
+**Java/Spring 쇼핑몰 서비스를 AWS에서 설계·배포·운영·자동화하고 그 의사결정을 설명할 수 있는 취업 포트폴리오**를 만드는 것이다.
