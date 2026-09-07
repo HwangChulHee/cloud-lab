@@ -77,14 +77,15 @@ AWS 기반 인프라 포트폴리오 완성을 목표로 한다.
 - [ ] 05. EC2
   - [ ] u1. Overview, Launch와 User Data
   - [ ] u2. Instance Types
-  - [ ] u3. Connectivity와 IP
+  - [ ] u3. Security Groups와 SSH
   - [ ] u4. Purchasing Options
-  - [ ] u5. Placement Groups
-  - [ ] u6. Elastic Network Interface (ENI)
-  - [ ] u7. Lifecycle와 Hibernate
-  - [ ] u8. Integrated Lab / Exercises
+  - [ ] u5. Public IP, Private IP와 Elastic IP
+  - [ ] u6. Placement Groups
+  - [ ] u7. Elastic Network Interface (ENI)
+  - [ ] u8. Lifecycle와 Hibernate
+  - [ ] u9. Integrated Lab / Exercises
 - [ ] 06. EBS
-- [ ] 07. Security Group
+- [ ] 07. Security Group 심화 / 운영
 
 ### 2부 — High Availability
 
