@@ -70,15 +70,15 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 강의 외 최소 보강 파트. 이미 학습한 기반은 이후 AWS 개념을 이해하는 데 활용한다.
 
-- [ ] 00. AWS와 클라우드의 전체 그림
-  - [ ] u1. 클라우드란 무엇인가
-  - [ ] u2. Region / Availability Zone / Edge Location
-  - [ ] u3. AWS 서비스의 범위 — Global vs Regional
-- [x] 01. Linux 최소 기반
-  - [x] u1. Process와 Service
-  - [x] u2. Files, Directories와 Permission
-  - [x] u3. Port와 Linux 네트워크 확인
-  - [x] u4. SSH, Log와 Environment
+- [x] 00. AWS와 클라우드의 전체 그림
+  - [x] u1. 클라우드란 무엇인가
+  - [x] u2. Region / Availability Zone / Edge Location
+  - [x] u3. AWS 서비스의 범위 — Global vs Regional
+- [ ] 01. Linux 최소 기반
+  - [ ] u1. Process와 Service
+  - [ ] u2. Files, Directories와 Permission
+  - [ ] u3. Port와 Linux 네트워크 확인
+  - [ ] u4. SSH, Log와 Environment
 - [ ] 02. 네트워크 최소 기반
   - [ ] u1. IP, Port와 Protocol
   - [ ] u2. Subnet, CIDR, Gateway와 NAT
