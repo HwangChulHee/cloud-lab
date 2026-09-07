@@ -51,8 +51,18 @@ AWS 기반 인프라 포트폴리오 완성을 목표로 한다.
   - [ ] u2. Region / Availability Zone / Edge Location
   - [ ] u3. AWS 서비스의 범위 — Global vs Regional
 - [ ] 01. Linux 최소 기반
+  - [ ] u1. Process와 Service
+  - [ ] u2. Files, Directories와 Permission
+  - [ ] u3. Port와 Linux 네트워크 확인
+  - [ ] u4. SSH, Log와 Environment
 - [ ] 02. 네트워크 최소 기반
+  - [ ] u1. IP, Port와 Protocol
+  - [ ] u2. Subnet, CIDR, Gateway와 NAT
+  - [ ] u3. Routing, Firewall과 Troubleshooting
 - [ ] 03. HTTP / DNS / TLS
+  - [ ] u1. HTTP Request와 Response
+  - [ ] u2. DNS Resolution
+  - [ ] u3. TLS와 HTTPS
 
 ### 1부 — Identity & Compute
 
