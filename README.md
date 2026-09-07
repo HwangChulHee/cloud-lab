@@ -99,11 +99,11 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [ ] u6. Security Tools와 Best Practices
   - [ ] u7. Integrated Lab / Exercises
 - [ ] 05. EC2
-  - [ ] u1. Overview, Launch와 User Data
+  - [x] u1. Overview, Launch와 User Data
   - [ ] u2. Instance Types
   - [ ] u3. Security Groups와 SSH
-  - [ ] u4. Purchasing Options
-  - [ ] u5. Public IP, Private IP와 Elastic IP
+  - [x] u4. Purchasing Options
+  - [x] u5. Public IP, Private IP와 Elastic IP
   - [ ] u6. Placement Groups
   - [ ] u7. Elastic Network Interface (ENI)
   - [ ] u8. Lifecycle와 Hibernate
@@ -179,6 +179,8 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 ## 5부 — Storage Extras
 
+강의 커버리지 중심. 필요한 항목만 짧게 실습한다.
+
 - [ ] 18. EFS
 - [ ] 19. FSx
 - [ ] 20. Storage Gateway
@@ -199,9 +201,7 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 ## 7부 — Containers
 
-SAA 시험 전에는 강의가 요구하는 AWS 컨테이너 서비스의 개념과 선택 기준이 우선이다.
-
-- [ ] 28. Docker 최소 개념
+- [ ] 28. Docker
 - [ ] 29. ECR
 - [ ] 30. ECS
   - [ ] EC2 Launch Type / Fargate
@@ -225,6 +225,8 @@ SAA 시험 전에는 강의가 요구하는 AWS 컨테이너 서비스의 개념
 
 ## 9부 — Databases, Data & Analytics
 
+강의 커버리지 중심. 서비스 이름과 사용 사례를 구분하는 것이 우선이다.
+
 - [ ] 36. AWS Database 선택 지도
   - [ ] RDS / Aurora
   - [ ] DynamoDB
@@ -232,7 +234,7 @@ SAA 시험 전에는 강의가 요구하는 AWS 컨테이너 서비스의 개념
   - [ ] DocumentDB
   - [ ] Neptune
   - [ ] Keyspaces
-  - [ ] 기타 강의 등장 서비스
+  - [ ] QLDB 등 강의 등장 서비스
 - [ ] 37. Athena
 - [ ] 38. Redshift
 - [ ] 39. EMR
@@ -258,7 +260,6 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
   - [ ] Metrics
   - [ ] Logs
   - [ ] Alarms
-  - [ ] EventBridge 연결
 - [ ] 51. CloudTrail
 - [ ] 52. AWS Config
 - [ ] 53. Advanced Identity
@@ -274,6 +275,8 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 - [ ] 58. GuardDuty / Inspector / Macie 등 Security Services
 
 ## 12부 — VPC & Networking
+
+시험 전에는 강의 Hands-on과 구조 이해까지만 진행하고, 장애 실험은 시험 후 포트폴리오 단계에서 진행한다.
 
 - [ ] 59. VPC
 - [ ] 60. Subnet과 Route Table
@@ -294,82 +297,61 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 - [ ] 72. DMS / SCT
 - [ ] 73. Application Migration Service / Migration Strategies
 
-## 14부 — Remaining SAA Architecture & Services
+## 14부 — CloudFormation & Architecture Coverage
 
-강의 후반의 Architecture / Other Services / White Papers 관련 **강의 커버리지**를 매핑한다.
-별도의 모의고사나 종합 문제 세트는 이 저장소에서 만들지 않는다.
+시험 범위에 포함되는 CloudFormation과 강의의 Architecture 섹션을 정리한다.
+별도의 종합 문제/모의고사는 이 저장소에서 만들지 않는다.
 
-- [ ] 74. CloudFormation / AWS IaC 개념
-- [ ] 75. Classic Solutions Architecture에서 등장하는 패턴
-- [ ] 76. More Solutions Architecture에서 등장하는 패턴
-- [ ] 77. High Availability / Scalability 선택 기준
-- [ ] 78. 비용 최적화
+- [ ] 74. CloudFormation
+- [ ] 75. Classic Solutions Architecture
+- [ ] 76. High Availability / Scalability Patterns
+- [ ] 77. Serverless / Global Architecture Patterns
+- [ ] 78. 비용 최적화 개념
 - [ ] 79. AWS Well-Architected Framework
-- [ ] 80. Other Services / White Papers에서 강의가 다루는 시험 포인트
-
-> 강의 1회독 이후 시험 복습, 모의고사와 종합 문제 풀이는 별도 시험 강의를 사용한다.
+- [ ] 80. More Solutions Architecture / White Papers Coverage
 
 ---
 
-# Phase 2 — Portfolio after SAA Certification
+# Phase 2 Curriculum — Portfolio after SAA
 
-SAA 취득 전에는 아래 항목을 본격적으로 진행하지 않는다.
-설계만 보존해두고 자격증 취득 후 하나씩 구현한다.
+SAA 취득 후 시작한다.
 
-## Spring Minimum
+## P0 — Java / Spring Minimum
 
 - Java 21 최소 기반
-- Spring Boot / Spring Web
-- Spring Data JPA / Transaction
+- Spring Boot / Web
+- Spring Data JPA
+- Transaction
 - Validation / Exception Handling
-- Spring Security 필요 범위
-- Actuator / 운영 연결
+- Actuator
 
-## Cloud Shop
+## P1 — Cloud Shop Build & Operations
 
-백엔드 기본 스택:
+- Single EC2 배포
+- RDS 분리
+- ALB / Auto Scaling / Multi-AZ
+- S3 / CloudFront
+- SQS / Worker
+- Docker / ECR / ECS
+- CloudWatch 관측 및 장애 실험
 
-```text
-Java 21
-Spring Boot
-PostgreSQL
-```
-
-도메인:
-
-```text
-User
-Product
-Cart
-Order
-OrderItem
-```
-
-인프라 발전 흐름:
-
-```text
-Spring Boot + EC2
-→ RDS
-→ ALB + Auto Scaling
-→ S3 + CloudFront
-→ SQS + Worker
-→ Docker + ECR + ECS
-→ Terraform
-→ GitHub Actions
-→ CloudWatch + Failure Lab
-→ 취업용 포트폴리오 정리
-```
-
-자세한 내용은 [portfolio/README.md](./portfolio/README.md)에 관리한다.
-
-## 시험 이후 추가 학습
+## P2 — Infrastructure as Code
 
 - Terraform
-- GitHub Actions / CI/CD
-- 장애 실험과 복구
-- 운영 관측 심화
-- 필요 시 EKS / Kubernetes
-- 필요 시 Spring 백엔드 심화
 
-최종 목표는 단순히 AWS 서비스를 사용한 기록이 아니라,
-**Java/Spring 쇼핑몰 서비스를 AWS에서 설계·배포·운영·자동화하고 그 의사결정을 설명할 수 있는 취업 포트폴리오**를 만드는 것이다.
+## P3 — CI/CD
+
+- GitHub Actions
+- Docker Image Build / ECR Push
+- ECS Deployment Pipeline
+- Rollback Strategy
+
+## P4 — Portfolio Polish
+
+- Architecture Diagram
+- AWS 서비스 선택 근거
+- Network / Security Design
+- Monitoring / Failure Experiments
+- Cost / Availability / Complexity trade-off
+
+자세한 단계별 설계는 [portfolio/README.md](./portfolio/README.md)를 참고한다.
