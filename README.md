@@ -67,6 +67,13 @@ AWS 기반 인프라 포트폴리오 완성을 목표로 한다.
 ### 1부 — Identity & Compute
 
 - [ ] 04. IAM
+  - [ ] u1. Users, Groups, Policies
+  - [ ] u2. Policy Structure와 Inheritance
+  - [ ] u3. Password Policy와 MFA
+  - [ ] u4. Console, CLI, SDK와 Access Keys
+  - [ ] u5. IAM Roles for Services
+  - [ ] u6. Security Tools와 Best Practices
+  - [ ] u7. Integrated Lab / Exercises
 - [ ] 05. EC2
 - [ ] 06. EBS
 - [ ] 07. Security Group
