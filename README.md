@@ -75,6 +75,14 @@ AWS 기반 인프라 포트폴리오 완성을 목표로 한다.
   - [ ] u6. Security Tools와 Best Practices
   - [ ] u7. Integrated Lab / Exercises
 - [ ] 05. EC2
+  - [ ] u1. Overview, Launch와 User Data
+  - [ ] u2. Instance Types
+  - [ ] u3. Connectivity와 IP
+  - [ ] u4. Purchasing Options
+  - [ ] u5. Placement Groups
+  - [ ] u6. Elastic Network Interface (ENI)
+  - [ ] u7. Lifecycle와 Hibernate
+  - [ ] u8. Integrated Lab / Exercises
 - [ ] 06. EBS
 - [ ] 07. Security Group
 
