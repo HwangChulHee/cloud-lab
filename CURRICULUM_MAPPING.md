@@ -2,61 +2,62 @@
 
 이 문서는 Stéphane Maarek SAA-C03 강의와 `cloud-lab` 커리큘럼의 대응 관계를 관리한다.
 
-목표는 두 가지다.
-
-1. 강의에서 다루는 시험 범위를 빠뜨리지 않는다.
-2. 모든 주제를 같은 깊이로 실습하지 않고 Cloud Engineer 관점에서 중요도에 따라 깊이를 조절한다.
+현재 우선순위는 **SAA 취득**이다.
+강의 커버리지를 세밀하게 따라가되, 포트폴리오용 심화 실습은 시험 이후로 미룬다.
 
 ## Depth Legend
 
 - **C — Coverage**: 개념 + SAA 선택 기준 중심
-- **L — Lab**: 직접 구축/확인까지 진행
-- **CL — Core Lab**: 구축 + 관측 + 장애 실험 + 복구 + 포트폴리오 연결
+- **H — Hands-on**: 강의에서 제공하는 실습 또는 최소 확인
+- **CL — Core Lab (시험 후)**: 구축 + 관측 + 장애 실험 + 복구 + 포트폴리오 연결
+
+`CL`로 표시된 주제라도 SAA 취득 전에는 C/H까지만 진행한다.
 
 ---
 
 ## Course → cloud-lab Mapping
 
-| 강의 큰 섹션 | cloud-lab 대응 | 깊이 |
-|---|---|---|
-| Cloud / Global Infrastructure Intro | 0부 Foundation / 00 AWS Overview | C |
-| IAM | 1부 / 04 IAM | L |
-| EC2 Basics | 1부 / 05 EC2 | CL |
-| EC2 Associate | 1부 / 05 EC2 | C~L |
-| EC2 Instance Storage | 1부 / 06 EC2 Instance Storage | CL |
-| High Availability & Scalability | 2부 / ELB, Auto Scaling | CL |
-| RDS, Aurora, ElastiCache | 3부 | CL |
-| Route 53 | 4부 / Route 53 | L |
-| Classic Solutions Architecture | 16부 Architecture + 각 Core Lab | C~CL |
-| S3 | 4부 / S3 Core | L |
-| S3 Advanced | 4부 / S3 Advanced & Security | L |
-| S3 Security | 4부 / S3 Advanced & Security | L |
-| CloudFront & Global Accelerator | 4부 | L |
-| Storage Extras | 5부 | C~L |
-| Messaging / Integration | 6부 | SQS는 CL, 나머지는 C~L |
-| Containers | 7부 | ECS는 CL, EKS/App Runner는 C |
-| Serverless | 8부 | Lambda/API Gateway/DynamoDB는 L~CL |
-| Databases in AWS | 9부 Database 선택 지도 | C |
-| Data & Analytics | 9부 | C |
-| Machine Learning | 10부 | C |
-| Monitoring | 11부 / CloudWatch, CloudTrail, Config | CL |
-| Advanced Identity | 11부 / Advanced Identity | C~L |
-| Security & Encryption | 11부 / KMS, Secrets, WAF, Security Services | C~L |
-| VPC | 12부 | CL |
-| Disaster Recovery & Migrations | 13부 | L |
-| More Solutions Architecture | 16부 | C~CL |
-| Other Services | 해당 기능별 파트에 분산 | C |
-| White Papers & Architectures | 16부 | C~L |
+| 강의 큰 섹션 | cloud-lab 대응 | 시험 전 | 시험 후 |
+|---|---|---:|---:|
+| Cloud / Global Infrastructure Intro | 0부 Foundation / 00 AWS Overview | C | 필요 시 보강 |
+| IAM | 1부 / 04 IAM | C~H | CL 가능 |
+| EC2 Basics | 1부 / 05 EC2 | C~H | CL |
+| EC2 Associate | 1부 / 05 EC2 | C~H | 필요 시 심화 |
+| EC2 Instance Storage | 1부 / 06 EC2 Instance Storage | C~H | CL |
+| High Availability & Scalability | 2부 / ELB, Auto Scaling | C~H | CL |
+| RDS, Aurora, ElastiCache | 3부 | C~H | CL |
+| Route 53 | 4부 / Route 53 | C~H | L |
+| Classic Solutions Architecture | 14부 + 각 관련 서비스 | C | 포트폴리오 설계에 활용 |
+| S3 | 4부 / S3 Core | C~H | CL 가능 |
+| S3 Advanced | 4부 / S3 Advanced & Security | C~H | L |
+| S3 Security | 4부 / S3 Advanced & Security | C~H | L |
+| CloudFront & Global Accelerator | 4부 | C~H | L |
+| Storage Extras | 5부 | C~H | 필요 시 L |
+| Messaging / Integration | 6부 | C~H | SQS 중심 CL |
+| Containers | 7부 | C~H | ECS 중심 CL |
+| Serverless | 8부 | C~H | 필요 시 L~CL |
+| Databases in AWS | 9부 Database 선택 지도 | C | 필요 시 보강 |
+| Data & Analytics | 9부 | C | 필요 시 보강 |
+| Machine Learning | 10부 | C | 선택 |
+| Monitoring | 11부 | C~H | CloudWatch 중심 CL |
+| Advanced Identity | 11부 | C~H | 필요 시 L |
+| Security & Encryption | 11부 | C~H | 필요 시 L |
+| VPC | 12부 | C~H | CL |
+| Disaster Recovery & Migrations | 13부 | C~H | 필요 시 L |
+| More Solutions Architecture | 14부 | C | 포트폴리오 설계에 활용 |
+| Other Services | 14부 또는 해당 기능별 파트 | C | 선택 |
+| White Papers & Architectures | 14부 | C | 포트폴리오 설계에 활용 |
 
 ---
 
-## 강의 순서 적용 원칙
+## 시험 전 운영 원칙
 
-강의를 듣는 동안 다음 원칙을 적용한다.
+### 1. 강의 순서를 우선한다
 
-### 1. 연속되는 강의 내용은 학습 순서를 맞춘다
+강의에서 연속적으로 등장하는 내용은 학습 순서도 가능한 한 맞춘다.
+디렉터리 구조는 개념적으로 정리하되 강의 흐름을 방해하지 않는다.
 
-예를 들어 EC2 Basics에서 Security Group이 바로 등장하면 `cloud-lab`에서도 EC2 내부 Unit으로 먼저 학습한다.
+예:
 
 ```text
 EC2 Launch
@@ -64,22 +65,19 @@ EC2 Launch
 → Security Group / SSH
 → Purchasing Options
 → IP / EIP
-...
 ```
 
-이후 Security Group은 별도 심화 Unit에서 다시 다룰 수 있다.
+### 2. 강의 Hands-on까지만 기본 수행한다
 
-### 2. 디렉터리 구조와 학습 순서는 완전히 같을 필요가 없다
-
-강의에서는 한 번 다루지만 실무적으로 여러 주제와 연결되는 내용은 다른 파트에서 재등장할 수 있다.
-
-예:
+시험 전에는 별도의 대형 시스템을 만들지 않는다.
+중요 서비스라도 우선은 다음 정도면 충분하다.
 
 ```text
-Security Group
-1) EC2 Basics — 기본 inbound/outbound
-2) Security Group 심화 — SG reference / 계층 접근
-3) VPC — SG vs NACL
+개념 이해
+→ 선택 기준 정리
+→ 강의 Hands-on
+→ 필요한 최소 관측
+→ 다음 강의
 ```
 
 ### 3. 시험 전용 서비스는 과도하게 실습하지 않는다
@@ -94,17 +92,31 @@ Comprehend
 Kendra
 ```
 
-이런 서비스는 다음 질문에 답할 수 있으면 우선 충분하다.
+다음 질문에 답할 수 있으면 우선 충분하다.
 
 ```text
 무슨 문제를 해결하는가?
-문제에서 어떤 키워드가 나오면 선택하는가?
+어떤 키워드가 나오면 선택하는가?
 헷갈리는 서비스와 차이는 무엇인가?
 ```
 
-### 4. Core Lab은 반복해서 깊어진다
+### 4. 시험 복습은 이 저장소가 담당하지 않는다
 
-다음 서비스는 강의 Hands-on보다 더 깊게 진행한다.
+강의 1회독 후의 다음 작업은 별도의 시험 강의를 사용한다.
+
+- 모의고사
+- 종합 문제
+- 오답 정리
+- 시험 직전 복습
+
+따라서 `cloud-lab`에는 별도의 Phase 2 시험 복습 커리큘럼을 만들지 않는다.
+
+---
+
+## SAA 취득 후 다시 깊게 다룰 Core Lab
+
+다음 서비스는 시험 전에는 C/H 수준으로 학습하지만,
+Cloud Shop 포트폴리오를 만들면서 다시 깊게 다룬다.
 
 ```text
 IAM
@@ -119,20 +131,36 @@ SQS
 ECS
 CloudWatch
 VPC
+```
+
+그때 다음 흐름을 적용한다.
+
+> 구축 → 예측 → 관측 → 장애 → 분석 → 복구 → 자동화
+
+추가로 강의 범위를 넘어:
+
+```text
+Java / Spring Boot
+Docker
 Terraform
 GitHub Actions
+CI/CD
+운영 문서화
 ```
+
+를 포트폴리오에 연결한다.
 
 ---
 
-## 강의와 별개로 추가되는 학습
+## 강의와 별개로 추가되는 학습 — 시험 후
 
-### Foundation
+### Spring / Backend
 
-- Linux process / service
-- Linux permission / logs
-- `ss`, `curl`, `ip` 기반 네트워크 관측
-- HTTP / DNS / TLS 최소 기반
+- Java 21 최소 기반
+- Spring Boot / Web
+- JPA / Transaction
+- Validation / Security
+- Actuator
 
 ### Operations
 
@@ -154,22 +182,21 @@ GitHub Actions
 ### Portfolio
 
 강의 Hands-on을 그대로 제출하지 않는다.
-쇼핑몰 도메인의 하나의 시스템을 단계적으로 발전시킨다.
+Java/Spring 기반 쇼핑몰 시스템을 단계적으로 발전시킨다.
 
 자세한 내용은 `portfolio/README.md`를 참고한다.
 
 ---
 
-## 체크 방법
+## 강의 진행 중 체크 방법
 
-강의 섹션 하나를 끝낼 때마다 다음을 확인한다.
+강의 섹션 하나를 끝낼 때마다 다음만 확인한다.
 
 ```text
 [ ] 강의에서 다룬 서비스가 curriculum에 존재하는가?
-[ ] 핵심 비교 포인트가 README에 정리되어 있는가?
-[ ] 이 주제는 C / L / CL 중 어디까지 해야 하는가?
-[ ] 지금 포트폴리오에 붙일 내용인가, 나중에 붙일 내용인가?
-[ ] 시험 문제에서 헷갈릴 비교 대상은 무엇인가?
+[ ] 핵심 선택 기준이 정리되어 있는가?
+[ ] 강의 Hands-on이 있다면 필요한 만큼 따라갔는가?
+[ ] 헷갈리는 비교 대상은 무엇인가?
 ```
 
-강의 전체 1회독 이후에는 이 문서를 기준으로 누락된 서비스와 선택 기준을 다시 점검한다.
+포트폴리오 반영 여부와 장애 실험 여부는 **SAA 취득 후** 다시 판단한다.
