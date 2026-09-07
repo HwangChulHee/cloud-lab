@@ -74,11 +74,11 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [ ] u1. 클라우드란 무엇인가
   - [ ] u2. Region / Availability Zone / Edge Location
   - [ ] u3. AWS 서비스의 범위 — Global vs Regional
-- [ ] 01. Linux 최소 기반
-  - [ ] u1. Process와 Service
-  - [ ] u2. Files, Directories와 Permission
-  - [ ] u3. Port와 Linux 네트워크 확인
-  - [ ] u4. SSH, Log와 Environment
+- [x] 01. Linux 최소 기반
+  - [x] u1. Process와 Service
+  - [x] u2. Files, Directories와 Permission
+  - [x] u3. Port와 Linux 네트워크 확인
+  - [x] u4. SSH, Log와 Environment
 - [ ] 02. 네트워크 최소 기반
   - [ ] u1. IP, Port와 Protocol
   - [ ] u2. Subnet, CIDR, Gateway와 NAT
@@ -90,30 +90,32 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 ## 1부 — IAM & EC2 Basics
 
-- [ ] 04. IAM
-  - [ ] u1. Users, Groups, Policies
-  - [ ] u2. Policy Structure와 Inheritance
-  - [ ] u3. Password Policy와 MFA
-  - [ ] u4. Console, CLI, SDK와 Access Keys
-  - [ ] u5. IAM Roles for Services
-  - [ ] u6. Security Tools와 Best Practices
-  - [ ] u7. Integrated Lab / Exercises
-- [ ] 05. EC2
+- [x] 04. IAM
+  - [x] u1. Users, Groups, Policies
+  - [x] u2. Policy Structure와 Inheritance
+  - [x] u3. Password Policy와 MFA
+  - [x] u4. Console, CLI, SDK와 Access Keys
+  - [x] u5. IAM Roles for Services
+  - [x] u6. Security Tools와 Best Practices
+  - [x] u7. Integrated Lab / Exercises
+- [x] 05. EC2
   - [x] u1. Overview, Launch와 User Data
-  - [ ] u2. Instance Types
-  - [ ] u3. Security Groups와 SSH
+  - [x] u2. Instance Types
+  - [x] u3. Security Groups와 SSH
   - [x] u4. Purchasing Options
   - [x] u5. Public IP, Private IP와 Elastic IP
-  - [ ] u6. Placement Groups
-  - [ ] u7. Elastic Network Interface (ENI)
-  - [ ] u8. Lifecycle와 Hibernate
-  - [ ] u9. Integrated Lab / Exercises
+  - [x] u6. Placement Groups
+  - [x] u7. Elastic Network Interface (ENI)
+  - [x] u8. Lifecycle와 Hibernate
+  - [x] u9. Integrated Lab / Exercises
 - [ ] 06. EC2 Instance Storage
-  - [ ] EBS Volume / Snapshot
-  - [ ] EBS Volume Types
-  - [ ] Instance Store
-  - [ ] AMI
-  - [ ] EFS 기초 연결
+  - [ ] u1. EBS Volume
+  - [ ] u2. EBS Snapshots
+  - [ ] u3. AMI
+  - [ ] u4. EC2 Instance Store
+  - [ ] u5. EBS Volume Types & Multi-Attach
+  - [ ] u6. EBS Encryption
+  - [ ] u7. EFS & EBS vs EFS
 - [ ] 07. Security Group 심화 개념
   - [ ] Stateful 동작
   - [ ] Security Group Reference
