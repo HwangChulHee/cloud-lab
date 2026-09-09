@@ -108,14 +108,14 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [x] u7. Elastic Network Interface (ENI)
   - [x] u8. Lifecycle와 Hibernate
   - [x] u9. Integrated Lab / Exercises
-- [ ] 06. EC2 Instance Storage
-  - [ ] u1. EBS Volume
-  - [ ] u2. EBS Snapshots
-  - [ ] u3. AMI
-  - [ ] u4. EC2 Instance Store
-  - [ ] u5. EBS Volume Types & Multi-Attach
-  - [ ] u6. EBS Encryption
-  - [ ] u7. EFS & EBS vs EFS
+- [x] 06. EC2 Instance Storage
+  - [x] u1. EBS Volume
+  - [x] u2. EBS Snapshots
+  - [x] u3. AMI
+  - [x] u4. EC2 Instance Store
+  - [x] u5. EBS Volume Types & Multi-Attach
+  - [x] u6. EBS Encryption
+  - [x] u7. EFS & EBS vs EFS
 - [ ] 07. Security Group 심화 개념
   - [ ] u1. Stateful과 Rule 모델
   - [ ] u2. Security Group Reference
