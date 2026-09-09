@@ -123,11 +123,11 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 ## 2부 — High Availability & Scalability
 
-- [ ] 08. Elastic Load Balancing
-  - [ ] ALB / NLB / GWLB 비교
-  - [ ] Target Group / Health Check
-  - [ ] Sticky Session / Cross-Zone
-  - [ ] TLS Listener / SNI
+- [x] 08. Elastic Load Balancing
+  - [x] ALB / NLB / GWLB 비교
+  - [x] Target Group / Health Check
+  - [x] Sticky Session / Cross-Zone
+  - [x] TLS Listener / SNI
 - [ ] 09. Auto Scaling
   - [ ] u1. Auto Scaling Group 기본 구조
   - [ ] u2. Scaling Policies
