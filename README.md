@@ -129,10 +129,12 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [ ] Sticky Session / Cross-Zone
   - [ ] TLS Listener / SNI
 - [ ] 09. Auto Scaling
-  - [ ] Auto Scaling Group
-  - [ ] Scaling Policy
-  - [ ] Dynamic / Predictive Scaling
-  - [ ] ELB + ASG 통합
+  - [ ] u1. Auto Scaling Group 기본 구조
+  - [ ] u2. Scaling Policies
+  - [ ] u3. CloudWatch Alarms와 Scale Out / Scale In
+  - [ ] u4. Predictive Scaling과 Scheduled Scaling
+  - [ ] u5. Cooldown과 안정화
+  - [ ] u6. ELB + ASG 통합
 
 ## 3부 — Relational Data & Cache
 
