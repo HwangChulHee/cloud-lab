@@ -116,10 +116,10 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [x] u5. EBS Volume Types & Multi-Attach
   - [x] u6. EBS Encryption
   - [x] u7. EFS & EBS vs EFS
-- [ ] 07. Security Group 심화 개념
-  - [ ] u1. Stateful과 Rule 모델
-  - [ ] u2. Security Group Reference
-  - [ ] u3. 계층별 Security Group 접근 제어
+- [x] 07. Security Group 심화 개념
+  - [x] u1. Stateful과 Rule 모델
+  - [x] u2. Security Group Reference
+  - [x] u3. 계층별 Security Group 접근 제어
 
 ## 2부 — High Availability & Scalability
 
