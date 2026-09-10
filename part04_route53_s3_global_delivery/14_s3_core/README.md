@@ -6,13 +6,13 @@ Amazon S3(Simple Storage Service)는 AWS의 대표적인 **Object Storage** 서�
 
 ## Units
 
-- [ ] u1. S3와 Object Storage 기본
-- [ ] u2. Bucket, Object, Key와 기본 동작
-- [ ] u3. Durability, Availability와 S3 Standard
-- [ ] u4. Versioning
-- [ ] u5. Replication — CRR / SRR
-- [ ] u6. Storage Classes
-- [ ] u7. Lifecycle Rules
+- [x] u1. S3와 Object Storage 기본
+- [x] u2. Bucket, Object, Key와 기본 동작
+- [x] u3. Durability, Availability와 S3 Standard
+- [x] u4. Versioning
+- [x] u5. Replication — CRR / SRR
+- [x] u6. Storage Classes
+- [x] u7. Lifecycle Rules
 
 ## SAA 선택 지도
 
