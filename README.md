@@ -138,12 +138,12 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 
 ## 3부 — Relational Data & Cache
 
-- [ ] 10. RDS
-  - [ ] RDS 기본
-  - [ ] Multi-AZ
-  - [ ] Read Replica
-  - [ ] Backup / Restore
-  - [ ] RDS Proxy
+- [x] 10. RDS
+  - [x] RDS 기본
+  - [x] Multi-AZ
+  - [x] Read Replica
+  - [x] Backup / Restore
+  - [x] RDS Proxy
 - [ ] 11. Aurora
   - [ ] Aurora Architecture
   - [ ] Replica / HA
