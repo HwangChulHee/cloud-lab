@@ -3,6 +3,7 @@
 마지막 Guided Example이다. 이번에는 클릭 위치를 거의 알려주지 않는다. 지금까지 반복한 핵심 AWS 웹 인프라를 요구사항만 보고 처음부터 다시 만든다.
 
 ## 시작 전 Recall
+
 빈 종이에 다음을 먼저 그린다.
 
 ```text
@@ -94,12 +95,14 @@ ASG가 replacement를 만들 때도 같은 방식으로 정상 기동되어야 �
 다음 체크포인트만 사용한다.
 
 ### Network
+
 - VPC CIDR과 subnet CIDR이 겹치지 않는다.
 - Public RT는 IGW route를 가진다.
 - Private EC2에는 Public IP를 주지 않는다.
 - NAT를 쓴다면 NAT Gateway는 Public Subnet에 있고 Private RT가 NAT를 가리킨다.
 
 ### Security
+
 ```text
 Internet → ALB-SG :443
 ALB-SG → EC2-SG :app port
@@ -108,12 +111,14 @@ EC2 → IAM Role → S3
 ```
 
 ### Availability
+
 - ALB가 2AZ를 사용한다.
 - ASG가 2개 Private Subnet을 사용한다.
 - RDS Multi-AZ를 사용할 경우 목적을 설명할 수 있다.
 - replacement 인스턴스가 bootstrap 후 healthy가 된다.
 
 ### Observability
+
 - Target health
 - ALB response/5xx
 - EC2 CPU
@@ -224,7 +229,7 @@ README를 보지 않고 답한다.
 + 삭제 후 과금 리소스가 남지 않았는지 확인할 수 있다
 ```
 
-이후에는 `labs/`에서 정답 아키텍처를 먼저 보지 않고 요구사항만 보고 설계한다. SAA 이후에는 같은 구조를 Terraform과 CI/CD로 다시 구현한다.
+이후에는 `portfolio/`로 바로 넘어간다. 실제 애플리케이션 요구사항에 지금까지 배운 구조를 적용하고, 같은 인프라를 Terraform과 CI/CD로 재구축한다.
 
 ## 비용 정리
 
