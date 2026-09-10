@@ -72,6 +72,9 @@ SAA 핵심 이론을 확보한 뒤 [`examples/`](./examples/)에서 EC2, VPC, AL
 
 - Java 21 / Spring Boot 최소 학습
 - Cloud Shop 구현
+- RDS / S3 연동
+- ALB / Auto Scaling / Multi-AZ
+- SQS / Worker
 - Docker / ECR / ECS
 - Terraform
 - GitHub Actions CI/CD
@@ -145,11 +148,11 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 ## 4부 — Route 53, S3 & Global Delivery
 
-- [ ] 13. Route 53
-  - [ ] DNS Records
-  - [ ] Routing Policies
-  - [ ] Health Checks
-  - [ ] Alias Records
+- [x] 13. Route 53
+  - [x] DNS Records
+  - [x] Routing Policies
+  - [x] Health Checks
+  - [x] Alias Records
 - [ ] 14. S3 Core
   - [ ] Bucket / Object
   - [ ] Versioning
