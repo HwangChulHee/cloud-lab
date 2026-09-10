@@ -5,11 +5,40 @@ Cloud Engineer 취업에 필요한 기반 역량을 만드는 저장소.
 
 현재 우선순위는 **AWS Certified Solutions Architect - Associate(SAA) 취득**이다.
 SAA 취득 전에는 강의 커버리지와 강의 Hands-on에 집중하고,
-취득 후 Java/Spring 기반 Cloud Shop 포트폴리오를 본격적으로 진행한다.
+이후 `examples/`에서 핵심 AWS를 반복 구축한 뒤 `portfolio/`에서 실제 프로젝트로 확장한다.
+
+## 저장소 구조
+
+```text
+part00~part14/
+  → SAA 강의 이론 / 서비스별 선택 기준
+
+examples/
+  → 핵심 AWS 반복 구축 / 관측 / 장애 / 복구 / CLI 검증
+
+portfolio/
+  → 실제 애플리케이션 + IaC + CI/CD + 운영 자동화
+
+spring_minimum/
+  → 포트폴리오에 필요한 Java / Spring 최소 기반
+
+interview/
+  → 클라우드 / DevOps 면접 대비
+```
+
+학습 흐름은 다음과 같다.
+
+```text
+SAA 이론(part00~14)
+        ↓
+핵심 AWS 실습(examples/01~16)
+        ↓
+실제 프로젝트(portfolio/)
+        ↓
+Terraform / Docker / ECS / CI/CD / 운영 심화
+```
 
 ## 진행 원칙
-
-이 저장소는 두 단계로 운영한다.
 
 ### Phase 1 — SAA Certification
 
@@ -25,9 +54,17 @@ Stéphane Maarek SAA-C03 강의를 기준으로 시험 범위를 가능한 한 �
 별도의 대형 프로젝트, Terraform 심화, GitHub Actions 기반 CI/CD, Spring 학습은 이 단계에서 진행하지 않는다.
 강의 이후의 복습, 모의고사, 종합 문제 풀이는 별도 시험 강의를 활용하므로 이 저장소의 커리큘럼에서 관리하지 않는다.
 
-### Phase 2 — Portfolio after SAA
+### Phase 1B — Core AWS Examples
 
-SAA 취득 후에는 강의에서 배운 AWS 지식을 실제 운영 가능한 시스템으로 확장한다.
+SAA 핵심 이론을 확보한 뒤 [`examples/`](./examples/)에서 EC2, VPC, ALB, ASG, RDS, S3, IAM, Route 53, CloudWatch를 실제로 반복 구축한다.
+
+> 따라 만들기 → 기억만으로 반복 → 관측 → 장애 재현 → 분석 → 복구 → CLI 검증
+
+후반 Example은 가이드를 줄여 요구사항만 보고 전체 구조를 다시 만들 수 있게 한다.
+
+### Phase 2 — Portfolio
+
+핵심 실습 이후에는 강의에서 배운 AWS 지식을 실제 운영 가능한 시스템으로 확장한다.
 
 > 이해 → 구축 → 예측 → 관측 → 장애 → 분석 → 복구 → 자동화
 
@@ -47,12 +84,12 @@ SAA 취득 후에는 강의에서 배운 AWS 지식을 실제 운영 가능한 �
 
 모든 AWS 서비스를 같은 깊이로 다루지 않는다.
 
-- **Coverage**: 개념과 SAA 선택 기준을 이해하면 충분한 주제
-- **Hands-on**: 강의 실습을 따라 직접 확인할 주제
-- **Core Lab (시험 후)**: 구축, 관측, 장애 실험, 복구, 자동화, 포트폴리오까지 연결할 핵심 주제
+- **Coverage (C)**: 개념과 SAA 선택 기준을 이해하면 충분한 주제
+- **Hands-on (H)**: 강의 실습 또는 최소 확인까지 직접 수행할 주제
+- **Deep Practice (DP)**: `examples/` 또는 포트폴리오에서 구축, 관측, 장애, 복구까지 반복할 핵심 주제
 
 Rekognition, Polly 같은 서비스는 Coverage 중심으로 빠르게 지나가고,
-EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊게 다룬다.
+EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시 깊게 다룬다.
 
 ## 학습 자료
 
@@ -91,68 +128,20 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 ## 1부 — IAM & EC2 Basics
 
 - [x] 04. IAM
-  - [x] u1. Users, Groups, Policies
-  - [x] u2. Policy Structure와 Inheritance
-  - [x] u3. Password Policy와 MFA
-  - [x] u4. Console, CLI, SDK와 Access Keys
-  - [x] u5. IAM Roles for Services
-  - [x] u6. Security Tools와 Best Practices
-  - [x] u7. Integrated Lab / Exercises
 - [x] 05. EC2
-  - [x] u1. Overview, Launch와 User Data
-  - [x] u2. Instance Types
-  - [x] u3. Security Groups와 SSH
-  - [x] u4. Purchasing Options
-  - [x] u5. Public IP, Private IP와 Elastic IP
-  - [x] u6. Placement Groups
-  - [x] u7. Elastic Network Interface (ENI)
-  - [x] u8. Lifecycle와 Hibernate
-  - [x] u9. Integrated Lab / Exercises
 - [x] 06. EC2 Instance Storage
-  - [x] u1. EBS Volume
-  - [x] u2. EBS Snapshots
-  - [x] u3. AMI
-  - [x] u4. EC2 Instance Store
-  - [x] u5. EBS Volume Types & Multi-Attach
-  - [x] u6. EBS Encryption
-  - [x] u7. EFS & EBS vs EFS
 - [x] 07. Security Group 심화 개념
-  - [x] u1. Stateful과 Rule 모델
-  - [x] u2. Security Group Reference
-  - [x] u3. 계층별 Security Group 접근 제어
 
 ## 2부 — High Availability & Scalability
 
 - [x] 08. Elastic Load Balancing
-  - [x] ALB / NLB / GWLB 비교
-  - [x] Target Group / Health Check
-  - [x] Sticky Session / Cross-Zone
-  - [x] TLS Listener / SNI
 - [x] 09. Auto Scaling
-  - [x] u1. Auto Scaling Group 기본 구조
-  - [x] u2. Scaling Policies
-  - [x] u3. CloudWatch Alarms와 Scale Out / Scale In
-  - [x] u4. Predictive Scaling과 Scheduled Scaling
-  - [x] u5. Cooldown과 안정화
-  - [x] u6. ELB + ASG 통합
 
 ## 3부 — Relational Data & Cache
 
 - [x] 10. RDS
-  - [x] RDS 기본
-  - [x] Multi-AZ
-  - [x] Read Replica
-  - [x] Backup / Restore
-  - [x] RDS Proxy
 - [ ] 11. Aurora
-  - [ ] Aurora Architecture
-  - [ ] Replica / HA
-  - [ ] Serverless / Global Database
-  - [ ] Aurora Machine Learning 개념
 - [ ] 12. ElastiCache
-  - [ ] Redis / Memcached
-  - [ ] Cache Strategy
-  - [ ] Session Store
 
 ## 4부 — Route 53, S3 & Global Delivery
 
@@ -175,15 +164,9 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
   - [ ] Performance / Multipart Upload
   - [ ] Event Notification
 - [ ] 16. CloudFront / Global Accelerator
-  - [ ] CDN / Edge Cache
-  - [ ] Origin / Cache Behavior
-  - [ ] OAC/OAI 개념
-  - [ ] Global Accelerator 비교
 - [ ] 17. ACM / HTTPS
 
 ## 5부 — Storage Extras
-
-강의 커버리지 중심. 필요한 항목만 짧게 실습한다.
 
 - [ ] 18. EFS
 - [ ] 19. FSx
@@ -194,10 +177,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 ## 6부 — Messaging & Integration
 
 - [ ] 23. SQS
-  - [ ] Standard / FIFO
-  - [ ] Visibility Timeout
-  - [ ] DLQ
-  - [ ] Long Polling
 - [ ] 24. SNS
 - [ ] 25. EventBridge
 - [ ] 26. Kinesis
@@ -208,10 +187,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 - [ ] 28. Docker
 - [ ] 29. ECR
 - [ ] 30. ECS
-  - [ ] EC2 Launch Type / Fargate
-  - [ ] Task / Service
-  - [ ] ALB 연동
-  - [ ] Auto Scaling
 - [ ] 31. EKS / App Runner 개념 비교
 
 ## 8부 — Serverless & NoSQL
@@ -219,26 +194,11 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 - [ ] 32. Lambda
 - [ ] 33. API Gateway
 - [ ] 34. DynamoDB
-  - [ ] Partition Key / Sort Key
-  - [ ] Consistency
-  - [ ] GSI / LSI
-  - [ ] Streams
-  - [ ] DAX
-  - [ ] Global Tables
 - [ ] 35. Step Functions / Cognito 등 Serverless 연계 서비스
 
 ## 9부 — Databases, Data & Analytics
 
-강의 커버리지 중심. 서비스 이름과 사용 사례를 구분하는 것이 우선이다.
-
 - [ ] 36. AWS Database 선택 지도
-  - [ ] RDS / Aurora
-  - [ ] DynamoDB
-  - [ ] ElastiCache
-  - [ ] DocumentDB
-  - [ ] Neptune
-  - [ ] Keyspaces
-  - [ ] QLDB 등 강의 등장 서비스
 - [ ] 37. Athena
 - [ ] 38. Redshift
 - [ ] 39. EMR
@@ -247,8 +207,6 @@ EC2, VPC, RDS, ALB, ECS, CloudWatch 등은 시험 후 Core Lab으로 다시 깊�
 - [ ] 42. Lake Formation / QuickSight / MSK 등 Analytics 서비스
 
 ## 10부 — Machine Learning for SAA
-
-ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 파트다.
 
 - [ ] 43. Rekognition
 - [ ] 44. Transcribe / Polly / Translate
@@ -260,27 +218,21 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 
 ## 11부 — Monitoring, Advanced Identity & Security
 
-- [ ] 50. CloudWatch
-  - [ ] Metrics
-  - [ ] Logs
-  - [ ] Alarms
-- [ ] 51. CloudTrail
-- [ ] 52. AWS Config
-- [ ] 53. Advanced Identity
-  - [ ] AWS Organizations / SCP
-  - [ ] IAM Identity Center
-  - [ ] Federation / STS
-  - [ ] Directory Services
-  - [ ] Resource Access Manager
-- [ ] 54. KMS
-- [ ] 55. Secrets Manager / Parameter Store
-- [ ] 56. Systems Manager
-- [ ] 57. WAF / Shield / Firewall Manager
-- [ ] 58. GuardDuty / Inspector / Macie 등 Security Services
+실습과 운영 이해를 위해 **50 CloudWatch, 51 CloudTrail, 54 KMS, 56 Systems Manager는 우선 깊게 학습**한다. 나머지는 우선 SAA Coverage 중심으로 본다.
+
+- [ ] 50. CloudWatch — Deep
+- [ ] 51. CloudTrail — Deep
+- [ ] 52. AWS Config — Coverage
+- [ ] 53. Advanced Identity — Coverage
+- [ ] 54. KMS — Deep
+- [ ] 55. Secrets Manager / Parameter Store — Coverage
+- [ ] 56. Systems Manager — Deep
+- [ ] 57. WAF / Shield / Firewall Manager — Coverage
+- [ ] 58. GuardDuty / Inspector / Macie 등 Security Services — Coverage
 
 ## 12부 — VPC & Networking
 
-시험 전에는 강의 Hands-on과 구조 이해까지만 진행하고, 장애 실험은 시험 후 포트폴리오 단계에서 진행한다.
+실습 전에 구조를 충분히 이해한다.
 
 - [ ] 59. VPC
 - [ ] 60. Subnet과 Route Table
@@ -303,9 +255,6 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 
 ## 14부 — CloudFormation & Architecture Coverage
 
-시험 범위에 포함되는 CloudFormation과 강의의 Architecture 섹션을 정리한다.
-별도의 종합 문제/모의고사는 이 저장소에서 만들지 않는다.
-
 - [ ] 74. CloudFormation
 - [ ] 75. Classic Solutions Architecture
 - [ ] 76. High Availability / Scalability Patterns
@@ -316,9 +265,7 @@ ML 모델 개발이 아니라 AWS ML 서비스 선택 문제를 위한 Coverage 
 
 ---
 
-# Phase 2 Curriculum — Portfolio after SAA
-
-SAA 취득 후 시작한다.
+# Phase 2 Curriculum — Portfolio
 
 ## P0 — Java / Spring Minimum
 
@@ -331,10 +278,9 @@ SAA 취득 후 시작한다.
 
 ## P1 — Cloud Shop Build & Operations
 
-- Single EC2 배포
-- RDS 분리
+- 실제 Spring 애플리케이션 배포
+- RDS / S3 연동
 - ALB / Auto Scaling / Multi-AZ
-- S3 / CloudFront
 - SQS / Worker
 - Docker / ECR / ECS
 - CloudWatch 관측 및 장애 실험
