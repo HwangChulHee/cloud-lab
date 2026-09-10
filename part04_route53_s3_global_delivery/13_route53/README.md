@@ -6,13 +6,13 @@ Route 53는 AWS의 관리형 DNS 서비스다.
 
 ## Units
 
-- [ ] u1. DNS와 Route 53 기본
-- [ ] u2. DNS Record Types와 TTL
-- [ ] u3. Hosted Zone, Registrar, Alias
-- [ ] u4. Simple / Weighted / Latency Routing
-- [ ] u5. Failover / Geolocation / Geoproximity Routing
-- [ ] u6. Multi-Value Routing
-- [ ] u7. Health Checks와 DNS Failover
+- [x] u1. DNS와 Route 53 기본
+- [x] u2. DNS Record Types와 TTL
+- [x] u3. Hosted Zone, Registrar, Alias
+- [x] u4. Simple / Weighted / Latency Routing
+- [x] u5. Failover / Geolocation / Geoproximity Routing
+- [x] u6. Multi-Value Routing
+- [x] u7. Health Checks와 DNS Failover
 
 ## SAA 선택 지도
 
