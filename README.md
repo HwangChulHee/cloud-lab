@@ -153,12 +153,12 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
   - [x] Routing Policies
   - [x] Health Checks
   - [x] Alias Records
-- [ ] 14. S3 Core
-  - [ ] Bucket / Object
-  - [ ] Versioning
-  - [ ] Replication
-  - [ ] Storage Classes
-  - [ ] Lifecycle
+- [x] 14. S3 Core
+  - [x] Bucket / Object
+  - [x] Versioning
+  - [x] Replication
+  - [x] Storage Classes
+  - [x] Lifecycle
 - [ ] 15. S3 Advanced & Security
   - [ ] Bucket Policy / IAM
   - [ ] Encryption
