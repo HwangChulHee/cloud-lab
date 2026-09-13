@@ -6,10 +6,10 @@
 
 ## Units
 
-- [ ] u1. TLS Certificate & ACM Basics
-- [ ] u2. Public Certificate Validation & Renewal
-- [ ] u3. ALB, CloudFront & API Gateway Integration
-- [ ] u4. Imported Certificates & Expiration Monitoring
+- [x] u1. TLS Certificate & ACM Basics
+- [x] u2. Public Certificate Validation & Renewal
+- [x] u3. ALB, CloudFront & API Gateway Integration
+- [x] u4. Imported Certificates & Expiration Monitoring
 
 ## SAA 선택 지도
 
