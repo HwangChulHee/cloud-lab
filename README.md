@@ -159,13 +159,13 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
   - [x] Replication
   - [x] Storage Classes
   - [x] Lifecycle
-- [ ] 15. S3 Advanced & Security
-  - [ ] Bucket Policy / IAM
-  - [ ] Encryption
-  - [ ] CORS
-  - [ ] Presigned URL
-  - [ ] Performance / Multipart Upload
-  - [ ] Event Notification
+- [x] 15. S3 Advanced & Security
+  - [x] Bucket Policy / IAM
+  - [x] Encryption
+  - [x] CORS
+  - [x] Presigned URL
+  - [x] Performance / Multipart Upload
+  - [x] Event Notification
 - [ ] 16. CloudFront / Global Accelerator
 - [ ] 17. ACM / HTTPS
 
