@@ -10,6 +10,16 @@ EC2
 Simple Web Server
 ```
 
+모든 태그 가능 리소스에는 가능한 한 다음 태그를 붙인다.
+
+```text
+Project=cloud-lab
+Stage=examples
+Example=01
+```
+
+Name은 `example-01-*` 형식을 사용한다.
+
 ## 목표
 
 이 예제를 끝내면 다음을 실제 리소스로 확인할 수 있어야 한다.
@@ -74,8 +84,6 @@ EOF
 
 인스턴스가 `Running` 상태가 되면 Public IPv4 address를 확인한다.
 
-브라우저에서:
-
 ```text
 http://<PUBLIC_IP>
 ```
@@ -103,11 +111,7 @@ Security Group
 
 ## 5. 장애 실험 A — HTTP 포트 닫기
 
-Security Group에서 HTTP 80 inbound rule을 잠시 삭제한다.
-
-다시 브라우저에서 요청한다.
-
-예상:
+Security Group에서 HTTP 80 inbound rule을 잠시 삭제하고 다시 요청한다.
 
 ```text
 Client
@@ -116,8 +120,6 @@ Security Group
   X
 EC2
 ```
-
-EC2까지 요청이 들어오지 못한다.
 
 확인 후 다시 80번 포트를 연다.
 
@@ -129,11 +131,7 @@ SSH 또는 Session Manager를 사용할 수 있다면 nginx를 중지한다.
 sudo systemctl stop nginx
 ```
 
-이후 다시 요청해본다.
-
-Security Group은 열려 있지만 애플리케이션이 응답하지 않는 상태다.
-
-다시 시작한다.
+Security Group은 열려 있지만 애플리케이션이 응답하지 않는 상태를 확인한 뒤 다시 시작한다.
 
 ```bash
 sudo systemctl start nginx
@@ -141,37 +139,42 @@ sudo systemctl start nginx
 
 ## 7. Stop / Start 실험
 
-현재 Public IP를 기록한다.
+현재 Public IP를 기록하고 EC2를 Stop한 뒤 다시 Start한다.
 
 ```text
 Before: __________________
+After:  __________________
 ```
 
-EC2를 Stop한 뒤 다시 Start한다.
+Private IP와 Public IP가 각각 어떻게 되는지 확인하고, 왜 서비스 주소로 임시 Public IP에 의존하면 불편한지 설명한다.
 
-새 Public IP를 기록한다.
+## 8. CLI 구축 검증
+
+[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 01 명령을 실행한다.
+
+CLI 출력만 보고 다음을 확인할 수 있어야 한다.
 
 ```text
-After: __________________
+EC2 상태
+Public/Private IP
+Subnet/VPC
+Security Group
+HTTP 80 inbound
 ```
 
-확인할 것:
-
-- Private IP는 어떻게 되었는가?
-- Public IP는 어떻게 되었는가?
-- 왜 애플리케이션 주소로 EC2의 임시 Public IP에 의존하면 불편한가?
-
-## 8. 완료 체크
+## 9. 완료 체크
 
 - [ ] EC2를 직접 생성했다.
+- [ ] 공통 태그와 이름 규칙을 적용했다.
 - [ ] User Data로 웹 서버를 자동 실행했다.
 - [ ] Public IP로 접속했다.
 - [ ] Public/Private IP를 확인했다.
 - [ ] Security Group에서 HTTP를 차단해봤다.
 - [ ] 웹 서버 프로세스를 중지해봤다.
 - [ ] Stop/Start 후 Public IP 변화를 확인했다.
+- [ ] CLI로 실제 구성을 검증했다.
 
-## 9. 정리
+## 10. 정리
 
 이 단계의 구조에는 명확한 한계가 있다.
 
@@ -181,16 +184,10 @@ User
 EC2 1대
 ```
 
-EC2가 죽으면 서비스도 같이 죽는다.
+EC2가 죽으면 서비스도 같이 죽는다. 다음 예제에서는 EC2를 두 대 만들고 그 앞에 Application Load Balancer를 둔다.
 
-다음 예제에서는 EC2를 두 대 만들고 그 앞에 Application Load Balancer를 둔다.
+## 11. 비용 정리와 삭제 검증
 
-## 10. 비용 정리
+실습 종료 후 필요 없다면 EC2, 불필요한 Security Group, 추가 EBS Volume 등을 삭제한다.
 
-실습 종료 후 필요 없다면 다음 리소스를 삭제한다.
-
-- EC2 Instance
-- 필요 없는 Security Group
-- 추가 생성한 EBS Volume 등
-
-리소스 삭제까지 예제의 일부다.
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 01 삭제 검증을 실행한다. 실습 종료는 콘솔에서 삭제 버튼을 누른 시점이 아니라 **과금 가능한 리소스가 남지 않았음을 확인한 시점**으로 본다.
