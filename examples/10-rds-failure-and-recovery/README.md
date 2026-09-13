@@ -17,6 +17,16 @@
 ## 반복하는 것
 RDS endpoint, RDS-SG, 애플리케이션 DB 연결, CloudWatch 기본 지표 확인을 다시 수행한다.
 
+새로 만드는 태그 가능 리소스에는 가능한 한 다음을 적용한다.
+
+```text
+Project=cloud-lab
+Stage=examples
+Example=10
+```
+
+Name은 `example-10-*` 형식을 사용한다.
+
 ## 핵심 구분
 ```text
 Multi-AZ      = 가용성 / 장애 복구
@@ -38,7 +48,7 @@ Backup/PITR   = 데이터 복구
 - Standby를 읽기 용도로 직접 사용할 수 있는가?
 - Failover가 발생하면 애플리케이션이 DB 주소를 수동 변경해야 하는가?
 
-가능하면 reboot with failover 등의 기능으로 failover를 관찰하고 연결 끊김/복구 시간을 기록한다.
+가능하면 reboot with failover 등의 기능으로 failover를 관찰하고 연결 끊김/복구 시간을 기록한다. Endpoint 이름은 유지되더라도 기존 DB connection은 끊길 수 있으므로 애플리케이션의 reconnect 동작도 관찰한다.
 
 ## 실험 C — Read Replica
 가능하면 Read Replica를 생성한다.
@@ -58,6 +68,22 @@ Primary에 데이터를 쓰고 Replica에서 읽는다. 복제 지연이 발생�
 ## 장애 실험 — DB 연결 추적
 Failover 또는 일시적 DB 중단 시 애플리케이션 로그, RDS 상태, CloudWatch DBConnections 등을 함께 본다.
 
+## CLI 구축/복구 검증
+
+[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 명령을 실행한다.
+
+출력에서 다음을 확인한다.
+
+```text
+Primary DB 상태
+Multi-AZ 여부
+Read Replica 존재 여부와 source 관계
+Manual Snapshot 상태
+복구한 DB가 원본과 별도 DB인지
+```
+
+장애나 failover를 수행했다면 전/중/복구 후의 RDS 상태와 애플리케이션 연결 상태를 함께 기록한다.
+
 ## 기억만으로 설명하기
 Multi-AZ와 Read Replica를 `복제 방식 / 목적 / 앱 연결 / 장애 시 동작` 기준으로 설명한다.
 
@@ -67,6 +93,16 @@ Multi-AZ와 Read Replica를 `복제 방식 / 목적 / 앱 연결 / 장애 시 �
 - [ ] PITR의 목적을 설명할 수 있다.
 - [ ] Multi-AZ와 Read Replica를 구분할 수 있다.
 - [ ] 가능하면 failover 또는 replica를 직접 관찰했다.
+- [ ] CLI로 RDS/Replica/Snapshot 상태를 검증했다.
 
-## 비용 정리
-Multi-AZ/Replica는 비용이 커질 수 있으므로 실습 후 즉시 정리한다.
+## 비용 정리와 삭제 검증
+
+Multi-AZ/Replica는 비용이 커질 수 있으므로 실습 후 즉시 정리한다. 특히 다음을 따로 확인한다.
+
+```text
+Primary/복구 DB instance
+Read Replica
+Manual Snapshot
+```
+
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 삭제 검증을 실행한다. Manual Snapshot은 DB instance를 삭제해도 별도로 남을 수 있으므로 반드시 따로 확인한다.

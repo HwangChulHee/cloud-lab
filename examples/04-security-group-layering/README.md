@@ -4,10 +4,19 @@ Example 02~03의 구조를 그대로 사용한다. 이제 EC2의 HTTP 포트를 
 
 ```text
 Internet
-   ↓ TCP 80 from 0.0.0.0/0
+   ↓ TCP 80
 ALB-SG
    ↓ TCP 80, source = ALB-SG
 EC2-SG
+```
+
+Example 02의 리소스를 재사용한다면 기존 태그는 유지한다. 이 예제에서 새 SG나 리소스를 별도로 만들 경우 다음 규칙을 적용한다.
+
+```text
+Project=cloud-lab
+Stage=examples
+Example=04
+Name=example-04-*
 ```
 
 ## 목표
@@ -19,46 +28,21 @@ EC2-SG
 
 ## 1. 현재 구조 확인
 
-Example 02에서 EC2 Security Group이 다음과 같다면 인터넷의 누구든 EC2 Public IP를 알고 있을 때 직접 요청할 수 있다.
-
-```text
-HTTP TCP 80 0.0.0.0/0
-```
-
-확인한다.
-
-```text
-http://<EC2_A_PUBLIC_IP>
-http://<EC2_B_PUBLIC_IP>
-```
+Example 02에서 EC2 Security Group이 인터넷 전체의 HTTP 요청을 허용하는 상태라면, EC2 Public IP를 알고 있는 사용자는 ALB를 우회할 수 있다. EC2 직접 접근과 ALB 접근을 각각 확인한다.
 
 ## 2. ALB Security Group
 
-ALB-SG inbound는 다음처럼 둔다.
-
-```text
-HTTP TCP 80 0.0.0.0/0
-```
-
-즉 인터넷 사용자는 ALB의 HTTP 80 포트까지 접근할 수 있다.
+ALB-SG는 인터넷 사용자의 HTTP 요청을 받을 수 있게 유지한다.
 
 ## 3. EC2 Security Group 수정
 
-EC2-SG의 기존 HTTP rule을 삭제한다.
-
-```text
-HTTP TCP 80 0.0.0.0/0
-```
-
-대신 source에 IP/CIDR이 아니라 ALB-SG를 지정한다.
+EC2-SG의 기존 HTTP rule을 삭제하고 source에 IP/CIDR이 아니라 ALB-SG를 지정한다.
 
 ```text
 HTTP TCP 80 Source: ALB-SG
 ```
 
 ## 4. ALB를 통한 요청 확인
-
-ALB DNS 이름으로 접근한다.
 
 ```text
 Client
@@ -72,83 +56,56 @@ EC2-SG가 ALB-SG에서 온 트래픽 허용
 EC2
 ```
 
-정상적으로 응답해야 한다.
+ALB DNS로는 정상 응답해야 한다.
 
 ## 5. EC2 직접 접근 확인
 
-EC2 Public IP로 직접 접속한다.
-
-```text
-http://<EC2_A_PUBLIC_IP>
-```
-
-예상 결과는 접속 실패 또는 timeout이다. EC2에 Public IP가 있어도 HTTP source가 ALB-SG로 제한되어 있기 때문이다.
+EC2 Public IP로 직접 접속한다. 접속 실패 또는 timeout이 예상된다. EC2에 Public IP가 있어도 HTTP source가 ALB-SG로 제한되어 있기 때문이다.
 
 ## 6. 구조 비교
 
-나쁜 예:
-
 ```text
-EC2-SG
-HTTP 80 from 0.0.0.0/0
-
+나쁜 구조
 User ─────────→ EC2
   └→ ALB ─────→ EC2
-```
 
-개선된 예:
-
-```text
-ALB-SG
-HTTP 80 from 0.0.0.0/0
-
-EC2-SG
-HTTP 80 from ALB-SG
-
+개선 구조
 User → ALB → EC2
 User ──X──→ EC2
 ```
 
 ## 7. 왜 IP 대신 Security Group Reference인가?
 
-특정 IP 하나를 허용하는 것보다 "ALB 계층에서 온 트래픽만 허용"한다는 의도를 정책에 직접 표현할 수 있다. 나중에 ALB의 내부 IP가 바뀌거나 EC2가 추가·교체되어도 동일한 SG 관계를 유지할 수 있다.
+특정 IP를 허용하는 것보다 "ALB 계층에서 온 트래픽만 허용"한다는 의도를 정책에 직접 표현할 수 있다. ALB 내부 IP가 바뀌거나 EC2가 추가·교체되어도 동일한 SG 관계를 유지할 수 있다.
 
 ## 8. SSH도 분리하기
 
-SSH가 필요하더라도 인터넷 전체에 열지 않는다.
-
-```text
-나쁜 예: SSH TCP 22 0.0.0.0/0
-실습 예: SSH TCP 22 <MY_PUBLIC_IP>/32
-```
-
-운영 환경에서는 Bastion Host나 Systems Manager Session Manager 같은 방법도 고려할 수 있다. 여기서는 SG의 기본 원리에 집중한다.
+SSH가 필요하더라도 인터넷 전체에 열지 않는다. 실습에서는 자신의 공인 IP로 제한하고, 이후에는 Systems Manager Session Manager 같은 운영 접근 방식을 다룬다.
 
 ## 9. 장애 실험 — ALB → EC2 허용 제거
 
-EC2-SG의 다음 rule을 잠시 삭제한다.
-
-```text
-HTTP TCP 80 Source: ALB-SG
-```
-
-ALB DNS로 요청하고 다음 흐름을 관찰한다.
+EC2-SG의 `HTTP 80 Source: ALB-SG` rule을 잠시 삭제한다.
 
 ```text
 Client → ALB   도달 가능
 ALB → EC2      차단
 ```
 
-Target Group Health Check도 실패하면서 Target이 unhealthy가 될 수 있다. 다시 rule을 복구하고 healthy로 돌아오는지 확인한다.
+Target Group Health Check가 실패하고 Target이 unhealthy가 되는지 확인한 뒤 rule을 복구한다.
 
-## 10. 직접 설명하기
+## 10. CLI 구축/장애 검증
+
+[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 04 명령을 실행한다.
+
+다음을 출력만 보고 설명할 수 있어야 한다.
 
 ```text
-Q1. ALB-SG와 EC2-SG를 왜 따로 만드는가?
-Q2. EC2-SG source를 ALB-SG로 지정한다는 것은 무슨 뜻인가?
-Q3. EC2에 Public IP가 있어도 직접 접근이 막힐 수 있는 이유는?
-Q4. EC2를 Private Subnet으로 옮기면 무엇이 더 달라지는가?
+ALB-SG: client HTTP 허용
+EC2-SG: app port source = ALB-SG
+EC2-SG에 인터넷 전체를 source로 둔 app rule 없음
 ```
+
+장애 실험 전/중/복구 후 SG rule과 Target Health를 비교한다.
 
 ## 11. 완료 체크
 
@@ -159,21 +116,8 @@ Q4. EC2를 Private Subnet으로 옮기면 무엇이 더 달라지는가?
 - [ ] EC2 Public IP 직접 요청은 실패한다.
 - [ ] EC2-SG rule 제거로 Health Check 실패를 관찰했다.
 - [ ] Security Group Reference의 의미를 설명할 수 있다.
+- [ ] CLI로 SG 관계를 검증했다.
 
-## 12. 현재까지의 구조
+## 12. 비용 정리와 삭제 검증
 
-```text
-                 Internet
-                    ↓
-              [ ALB-SG :80 ]
-                    ↓
-                   ALB
-                    ↓
-              Target Group
-                 ↙     ↘
-           EC2-A         EC2-B
-              [ EC2-SG :80 ]
-            source = ALB-SG
-```
-
-여기까지 이해하면 다음 VPC/ASG 예제에서 같은 SG 계층 구조를 자연스럽게 반복할 수 있다. 다음 예제부터 VPC를 직접 만들고, 이후 Auto Scaling Group으로 수동 EC2 구조를 자동화한다.
+Example 05에서는 새 VPC를 만들 예정이므로 02~04 리소스를 더 이상 쓰지 않는다면 정리한다. Example 02 삭제 검증을 다시 실행해 ALB, Target Group, EC2가 남지 않았는지 확인한다. 이 예제에서 별도로 생성한 SG도 다른 리소스에 연결되어 있지 않다면 삭제한다.

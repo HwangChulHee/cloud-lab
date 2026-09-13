@@ -4,8 +4,6 @@
 
 ## Recall Check
 
-시작 전에 기억만으로 답한다.
-
 - EC2의 Public IP와 Private IP 차이는?
 - Security Group inbound를 닫으면 어떤 증상이 났는가?
 - ALB와 EC2는 왜 SG를 분리했는가?
@@ -28,6 +26,16 @@
 ## 이번에는 도움 없이
 
 EC2 생성, User Data 작성, HTTP 80 SG 생성은 이전 Example을 보지 않고 먼저 해본다. 막히면 01~04를 참고한다.
+
+모든 태그 가능 리소스에는 다음 태그를 붙인다.
+
+```text
+Project=cloud-lab
+Stage=examples
+Example=05
+```
+
+Name은 `example-05-*` 형식을 사용한다.
 
 ## 목표 구조
 
@@ -54,8 +62,6 @@ Internet → IGW → Public Route Table
 
 서로 다른 두 AZ를 선택해 위 구조대로 Public 2개, Private 2개를 만든다.
 
-확인할 것:
-
 - Subnet은 하나의 AZ에 속한다.
 - 같은 VPC 내부 CIDR이 겹치면 안 된다.
 
@@ -65,22 +71,13 @@ Internet → IGW → Public Route Table
 
 ## 4. Public Route Table 생성
 
-Public 전용 Route Table을 만들고 다음 경로를 추가한다.
+Public 전용 Route Table을 만들고 VPC 내부 local route 외에 인터넷으로 향하는 default route를 추가한다. Public Subnet 2개를 이 Route Table에 association 한다.
 
-```text
-10.0.0.0/16  local
-0.0.0.0/0    Internet Gateway
-```
-
-Public Subnet 2개를 이 Route Table에 association 한다.
-
-Private Subnet은 기본 local route만 유지한다.
+Private Subnet은 VPC 내부 local route만 유지한다.
 
 ## 5. Public Subnet에 EC2 생성
 
 Public Subnet 하나에 EC2를 만든다.
-
-조건:
 
 - Public IPv4 활성화
 - HTTP 80 허용
@@ -90,41 +87,55 @@ Public IP로 접속되는지 확인한다.
 
 ## 6. 관찰
 
-다음 질문에 직접 답한다.
-
 ```text
 Q. Public Subnet을 Public하게 만드는 핵심은 무엇인가?
 Q. IGW만 VPC에 붙이고 Route가 없으면 인터넷 통신이 가능한가?
-Q. Public IP만 있고 IGW route가 없으면 가능한가?
+Q. Public route만 있고 EC2에 Public IPv4/EIP가 없다면 인터넷에서 직접 접근 가능한가?
 ```
 
 ## 7. 장애 실험 — IGW Route 삭제
 
-Public Route Table의 `0.0.0.0/0 -> IGW`를 잠시 삭제한다.
-
-브라우저 요청이 어떻게 변하는지 확인하고, EC2 상태와 SG는 정상이라는 것도 확인한다.
-
-원인을 찾은 뒤 route를 복구한다.
+Public Route Table의 인터넷 default route를 잠시 삭제한다. 브라우저 요청이 어떻게 변하는지 확인하고, EC2 상태와 SG는 정상이라는 것도 확인한다. 원인을 찾은 뒤 route를 복구한다.
 
 ## 8. 장애 실험 — 잘못된 Route Table Association
 
-Public Subnet 하나를 Private 쪽 Route Table에 association 해본다. 같은 EC2가 어떤 영향을 받는지 관찰한다.
+Public Subnet 하나를 Private 쪽 Route Table에 association 해본다. 같은 EC2가 어떤 영향을 받는지 관찰하고 원래 association으로 복구한다.
 
-## 9. 기억만으로 설명하기
+## 9. CLI 구축/장애 검증
+
+[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 05 명령을 실행한다.
+
+출력으로 다음을 확인한다.
+
+```text
+Subnet 4개 / CIDR 비중복 / 2AZ
+Public RT의 인터넷 default route → IGW
+Private RT에는 해당 IGW default route 없음
+Subnet ↔ Route Table association
+IGW ↔ VPC attachment
+```
+
+가능하면 장애 전/중/복구 후 Route Table 출력을 저장해 차이를 비교한다.
+
+## 10. 기억만으로 설명하기
 
 - Public Subnet과 Private Subnet의 차이를 Route Table 기준으로 설명한다.
+- Public EC2가 인터넷과 직접 통신하려면 route뿐 아니라 Public IPv4/EIP도 필요하다는 것을 설명한다.
 - SG와 Route Table의 역할 차이를 설명한다.
 - `10.0.0.0/16 local`이 필요한 이유를 설명한다.
 
 ## 완료 체크
 
+- [ ] 공통 태그와 이름 규칙을 적용했다.
 - [ ] VPC를 직접 만들었다.
 - [ ] 2AZ에 Public/Private Subnet을 만들었다.
 - [ ] IGW와 Public Route Table을 연결했다.
 - [ ] EC2를 Public Subnet에 배치했다.
 - [ ] IGW route 삭제 장애를 재현했다.
+- [ ] 잘못된 Route Table association을 재현/복구했다.
 - [ ] SG 문제와 Route 문제를 구분해 설명할 수 있다.
+- [ ] CLI로 네트워크 연결 관계를 검증했다.
 
-## 비용 정리
+## 비용 정리와 삭제 검증
 
-EC2를 종료하고 필요 없는 VPC 관련 리소스를 정리한다. 다음 Example을 바로 할 예정이면 VPC/Subnet은 유지해도 된다.
+다음 Example을 바로 할 예정이면 VPC/Subnet을 유지해도 된다. 종료한다면 EC2와 VPC 관련 리소스를 정리하고 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 05 삭제 검증을 실행한다.
