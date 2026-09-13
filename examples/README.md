@@ -14,6 +14,26 @@ AWS 콘솔에서 직접 따라 만들면서 핵심 인프라를 반복 구축하
 - 뒤로 갈수록 클릭 가이드를 줄여 마지막에는 요구사항만 보고 직접 구축한다.
 - 15~16에서 장애 진단과 무가이드 구축까지 수행한 뒤 `portfolio/`에서 실제 시스템에 적용할 기반을 만든다.
 
+## 실제 도메인 사용 규칙
+
+보유 도메인 `chulheehwang.com`을 실습에 사용한다. 루트 도메인 자체는 장애 실험에 사용하지 않고 목적별 서브도메인을 나눈다.
+
+```text
+lab.chulheehwang.com
+→ Example 13
+→ Route 53 + ACM + ALB + HTTPS
+
+app.chulheehwang.com
+→ Example 16
+→ 최종 전체 아키텍처
+
+cdn.chulheehwang.com
+→ Part 04 CloudFront 선택 실습
+→ Route 53 + CloudFront + private S3 + OAC
+```
+
+DNS/TLS 장애 실험은 해당 실습용 서브도메인 안에서만 수행한다. `chulheehwang.com` Hosted Zone이나 루트 record는 자동 삭제 대상으로 취급하지 않는다.
+
 ## 공통 리소스 태그 규칙
 
 CLI 검증과 비용 정리를 정확하게 하기 위해, 태그를 지원하는 모든 실습 리소스에는 가능한 한 아래 태그를 붙인다.
@@ -93,10 +113,10 @@ portfolio/: 실제 시스템에 적용
 | 10 | [RDS Failure & Recovery](./10-rds-failure-and-recovery/README.md) | Multi-AZ, Backup, PITR, Replica | RDS, SG, 앱 연결 | 확장과 HA의 차이 체감 |
 | 11 | [S3 + IAM Role](./11-s3-iam-role/README.md) | IAM Role, S3 권한 | EC2, IAM | 특정 Bucket 최소 권한 |
 | 12 | [S3 Security & Recovery](./12-s3-security-and-recovery/README.md) | Bucket Policy, Versioning, Lifecycle, Encryption | S3, IAM | AccessDenied와 삭제 복구 |
-| 13 | [Route 53 + ACM + HTTPS](./13-route53-acm-https/README.md) | DNS, Alias, ACM, HTTPS | ALB, SG | 실제 도메인을 서비스 진입점으로 |
+| 13 | [Route 53 + ACM + HTTPS](./13-route53-acm-https/README.md) | DNS, Alias, ACM, HTTPS | ALB, SG | `lab.chulheehwang.com` 실제 HTTPS 구성 |
 | 14 | [CloudWatch Observability](./14-cloudwatch-observability/README.md) | Metrics, Logs, Alarms | ALB, EC2, RDS, ASG | ASG group metric까지 관측 |
 | 15 | [Troubleshooting Web Stack](./15-troubleshooting-web-stack/README.md) | 종합 장애 진단 | 전체 핵심 서비스 | ALB fail-open 포함 실제 동작 구분 |
-| 16 | [Final Guided Architecture](./16-final-guided-architecture/README.md) | 거의 무가이드 재구축 | 전체 | 요구사항만 보고 아키텍처 완성 |
+| 16 | [Final Guided Architecture](./16-final-guided-architecture/README.md) | 거의 무가이드 재구축 | 전체 | `app.chulheehwang.com`으로 최종 아키텍처 완성 |
 
 ## 각 챕터의 공통 구조
 
@@ -160,12 +180,15 @@ NAT Gateway / Elastic IP
 RDS / Read Replica / Manual Snapshot
 S3 Object Versions / Delete Markers
 CloudWatch Alarm / Log Group
-Route 53 Hosted Zone 유지 여부
+Route 53 실습용 Record
+ACM Certificate 유지 여부
 ```
+
+실제 보유 자산인 `chulheehwang.com` Hosted Zone과 루트 DNS 설정은 다른 과금 리소스와 동일하게 자동 삭제 대상으로 판단하지 않는다.
 
 ## 핵심 과정에서 제외하는 것
 
-1차 취업 준비용 Guided Examples는 핵심 웹 인프라에 집중한다.
+1차 취업 준비용 Guided Examples 01~16은 핵심 웹 인프라에 집중한다.
 
 - CloudFront
 - SQS / SNS
@@ -174,7 +197,7 @@ Route 53 Hosted Zone 유지 여부
 - DynamoDB
 - EKS
 
-이들은 핵심 과정을 완주한 뒤 `advanced` 예제 또는 `portfolio/`에서 필요에 따라 확장한다.
+CloudFront는 예외적으로 실제 도메인을 활용할 가치가 높아 `part04/.../16_cloudfront_global_accelerator`에 `cdn.chulheehwang.com` 선택 실습을 둔다. 나머지는 핵심 과정을 완주한 뒤 `advanced` 예제 또는 `portfolio/`에서 필요에 따라 확장한다.
 
 ## Examples 이후
 
