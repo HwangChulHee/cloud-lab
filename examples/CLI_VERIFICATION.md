@@ -137,15 +137,28 @@ aws elbv2 describe-target-health --region $AWS_REGION --target-group-arn $TG_ARN
 
 # 04 — Security Group Layering
 
-## 구축 검증
+Example 02의 리소스를 그대로 재사용했다면 SG가 `Example=02` 태그를 유지할 수 있으므로 `Example=04` 태그 필터에 의존하지 않는다. 콘솔이나 EC2/ALB 출력에서 실제 SG ID를 확인해 넣는다.
+
+## 구축/장애 검증
 
 ```bash
+export ALB_SG_ID=<alb-security-group-id>
+export EC2_SG_ID=<ec2-security-group-id>
+
 aws ec2 describe-security-groups --region $AWS_REGION \
-  --filters 'Name=tag:Example,Values=04' \
+  --group-ids $ALB_SG_ID $EC2_SG_ID \
   --query 'SecurityGroups[].{Name:GroupName,Id:GroupId,Ingress:IpPermissions}'
 ```
 
-판단 포인트: ALB-SG는 client 80/443 허용, EC2-SG의 app port source는 `0.0.0.0/0`가 아니라 ALB-SG ID.
+필요하면 Target Health도 함께 본다.
+
+```bash
+export TG_ARN=<target-group-arn>
+aws elbv2 describe-target-health --region $AWS_REGION --target-group-arn $TG_ARN \
+  --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason}' --output table
+```
+
+판단 포인트: ALB-SG는 client HTTP/HTTPS를 허용하고, EC2-SG의 app port source는 인터넷 전체 CIDR이 아니라 ALB-SG ID다. SG rule 제거 전/중/복구 후 Target Health도 비교한다.
 
 ---
 
@@ -170,7 +183,7 @@ aws ec2 describe-internet-gateways --region $AWS_REGION --filters "Name=attachme
   --query 'InternetGateways[].{Id:InternetGatewayId,Attachments:Attachments}'
 ```
 
-판단 포인트: subnet 4개, CIDR 비중복, 2AZ, public RT에 `0.0.0.0/0 → igw-*`, private RT에는 해당 IGW route 없음.
+판단 포인트: subnet 4개, CIDR 비중복, 2AZ, public RT에 인터넷 default route가 IGW를 가리키고 private RT에는 해당 IGW route가 없음.
 
 ## 삭제 검증
 
@@ -197,12 +210,14 @@ aws ec2 describe-nat-gateways --region $AWS_REGION \
   --query 'NatGateways[].{Id:NatGatewayId,Subnet:SubnetId,State:State,NatAddresses:NatGatewayAddresses[].PublicIp}' --output table
 ```
 
+NAT route를 제거하기 **전에** SSM 상태를 먼저 확인한다.
+
 ```bash
 aws ssm describe-instance-information --region $AWS_REGION \
   --query 'InstanceInformationList[].{Instance:InstanceId,Ping:PingStatus,Agent:AgentVersion}' --output table
 ```
 
-ALB/Target까지 함께 확인한다.
+ALB도 함께 확인한다.
 
 ```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION --query "LoadBalancers[?contains(LoadBalancerName, 'example-06')].[LoadBalancerName,Scheme,State.Code,DNSName]"
@@ -215,8 +230,12 @@ Private EC2 PublicIP = null
 ALB = internet-facing / active
 Target = healthy
 NAT 사용 시 NAT = available / public subnet
-SSM 사용 시 PingStatus = Online
+NAT 경로가 있을 때 SSM PingStatus = Online
 ```
+
+## NAT route 제거 전/후 비교
+
+NAT 경로에 의존하는 SSM 구성이라면 NAT route 제거 후 PingStatus/세션 연결이 영향을 받을 수 있다. VPC Interface Endpoint를 구성했다면 계속 Online일 수 있다. ALB → private EC2 경로는 NAT와 무관하다는 점을 함께 확인한다.
 
 ## Bootstrap 장애 검증
 
@@ -229,8 +248,6 @@ sudo tail -n 100 /var/log/cloud-init-output.log
 systemctl status nginx --no-pager
 ```
 
-CLI 출력과 함께 이 결과를 보내면 bootstrap 실패 원인을 판단하기 쉽다.
-
 ## 삭제 검증
 
 ```bash
@@ -242,7 +259,15 @@ aws ec2 describe-addresses --region $AWS_REGION \
   --query "Addresses[?Tags[?Key=='Example' && Value=='06']].{AllocationId:AllocationId,PublicIp:PublicIp,AssociationId:AssociationId}"
 ```
 
-NAT Gateway가 `deleted`가 되기 전까지 의존 리소스 삭제가 지연될 수 있다. EIP도 반드시 별도로 확인한다.
+VPC Endpoint 방식을 실험했다면 endpoint도 확인한다.
+
+```bash
+aws ec2 describe-vpc-endpoints --region $AWS_REGION \
+  --filters 'Name=tag:Example,Values=06' \
+  --query 'VpcEndpoints[].{Id:VpcEndpointId,Service:ServiceName,State:State,Vpc:VpcId}' --output table
+```
+
+NAT Gateway가 삭제 완료되기 전까지 의존 리소스 삭제가 지연될 수 있다. EIP도 반드시 별도로 확인한다.
 
 ---
 
@@ -350,9 +375,12 @@ aws rds describe-db-instances --region $AWS_REGION \
 
 aws rds describe-events --region $AWS_REGION --source-type db-instance --duration 180 \
   --query 'Events[].{Time:Date,Source:SourceIdentifier,Message:Message}' --output table
+
+aws rds describe-db-snapshots --region $AWS_REGION --snapshot-type manual \
+  --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'example-10')].{Id:DBSnapshotIdentifier,Status:Status,Source:DBInstanceIdentifier,Created:SnapshotCreateTime}" --output table
 ```
 
-판단 포인트: Multi-AZ 여부, replica 관계, backup retention, failover event, endpoint 유지 여부를 시간순으로 설명.
+판단 포인트: Multi-AZ 여부, replica 관계, backup retention, failover event, endpoint 유지 여부, manual snapshot 상태를 시간순으로 설명.
 
 ## 삭제 검증
 
@@ -360,6 +388,8 @@ aws rds describe-events --region $AWS_REGION --source-type db-instance --duratio
 aws rds describe-db-instances --region $AWS_REGION --query "DBInstances[?contains(DBInstanceIdentifier, 'example-10')].[DBInstanceIdentifier,DBInstanceStatus]"
 aws rds describe-db-snapshots --region $AWS_REGION --snapshot-type manual --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'example-10')].[DBSnapshotIdentifier,Status]"
 ```
+
+DB instance를 지운 뒤에도 Manual Snapshot은 남을 수 있으므로 두 결과를 따로 확인한다.
 
 ---
 
@@ -446,6 +476,8 @@ aws s3api list-object-versions --bucket <bucket-name>
 
 # 13 — Route 53 + ACM + HTTPS
 
+실제 보유 도메인의 실습용 서브도메인 `lab.chulheehwang.com`을 사용한다.
+
 ## 구축 검증
 
 ```bash
@@ -458,14 +490,14 @@ Hosted Zone ID:
 ```bash
 export ZONE_ID=<hosted-zone-id>
 aws route53 list-resource-record-sets --hosted-zone-id $ZONE_ID \
-  --query 'ResourceRecordSets[].{Name:Name,Type:Type,Alias:AliasTarget.DNSName}' --output table
+  --query "ResourceRecordSets[?Name=='lab.chulheehwang.com.'].{Name:Name,Type:Type,Alias:AliasTarget.DNSName}" --output table
 ```
 
 ACM:
 
 ```bash
 aws acm list-certificates --region $AWS_REGION \
-  --query 'CertificateSummaryList[].{Domain:DomainName,Arn:CertificateArn}' --output table
+  --query "CertificateSummaryList[?DomainName=='lab.chulheehwang.com'].{Domain:DomainName,Arn:CertificateArn}" --output table
 ```
 
 ```bash
@@ -482,23 +514,24 @@ aws elbv2 describe-listeners --region $AWS_REGION --load-balancer-arn $ALB_ARN \
   --query 'Listeners[].{Port:Port,Protocol:Protocol,Certificates:Certificates[].CertificateArn,Actions:DefaultActions}'
 ```
 
-실제 응답:
+DNS / 실제 응답:
 
 ```bash
-curl -I http://<domain>
-curl -I https://<domain>
+dig lab.chulheehwang.com
+curl -I http://lab.chulheehwang.com
+curl -I https://lab.chulheehwang.com
 ```
 
-판단 포인트: Alias → ALB, ACM ISSUED, 443 Listener certificate 연결, HTTP → HTTPS redirect.
+판단 포인트: `lab.chulheehwang.com` Alias → ALB, ACM ISSUED, 443 Listener certificate 연결, HTTP → HTTPS redirect.
 
 ## 삭제 검증
 
 ```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION --query "LoadBalancers[?contains(LoadBalancerName, 'example-13')].LoadBalancerName"
-aws acm list-certificates --region $AWS_REGION --query "CertificateSummaryList[?contains(DomainName, 'example')].[DomainName,CertificateArn]"
+aws acm list-certificates --region $AWS_REGION --query "CertificateSummaryList[?DomainName=='lab.chulheehwang.com'].[DomainName,CertificateArn]"
 ```
 
-Hosted Zone은 의도적으로 유지하는 것인지 확인한다. 도메인 운영용 Hosted Zone을 무조건 삭제하지 않는다.
+`chulheehwang.com` Hosted Zone은 실제 운영 자산일 수 있으므로 무조건 삭제하지 않는다. `lab.chulheehwang.com` record/certificate 역시 이후 사용 계획에 따라 유지 여부를 판단한다.
 
 ---
 
@@ -638,6 +671,8 @@ aws cloudwatch describe-alarms --region $AWS_REGION --alarm-name-prefix example-
 
 # 16 — Final Guided Architecture
 
+실제 최종 진입점은 `app.chulheehwang.com`으로 고정한다.
+
 ## 전체 구축 검증
 
 ### Network
@@ -683,8 +718,20 @@ aws s3api get-bucket-encryption --bucket <bucket-name>
 ### Route 53 / HTTPS
 
 ```bash
-curl -I http://<domain>
-curl -I https://<domain>
+export ZONE_ID=<chulheehwang.com-hosted-zone-id>
+aws route53 list-resource-record-sets --hosted-zone-id $ZONE_ID \
+  --query "ResourceRecordSets[?Name=='app.chulheehwang.com.'].{Name:Name,Type:Type,Alias:AliasTarget.DNSName}" --output table
+
+dig app.chulheehwang.com
+curl -I http://app.chulheehwang.com
+curl -I https://app.chulheehwang.com
+```
+
+ACM도 확인한다.
+
+```bash
+aws acm list-certificates --region $AWS_REGION \
+  --query "CertificateSummaryList[?DomainName=='app.chulheehwang.com'].{Domain:DomainName,Arn:CertificateArn}" --output table
 ```
 
 ### CloudWatch
@@ -694,7 +741,7 @@ aws cloudwatch describe-alarms --region $AWS_REGION --alarm-name-prefix example-
   --query 'MetricAlarms[].{Name:AlarmName,State:StateValue,Metric:MetricName}' --output table
 ```
 
-판단 포인트: 2AZ, public ALB, private EC2, ASG >=2, private RDS, S3 private/versioned, HTTPS 정상, ASG group metrics, Alarm 존재.
+판단 포인트: 2AZ, public ALB, private EC2, ASG >=2, private RDS, S3 private/versioned, `app.chulheehwang.com` HTTPS 정상, ASG group metrics, Alarm 존재.
 
 ---
 
@@ -719,6 +766,14 @@ aws ec2 describe-volumes --region $AWS_REGION \
   --query 'Volumes[].{Id:VolumeId,State:State,Size:Size,Name:Tags[?Key==`Name`]|[0].Value}' --output table
 ```
 
+태그 누락 가능성 때문에 `available` 상태의 orphan volume도 보조적으로 확인한다. 이 결과에는 다른 프로젝트의 volume도 포함될 수 있으므로 **조회만 하고 자동 삭제하지 않는다.**
+
+```bash
+aws ec2 describe-volumes --region $AWS_REGION \
+  --filters 'Name=status,Values=available' \
+  --query 'Volumes[].{Id:VolumeId,Size:Size,Created:CreateTime,Tags:Tags}' --output table
+```
+
 ## Elastic IP
 
 ```bash
@@ -732,6 +787,14 @@ aws ec2 describe-addresses --region $AWS_REGION \
 aws ec2 describe-nat-gateways --region $AWS_REGION \
   --filter 'Name=tag:Project,Values=cloud-lab' 'Name=tag:Stage,Values=examples' 'Name=state,Values=pending,available,deleting,failed' \
   --query 'NatGateways[].{Id:NatGatewayId,State:State,Subnet:SubnetId}' --output table
+```
+
+## VPC Endpoint
+
+```bash
+aws ec2 describe-vpc-endpoints --region $AWS_REGION \
+  --filters 'Name=tag:Project,Values=cloud-lab' 'Name=tag:Stage,Values=examples' \
+  --query 'VpcEndpoints[].{Id:VpcEndpointId,Service:ServiceName,State:State,Vpc:VpcId}' --output table
 ```
 
 ## ALB
@@ -808,7 +871,7 @@ aws logs describe-log-groups --region $AWS_REGION \
 aws route53 list-hosted-zones --query 'HostedZones[].{Name:Name,Id:Id,Private:Config.PrivateZone}' --output table
 ```
 
-Route 53은 실제 운영 도메인의 Hosted Zone일 수 있으므로 자동으로 "남았다 = 삭제"로 판단하지 않는다. 의도적으로 유지하는지 확인한다.
+Route 53은 실제 운영 도메인의 Hosted Zone일 수 있으므로 자동으로 "남았다 = 삭제"로 판단하지 않는다. `chulheehwang.com` Hosted Zone은 의도적으로 유지할 가능성이 높고, 실습용 `lab.`/`app.` record만 별도로 검토한다.
 
 ---
 
