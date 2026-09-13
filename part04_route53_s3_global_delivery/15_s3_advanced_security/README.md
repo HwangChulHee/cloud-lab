@@ -6,14 +6,14 @@
 
 ## Units
 
-- [ ] u1. Lifecycle Rules & Storage Class Transition
-- [ ] u2. S3 Performance, Multipart Upload & Transfer Acceleration
-- [ ] u3. Event Notifications
-- [ ] u4. IAM Policy, Bucket Policy & ACL
-- [ ] u5. S3 Encryption — SSE-S3 / SSE-KMS / SSE-C / Client-Side
-- [ ] u6. CORS, Presigned URL & Public Access
-- [ ] u7. MFA Delete, Object Lock & Glacier Vault Lock
-- [ ] u8. S3 Access Points & Object Lambda
+- [x] u1. Lifecycle Rules & Storage Class Transition
+- [x] u2. S3 Performance, Multipart Upload & Transfer Acceleration
+- [x] u3. Event Notifications
+- [x] u4. IAM Policy, Bucket Policy & ACL
+- [x] u5. S3 Encryption — SSE-S3 / SSE-KMS / SSE-C / Client-Side
+- [x] u6. CORS, Presigned URL & Public Access
+- [x] u7. MFA Delete, Object Lock & Glacier Vault Lock
+- [x] u8. S3 Access Points & Object Lambda
 
 ## SAA 선택 지도
 
