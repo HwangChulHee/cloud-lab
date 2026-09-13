@@ -14,12 +14,12 @@ Global Accelerator
 
 ## Units
 
-- [ ] u1. CloudFront, CDN, Edge Location & Cache
-- [ ] u2. Origins — S3 / VPC Origin / Custom Origin
-- [ ] u3. Cache Key, TTL, Cache Policy & Invalidation
-- [ ] u4. OAC, Signed URL / Cookie & Geo Restriction
-- [ ] u5. CloudFront Architecture Examples
-- [ ] u6. Global Accelerator & CloudFront Comparison
+- [x] u1. CloudFront, CDN, Edge Location & Cache
+- [x] u2. Origins — S3 / VPC Origin / Custom Origin
+- [x] u3. Cache Key, TTL, Cache Policy & Invalidation
+- [x] u4. OAC, Signed URL / Cookie & Geo Restriction
+- [x] u5. CloudFront Architecture Examples
+- [x] u6. Global Accelerator & CloudFront Comparison
 
 ## SAA 선택 지도
 
