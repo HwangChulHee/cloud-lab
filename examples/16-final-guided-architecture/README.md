@@ -2,12 +2,22 @@
 
 마지막 Guided Example이다. 이번에는 클릭 위치를 거의 알려주지 않는다. 지금까지 반복한 핵심 AWS 웹 인프라를 요구사항만 보고 처음부터 다시 만든다.
 
+이 실습에서는 실제 보유 도메인의 별도 서브도메인을 사용한다.
+
+```text
+app.chulheehwang.com
+```
+
+`chulheehwang.com` 루트 도메인 자체는 장애 실험 대상으로 사용하지 않는다.
+
 ## 시작 전 Recall
 
 빈 종이에 다음을 먼저 그린다.
 
 ```text
 Internet
+  ↓
+app.chulheehwang.com
   ↓
 DNS / HTTPS
   ↓
@@ -47,7 +57,7 @@ Name은 `example-16-*` 형식을 사용한다.
 8. RDS는 Private하게 배치하고 EC2 계층만 DB port 접근을 허용한다.
 9. EC2는 Access Key 없이 IAM Role로 S3에 접근한다.
 10. S3는 Public Access를 차단하고 Versioning을 활성화한다.
-11. Route 53 + ACM으로 도메인 HTTPS 접속을 제공한다.
+11. Route 53 + ACM으로 `app.chulheehwang.com` HTTPS 접속을 제공한다.
 12. HTTP 요청은 HTTPS로 redirect한다.
 13. CloudWatch에서 ALB/EC2/ASG/RDS 핵심 지표를 확인한다.
 14. ASG group metric collection을 활성화한다.
@@ -60,9 +70,14 @@ Name은 `example-16-*` 형식을 사용한다.
 ```text
                     Internet
                        ↓
+             app.chulheehwang.com
+                       ↓
                    Route 53
                        ↓
+                 A Alias → ALB
+                       ↓
                     HTTPS
+                 ACM certificate
                        ↓
                  ALB (public)
                    /       \
@@ -77,6 +92,28 @@ EC2 ──IAM Role──→ S3(private, versioned)
 
 CloudWatch: ALB / ASG / EC2 / RDS
 ```
+
+## Domain / HTTPS 조건
+
+Example 13에서 확인한 `chulheehwang.com` Hosted Zone을 재사용한다.
+
+```text
+Hosted Zone: chulheehwang.com
+Record     : app.chulheehwang.com
+Type       : A Alias
+Target     : example-16 ALB
+```
+
+ALB가 위치한 Region에서 `app.chulheehwang.com`용 ACM public certificate를 발급하고 DNS Validation을 완료한다.
+
+최종적으로 다음 두 요청을 실제로 확인한다.
+
+```bash
+curl -I http://app.chulheehwang.com
+curl -I https://app.chulheehwang.com
+```
+
+HTTP는 HTTPS로 redirect되고 HTTPS는 정상 응답해야 한다.
 
 ## Bootstrap 조건
 
@@ -140,8 +177,10 @@ aws autoscaling enable-metrics-collection \
 구축 후 다음을 실제로 확인한다.
 
 ```text
-[ ] 도메인 HTTPS 접속 성공
+[ ] app.chulheehwang.com DNS resolution 성공
+[ ] https://app.chulheehwang.com 접속 성공
 [ ] HTTP → HTTPS redirect
+[ ] ACM certificate hostname 일치
 [ ] EC2 Public IP 없음
 [ ] EC2 직접 접근 불가
 [ ] ASG 최소 2대 healthy
@@ -164,6 +203,8 @@ aws autoscaling enable-metrics-collection \
 
 ```text
 VPC/Subnet/Route 관계
+Route 53 Alias → ALB 관계
+ACM certificate → HTTPS Listener 관계
 ALB/Listener/Target 관계
 ASG/Launch Template/EC2 관계
 RDS private 배치
@@ -182,15 +223,20 @@ CloudWatch Alarm
 5. RDS-SG의 EC2 rule 제거
 6. S3 IAM permission 제거
 7. ASG scaling policy 오류
-8. Route 53 record 오류
-9. Target Group의 등록 Target 제거 → 503 관찰
-10. 모든 Target unhealthy → fail-open 동작 관찰
-11. Private EC2의 NAT route 제거 → outbound/bootstrap 관련 증상 분석
+8. `app.chulheehwang.com` Route 53 Alias 오류
+9. HTTPS Listener 또는 443 SG 오류
+10. Target Group의 등록 Target 제거 → 503 관찰
+11. 모든 Target unhealthy → fail-open 동작 관찰
+12. Private EC2의 NAT route 제거 → outbound/bootstrap 관련 증상 분석
+
+DNS 장애 실험은 `app.chulheehwang.com`에서만 하고 `chulheehwang.com` 루트 record는 건드리지 않는다.
 
 각 장애마다 기록한다.
 
 ```text
 사용자에게 보인 증상:
+DNS resolution 성공 여부:
+TLS/HTTPS 상태:
 HTTP 상태/timeout 여부:
 CloudWatch/Console에서 보인 신호:
 첫 가설:
@@ -204,7 +250,9 @@ CloudWatch/Console에서 보인 신호:
 
 README를 보지 않고 답한다.
 
-- 사용자가 도메인을 입력한 순간부터 RDS까지 요청 흐름을 설명하라.
+- 사용자가 `https://app.chulheehwang.com`을 입력한 순간부터 RDS까지 요청 흐름을 설명하라.
+- Registrar, Route 53 Hosted Zone, Alias Record의 관계는?
+- DNS 정상과 HTTPS 정상은 왜 별개인가?
 - Public/Private Subnet을 왜 나눴는가?
 - ALB와 ASG는 각각 어떤 장애/확장 문제를 해결하는가?
 - EC2가 죽으면 어떤 AWS 구성 요소들이 어떤 순서로 반응하는가?
@@ -213,7 +261,7 @@ README를 보지 않고 답한다.
 - RDS Multi-AZ와 Read Replica의 목적 차이는?
 - EC2가 S3에 접근할 때 왜 Access Key가 필요 없는가?
 - `ListBucket`과 `ListAllMyBuckets` 차이는?
-- ALB 503, DB timeout, S3 AccessDenied를 각각 어디부터 볼 것인가?
+- ALB 503, DB timeout, S3 AccessDenied, DNS failure를 각각 어디부터 볼 것인가?
 
 ## 완료 기준
 
@@ -221,6 +269,7 @@ README를 보지 않고 답한다.
 
 ```text
 구축할 수 있다
++ 실제 도메인으로 HTTPS 서비스를 제공할 수 있다
 + 왜 그렇게 설계했는지 설명할 수 있다
 + CLI 출력으로 실제 연결 관계를 검증할 수 있다
 + 일부러 망가뜨릴 수 있다
@@ -243,8 +292,11 @@ NAT Gateway / Elastic IP
 EBS volume
 S3 object / old version / delete marker
 CloudWatch Alarm / Log Group
-Route 53 Hosted Zone 유지 여부
+Route 53 실습 record
+ACM certificate 유지 여부
 ```
+
+`chulheehwang.com` Hosted Zone은 실제 도메인에 사용할 수 있으므로 자동 삭제 대상으로 보지 않는다. 실습용 `app.chulheehwang.com` record는 이후 사용 계획에 따라 유지/삭제를 판단한다.
 
 특히 Versioning이 켜진 S3는 object 목록이 비어 보여도 old version/delete marker가 남을 수 있다.
 
