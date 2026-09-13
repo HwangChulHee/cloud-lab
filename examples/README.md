@@ -118,6 +118,21 @@ portfolio/: 실제 시스템에 적용
 | 15 | [Troubleshooting Web Stack](./15-troubleshooting-web-stack/README.md) | 종합 장애 진단 | 전체 핵심 서비스 | ALB fail-open 포함 실제 동작 구분 |
 | 16 | [Final Guided Architecture](./16-final-guided-architecture/README.md) | 거의 무가이드 재구축 | 전체 | `app.chulheehwang.com`으로 최종 아키텍처 완성 |
 
+## Optional / Advanced Examples
+
+핵심 Guided 흐름의 번호를 늘리지 않고, 특정 주제를 더 깊게 다루는 실습은 [`advanced/`](./advanced/README.md)에 둔다. 필수 코스는 아니며 필요한 시점에 선택해서 진행한다.
+
+현재 추가된 심화 실습:
+
+```text
+A01 PrivateLink Service Access
+Provider VPC → NLB → Endpoint Service
+                    ⇅ PrivateLink
+Consumer VPC → Interface Endpoint → Consumer EC2
+```
+
+[A01 — PrivateLink Service Access](./advanced/01-privatelink-service-access/README.md)는 VPC Peering 없이 Provider의 특정 HTTP 서비스만 Consumer에 private하게 노출하는 구조를 직접 만든다.
+
 ## 각 챕터의 공통 구조
 
 각 README는 가능하면 다음 순서를 따른다.
@@ -184,6 +199,8 @@ Route 53 실습용 Record
 ACM Certificate 유지 여부
 ```
 
+Advanced 실습에서는 해당 README의 비용 리소스도 별도로 확인한다. A01 PrivateLink에서는 특히 **NLB와 Interface Endpoint**를 실습 직후 삭제한다.
+
 실제 보유 자산인 `chulheehwang.com` Hosted Zone과 루트 DNS 설정은 다른 과금 리소스와 동일하게 자동 삭제 대상으로 판단하지 않는다.
 
 ## 핵심 과정에서 제외하는 것
@@ -197,7 +214,7 @@ ACM Certificate 유지 여부
 - DynamoDB
 - EKS
 
-CloudFront는 예외적으로 실제 도메인을 활용할 가치가 높아 `part04/.../16_cloudfront_global_accelerator`에 `cdn.chulheehwang.com` 선택 실습을 둔다. 나머지는 핵심 과정을 완주한 뒤 `advanced` 예제 또는 `portfolio/`에서 필요에 따라 확장한다.
+CloudFront는 예외적으로 실제 도메인을 활용할 가치가 높아 `part04/.../16_cloudfront_global_accelerator`에 `cdn.chulheehwang.com` 선택 실습을 둔다. PrivateLink처럼 핵심 과정의 흐름을 끊을 수 있는 심화 주제는 `advanced/`에 둔다. 나머지는 핵심 과정을 완주한 뒤 `advanced` 예제 또는 `portfolio/`에서 필요에 따라 확장한다.
 
 ## Examples 이후
 
@@ -217,4 +234,9 @@ Guided Examples 01~14
 portfolio/
    ↓
 Terraform / CI/CD / Containers / 운영 심화
+
+선택 심화:
+part12 PrivateLink 학습 또는 Example 06 이후
+   ↓
+advanced/A01 PrivateLink
 ```
