@@ -96,7 +96,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 ## 학습 자료
 
-- AWS Certified Solutions Architect - Associate (SAA-C03)
+- AWS Certified Solutions Architect - Associate(SAA-C03)
 - Stéphane Maarek - Ultimate AWS Certified Solutions Architect Associate
 - AWS 공식 문서
 
@@ -166,7 +166,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
   - [x] Presigned URL
   - [x] Performance / Multipart Upload
   - [x] Event Notification
-- [ ] 16. CloudFront / Global Accelerator
+- [x] 16. CloudFront / Global Accelerator
 - [ ] 17. ACM / HTTPS
 
 ## 5부 — Storage Extras
