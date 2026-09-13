@@ -10,6 +10,8 @@ User → ALB → Target Group
 
 이번에는 EC2 하나의 웹 서버를 일부러 중지하고 ALB가 어떻게 반응하는지 관찰한다.
 
+> Example 02의 리소스를 재사용한다면 기존 `Example=02` 태그를 억지로 바꾸지 않는다. 이 예제에서 새 리소스를 만든다면 `Project=cloud-lab`, `Stage=examples`, `Example=03`을 적용한다.
+
 ## 목표
 
 - ALB Health Check가 실제로 무엇을 하는지 확인한다.
@@ -43,38 +45,17 @@ Interval
 Success codes
 ```
 
-각 항목을 읽고 예상한다.
-
-예를 들어:
-
-```text
-Health check path: /
-```
-
-이라면 ALB는 각 Target의 `/`에 주기적으로 요청을 보내 정상 여부를 판단한다.
+예를 들어 Health check path가 `/`라면 ALB는 각 Target의 `/`에 주기적으로 요청을 보내 정상 여부를 판단한다.
 
 ## 3. EC2-A의 nginx 중지
-
-EC2-A에 접속해 nginx를 중지한다.
 
 ```bash
 sudo systemctl stop nginx
 ```
 
-바로 Target Group 화면을 새로고침한다.
-
-처음에는 아직 `healthy`로 보일 수 있다.
-
-왜 즉시 unhealthy가 되지 않는지 생각해본다.
-
-```text
-예상 이유:
-→
-```
+바로 Target Group 화면을 새로고침한다. 처음에는 아직 `healthy`로 보일 수 있다. 왜 즉시 unhealthy가 되지 않는지 threshold/interval 관점에서 생각한다.
 
 ## 4. 상태 변화 관찰
-
-Target Group의 상태가 다음처럼 변하는지 관찰한다.
 
 ```text
 healthy
@@ -88,18 +69,7 @@ Health Check는 한 번 실패했다고 바로 서버를 제거하는 것이 아
 
 EC2-A가 unhealthy가 된 뒤 ALB DNS로 여러 번 요청한다.
 
-예상:
-
-```text
-EC2-B
-EC2-B
-EC2-B
-...
-```
-
-ALB는 unhealthy Target으로 신규 요청을 보내지 않는다.
-
-여기서 중요한 점:
+정상 Target이 하나 이상 남아 있다면 신규 요청이 정상 Target으로 전달되는지 확인한다.
 
 ```text
 서버 장애
@@ -107,61 +77,26 @@ ALB는 unhealthy Target으로 신규 요청을 보내지 않는다.
 서비스 전체 장애
 ```
 
-로드밸런서 뒤에 정상 Target이 남아 있다면 서비스 진입점은 계속 응답할 수 있다.
-
 ## 6. EC2-A 복구
-
-다시 nginx를 시작한다.
 
 ```bash
 sudo systemctl start nginx
 ```
 
-Target Group 상태를 관찰한다.
+Target Group 상태가 `unhealthy → healthy`로 돌아오는지 확인한다. Healthy threshold를 만족해야 다시 정상 Target으로 판단된다.
 
-```text
-unhealthy
-   ↓
-healthy
-```
+## 7. Health Check endpoint 분리 실험
 
-복구 직후 바로 healthy가 되지 않을 수 있다.
-
-Healthy threshold를 만족해야 다시 정상 Target으로 판단된다.
-
-## 7. 복구 후 요청 확인
-
-ALB DNS로 여러 번 요청한다.
-
-다시 EC2-A와 EC2-B의 응답이 모두 나타나는지 확인한다.
-
-## 8. Health Check endpoint 분리 실험
-
-애플리케이션에서는 보통 `/health` 같은 별도 endpoint를 둔다.
-
-예:
-
-```text
-GET /health
-200 OK
-```
-
-nginx에 간단한 health 파일을 만든다.
+nginx에 간단한 health endpoint를 만든다.
 
 ```bash
 sudo mkdir -p /usr/share/nginx/html/health
 sudo bash -c 'echo OK > /usr/share/nginx/html/health/index.html'
 ```
 
-브라우저에서 다음이 200으로 응답되는지 확인한다.
+`/health/`가 200으로 응답되는지 확인하고 Target Group Health Check path를 `/health/`로 변경한다.
 
-```text
-http://<EC2_IP>/health/
-```
-
-이후 Target Group Health Check path를 `/health/`로 변경해본다.
-
-## 9. 잘못된 Health Check 실험
+## 8. 잘못된 Health Check 실험
 
 Health Check path를 존재하지 않는 경로로 잠시 바꾼다.
 
@@ -172,56 +107,43 @@ Health Check path를 존재하지 않는 경로로 잠시 바꾼다.
 예상:
 
 ```text
-EC2는 정상 실행 중
-nginx도 정상 실행 중
-하지만 ALB 기준 Target은 unhealthy
+EC2 정상
+nginx 정상
+하지만 ALB 기준 Target unhealthy
 ```
 
-이 실험이 중요한 이유는 **Health Check 설계 자체가 잘못되어도 정상 서버가 트래픽에서 제외될 수 있기 때문**이다.
+확인 후 정상 경로로 복구한다.
 
-확인 후 Health Check path를 정상 경로로 되돌린다.
+## 9. CLI 구축/장애 검증
+
+[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 03 명령을 실행한다.
+
+장애 전/중/복구 후 같은 명령을 반복해서 다음을 비교한다.
+
+```text
+HealthCheckPath
+Healthy/Unhealthy threshold
+TargetHealth.State
+TargetHealth.Reason
+```
 
 ## 10. 직접 설명하기
 
-다음 질문에 답해본다.
-
-```text
-Q1. ALB는 서버 프로세스가 죽었다는 사실을 어떻게 알까?
-→
-
-Q2. Health Check가 없다면 어떤 문제가 생길까?
-→
-
-Q3. 왜 한 번 실패했다고 바로 unhealthy로 만들지 않을까?
-→
-
-Q4. Health Check endpoint가 너무 무거우면 어떤 문제가 생길까?
-→
-```
+- ALB는 서버 프로세스가 죽었다는 사실을 어떻게 알까?
+- 왜 한 번 실패했다고 바로 unhealthy로 만들지 않을까?
+- Health Check endpoint가 너무 무거우면 어떤 문제가 생길까?
+- 애플리케이션은 정상인데 잘못된 Health Check 때문에 서비스에서 제외될 수 있는 이유는?
 
 ## 11. 완료 체크
 
 - [ ] 두 Target이 healthy인 상태에서 시작했다.
-- [ ] EC2-A의 nginx를 중지했다.
-- [ ] Target이 unhealthy로 바뀌는 것을 관찰했다.
-- [ ] unhealthy Target으로 요청이 가지 않는 것을 확인했다.
-- [ ] nginx를 다시 시작했다.
-- [ ] Target이 다시 healthy가 되는 것을 확인했다.
-- [ ] Health Check path를 바꿔봤다.
+- [ ] nginx를 중지하고 unhealthy 전환을 관찰했다.
+- [ ] 정상 Target으로만 요청이 가는 것을 확인했다.
+- [ ] nginx 복구 후 healthy 전환을 확인했다.
+- [ ] 별도 Health Check path를 구성했다.
 - [ ] 잘못된 Health Check가 정상 서버를 제외할 수 있음을 확인했다.
+- [ ] CLI로 장애 전/중/복구 상태를 비교했다.
 
-## 12. 다음 단계
+## 12. 다음 단계 / 비용 정리
 
-현재 구조에는 아직 문제가 있다.
-
-EC2의 HTTP 80 포트가 인터넷 전체에 열려 있다면 사용자가 ALB를 거치지 않고 EC2에 직접 접근할 수 있다.
-
-다음 예제에서는 Security Group Reference를 사용해서 다음 구조로 바꾼다.
-
-```text
-Internet
-   ↓ :80
-ALB Security Group
-   ↓ :80, source = ALB SG
-EC2 Security Group
-```
+Example 04를 바로 진행한다면 Example 02의 리소스를 유지한다. 여기서 종료한다면 Example 02의 삭제 검증 절차로 ALB, Target Group, EC2, SG를 정리하고 잔존 리소스를 확인한다.
