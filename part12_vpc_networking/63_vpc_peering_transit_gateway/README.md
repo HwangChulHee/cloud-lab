@@ -62,6 +62,6 @@ VPC 두 개를 단순 연결
 
 ## 6. 완료 기준
 
-- [ ] VPC Peering과 Transit Gateway의 선택 기준을 설명할 수 있다.
-- [ ] Peering에 route table 설정이 필요한 이유를 이해한다.
-- [ ] transitive routing 개념을 설명할 수 있다.
+- [x] VPC Peering과 Transit Gateway의 선택 기준을 설명할 수 있다.
+- [x] Peering에 route table 설정이 필요한 이유를 이해한다.
+- [x] transitive routing 개념을 설명할 수 있다.
