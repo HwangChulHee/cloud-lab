@@ -164,9 +164,9 @@ Provider EC2 private IP 직접 호출 실패
 
 ## 10. 완료 기준
 
-- [ ] VPC Endpoint의 목적을 설명할 수 있다.
-- [ ] Gateway / Interface Endpoint 차이를 설명할 수 있다.
-- [ ] S3 접근에서 NAT와 Gateway Endpoint를 비교할 수 있다.
-- [ ] Endpoint Policy와 IAM/Resource Policy가 별개의 접근 제어 계층임을 이해한다.
-- [ ] VPC Peering과 PrivateLink를 `network reachability vs service exposure` 관점으로 설명할 수 있다.
-- [ ] 필요하면 A01 심화 실습에서 NLB → Endpoint Service → Interface Endpoint 흐름을 직접 검증할 수 있다.
+- [x] VPC Endpoint의 목적을 설명할 수 있다.
+- [x] Gateway / Interface Endpoint 차이를 설명할 수 있다.
+- [x] S3 접근에서 NAT와 Gateway Endpoint를 비교할 수 있다.
+- [x] Endpoint Policy와 IAM/Resource Policy가 별개의 접근 제어 계층임을 이해한다.
+- [x] VPC Peering과 PrivateLink를 `network reachability vs service exposure` 관점으로 설명할 수 있다.
+- [ ] 필요하면 A01 심화 실습에서 NLB → Endpoint Service → Interface Endpoint 흐름을 직접 검증할 수 있다. (Optional)
