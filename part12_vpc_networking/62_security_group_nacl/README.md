@@ -97,8 +97,8 @@ NACL은 stateless이므로 TCP 응답 트래픽의 임시 포트 범위를 고�
 
 ## 8. 완료 기준
 
-- [ ] SG/NACL 차이를 표 없이 설명할 수 있다.
-- [ ] ALB → EC2 → RDS SG chain을 설계할 수 있다.
-- [ ] SG reference의 의미를 설명할 수 있다.
-- [ ] NACL의 stateless 특성과 rule order를 설명할 수 있다.
-- [ ] timeout이 발생했을 때 SG/NACL을 어느 순서로 확인할지 말할 수 있다.
+- [x] SG/NACL 차이를 표 없이 설명할 수 있다.
+- [x] ALB → EC2 → RDS SG chain을 설계할 수 있다.
+- [x] SG reference의 의미를 설명할 수 있다.
+- [x] NACL의 stateless 특성과 rule order를 설명할 수 있다.
+- [x] timeout이 발생했을 때 SG/NACL을 어느 순서로 확인할지 말할 수 있다.
