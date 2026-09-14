@@ -195,8 +195,8 @@ Metrics → 자원 상태와 시간적 변화 확인
 
 ## 11. 완료 기준
 
-- [ ] Client → ALB → EC2 → RDS 요청 경로를 순서대로 진단할 수 있다.
-- [ ] Timeout / refused / 503 / unhealthy / AccessDenied를 구분해 첫 확인 지점을 고를 수 있다.
-- [ ] Route Table / SG / NACL의 역할을 섞지 않는다.
-- [ ] Flow Logs와 CloudWatch Logs의 차이를 설명할 수 있다.
-- [ ] 장애 시 가설 → 관찰 → 원인 → 복구 순서로 접근할 수 있다.
+- [x] Client → ALB → EC2 → RDS 요청 경로를 순서대로 진단할 수 있다.
+- [x] Timeout / refused / 503 / unhealthy / AccessDenied를 구분해 첫 확인 지점을 고를 수 있다.
+- [x] Route Table / SG / NACL의 역할을 섞지 않는다.
+- [x] Flow Logs와 CloudWatch Logs의 차이를 설명할 수 있다.
+- [x] 장애 시 가설 → 관찰 → 원인 → 복구 순서로 접근할 수 있다.
