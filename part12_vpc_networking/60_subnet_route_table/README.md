@@ -91,7 +91,7 @@ local / IGW / NAT / VPC Endpoint / Peering ...
 
 ## 7. 완료 기준
 
-- [ ] Public/Private subnet을 route 관점에서 설명할 수 있다.
-- [ ] Route Table의 목적을 설명할 수 있다.
-- [ ] subnet association을 이해한다.
-- [ ] 요청 목적지를 보고 어떤 route가 선택되는지 추론할 수 있다.
+- [x] Public/Private subnet을 route 관점에서 설명할 수 있다.
+- [x] Route Table의 목적을 설명할 수 있다.
+- [x] subnet association을 이해한다.
+- [x] 요청 목적지를 보고 어떤 route가 선택되는지 추론할 수 있다.
