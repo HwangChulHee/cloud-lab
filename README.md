@@ -167,7 +167,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
   - [x] Performance / Multipart Upload
   - [x] Event Notification
 - [x] 16. CloudFront / Global Accelerator
-- [ ] 17. ACM / HTTPS
+- [x] 17. ACM / HTTPS
 
 ## 5부 — Storage Extras
 
@@ -237,14 +237,14 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 실습 전에 구조를 충분히 이해한다.
 
-- [ ] 59. VPC
-- [ ] 60. Subnet과 Route Table
-- [ ] 61. Internet Gateway와 NAT Gateway
-- [ ] 62. Security Group과 NACL
-- [ ] 63. VPC Peering / Transit Gateway
-- [ ] 64. VPC Endpoint / PrivateLink
-- [ ] 65. VPN / Direct Connect
-- [ ] 66. VPC Flow Logs / Networking Troubleshooting
+- [x] 59. VPC
+- [x] 60. Subnet과 Route Table
+- [x] 61. Internet Gateway와 NAT Gateway
+- [x] 62. Security Group과 NACL
+- [x] 63. VPC Peering / Transit Gateway
+- [x] 64. VPC Endpoint / PrivateLink
+- [x] 65. VPN / Direct Connect
+- [x] 66. VPC Flow Logs / Networking Troubleshooting
 
 ## 13부 — Disaster Recovery & Migration
 
