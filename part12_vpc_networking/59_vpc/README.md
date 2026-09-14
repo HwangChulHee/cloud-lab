@@ -84,7 +84,7 @@ Private RDS
 
 ## 7. 완료 기준
 
-- [ ] VPC와 Subnet의 관계를 설명할 수 있다.
-- [ ] VPC CIDR과 Subnet CIDR의 포함 관계를 이해한다.
-- [ ] Multi-AZ 구조에서 subnet을 나누는 이유를 설명할 수 있다.
-- [ ] `local` route의 의미를 설명할 수 있다.
+- [x] VPC와 Subnet의 관계를 설명할 수 있다.
+- [x] VPC CIDR과 Subnet CIDR의 포함 관계를 이해한다.
+- [x] Multi-AZ 구조에서 subnet을 나누는 이유를 설명할 수 있다.
+- [x] `local` route의 의미를 설명할 수 있다.
