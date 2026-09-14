@@ -55,6 +55,6 @@ Direct Connect 장애 대비
 
 ## 6. 완료 기준
 
-- [ ] VPN / Direct Connect 선택 기준을 설명할 수 있다.
-- [ ] Direct Connect와 암호화를 별개로 이해한다.
-- [ ] 하이브리드 네트워크의 고가용성 기본 아이디어를 설명할 수 있다.
+- [x] VPN / Direct Connect 선택 기준을 설명할 수 있다.
+- [x] Direct Connect와 암호화를 별개로 이해한다.
+- [x] 하이브리드 네트워크의 고가용성 기본 아이디어를 설명할 수 있다.
