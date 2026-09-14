@@ -84,7 +84,7 @@ Private EC2에서 인터넷이 안 될 때:
 
 ## 8. 완료 기준
 
-- [ ] IGW를 public subnet route와 연결해서 설명할 수 있다.
-- [ ] NAT Gateway의 요청 흐름을 그릴 수 있다.
-- [ ] private EC2 outbound 장애의 확인 순서를 말할 수 있다.
-- [ ] NAT와 VPC Endpoint의 비용/경로 관점 차이를 이해한다.
+- [x] IGW를 public subnet route와 연결해서 설명할 수 있다.
+- [x] NAT Gateway의 요청 흐름을 그릴 수 있다.
+- [x] private EC2 outbound 장애의 확인 순서를 말할 수 있다.
+- [x] NAT와 VPC Endpoint의 비용/경로 관점 차이를 이해한다.
