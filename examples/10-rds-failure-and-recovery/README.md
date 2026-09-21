@@ -70,49 +70,6 @@ Failover 또는 일시적 DB 중단 시 애플리케이션 로그, RDS 상태, C
 
 ## CLI 구축/복구 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 명령을 실행한다.
-
-출력에서 다음을 확인한다.
-
-```text
-Primary DB 상태
-Multi-AZ 여부
-Read Replica 존재 여부와 source 관계
-Manual Snapshot 상태
-복구한 DB가 원본과 별도 DB인지
-```
-
-장애나 failover를 수행했다면 전/중/복구 후의 RDS 상태와 애플리케이션 연결 상태를 함께 기록한다.
-
-## 기억만으로 설명하기
-Multi-AZ와 Read Replica를 `복제 방식 / 목적 / 앱 연결 / 장애 시 동작` 기준으로 설명한다.
-
-## 완료 체크
-- [ ] Backup retention과 snapshot을 확인했다.
-- [ ] Restore가 새 DB를 만든다는 점을 확인했다.
-- [ ] PITR의 목적을 설명할 수 있다.
-- [ ] Multi-AZ와 Read Replica를 구분할 수 있다.
-- [ ] 가능하면 failover 또는 replica를 직접 관찰했다.
-- [ ] CLI로 RDS/Replica/Snapshot 상태를 검증했다.
-
-## 비용 정리와 삭제 검증
-
-Multi-AZ/Replica는 비용이 커질 수 있으므로 실습 후 즉시 정리한다. 특히 다음을 따로 확인한다.
-
-```text
-Primary/복구 DB instance
-Read Replica
-Manual Snapshot
-```
-
-삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 삭제 검증을 실행한다. Manual Snapshot은 DB instance를 삭제해도 별도로 남을 수 있으므로 반드시 따로 확인한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 10 CLI — RDS HA/Replica/Backup 상태를 시간순으로 읽기
-
 ### 1. Primary / Multi-AZ / Replica 관계
 
 \`\`\`bash
@@ -159,3 +116,28 @@ aws rds describe-db-snapshots --region $AWS_REGION \
 Manual Snapshot이 실제 생성되었고 \`available\`인지 확인한다.
 
 실습 종료 시 DB Instance와 Snapshot을 **각각 따로 조회**한다. Instance가 없다고 비용/데이터 리소스가 모두 사라진 것은 아니다.
+
+## 기억만으로 설명하기
+Multi-AZ와 Read Replica를 `복제 방식 / 목적 / 앱 연결 / 장애 시 동작` 기준으로 설명한다.
+
+## 완료 체크
+- [ ] Backup retention과 snapshot을 확인했다.
+- [ ] Restore가 새 DB를 만든다는 점을 확인했다.
+- [ ] PITR의 목적을 설명할 수 있다.
+- [ ] Multi-AZ와 Read Replica를 구분할 수 있다.
+- [ ] 가능하면 failover 또는 replica를 직접 관찰했다.
+- [ ] CLI로 RDS/Replica/Snapshot 상태를 검증했다.
+
+## 비용 정리와 삭제 검증
+
+Multi-AZ/Replica는 비용이 커질 수 있으므로 실습 후 즉시 정리한다. 특히 다음을 따로 확인한다.
+
+```text
+Primary/복구 DB instance
+Read Replica
+Manual Snapshot
+```
+
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 삭제 검증을 실행한다. Manual Snapshot은 DB instance를 삭제해도 별도로 남을 수 있으므로 반드시 따로 확인한다.
+
+---
