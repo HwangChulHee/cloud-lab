@@ -64,7 +64,7 @@ example-09-db
 5. 구축만 하지 않고 반드시 실제 요청, Target 상태, Metric, Log를 관찰한다.
 6. 가능한 모든 챕터에서 장애를 일부러 만든 뒤 원인을 추적하고 복구한다.
 7. 실습이 끝나면 비용이 발생하는 리소스를 직접 정리한다.
-8. 구축 후와 삭제 후에는 [CLI Verification Guide](./CLI_VERIFICATION.md)의 명령으로 실제 상태를 검증한다.
+8. 구축 후와 삭제 후에는 **각 Example README 안의 `로컬 CLI 검증 가이드`**를 실행하고, 명령이 조회하는 리소스와 출력 필드의 의미까지 설명한다. 루트의 [CLI Verification Guide](./CLI_VERIFICATION.md)는 전체 예제를 한 번에 비교하거나 최종 잔존 리소스를 점검하는 집계용 참고 문서로 사용한다.
 9. Terraform은 SAA 이후 같은 구조를 재구축하는 단계에서 사용한다.
 
 ## Private Subnet Bootstrap 규칙
@@ -146,7 +146,7 @@ Consumer VPC → Interface Endpoint → Consumer EC2
 6. 요청/상태/Metric 관찰
 7. 장애 실험
 8. 원인 추적 및 복구
-9. CLI 구축 검증
+9. 로컬 CLI 구축 검증 + 명령어 해설
 10. 기억만으로 설명하기
 11. 완료 체크
 12. 비용 정리
