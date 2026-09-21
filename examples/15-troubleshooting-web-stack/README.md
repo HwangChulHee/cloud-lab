@@ -180,58 +180,58 @@ DNS/TLS/ALB backend 문제를 한 덩어리로 취급하지 않는다.
 
 ### 1. ALB 자체
 
-\`\`\`bash
+```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION \
   --query "LoadBalancers[?contains(LoadBalancerName, 'example-15')].{Name:LoadBalancerName,State:State.Code,DNS:DNSName}"
-\`\`\`
+```
 
-ALB가 존재하고 \`active\`인지 확인한다.
+ALB가 존재하고 `active`인지 확인한다.
 
 ### 2. Listener
 
-\`\`\`bash
+```bash
 export ALB_ARN=<alb-arn>
 
 aws elbv2 describe-listeners --region $AWS_REGION \
   --load-balancer-arn $ALB_ARN \
   --query 'Listeners[].{Port:Port,Protocol:Protocol,Actions:DefaultActions}'
-\`\`\`
+```
 
 요청이 80/443에서 실제로 어떤 Action으로 전달되는지 본다.
 
 ### 3. Target Health
 
-\`\`\`bash
+```bash
 export TG_ARN=<target-group-arn>
 
 aws elbv2 describe-target-health --region $AWS_REGION \
   --target-group-arn $TG_ARN \
   --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason,Description:TargetHealth.Description}' \
   --output table
-\`\`\`
+```
 
 반드시 다음 셋을 구분한다.
 
-\`\`\`text
+```text
 Target 0개
 일부 unhealthy
 모든 Target unhealthy
-\`\`\`
+```
 
 모든 Target이 unhealthy일 때는 ALB의 fail-open 동작이 가능하므로 단순히 "무조건 503"이라고 외우지 않는다.
 
 ### 4. 실제 HTTP 결과
 
-\`\`\`bash
+```bash
 curl -sS -o /dev/null -w '%{http_code}\n' http://<alb-or-domain>
 curl -vkI https://<domain>
-\`\`\`
+```
 
-첫 명령은 body를 버리고 HTTP status code만 출력한다. 두 번째의 \`-v\`는 연결/TLS 과정을 자세히, \`-k\`는 인증서 검증 오류가 있어도 테스트를 계속, \`-I\`는 header만 요청한다.
+첫 명령은 body를 버리고 HTTP status code만 출력한다. 두 번째의 `-v`는 연결/TLS 과정을 자세히, `-k`는 인증서 검증 오류가 있어도 테스트를 계속, `-I`는 header만 요청한다.
 
 ### 5. ASG / RDS / Alarm
 
-\`\`\`bash
+```bash
 aws autoscaling describe-scaling-activities --region $AWS_REGION \
   --auto-scaling-group-name <asg-name> --max-items 20
 
@@ -240,11 +240,11 @@ aws rds describe-db-instances --region $AWS_REGION \
 
 aws cloudwatch describe-alarms --region $AWS_REGION \
   --alarm-name-prefix example-15
-\`\`\`
+```
 
 진단 흐름:
 
-\`\`\`text
+```text
 사용자 증상
 → DNS/HTTP
 → ALB
@@ -254,7 +254,7 @@ aws cloudwatch describe-alarms --region $AWS_REGION \
 → EC2 app/bootstrap
 → RDS/IAM
 → Metric/Log
-\`\`\`
+```
 
 ## 최종 구술 연습
 다음 질문에 1~2분씩 말로 답한다.
