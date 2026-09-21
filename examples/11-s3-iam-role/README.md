@@ -19,6 +19,18 @@ EC2 생성, IAM 정책 확인, 애플리케이션/CLI 테스트, AccessDenied �
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=11`을 붙인다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| EC2 | `example-11-web` |
+| EC2 Security Group | `example-11-web-sg` |
+| IAM Role | `example-11-s3-role` |
+| IAM Policy | `example-11-s3-policy` |
+| S3 Bucket | `cloud-lab-example-11-<account-id>` |
+
+S3 Bucket 이름은 전 세계에서 유일해야 하므로 `<account-id>`는 자신의 AWS Account ID로 바꾼다. 이미 사용 중이면 뒤에 짧은 임의 suffix를 추가한다.
+
 ## 이번에는 도움 없이
 EC2는 이전 예제 방식대로 생성한다. 가능하면 Private EC2 + SSM 구조를 재사용한다.
 
