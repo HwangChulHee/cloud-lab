@@ -41,6 +41,29 @@ Stage=examples
 Example=06
 ```
 
+## 리소스 이름표
+
+Example 05를 재사용해도 되고 처음부터 다시 만들어도 된다. 다시 만든다면 아래 이름을 사용한다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| VPC | `example-06-vpc` |
+| Public Subnet A/B | `example-06-public-a`, `example-06-public-b` |
+| Private Subnet A/B | `example-06-private-a`, `example-06-private-b` |
+| Internet Gateway | `example-06-igw` |
+| Public Route Table | `example-06-public-rt` |
+| Private Route Table | `example-06-private-rt` |
+| ALB | `example-06-alb` |
+| ALB Security Group | `example-06-alb-sg` |
+| Target Group | `example-06-tg` |
+| Private EC2 | `example-06-web` |
+| EC2 Security Group | `example-06-web-sg` |
+| NAT Gateway | `example-06-nat` |
+| Elastic IP Name tag | `example-06-nat-eip` |
+| SSM IAM Role | `example-06-ssm-role` |
+
+VPC Interface Endpoint 심화까지 진행한다면 Name tag는 `example-06-ssm-vpce`, `example-06-ssmmessages-vpce`, `example-06-ec2messages-vpce`를 사용한다.
+
 ## 목표 구조
 
 ```text
