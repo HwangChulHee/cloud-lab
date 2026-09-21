@@ -115,3 +115,57 @@ ASG는 EC2를 생성했지만 애플리케이션이 준비되지 않으면 Targe
 ASG를 먼저 삭제해 관리 대상 EC2가 정리되는지 확인한 뒤 ALB, Target Group, Launch Template, NAT Gateway/EIP 등을 정리한다.
 
 삭제 후 CLI 삭제 검증을 실행한다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 07 CLI — ASG가 원하는 수의 EC2를 실제로 유지하는지 보기
+
+### 1. Auto Scaling Group
+
+\`\`\`bash
+aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
+  --auto-scaling-group-names example-07-asg \
+  --query 'AutoScalingGroups[].{Min:MinSize,Desired:DesiredCapacity,Max:MaxSize,Subnets:VPCZoneIdentifier,Instances:Instances[].{Id:InstanceId,AZ:AvailabilityZone,Health:HealthStatus,Lifecycle:LifecycleState},TG:TargetGroupARNs}'
+\`\`\`
+
+이 한 명령으로 다음 연결을 본다.
+
+\`\`\`text
+Min / Desired / Max
+→ ASG가 유지하려는 용량
+
+Subnets
+→ 어느 subnet들에 EC2를 만드는가
+
+Instances
+→ 실제 생성된 EC2와 Lifecycle/Health
+
+TG
+→ 어떤 Target Group에 연결됐는가
+\`\`\`
+
+### 2. Launch Template
+
+\`\`\`bash
+aws ec2 describe-launch-templates --region $AWS_REGION \
+  --launch-template-names example-07-lt \
+  --query 'LaunchTemplates[].{Id:LaunchTemplateId,Latest:LatestVersionNumber,Default:DefaultVersionNumber}'
+\`\`\`
+
+ASG가 EC2를 만들 때 참조할 Launch Template이 존재하고 어느 version이 최신/default인지 확인한다.
+
+### 3. ASG가 왜 인스턴스를 만들거나 지웠는지
+
+\`\`\`bash
+aws autoscaling describe-scaling-activities --region $AWS_REGION \
+  --auto-scaling-group-name example-07-asg \
+  --max-items 10 \
+  --query 'Activities[].{Time:StartTime,Status:StatusCode,Cause:Cause,Description:Description}' \
+  --output table
+\`\`\`
+
+\`Cause\`와 \`Description\`이 핵심이다. 단순히 "새 EC2가 생겼다"가 아니라 **왜 ASG가 그 행동을 했는지** 설명할 수 있어야 한다.
+
+EC2 한 대를 terminate한 뒤 이 명령을 다시 실행해 replacement 기록을 찾는다.
