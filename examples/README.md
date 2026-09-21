@@ -55,6 +55,27 @@ example-09-db
 
 태그를 지원하지 않거나 API에서 Name 필터가 더 안정적인 리소스는 `example-NN-*` 이름 규칙을 사용한다.
 
+## 리소스 이름 작성 규칙
+
+모든 Guided Example README에는 구축 전에 **리소스 이름표**를 둔다. 콘솔 실습 중 이름을 즉석에서 고민하지 않고, README에 적힌 이름을 그대로 사용한다.
+
+기본 형식은 `example-NN-<role>`이다.
+
+```text
+example-05-vpc
+example-05-public-a
+example-05-public-rt
+example-07-lt
+example-07-asg
+example-09-db
+```
+
+- 재사용 리소스는 기존 이름을 유지하고 README에 재사용이라고 명시한다.
+- AWS가 자동 생성하는 리소스는 새로 만들지 않고 필요하면 Name tag만 붙인다.
+- S3처럼 이름이 전역 유일해야 하는 리소스는 `cloud-lab-example-NN-<account-id>` 형식을 사용한다.
+- Route 53 Hosted Zone처럼 실제 보유 자산은 새 이름으로 복제하지 않고 기존 자산을 재사용한다.
+- 앞으로 추가하는 Example도 같은 형식의 **리소스 이름표**를 반드시 포함한다.
+
 ## 학습 원칙
 
 1. 초반에는 Console 중심으로 상세하게 따라 한다.
