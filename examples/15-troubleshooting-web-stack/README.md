@@ -23,6 +23,27 @@ EC2 → ? → S3
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=15`를 붙인다.
 
+## 리소스 이름표
+
+장애 진단 중 어떤 리소스를 보고 있는지 헷갈리지 않도록, 전체 스택을 새로 만든다면 아래 이름으로 통일한다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| VPC | `example-15-vpc` |
+| ALB | `example-15-alb` |
+| Target Group | `example-15-tg` |
+| ALB Security Group | `example-15-alb-sg` |
+| App Security Group | `example-15-app-sg` |
+| Launch Template | `example-15-lt` |
+| Auto Scaling Group | `example-15-asg` |
+| RDS | `example-15-db` |
+| RDS Security Group | `example-15-db-sg` |
+| IAM Role | `example-15-app-role` |
+| CloudWatch Log Group | `example-15-app` |
+| CloudWatch Alarm prefix | `example-15-` |
+
+S3 Bucket은 전역 유일 이름이 필요하므로 `cloud-lab-example-15-<account-id>` 형식을 사용한다.
+
 ## 이번에는 도움 없이
 각 장애 Case는 먼저 README의 설명을 다시 읽지 않고 다음 양식으로 기록한다.
 
