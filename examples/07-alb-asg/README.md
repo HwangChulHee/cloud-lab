@@ -100,27 +100,6 @@ ASG는 EC2를 생성했지만 애플리케이션이 준비되지 않으면 Targe
 - Private Subnet에서 replacement가 bootstrap에 실패하면 어디를 볼 것인가?
 
 ## CLI 구축 검증
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 07 명령을 실행한다.
-
-## 완료 체크
-- [ ] Launch Template을 만들었다.
-- [ ] 2AZ ASG를 만들었다.
-- [ ] Target Group 자동 등록을 확인했다.
-- [ ] Desired Capacity 변경을 관찰했다.
-- [ ] EC2 강제 종료 후 자동 복구를 확인했다.
-- [ ] replacement 인스턴스의 bootstrap까지 확인했다.
-- [ ] ALB와 ASG의 역할을 구분해 설명할 수 있다.
-
-## 비용 정리
-ASG를 먼저 삭제해 관리 대상 EC2가 정리되는지 확인한 뒤 ALB, Target Group, Launch Template, NAT Gateway/EIP 등을 정리한다.
-
-삭제 후 CLI 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 07 CLI — ASG가 원하는 수의 EC2를 실제로 유지하는지 보기
 
 ### 1. Auto Scaling Group
 
@@ -169,3 +148,19 @@ aws autoscaling describe-scaling-activities --region $AWS_REGION \
 \`Cause\`와 \`Description\`이 핵심이다. 단순히 "새 EC2가 생겼다"가 아니라 **왜 ASG가 그 행동을 했는지** 설명할 수 있어야 한다.
 
 EC2 한 대를 terminate한 뒤 이 명령을 다시 실행해 replacement 기록을 찾는다.
+
+## 완료 체크
+- [ ] Launch Template을 만들었다.
+- [ ] 2AZ ASG를 만들었다.
+- [ ] Target Group 자동 등록을 확인했다.
+- [ ] Desired Capacity 변경을 관찰했다.
+- [ ] EC2 강제 종료 후 자동 복구를 확인했다.
+- [ ] replacement 인스턴스의 bootstrap까지 확인했다.
+- [ ] ALB와 ASG의 역할을 구분해 설명할 수 있다.
+
+## 비용 정리
+ASG를 먼저 삭제해 관리 대상 EC2가 정리되는지 확인한 뒤 ALB, Target Group, Launch Template, NAT Gateway/EIP 등을 정리한다.
+
+삭제 후 CLI 삭제 검증을 실행한다.
+
+---
