@@ -106,33 +106,6 @@ aws s3 ls s3://<bucket-name>/
 - Role을 바꾼 뒤 자격 증명 파일을 서버에 배포해야 하는가?
 
 ## CLI 구축 검증
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 11 명령을 실행한다.
-
-## 기억만으로 설명하기
-- Access Key보다 EC2 Role이 나은 이유는?
-- IAM의 `Action`과 `Resource`는 각각 무엇인가?
-- `ListBucket`과 `ListAllMyBuckets` 차이는?
-- S3 AccessDenied 발생 시 어떤 순서로 확인할 것인가?
-
-## 완료 체크
-- [ ] S3 Bucket을 생성했다.
-- [ ] EC2에 IAM Role을 연결했다.
-- [ ] Access Key 없이 S3에 접근했다.
-- [ ] 특정 bucket 최소 권한으로 범위를 제한했다.
-- [ ] `aws s3 ls`와 `aws s3 ls s3://bucket/`의 차이를 확인했다.
-- [ ] AccessDenied를 재현하고 복구했다.
-- [ ] 네트워크 오류와 IAM 권한 오류를 구분할 수 있다.
-
-## 비용 정리
-테스트 object와 bucket을 삭제하고 필요 없는 IAM policy/role을 정리한다.
-
-삭제 후 CLI 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 11 CLI — IAM Role과 S3 권한을 분리해서 보기
 
 ### 1. Bucket 상태
 
@@ -187,3 +160,25 @@ aws s3 ls
 aws s3 ls s3://bucket/
 → 해당 bucket의 ListBucket
 \`\`\`
+
+## 기억만으로 설명하기
+- Access Key보다 EC2 Role이 나은 이유는?
+- IAM의 `Action`과 `Resource`는 각각 무엇인가?
+- `ListBucket`과 `ListAllMyBuckets` 차이는?
+- S3 AccessDenied 발생 시 어떤 순서로 확인할 것인가?
+
+## 완료 체크
+- [ ] S3 Bucket을 생성했다.
+- [ ] EC2에 IAM Role을 연결했다.
+- [ ] Access Key 없이 S3에 접근했다.
+- [ ] 특정 bucket 최소 권한으로 범위를 제한했다.
+- [ ] `aws s3 ls`와 `aws s3 ls s3://bucket/`의 차이를 확인했다.
+- [ ] AccessDenied를 재현하고 복구했다.
+- [ ] 네트워크 오류와 IAM 권한 오류를 구분할 수 있다.
+
+## 비용 정리
+테스트 object와 bucket을 삭제하고 필요 없는 IAM policy/role을 정리한다.
+
+삭제 후 CLI 삭제 검증을 실행한다.
+
+---
