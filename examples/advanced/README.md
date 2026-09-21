@@ -26,3 +26,10 @@ Advanced Example은 필요한 주제를 골라 수행한다. 번호는 핵심 �
 - 비용이 발생하는 NLB, Interface Endpoint 같은 리소스는 실습 직후 정리한다.
 - `Project=cloud-lab`, `Stage=examples-advanced`, `Example=A01` 형식으로 가능한 리소스에 태그한다.
 - 삭제 후 [Advanced CLI Verification](./CLI_VERIFICATION.md)으로 잔존 리소스를 확인한다.
+
+
+## CLI 원칙
+
+Advanced Example도 중앙 CLI 문서만 보고 실행하지 않는다. 각 실습 README 하단의 **로컬 CLI 검증 가이드**에서 명령과 출력 필드의 의미를 함께 학습한다.
+
+`examples/advanced/CLI_VERIFICATION.md`는 여러 Advanced 실습을 한 번에 비교하거나 삭제 후 잔존 리소스를 통합 점검하는 참고 문서로 유지한다.
