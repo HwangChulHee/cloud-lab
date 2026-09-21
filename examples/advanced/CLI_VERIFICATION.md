@@ -1,5 +1,9 @@
 # Advanced Examples — AWS CLI Verification & Cleanup
 
+## 이 문서의 역할
+
+실제 학습용 명령과 해설은 각 Advanced Example README의 **로컬 CLI 검증 가이드**에 둔다. 이 문서는 Advanced 실습들의 aggregate 검증과 삭제 후 잔존 리소스 확인용으로 유지한다.
+
 Optional/Advanced Example 전용 CLI 검증 문서다.
 
 ```bash
