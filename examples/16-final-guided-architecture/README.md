@@ -43,6 +43,40 @@ Example=16
 
 Name은 `example-16-*` 형식을 사용한다.
 
+## 리소스 이름표
+
+최종 실습에서는 이름까지 스스로 고민하지 않고 아키텍처에 집중할 수 있도록 아래 값을 그대로 사용한다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| VPC | `example-16-vpc` |
+| Public Subnet A/B | `example-16-public-a`, `example-16-public-b` |
+| Private App Subnet A/B | `example-16-app-a`, `example-16-app-b` |
+| Private DB Subnet A/B | `example-16-db-a`, `example-16-db-b` |
+| Internet Gateway | `example-16-igw` |
+| Public Route Table | `example-16-public-rt` |
+| Private Route Table | `example-16-private-rt` |
+| NAT Gateway (사용 시) | `example-16-nat` |
+| NAT Elastic IP Name tag | `example-16-nat-eip` |
+| ALB | `example-16-alb` |
+| ALB Security Group | `example-16-alb-sg` |
+| Target Group | `example-16-tg` |
+| App Security Group | `example-16-app-sg` |
+| Launch Template | `example-16-lt` |
+| Auto Scaling Group | `example-16-asg` |
+| DB Subnet Group | `example-16-db-subnet-group` |
+| RDS Security Group | `example-16-db-sg` |
+| RDS | `example-16-db` |
+| IAM Role | `example-16-app-role` |
+| IAM Policy | `example-16-s3-policy` |
+| S3 Bucket | `cloud-lab-example-16-<account-id>` |
+| CloudWatch Log Group | `example-16-app` |
+| CloudWatch Alarm | `example-16-app-health` |
+| ACM domain | `app.chulheehwang.com` |
+| Route 53 A Alias | `app.chulheehwang.com` |
+
+S3 Bucket의 `<account-id>`는 실제 AWS Account ID로 바꾼다. Hosted Zone `chulheehwang.com`은 기존 자산을 재사용한다.
+
 ## 요구사항
 
 다음 조건을 만족하는 웹 서비스를 구축한다.
