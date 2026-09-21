@@ -197,20 +197,84 @@ aws autoscaling enable-metrics-collection \
 
 ## CLI 구축 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 16 검증 명령을 실행하고 출력을 저장한다.
+최종 Example에서는 CLI 출력만 보고 아키텍처를 머릿속에 다시 그리는 것이 목표다.
 
-출력만 보고 다음을 설명할 수 있어야 한다.
+### 1. VPC와 Subnet
 
-```text
-VPC/Subnet/Route 관계
-Route 53 Alias → ALB 관계
-ACM certificate → HTTPS Listener 관계
-ALB/Listener/Target 관계
-ASG/Launch Template/EC2 관계
-RDS private 배치
-IAM Role/S3 접근
-CloudWatch Alarm
-```
+\`\`\`bash
+aws ec2 describe-vpcs --region $AWS_REGION \
+  --filters 'Name=tag:Example,Values=16' \
+  --query 'Vpcs[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:VpcId,CIDR:CidrBlock}' \
+  --output table
+
+aws ec2 describe-subnets --region $AWS_REGION \
+  --filters 'Name=tag:Example,Values=16' \
+  --query 'Subnets[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,PublicIP:MapPublicIpOnLaunch}' \
+  --output table
+\`\`\`
+
+2AZ와 public/private subnet 구성을 읽는다.
+
+### 2. EC2 / ALB / ASG
+
+\`\`\`bash
+aws ec2 describe-instances --region $AWS_REGION \
+  --filters 'Name=tag:Example,Values=16' 'Name=instance-state-name,Values=running' \
+  --query 'Reservations[].Instances[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,AZ:Placement.AvailabilityZone,SG:SecurityGroups[].GroupId}' \
+  --output table
+
+aws elbv2 describe-load-balancers --region $AWS_REGION \
+  --query "LoadBalancers[?contains(LoadBalancerName, 'example-16')].{Name:LoadBalancerName,Scheme:Scheme,State:State.Code,DNS:DNSName,AZ:AvailabilityZones[].ZoneName}"
+
+aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
+  --auto-scaling-group-names example-16-asg \
+  --query 'AutoScalingGroups[].{Min:MinSize,Desired:DesiredCapacity,Max:MaxSize,Subnets:VPCZoneIdentifier,Instances:Instances[].{Id:InstanceId,Health:HealthStatus,Lifecycle:LifecycleState},Metrics:EnabledMetrics}'
+\`\`\`
+
+여기서 **public ALB + private EC2 + ASG 2AZ**를 증명한다.
+
+### 3. RDS / S3
+
+\`\`\`bash
+aws rds describe-db-instances --region $AWS_REGION \
+  --query "DBInstances[?contains(DBInstanceIdentifier, 'example-16')].{Id:DBInstanceIdentifier,Status:DBInstanceStatus,Public:PubliclyAccessible,MultiAZ:MultiAZ,Endpoint:Endpoint.Address,Subnets:DBSubnetGroup.Subnets[].SubnetIdentifier}"
+
+aws s3api get-public-access-block --bucket <bucket-name>
+aws s3api get-bucket-versioning --bucket <bucket-name>
+aws s3api get-bucket-encryption --bucket <bucket-name>
+\`\`\`
+
+RDS가 private인지, S3가 public 차단/versioned/encrypted인지 각각 확인한다.
+
+### 4. 실제 도메인
+
+\`\`\`bash
+dig app.chulheehwang.com
+curl -I http://app.chulheehwang.com
+curl -I https://app.chulheehwang.com
+\`\`\`
+
+\`dig\`는 DNS, 첫 \`curl\`은 HTTP→HTTPS redirect, 두 번째는 실제 HTTPS 서비스 응답을 확인한다.
+
+### 5. CloudWatch Alarm
+
+\`\`\`bash
+aws cloudwatch describe-alarms --region $AWS_REGION \
+  --alarm-name-prefix example-16 \
+  --query 'MetricAlarms[].{Name:AlarmName,State:StateValue,Metric:MetricName}' \
+  --output table
+\`\`\`
+
+최종적으로 CLI 출력만 보고 다음 연결을 설명한다.
+
+\`\`\`text
+Route 53 → ALB Listener → Target Group → ASG/EC2
+                                   ↓
+                                  RDS
+
+EC2 → IAM Role → S3
+CloudWatch → 전체 상태 관측
+\`\`\`
 
 ## 최종 장애 시험
 
@@ -307,86 +371,3 @@ aws s3api list-object-versions --bucket <bucket-name>
 모든 정리 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 **전체 잔존 리소스 검사**를 실행한다. 그 출력이 최종 종료 증거다.
 
 ---
-
-## 로컬 CLI 검증 가이드
-
-### Example 16 CLI — 최종 아키텍처를 출력만 보고 재구성하기
-
-최종 Example에서는 CLI 출력만 보고 아키텍처를 머릿속에 다시 그리는 것이 목표다.
-
-### 1. VPC와 Subnet
-
-\`\`\`bash
-aws ec2 describe-vpcs --region $AWS_REGION \
-  --filters 'Name=tag:Example,Values=16' \
-  --query 'Vpcs[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:VpcId,CIDR:CidrBlock}' \
-  --output table
-
-aws ec2 describe-subnets --region $AWS_REGION \
-  --filters 'Name=tag:Example,Values=16' \
-  --query 'Subnets[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,PublicIP:MapPublicIpOnLaunch}' \
-  --output table
-\`\`\`
-
-2AZ와 public/private subnet 구성을 읽는다.
-
-### 2. EC2 / ALB / ASG
-
-\`\`\`bash
-aws ec2 describe-instances --region $AWS_REGION \
-  --filters 'Name=tag:Example,Values=16' 'Name=instance-state-name,Values=running' \
-  --query 'Reservations[].Instances[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,AZ:Placement.AvailabilityZone,SG:SecurityGroups[].GroupId}' \
-  --output table
-
-aws elbv2 describe-load-balancers --region $AWS_REGION \
-  --query "LoadBalancers[?contains(LoadBalancerName, 'example-16')].{Name:LoadBalancerName,Scheme:Scheme,State:State.Code,DNS:DNSName,AZ:AvailabilityZones[].ZoneName}"
-
-aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
-  --auto-scaling-group-names example-16-asg \
-  --query 'AutoScalingGroups[].{Min:MinSize,Desired:DesiredCapacity,Max:MaxSize,Subnets:VPCZoneIdentifier,Instances:Instances[].{Id:InstanceId,Health:HealthStatus,Lifecycle:LifecycleState},Metrics:EnabledMetrics}'
-\`\`\`
-
-여기서 **public ALB + private EC2 + ASG 2AZ**를 증명한다.
-
-### 3. RDS / S3
-
-\`\`\`bash
-aws rds describe-db-instances --region $AWS_REGION \
-  --query "DBInstances[?contains(DBInstanceIdentifier, 'example-16')].{Id:DBInstanceIdentifier,Status:DBInstanceStatus,Public:PubliclyAccessible,MultiAZ:MultiAZ,Endpoint:Endpoint.Address,Subnets:DBSubnetGroup.Subnets[].SubnetIdentifier}"
-
-aws s3api get-public-access-block --bucket <bucket-name>
-aws s3api get-bucket-versioning --bucket <bucket-name>
-aws s3api get-bucket-encryption --bucket <bucket-name>
-\`\`\`
-
-RDS가 private인지, S3가 public 차단/versioned/encrypted인지 각각 확인한다.
-
-### 4. 실제 도메인
-
-\`\`\`bash
-dig app.chulheehwang.com
-curl -I http://app.chulheehwang.com
-curl -I https://app.chulheehwang.com
-\`\`\`
-
-\`dig\`는 DNS, 첫 \`curl\`은 HTTP→HTTPS redirect, 두 번째는 실제 HTTPS 서비스 응답을 확인한다.
-
-### 5. CloudWatch Alarm
-
-\`\`\`bash
-aws cloudwatch describe-alarms --region $AWS_REGION \
-  --alarm-name-prefix example-16 \
-  --query 'MetricAlarms[].{Name:AlarmName,State:StateValue,Metric:MetricName}' \
-  --output table
-\`\`\`
-
-최종적으로 CLI 출력만 보고 다음 연결을 설명한다.
-
-\`\`\`text
-Route 53 → ALB Listener → Target Group → ASG/EC2
-                                   ↓
-                                  RDS
-
-EC2 → IAM Role → S3
-CloudWatch → 전체 상태 관측
-\`\`\`
