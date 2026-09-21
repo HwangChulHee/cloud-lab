@@ -133,7 +133,7 @@ advanced-a01-consumer
 
 ---
 
-# 1. Provider VPC 만들기
+## 1. Provider VPC 만들기
 
 다음 최소 구조를 만든다.
 
@@ -244,7 +244,7 @@ arn:aws:iam::<ACCOUNT_ID>:root
 
 ---
 
-# 5. Consumer VPC 만들기
+## 5. Consumer VPC 만들기
 
 ```text
 VPC: 10.2.0.0/16
@@ -269,7 +269,7 @@ Consumer EC2 Security Group은 관리 접근 외에 특별한 inbound가 필요�
 
 ---
 
-# 7. Interface Endpoint Security Group 만들기
+## 7. Interface Endpoint Security Group 만들기
 
 Consumer VPC에서 Endpoint 전용 Security Group을 만든다.
 
@@ -338,7 +338,7 @@ Interface Endpoint
 
 ---
 
-# 10. DNS가 어디로 해석되는지 확인하기
+## 10. DNS가 어디로 해석되는지 확인하기
 
 이번 A01에서는 Provider의 **custom private DNS name**까지 만들지 않는다. 대신 Interface Endpoint에 AWS가 자동으로 제공하는 endpoint DNS name을 사용한다.
 
@@ -376,7 +376,7 @@ Provider Endpoint Service / NLB
 
 > 별도의 `api.example.com` 같은 custom private DNS를 Endpoint Service에 붙일 수도 있지만 domain ownership verification 등 추가 단계가 필요하다. PrivateLink의 핵심 이해에는 필요하지 않으므로 이 실습에서는 선택 심화로 남긴다.
 
-# 11. Consumer에서 Provider 서비스 호출하기
+## 11. Consumer에서 Provider 서비스 호출하기
 
 Consumer EC2에서 Interface Endpoint DNS로 요청한다.
 
@@ -403,7 +403,7 @@ HTTP Host 기반 routing을 쓰지 않는 단순 서비스이므로 동일한 �
 
 ---
 
-# 12. Peering이 정말 없는지 검증하기
+## 12. Peering이 정말 없는지 검증하기
 
 두 VPC 사이에 VPC Peering Connection을 만들지 않는다.
 
@@ -430,7 +430,7 @@ Consumer Route Table
 10.1.0.0/16 → peering/tgw/vpn/...
 ```
 
-# 13. Provider EC2 private IP 직접 접근 실패 확인
+## 13. Provider EC2 private IP 직접 접근 실패 확인
 
 Provider Service EC2의 private IP를 기록한다.
 
@@ -478,7 +478,7 @@ Provider VPC에 다른 EC2/RDS 등이 있어도 Consumer가 그 private IP로 �
 
 ---
 
-# 14. 장애 실험 A — Endpoint Security Group 차단
+## 14. 장애 실험 A — Endpoint Security Group 차단
 
 Endpoint-SG의 TCP 80 inbound rule을 잠시 제거한다.
 
@@ -501,7 +501,7 @@ HTTP 요청            실패/timeout
 
 rule을 복구하고 다시 성공하는지 확인한다.
 
-# 15. 장애 실험 B — Provider Target 중지
+## 15. 장애 실험 B — Provider Target 중지
 
 Provider HTTP 서비스를 중지하거나 EC2를 stop하여 NLB Target을 unhealthy로 만든다.
 
@@ -518,7 +518,7 @@ NLB Target = unhealthy
 
 복구 후 Target이 healthy가 되고 다시 호출되는지 확인한다.
 
-# 16. 장애 실험 C — Endpoint Connection Reject/삭제 생각하기
+## 16. 장애 실험 C — Endpoint Connection Reject/삭제 생각하기
 
 실습 종료 단계에서 Consumer Interface Endpoint를 삭제한다.
 
@@ -536,7 +536,7 @@ PrivateLink 진입점 없음
 
 ---
 
-# VPC Peering과 PrivateLink를 실제 구조로 비교
+## VPC Peering과 PrivateLink를 실제 구조로 비교
 
 ## VPC Peering
 
@@ -584,149 +584,7 @@ Consumer → 게시된 특정 서비스 접근
 
 ---
 
-# CLI 구축 검증
-
-[Advanced CLI Verification](../CLI_VERIFICATION.md)의 A01 명령을 실행한다.
-
-반드시 확인할 것:
-
-```text
-Provider VPC CIDR = 10.1.0.0/16
-Consumer VPC CIDR = 10.2.0.0/16
-VPC Peering 없음
-NLB internal / target healthy
-Endpoint Service 존재
-Endpoint Connection accepted
-Interface Endpoint = available
-Endpoint ENI private IP = Consumer VPC 10.2.x.x
-Endpoint-SG TCP 80 source = Consumer EC2 SG
-Consumer route table에 10.1.0.0/16 route 없음
-Endpoint DNS 호출 성공
-Provider EC2 private IP 직접 호출 실패
-```
-
-# 기억만으로 설명하기
-
-README를 닫고 다음 질문에 답한다.
-
-- PrivateLink에서 Provider가 NLB를 사용하는 이유는?
-- Endpoint Service와 Interface Endpoint는 각각 어느 쪽에 존재하는가?
-- Interface Endpoint가 생성될 때 ENI는 어느 VPC에 생기는가?
-- Consumer가 Provider CIDR route 없이도 호출할 수 있는 이유는?
-- Endpoint DNS는 어떤 IP로 해석되는가?
-- Endpoint Security Group은 어느 구간을 통제하는가?
-- Provider Target의 SG는 어느 구간을 통제하는가?
-- Interface Endpoint가 `Available`인데도 서비스가 실패할 수 있는 이유는?
-- VPC Peering이었다면 어떤 route가 추가로 필요했을까?
-- 왜 PrivateLink를 "VPC 연결"보다 "서비스 노출"이라고 설명하는 편이 정확한가?
-
-# 완료 체크
-
-- [ ] Provider VPC `10.1.0.0/16`을 만들었다.
-- [ ] Consumer VPC `10.2.0.0/16`을 만들었다.
-- [ ] 두 VPC 사이에 Peering을 만들지 않았다.
-- [ ] Provider HTTP Service를 NLB Target으로 등록했다.
-- [ ] NLB Target이 healthy임을 확인했다.
-- [ ] NLB 기반 Endpoint Service를 만들었다.
-- [ ] Consumer principal을 허용했다.
-- [ ] Consumer Interface Endpoint를 만들었다.
-- [ ] Provider에서 Endpoint Connection을 Accept했다.
-- [ ] Interface Endpoint ENI와 private IP를 확인했다.
-- [ ] Endpoint DNS가 Consumer VPC private IP로 해석되는 것을 확인했다.
-- [ ] Consumer EC2에서 Endpoint DNS를 통한 HTTP 호출에 성공했다.
-- [ ] Provider EC2 private IP 직접 호출은 실패함을 확인했다.
-- [ ] Endpoint-SG 차단 장애를 만들고 복구했다.
-- [ ] Provider Target 장애와 Endpoint 장애를 구분할 수 있다.
-- [ ] VPC Peering과 PrivateLink 차이를 1분 안에 설명할 수 있다.
-
-# 비용 주의
-
-이 실습은 짧게 끝내는 것이 좋다. 무료로 가정하지 않는다.
-
-특히 비용이 발생할 수 있는 항목:
-
-```text
-Network Load Balancer
-Interface VPC Endpoint
-- endpoint가 존재하는 AZ/시간
-- 처리 데이터
-EC2 / EBS
-Consumer EC2 Public IPv4를 사용했다면 Public IPv4
-데이터 처리량
-```
-
-정확한 금액은 Region과 시점에 따라 달라질 수 있으므로 실습 시작 전 AWS Pricing/Console에서 현재 가격을 확인한다.
-
-NLB와 Interface Endpoint는 트래픽을 거의 보내지 않아도 시간 기반 비용이 생길 수 있으므로 **다음 날까지 방치하지 않는다.**
-
-# 삭제 순서
-
-의존성 때문에 다음 순서를 권장한다.
-
-```text
-1. Consumer Interface Endpoint 삭제
-   → Endpoint ENI가 사라지는지 확인
-
-2. Provider Endpoint Service의 Endpoint Connection이 없어졌는지 확인
-
-3. Provider Endpoint Service 삭제
-   → NLB와의 service association 해제
-
-4. Provider NLB 삭제
-
-5. Provider Target Group 삭제
-
-6. Provider / Consumer EC2 종료
-
-7. 사용하지 않는 Security Group 삭제
-
-8. Consumer 관리용 IGW / Route Table association 등 정리
-
-9. Provider / Consumer Subnet 삭제
-
-10. IGW가 있다면 detach/delete
-
-11. Provider / Consumer VPC 삭제
-```
-
-삭제 후 [Advanced CLI Verification](../CLI_VERIFICATION.md)의 잔존 리소스 검사를 실행한다.
-
-특히 다음이 남지 않았는지 본다.
-
-```text
-Interface Endpoint
-Endpoint ENI
-Endpoint Service
-NLB
-Target Group
-EC2 / EBS
-Public IPv4 관련 리소스
-두 실습 VPC
-```
-
-# 이 실습의 종료 기준
-
-단순히 `curl`이 성공했다고 끝내지 않는다.
-
-```text
-Endpoint DNS → Consumer ENI private IP를 설명할 수 있다
-+
-Provider CIDR route 없이 요청이 성공하는 이유를 설명할 수 있다
-+
-Provider private IP 직접 접근이 실패함을 확인했다
-+
-Peering과 PrivateLink를 network reachability vs service exposure로 비교할 수 있다
-+
-보안 제어 지점을 Consumer Endpoint-SG / Provider Service SG로 나눠 설명할 수 있다
-+
-삭제 후 과금 리소스가 남지 않았음을 CLI로 확인했다
-```
-
----
-
-## 로컬 CLI 검증 가이드
-
-### A01 CLI — PrivateLink의 network path를 출력으로 증명하기
+## CLI 구축 검증
 
 이 실습은 CLI가 특히 중요하다. Console에서 연결되어 보이는 것보다 **"Peering/Provider route는 없는데 Interface Endpoint ENI를 통해 서비스가 된다"**는 사실을 출력으로 증명해야 한다.
 
@@ -823,3 +681,122 @@ PrivateLink
 \`\`\`
 
 다.
+
+## 기억만으로 설명하기
+
+README를 닫고 다음 질문에 답한다.
+
+- PrivateLink에서 Provider가 NLB를 사용하는 이유는?
+- Endpoint Service와 Interface Endpoint는 각각 어느 쪽에 존재하는가?
+- Interface Endpoint가 생성될 때 ENI는 어느 VPC에 생기는가?
+- Consumer가 Provider CIDR route 없이도 호출할 수 있는 이유는?
+- Endpoint DNS는 어떤 IP로 해석되는가?
+- Endpoint Security Group은 어느 구간을 통제하는가?
+- Provider Target의 SG는 어느 구간을 통제하는가?
+- Interface Endpoint가 `Available`인데도 서비스가 실패할 수 있는 이유는?
+- VPC Peering이었다면 어떤 route가 추가로 필요했을까?
+- 왜 PrivateLink를 "VPC 연결"보다 "서비스 노출"이라고 설명하는 편이 정확한가?
+
+## 완료 체크
+
+- [ ] Provider VPC `10.1.0.0/16`을 만들었다.
+- [ ] Consumer VPC `10.2.0.0/16`을 만들었다.
+- [ ] 두 VPC 사이에 Peering을 만들지 않았다.
+- [ ] Provider HTTP Service를 NLB Target으로 등록했다.
+- [ ] NLB Target이 healthy임을 확인했다.
+- [ ] NLB 기반 Endpoint Service를 만들었다.
+- [ ] Consumer principal을 허용했다.
+- [ ] Consumer Interface Endpoint를 만들었다.
+- [ ] Provider에서 Endpoint Connection을 Accept했다.
+- [ ] Interface Endpoint ENI와 private IP를 확인했다.
+- [ ] Endpoint DNS가 Consumer VPC private IP로 해석되는 것을 확인했다.
+- [ ] Consumer EC2에서 Endpoint DNS를 통한 HTTP 호출에 성공했다.
+- [ ] Provider EC2 private IP 직접 호출은 실패함을 확인했다.
+- [ ] Endpoint-SG 차단 장애를 만들고 복구했다.
+- [ ] Provider Target 장애와 Endpoint 장애를 구분할 수 있다.
+- [ ] VPC Peering과 PrivateLink 차이를 1분 안에 설명할 수 있다.
+
+## 비용 주의
+
+이 실습은 짧게 끝내는 것이 좋다. 무료로 가정하지 않는다.
+
+특히 비용이 발생할 수 있는 항목:
+
+```text
+Network Load Balancer
+Interface VPC Endpoint
+- endpoint가 존재하는 AZ/시간
+- 처리 데이터
+EC2 / EBS
+Consumer EC2 Public IPv4를 사용했다면 Public IPv4
+데이터 처리량
+```
+
+정확한 금액은 Region과 시점에 따라 달라질 수 있으므로 실습 시작 전 AWS Pricing/Console에서 현재 가격을 확인한다.
+
+NLB와 Interface Endpoint는 트래픽을 거의 보내지 않아도 시간 기반 비용이 생길 수 있으므로 **다음 날까지 방치하지 않는다.**
+
+## 삭제 순서
+
+의존성 때문에 다음 순서를 권장한다.
+
+```text
+1. Consumer Interface Endpoint 삭제
+   → Endpoint ENI가 사라지는지 확인
+
+2. Provider Endpoint Service의 Endpoint Connection이 없어졌는지 확인
+
+3. Provider Endpoint Service 삭제
+   → NLB와의 service association 해제
+
+4. Provider NLB 삭제
+
+5. Provider Target Group 삭제
+
+6. Provider / Consumer EC2 종료
+
+7. 사용하지 않는 Security Group 삭제
+
+8. Consumer 관리용 IGW / Route Table association 등 정리
+
+9. Provider / Consumer Subnet 삭제
+
+10. IGW가 있다면 detach/delete
+
+11. Provider / Consumer VPC 삭제
+```
+
+삭제 후 [Advanced CLI Verification](../CLI_VERIFICATION.md)의 잔존 리소스 검사를 실행한다.
+
+특히 다음이 남지 않았는지 본다.
+
+```text
+Interface Endpoint
+Endpoint ENI
+Endpoint Service
+NLB
+Target Group
+EC2 / EBS
+Public IPv4 관련 리소스
+두 실습 VPC
+```
+
+## 이 실습의 종료 기준
+
+단순히 `curl`이 성공했다고 끝내지 않는다.
+
+```text
+Endpoint DNS → Consumer ENI private IP를 설명할 수 있다
++
+Provider CIDR route 없이 요청이 성공하는 이유를 설명할 수 있다
++
+Provider private IP 직접 접근이 실패함을 확인했다
++
+Peering과 PrivateLink를 network reachability vs service exposure로 비교할 수 있다
++
+보안 제어 지점을 Consumer Endpoint-SG / Provider Service SG로 나눠 설명할 수 있다
++
+삭제 후 과금 리소스가 남지 않았음을 CLI로 확인했다
+```
+
+---
