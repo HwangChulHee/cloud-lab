@@ -174,9 +174,9 @@ EC2 추가/제거
 
 ## 9. 완료 기준
 
-- [ ] Metrics / Logs / Alarms 차이를 설명할 수 있다.
-- [ ] EC2 / ALB / RDS의 핵심 metric을 몇 개 말할 수 있다.
-- [ ] 증상에 따라 첫 확인 metric을 고를 수 있다.
-- [ ] ALB의 ELB 5xx와 Target 5xx 차이를 설명할 수 있다.
-- [ ] CloudWatch와 ASG scaling의 연결을 설명할 수 있다.
-- [ ] Metric → Log → 원인 확인 흐름으로 장애를 접근할 수 있다.
+- [x] Metrics / Logs / Alarms 차이를 설명할 수 있다.
+- [x] EC2 / ALB / RDS의 핵심 metric을 몇 개 말할 수 있다.
+- [x] 증상에 따라 첫 확인 metric을 고를 수 있다.
+- [x] ALB의 ELB 5xx와 Target 5xx 차이를 설명할 수 있다.
+- [x] CloudWatch와 ASG scaling의 연결을 설명할 수 있다.
+- [x] Metric → Log → 원인 확인 흐름으로 장애를 접근할 수 있다.
