@@ -118,34 +118,34 @@ nginx 정상
 
 Example 03은 새 리소스를 많이 만드는 예제가 아니라 **같은 CLI를 장애 전/중/복구 후 반복 실행하는 것**이 핵심이다.
 
-\`\`\`bash
+```bash
 export TG_ARN=<target-group-arn>
 
 aws elbv2 describe-target-groups --region $AWS_REGION \
   --target-group-arns $TG_ARN \
   --query 'TargetGroups[].{Path:HealthCheckPath,Interval:HealthCheckIntervalSeconds,Timeout:HealthCheckTimeoutSeconds,Healthy:HealthyThresholdCount,Unhealthy:UnhealthyThresholdCount,Matcher:Matcher.HttpCode}'
-\`\`\`
+```
 
 이 명령은 ALB가 Target을 어떤 규칙으로 판단하는지 보여준다.
 
-- \`HealthCheckPath\`: 어느 URL path를 검사하는가.
-- \`HealthCheckIntervalSeconds\`: 몇 초 간격으로 검사하는가.
-- \`HealthyThresholdCount\`: 몇 번 연속 성공해야 healthy가 되는가.
-- \`UnhealthyThresholdCount\`: 몇 번 연속 실패해야 unhealthy가 되는가.
-- \`Matcher.HttpCode\`: 어떤 HTTP 응답 코드를 성공으로 보는가.
+- `HealthCheckPath`: 어느 URL path를 검사하는가.
+- `HealthCheckIntervalSeconds`: 몇 초 간격으로 검사하는가.
+- `HealthyThresholdCount`: 몇 번 연속 성공해야 healthy가 되는가.
+- `UnhealthyThresholdCount`: 몇 번 연속 실패해야 unhealthy가 되는가.
+- `Matcher.HttpCode`: 어떤 HTTP 응답 코드를 성공으로 보는가.
 
 실제 Target 상태:
 
-\`\`\`bash
+```bash
 aws elbv2 describe-target-health --region $AWS_REGION \
   --target-group-arn $TG_ARN \
   --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason,Description:TargetHealth.Description}' \
   --output table
-\`\`\`
+```
 
 관찰 순서:
 
-\`\`\`text
+```text
 nginx 정상
 → State=healthy
 
@@ -155,9 +155,9 @@ nginx 중지 또는 잘못된 health path
 
 복구
 → threshold 충족 후 healthy
-\`\`\`
+```
 
-Console의 색깔만 보는 대신 \`State / Reason / Description\`을 읽는 습관을 만든다.
+Console의 색깔만 보는 대신 `State / Reason / Description`을 읽는 습관을 만든다.
 
 ## 10. 직접 설명하기
 
