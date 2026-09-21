@@ -18,6 +18,17 @@ Example=02
 
 Name은 `example-02-*` 형식을 사용한다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| EC2 A | `example-02-web-a` |
+| EC2 B | `example-02-web-b` |
+| EC2 Security Group | `example-02-web-sg` |
+| Target Group | `example-02-tg` |
+| Application Load Balancer | `example-02-alb` |
+| ALB Security Group | `example-02-alb-sg` |
+
 ## 목표
 
 - ALB의 역할을 실제 요청으로 확인한다.
