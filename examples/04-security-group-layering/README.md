@@ -19,6 +19,18 @@ Example=04
 Name=example-04-*
 ```
 
+## 리소스 이름표
+
+Example 02의 ALB/Target Group/EC2는 재사용하고, 계층 분리를 위해 Security Group만 명확히 나눈다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| ALB | `example-02-alb` |
+| Target Group | `example-02-tg` |
+| EC2 A/B | `example-02-web-a`, `example-02-web-b` |
+| 새 ALB Security Group | `example-04-alb-sg` |
+| 새 EC2 Security Group | `example-04-web-sg` |
+
 ## 목표
 
 - Security Group Reference를 실제로 사용한다.
