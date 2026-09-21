@@ -97,27 +97,6 @@ rule을 복구하고 다시 연결한다.
 - ALB가 healthy라고 해서 DB까지 정상이라고 볼 수 있는가?
 
 ## CLI 구축 검증
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 09 명령을 실행한다.
-
-## 완료 체크
-- [ ] DB Subnet Group을 만들었다.
-- [ ] RDS를 Private하게 생성했다.
-- [ ] EC2-SG만 DB port 접근을 허용했다.
-- [ ] EC2에서 INSERT/SELECT를 했다.
-- [ ] 가능하면 App → RDS health endpoint를 확인했다.
-- [ ] SG 차단 장애를 재현하고 복구했다.
-- [ ] DB 연결 실패의 후보 원인을 설명할 수 있다.
-
-## 비용 정리
-RDS는 비용이 발생하므로 실습 후 snapshot 보존 여부를 확인하고 필요 없으면 삭제한다. Manual Snapshot도 별도 과금 대상이 될 수 있으므로 의도적으로 남기는지 확인한다.
-
-삭제 후 CLI 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 09 CLI — RDS가 정말 private인지 증명하기
 
 ### 1. RDS 상태 / Endpoint / 배치
 
@@ -171,3 +150,19 @@ aws rds describe-db-snapshots --region $AWS_REGION --snapshot-type manual \
 \`\`\`
 
 DB Instance를 삭제해도 Manual Snapshot은 남을 수 있으므로 별도로 조회한다.
+
+## 완료 체크
+- [ ] DB Subnet Group을 만들었다.
+- [ ] RDS를 Private하게 생성했다.
+- [ ] EC2-SG만 DB port 접근을 허용했다.
+- [ ] EC2에서 INSERT/SELECT를 했다.
+- [ ] 가능하면 App → RDS health endpoint를 확인했다.
+- [ ] SG 차단 장애를 재현하고 복구했다.
+- [ ] DB 연결 실패의 후보 원인을 설명할 수 있다.
+
+## 비용 정리
+RDS는 비용이 발생하므로 실습 후 snapshot 보존 여부를 확인하고 필요 없으면 삭제한다. Manual Snapshot도 별도 과금 대상이 될 수 있으므로 의도적으로 남기는지 확인한다.
+
+삭제 후 CLI 삭제 검증을 실행한다.
+
+---
