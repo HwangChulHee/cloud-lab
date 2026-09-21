@@ -203,3 +203,73 @@ DNS
 실습 종료 후 ALB/EC2 등 과금 리소스는 삭제한다.
 
 `chulheehwang.com` Hosted Zone과 도메인은 실제 보유 자산일 수 있으므로 **무조건 삭제하지 않는다.** `lab.chulheehwang.com` 실습 record는 이후 Example 16에서 재사용하지 않는다면 삭제해도 된다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 13 CLI — DNS → ACM → ALB HTTPS를 계층별로 검증
+
+### 1. Hosted Zone과 Record
+
+\`\`\`bash
+aws route53 list-hosted-zones \
+  --query 'HostedZones[].{Name:Name,Id:Id,Private:Config.PrivateZone}' \
+  --output table
+
+export ZONE_ID=<hosted-zone-id>
+
+aws route53 list-resource-record-sets --hosted-zone-id $ZONE_ID \
+  --query 'ResourceRecordSets[].{Name:Name,Type:Type,Alias:AliasTarget.DNSName}' \
+  --output table
+\`\`\`
+
+첫 명령은 Route 53이 관리하는 DNS zone을 찾고, 두 번째는 그 zone 안에서 \`lab.chulheehwang.com\`이 어디를 가리키는지 본다.
+
+### 2. ACM 인증서
+
+\`\`\`bash
+aws acm list-certificates --region $AWS_REGION \
+  --query 'CertificateSummaryList[].{Domain:DomainName,Arn:CertificateArn}' \
+  --output table
+
+export CERT_ARN=<certificate-arn>
+
+aws acm describe-certificate --region $AWS_REGION \
+  --certificate-arn $CERT_ARN \
+  --query 'Certificate.{Domain:DomainName,Status:Status,SANs:SubjectAlternativeNames,InUseBy:InUseBy}'
+\`\`\`
+
+- \`Status=ISSUED\`: 발급 완료.
+- \`Domain/SANs\`: 실제 접속 hostname과 맞는지 확인.
+- \`InUseBy\`: 인증서가 어느 AWS 리소스에 연결돼 있는지 확인.
+
+### 3. ALB Listener
+
+\`\`\`bash
+export ALB_ARN=<alb-arn>
+
+aws elbv2 describe-listeners --region $AWS_REGION \
+  --load-balancer-arn $ALB_ARN \
+  --query 'Listeners[].{Port:Port,Protocol:Protocol,Certificates:Certificates[].CertificateArn,Actions:DefaultActions}'
+\`\`\`
+
+443 Listener에 위 ACM 인증서가 연결되어 있고, 80 Listener는 HTTPS redirect인지 확인한다.
+
+### 4. 실제 DNS / HTTP / TLS 요청
+
+\`\`\`bash
+dig lab.chulheehwang.com
+curl -I http://lab.chulheehwang.com
+curl -I https://lab.chulheehwang.com
+\`\`\`
+
+\`dig\`는 DNS 계층, \`curl\`은 HTTP/HTTPS 계층을 확인한다.
+
+\`\`\`text
+dig 실패
+→ DNS부터 확인
+
+dig 정상 + HTTPS 실패
+→ Listener / SG / Certificate / Target 계층 확인
+\`\`\`
