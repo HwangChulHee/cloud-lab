@@ -184,57 +184,57 @@ Session Manager
 
 ### 1. Private EC2에 Public IP가 없는지 확인
 
-\`\`\`bash
+```bash
 aws ec2 describe-instances --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=06' 'Name=instance-state-name,Values=running' \
-  --query 'Reservations[].Instances[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Subnet:SubnetId,IamProfile:IamInstanceProfile.Arn}' \
+  --query 'Reservations[].Instances[].{Name:Tags[?Key==`Name`]|[0].Value,Id:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Subnet:SubnetId,IamProfile:IamInstanceProfile.Arn}' \
   --output table
-\`\`\`
+```
 
-\`PublicIP=null\`이어도 ALB를 통한 서비스는 가능해야 한다. \`IamProfile\`은 Session Manager에 필요한 EC2 Role이 붙었는지 확인하는 힌트다.
+`PublicIP=null`이어도 ALB를 통한 서비스는 가능해야 한다. `IamProfile`은 Session Manager에 필요한 EC2 Role이 붙었는지 확인하는 힌트다.
 
 ### 2. NAT Gateway
 
-\`\`\`bash
+```bash
 aws ec2 describe-nat-gateways --region $AWS_REGION \
   --filter 'Name=tag:Example,Values=06' 'Name=state,Values=available,pending' \
   --query 'NatGateways[].{Id:NatGatewayId,Subnet:SubnetId,State:State,NatAddresses:NatGatewayAddresses[].PublicIp}' \
   --output table
-\`\`\`
+```
 
-- NAT가 \`available\`인지 확인한다.
-- \`Subnet\`이 **public subnet**인지 별도로 Route Table과 대조한다.
-- \`NatAddresses\`에서 NAT에 연결된 public IP를 볼 수 있다.
+- NAT가 `available`인지 확인한다.
+- `Subnet`이 **public subnet**인지 별도로 Route Table과 대조한다.
+- `NatAddresses`에서 NAT에 연결된 public IP를 볼 수 있다.
 
 ### 3. Session Manager가 EC2를 관리 대상으로 보는지 확인
 
-\`\`\`bash
+```bash
 aws ssm describe-instance-information --region $AWS_REGION \
   --query 'InstanceInformationList[].{Instance:InstanceId,Ping:PingStatus,Agent:AgentVersion}' \
   --output table
-\`\`\`
+```
 
-\`PingStatus=Online\`은 SSM Agent가 Systems Manager endpoint와 통신 가능한 상태라는 뜻이다. NAT route를 제거한 뒤 Offline이 된다면 **관리 경로가 NAT outbound에 의존했다**는 증거가 된다.
+`PingStatus=Online`은 SSM Agent가 Systems Manager endpoint와 통신 가능한 상태라는 뜻이다. NAT route를 제거한 뒤 Offline이 된다면 **관리 경로가 NAT outbound에 의존했다**는 증거가 된다.
 
 ### 4. ALB 상태
 
-\`\`\`bash
+```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION \
   --query "LoadBalancers[?contains(LoadBalancerName, 'example-06')].[LoadBalancerName,Scheme,State.Code,DNSName]"
-\`\`\`
+```
 
 NAT route를 제거해도 ALB → private EC2 요청은 VPC 내부 경로이므로 계속 가능한지 확인한다. 즉 **NAT는 inbound용이 아니라 private resource의 outbound용**이라는 점을 상태 변화로 구분한다.
 
 ### 5. 삭제 후 NAT와 EIP 확인
 
-\`\`\`bash
+```bash
 aws ec2 describe-nat-gateways --region $AWS_REGION \
   --filter 'Name=tag:Example,Values=06' 'Name=state,Values=pending,available,deleting,failed' \
   --query 'NatGateways[].{Id:NatGatewayId,State:State}'
 
 aws ec2 describe-addresses --region $AWS_REGION \
   --query "Addresses[?Tags[?Key=='Example' && Value=='06']].{AllocationId:AllocationId,PublicIp:PublicIp,AssociationId:AssociationId}"
-\`\`\`
+```
 
 NAT Gateway 삭제와 **Elastic IP 해제는 별개**로 확인한다. 비용 정리에서 중요한 명령이다.
 
