@@ -22,6 +22,20 @@
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=08`을 붙인다.
 
+## 리소스 이름표
+
+Example 07 구조를 재사용하면 기존 이름을 유지한다. 새로 구성한다면 이 예제 번호로 통일한다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| ALB | `example-08-alb` |
+| Target Group | `example-08-tg` |
+| Launch Template | `example-08-lt` |
+| Auto Scaling Group | `example-08-asg` |
+| ALB Security Group | `example-08-alb-sg` |
+| EC2 Security Group | `example-08-web-sg` |
+| Target Tracking Policy | `example-08-cpu-target-tracking` |
+
 ## 이번에는 도움 없이
 기존 리소스를 삭제했다면 VPC, ALB, Target Group, Launch Template, ASG를 요구사항만 보고 다시 구성한다.
 
