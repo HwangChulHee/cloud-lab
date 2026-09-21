@@ -124,62 +124,62 @@ ALB target이 healthy라고 해서 애플리케이션의 모든 하위 의존성
 
 ### 1. ASG Group Metric 활성화
 
-\`\`\`bash
+```bash
 aws autoscaling enable-metrics-collection \
   --region $AWS_REGION \
   --auto-scaling-group-name <asg-name> \
   --granularity 1Minute
-\`\`\`
+```
 
-이 명령은 ASG 자체의 Group metric 수집을 켠다. \`1Minute\`는 1분 단위 수집 granularity다.
+이 명령은 ASG 자체의 Group metric 수집을 켠다. `1Minute`는 1분 단위 수집 granularity다.
 
 활성화 여부:
 
-\`\`\`bash
+```bash
 aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
   --auto-scaling-group-names <asg-name> \
   --query 'AutoScalingGroups[].EnabledMetrics'
-\`\`\`
+```
 
 ### 2. Metric 목록
 
-\`\`\`bash
+```bash
 aws cloudwatch list-metrics --region $AWS_REGION --namespace AWS/ApplicationELB
 aws cloudwatch list-metrics --region $AWS_REGION --namespace AWS/EC2 --metric-name CPUUtilization
 aws cloudwatch list-metrics --region $AWS_REGION --namespace AWS/AutoScaling
 aws cloudwatch list-metrics --region $AWS_REGION --namespace AWS/RDS
-\`\`\`
+```
 
-\`namespace\`는 지표를 서비스별로 구분하는 논리적 영역이다.
+`namespace`는 지표를 서비스별로 구분하는 논리적 영역이다.
 
-\`\`\`text
+```text
 AWS/ApplicationELB → ALB
 AWS/EC2           → EC2
 AWS/AutoScaling   → ASG
 AWS/RDS           → RDS
-\`\`\`
+```
 
 ### 3. Alarm
 
-\`\`\`bash
+```bash
 aws cloudwatch describe-alarms --region $AWS_REGION \
   --alarm-name-prefix example-14 \
   --query 'MetricAlarms[].{Name:AlarmName,State:StateValue,Metric:MetricName,Namespace:Namespace,Threshold:Threshold}' \
   --output table
-\`\`\`
+```
 
-\`StateValue\`의 \`OK / ALARM / INSUFFICIENT_DATA\`를 구분한다. Alarm은 Metric 자체가 아니라 **Metric에 조건을 적용해 상태를 만든 것**이다.
+`StateValue`의 `OK / ALARM / INSUFFICIENT_DATA`를 구분한다. Alarm은 Metric 자체가 아니라 **Metric에 조건을 적용해 상태를 만든 것**이다.
 
 ### 4. Log Group
 
-\`\`\`bash
+```bash
 aws logs describe-log-groups --region $AWS_REGION \
   --log-group-name-prefix example-14 \
   --query 'logGroups[].{Name:logGroupName,StoredBytes:storedBytes,Retention:retentionInDays}' \
   --output table
-\`\`\`
+```
 
-Metric이 수치라면 Log는 사건/문맥을 담는다. \`retentionInDays\`를 확인해 로그를 무기한 보관하는지 여부도 본다.
+Metric이 수치라면 Log는 사건/문맥을 담는다. `retentionInDays`를 확인해 로그를 무기한 보관하는지 여부도 본다.
 
 ## 기억만으로 설명하기
 `사용자 증상 → ALB → Target → EC2 앱 → RDS` 순서로 어디에서 어떤 metric/log를 볼지 설명한다.
