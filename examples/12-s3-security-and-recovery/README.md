@@ -21,6 +21,18 @@ S3 Bucket, IAM Role, `GetObject`/`PutObject`, AccessDenied 진단을 다시 수�
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=12`를 붙인다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| EC2 | `example-12-web` |
+| IAM Role | `example-12-s3-role` |
+| IAM Policy | `example-12-s3-policy` |
+| S3 Bucket | `cloud-lab-example-12-<account-id>` |
+| Lifecycle Rule | `example-12-old-version-lifecycle` |
+
+S3 Bucket 이름은 전 세계에서 유일해야 하므로 `<account-id>`를 실제 Account ID로 바꾼다. SSE-KMS 심화에서 Customer managed key를 직접 만든다면 Alias는 `alias/example-12-s3`를 사용한다.
+
 ## 이번에는 도움 없이
 새 bucket과 EC2 Role을 최소 권한으로 구성한다.
 
