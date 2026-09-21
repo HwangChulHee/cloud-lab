@@ -146,8 +146,8 @@ examples/16 Final Architecture
 
 ## 완료 기준
 
-- [ ] Event History에서 API 호출을 찾을 수 있다.
-- [ ] Management Event와 Data Event를 구분할 수 있다.
-- [ ] CloudWatch와 CloudTrail의 역할 차이를 설명할 수 있다.
-- [ ] `userIdentity`, `eventName`, `requestParameters`를 보고 변경 주체와 내용을 추적할 수 있다.
-- [ ] "누가 설정을 바꿨는가?"라는 질문에서 CloudTrail을 떠올릴 수 있다.
+- [x] Event History에서 API 호출을 찾을 수 있다.
+- [x] Management Event와 Data Event를 구분할 수 있다.
+- [x] CloudWatch와 CloudTrail의 역할 차이를 설명할 수 있다.
+- [x] `userIdentity`, `eventName`, `requestParameters`를 보고 변경 주체와 내용을 추적할 수 있다.
+- [x] "누가 설정을 바꿨는가?"라는 질문에서 CloudTrail을 떠올릴 수 있다.
