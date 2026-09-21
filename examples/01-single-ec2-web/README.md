@@ -154,16 +154,16 @@ Private IP와 Public IP가 각각 어떻게 되는지 확인하고, 왜 서비�
 
 먼저 공통 변수다.
 
-\`\`\`bash
+```bash
 export AWS_REGION=ap-northeast-2
-\`\`\`
+```
 
-- \`export\`: 현재 셸에서 뒤 명령들이 재사용할 변수를 만든다.
-- \`AWS_REGION\`: 아래 명령이 어느 AWS Region을 조회할지 명시한다.
+- `export`: 현재 셸에서 뒤 명령들이 재사용할 변수를 만든다.
+- `AWS_REGION`: 아래 명령이 어느 AWS Region을 조회할지 명시한다.
 
 ### 1. EC2 상태와 네트워크 정보
 
-\`\`\`bash
+```bash
 aws ec2 describe-instances \
   --region $AWS_REGION \
   --filters \
@@ -171,13 +171,13 @@ aws ec2 describe-instances \
     'Name=tag:Stage,Values=examples' \
     'Name=tag:Example,Values=01' \
     'Name=instance-state-name,Values=pending,running,stopping,stopped' \
-  --query 'Reservations[].Instances[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:InstanceId,State:State.Name,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Subnet:SubnetId,Vpc:VpcId,SG:SecurityGroups[].GroupId}' \
+  --query 'Reservations[].Instances[].{Name:Tags[?Key==`Name`]|[0].Value,Id:InstanceId,State:State.Name,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Subnet:SubnetId,Vpc:VpcId,SG:SecurityGroups[].GroupId}' \
   --output table
-\`\`\`
+```
 
 명령을 쪼개서 읽으면:
 
-\`\`\`text
+```text
 aws ec2 describe-instances
 → EC2 인스턴스 정보를 조회한다.
 
@@ -189,26 +189,26 @@ aws ec2 describe-instances
 
 --output table
 → 사람이 읽기 좋은 표로 출력한다.
-\`\`\`
+```
 
-출력에서 \`PublicIP\`와 \`PrivateIP\`를 비교하고, Stop/Start 전후에 같은 명령을 다시 실행한다.
+출력에서 `PublicIP`와 `PrivateIP`를 비교하고, Stop/Start 전후에 같은 명령을 다시 실행한다.
 
 ### 2. Security Group의 실제 inbound rule
 
-\`\`\`bash
+```bash
 aws ec2 describe-security-groups \
   --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=01' \
   --query 'SecurityGroups[].{Name:GroupName,Id:GroupId,Ingress:IpPermissions}'
-\`\`\`
+```
 
-- \`describe-security-groups\`: SG의 설정을 조회한다.
-- \`IpPermissions\`: **Inbound rule**이다.
+- `describe-security-groups`: SG의 설정을 조회한다.
+- `IpPermissions`: **Inbound rule**이다.
 - HTTP 80을 열었을 때와 제거했을 때 같은 명령을 실행하면 rule 변화가 그대로 보인다.
 
 ### 3. 삭제 후 확인
 
-\`\`\`bash
+```bash
 aws ec2 describe-instances --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=01' \
             'Name=instance-state-name,Values=pending,running,stopping,stopped' \
@@ -217,7 +217,7 @@ aws ec2 describe-instances --region $AWS_REGION \
 aws ec2 describe-volumes --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=01' \
   --query 'Volumes[].{Id:VolumeId,State:State}'
-\`\`\`
+```
 
 첫 명령은 아직 실행/정지 상태로 남은 EC2가 있는지, 두 번째는 **EC2를 삭제했는데 EBS Volume이 별도로 남아 있지 않은지** 확인한다. 의도적으로 남긴 리소스가 없다면 결과가 비어 있어야 한다.
 
