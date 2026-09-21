@@ -103,15 +103,15 @@ ASG는 EC2를 생성했지만 애플리케이션이 준비되지 않으면 Targe
 
 ### 1. Auto Scaling Group
 
-\`\`\`bash
+```bash
 aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
   --auto-scaling-group-names example-07-asg \
   --query 'AutoScalingGroups[].{Min:MinSize,Desired:DesiredCapacity,Max:MaxSize,Subnets:VPCZoneIdentifier,Instances:Instances[].{Id:InstanceId,AZ:AvailabilityZone,Health:HealthStatus,Lifecycle:LifecycleState},TG:TargetGroupARNs}'
-\`\`\`
+```
 
 이 한 명령으로 다음 연결을 본다.
 
-\`\`\`text
+```text
 Min / Desired / Max
 → ASG가 유지하려는 용량
 
@@ -123,29 +123,29 @@ Instances
 
 TG
 → 어떤 Target Group에 연결됐는가
-\`\`\`
+```
 
 ### 2. Launch Template
 
-\`\`\`bash
+```bash
 aws ec2 describe-launch-templates --region $AWS_REGION \
   --launch-template-names example-07-lt \
   --query 'LaunchTemplates[].{Id:LaunchTemplateId,Latest:LatestVersionNumber,Default:DefaultVersionNumber}'
-\`\`\`
+```
 
 ASG가 EC2를 만들 때 참조할 Launch Template이 존재하고 어느 version이 최신/default인지 확인한다.
 
 ### 3. ASG가 왜 인스턴스를 만들거나 지웠는지
 
-\`\`\`bash
+```bash
 aws autoscaling describe-scaling-activities --region $AWS_REGION \
   --auto-scaling-group-name example-07-asg \
   --max-items 10 \
   --query 'Activities[].{Time:StartTime,Status:StatusCode,Cause:Cause,Description:Description}' \
   --output table
-\`\`\`
+```
 
-\`Cause\`와 \`Description\`이 핵심이다. 단순히 "새 EC2가 생겼다"가 아니라 **왜 ASG가 그 행동을 했는지** 설명할 수 있어야 한다.
+`Cause`와 `Description`이 핵심이다. 단순히 "새 EC2가 생겼다"가 아니라 **왜 ASG가 그 행동을 했는지** 설명할 수 있어야 한다.
 
 EC2 한 대를 terminate한 뒤 이 명령을 다시 실행해 replacement 기록을 찾는다.
 
