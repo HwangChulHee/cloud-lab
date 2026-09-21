@@ -721,3 +721,105 @@ Peering과 PrivateLink를 network reachability vs service exposure로 비교할 
 +
 삭제 후 과금 리소스가 남지 않았음을 CLI로 확인했다
 ```
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### A01 CLI — PrivateLink의 network path를 출력으로 증명하기
+
+이 실습은 CLI가 특히 중요하다. Console에서 연결되어 보이는 것보다 **"Peering/Provider route는 없는데 Interface Endpoint ENI를 통해 서비스가 된다"**는 사실을 출력으로 증명해야 한다.
+
+### 1. Provider / Consumer VPC
+
+\`\`\`bash
+aws ec2 describe-vpcs --region $AWS_REGION \
+  --filters 'Name=tag:Stage,Values=examples-advanced' 'Name=tag:Example,Values=A01' \
+  --query 'Vpcs[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:VpcId,CIDR:CidrBlock}' \
+  --output table
+\`\`\`
+
+Provider=\`10.1.0.0/16\`, Consumer=\`10.2.0.0/16\`인지 확인한다.
+
+### 2. Peering 부재 / Consumer Route
+
+\`\`\`bash
+aws ec2 describe-vpc-peering-connections --region $AWS_REGION \
+  --filters "Name=requester-vpc-info.vpc-id,Values=$PROVIDER_VPC_ID"
+
+aws ec2 describe-route-tables --region $AWS_REGION \
+  --filters "Name=vpc-id,Values=$CONSUMER_VPC_ID" \
+  --query 'RouteTables[].Routes'
+\`\`\`
+
+두 VPC를 직접 연결하는 Peering이 없고 Consumer Route Table에 Provider CIDR(\`10.1.0.0/16\`) route가 없는 것을 확인한다.
+
+### 3. Provider NLB와 Target
+
+\`\`\`bash
+aws elbv2 describe-load-balancers --region $AWS_REGION \
+  --names advanced-a01-nlb \
+  --query 'LoadBalancers[].{Scheme:Scheme,Type:Type,State:State.Code,Vpc:VpcId,DNS:DNSName}'
+
+export TG_ARN=$(aws elbv2 describe-target-groups --region $AWS_REGION \
+  --names advanced-a01-tg \
+  --query 'TargetGroups[0].TargetGroupArn' --output text)
+
+aws elbv2 describe-target-health --region $AWS_REGION \
+  --target-group-arn $TG_ARN \
+  --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason}'
+\`\`\`
+
+\`Scheme=internal\`, \`Type=network\`, Target=\`healthy\`를 확인한다.
+
+### 4. Endpoint Service
+
+\`\`\`bash
+aws ec2 describe-vpc-endpoint-service-configurations --region $AWS_REGION \
+  --query 'ServiceConfigurations[].{Id:ServiceId,Name:ServiceName,State:ServiceState,Acceptance:AcceptanceRequired,NLBs:NetworkLoadBalancerArns}'
+\`\`\`
+
+이 출력은 **Provider가 어느 NLB를 PrivateLink 서비스로 게시했는지** 보여준다.
+
+### 5. Consumer Interface Endpoint / ENI
+
+\`\`\`bash
+aws ec2 describe-vpc-endpoints --region $AWS_REGION \
+  --vpc-endpoint-ids $ENDPOINT_ID \
+  --query 'VpcEndpoints[0].{Type:VpcEndpointType,State:State,Vpc:VpcId,Subnets:SubnetIds,ENIs:NetworkInterfaceIds,DNS:DnsEntries[].DnsName,SGs:Groups[].GroupId}'
+
+export ENDPOINT_ENIS=$(aws ec2 describe-vpc-endpoints --region $AWS_REGION \
+  --vpc-endpoint-ids $ENDPOINT_ID \
+  --query 'VpcEndpoints[0].NetworkInterfaceIds' --output text)
+
+aws ec2 describe-network-interfaces --region $AWS_REGION \
+  --network-interface-ids $ENDPOINT_ENIS \
+  --query 'NetworkInterfaces[].{Id:NetworkInterfaceId,Vpc:VpcId,Subnet:SubnetId,PrivateIP:PrivateIpAddress,SGs:Groups[].GroupId}' \
+  --output table
+\`\`\`
+
+핵심은 ENI의 \`PrivateIP\`가 **Consumer VPC의 10.2.x.x**라는 점이다.
+
+### 6. DNS가 ENI private IP로 해석되는지
+
+Consumer EC2에서:
+
+\`\`\`bash
+getent hosts <interface-endpoint-dns>
+curl -v http://<interface-endpoint-dns>/
+curl --connect-timeout 3 http://<provider-ec2-private-ip>/
+\`\`\`
+
+\`getent hosts\` 결과는 Endpoint ENI private IP를 보여야 한다. Endpoint DNS 호출은 성공하고 Provider EC2 private IP 직접 호출은 실패해야 한다.
+
+이 차이가 곧:
+
+\`\`\`text
+VPC Peering
+= VPC ↔ VPC reachability
+
+PrivateLink
+= Consumer → 게시된 특정 서비스
+\`\`\`
+
+다.
