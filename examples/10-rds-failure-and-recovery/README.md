@@ -27,6 +27,18 @@ Example=10
 
 Name은 `example-10-*` 형식을 사용한다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| Primary RDS | `example-10-primary` |
+| Manual Snapshot | `example-10-manual-snapshot` |
+| Snapshot Restore DB | `example-10-restored` |
+| PITR Restore DB | `example-10-pitr-restored` |
+| Read Replica | `example-10-read-replica` |
+
+Example 09의 VPC/DB Subnet Group/RDS Security Group을 재사용한다면 기존 이름을 유지한다. Multi-AZ Standby는 AWS가 관리하므로 별도 이름을 짓지 않는다.
+
 ## 핵심 구분
 ```text
 Multi-AZ      = 가용성 / 장애 복구
