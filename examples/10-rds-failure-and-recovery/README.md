@@ -106,3 +106,56 @@ Manual Snapshot
 ```
 
 삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 10 삭제 검증을 실행한다. Manual Snapshot은 DB instance를 삭제해도 별도로 남을 수 있으므로 반드시 따로 확인한다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 10 CLI — RDS HA/Replica/Backup 상태를 시간순으로 읽기
+
+### 1. Primary / Multi-AZ / Replica 관계
+
+\`\`\`bash
+aws rds describe-db-instances --region $AWS_REGION \
+  --query "DBInstances[?contains(DBInstanceIdentifier, 'example-10')].{Id:DBInstanceIdentifier,Status:DBInstanceStatus,MultiAZ:MultiAZ,AZ:AvailabilityZone,SecondaryAZ:SecondaryAvailabilityZone,ReplicaSource:ReadReplicaSourceDBInstanceIdentifier,ReadReplicas:ReadReplicaDBInstanceIdentifiers,BackupRetention:BackupRetentionPeriod,Endpoint:Endpoint.Address}"
+\`\`\`
+
+이 출력 하나로 다음을 구분한다.
+
+\`\`\`text
+MultiAZ
+→ standby/failover 구성 여부
+
+ReadReplicaSourceDBInstanceIdentifier
+→ 이 DB가 어떤 Primary의 Replica인지
+
+ReadReplicaDBInstanceIdentifiers
+→ 이 DB가 가진 Replica 목록
+
+BackupRetentionPeriod
+→ Automated Backup 보존 기간
+\`\`\`
+
+### 2. Failover 관련 Event
+
+\`\`\`bash
+aws rds describe-events --region $AWS_REGION \
+  --source-type db-instance \
+  --duration 180 \
+  --query 'Events[].{Time:Date,Source:SourceIdentifier,Message:Message}' \
+  --output table
+\`\`\`
+
+최근 180분 동안의 RDS Instance Event를 조회한다. Failover를 수행했다면 **시간 순서와 Message**를 애플리케이션 연결 끊김/복구 시점과 맞춰 본다.
+
+### 3. Snapshot
+
+\`\`\`bash
+aws rds describe-db-snapshots --region $AWS_REGION \
+  --snapshot-type manual \
+  --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'example-10')].[DBSnapshotIdentifier,Status,SnapshotCreateTime]"
+\`\`\`
+
+Manual Snapshot이 실제 생성되었고 \`available\`인지 확인한다.
+
+실습 종료 시 DB Instance와 Snapshot을 **각각 따로 조회**한다. Instance가 없다고 비용/데이터 리소스가 모두 사라진 것은 아니다.
