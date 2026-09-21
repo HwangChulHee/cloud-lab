@@ -173,42 +173,7 @@ DNS 정상 + Target unhealthy
 - ACM 인증서는 ALB의 어느 Listener와 연결되는가?
 - DNS가 정상이라는 것과 애플리케이션이 정상이라는 것은 왜 다른가?
 
-## 기억만으로 설명하기
-
-브라우저에 `https://lab.chulheehwang.com`을 입력한 순간부터 EC2 응답까지 다음 순서로 설명한다.
-
-```text
-DNS
-→ Route 53 Alias
-→ ALB
-→ TLS/ACM
-→ HTTPS Listener
-→ Target Group
-→ EC2
-```
-
-## 완료 체크
-- [ ] `chulheehwang.com`의 DNS 관리 위치와 NS 위임을 확인했다.
-- [ ] `lab.chulheehwang.com` ACM Certificate를 발급했다.
-- [ ] DNS Validation 과정을 확인했다.
-- [ ] ALB에 443 Listener를 연결했다.
-- [ ] Route 53 A Alias로 ALB를 연결했다.
-- [ ] `https://lab.chulheehwang.com` 실제 접속에 성공했다.
-- [ ] HTTP → HTTPS redirect를 확인했다.
-- [ ] `dig`/`curl`로 DNS와 HTTPS를 각각 확인했다.
-- [ ] DNS 문제와 ALB/backend 문제를 구분해 설명할 수 있다.
-
-## 비용 정리
-
-실습 종료 후 ALB/EC2 등 과금 리소스는 삭제한다.
-
-`chulheehwang.com` Hosted Zone과 도메인은 실제 보유 자산일 수 있으므로 **무조건 삭제하지 않는다.** `lab.chulheehwang.com` 실습 record는 이후 Example 16에서 재사용하지 않는다면 삭제해도 된다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 13 CLI — DNS → ACM → ALB HTTPS를 계층별로 검증
+## CLI 구축 검증
 
 ### 1. Hosted Zone과 Record
 
@@ -273,3 +238,36 @@ dig 실패
 dig 정상 + HTTPS 실패
 → Listener / SG / Certificate / Target 계층 확인
 \`\`\`
+
+## 기억만으로 설명하기
+
+브라우저에 `https://lab.chulheehwang.com`을 입력한 순간부터 EC2 응답까지 다음 순서로 설명한다.
+
+```text
+DNS
+→ Route 53 Alias
+→ ALB
+→ TLS/ACM
+→ HTTPS Listener
+→ Target Group
+→ EC2
+```
+
+## 완료 체크
+- [ ] `chulheehwang.com`의 DNS 관리 위치와 NS 위임을 확인했다.
+- [ ] `lab.chulheehwang.com` ACM Certificate를 발급했다.
+- [ ] DNS Validation 과정을 확인했다.
+- [ ] ALB에 443 Listener를 연결했다.
+- [ ] Route 53 A Alias로 ALB를 연결했다.
+- [ ] `https://lab.chulheehwang.com` 실제 접속에 성공했다.
+- [ ] HTTP → HTTPS redirect를 확인했다.
+- [ ] `dig`/`curl`로 DNS와 HTTPS를 각각 확인했다.
+- [ ] DNS 문제와 ALB/backend 문제를 구분해 설명할 수 있다.
+
+## 비용 정리
+
+실습 종료 후 ALB/EC2 등 과금 리소스는 삭제한다.
+
+`chulheehwang.com` Hosted Zone과 도메인은 실제 보유 자산일 수 있으므로 **무조건 삭제하지 않는다.** `lab.chulheehwang.com` 실습 record는 이후 Example 16에서 재사용하지 않는다면 삭제해도 된다.
+
+---
