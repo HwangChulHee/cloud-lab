@@ -116,44 +116,6 @@ nginx 정상
 
 ## 9. CLI 구축/장애 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 03 명령을 실행한다.
-
-장애 전/중/복구 후 같은 명령을 반복해서 다음을 비교한다.
-
-```text
-HealthCheckPath
-Healthy/Unhealthy threshold
-TargetHealth.State
-TargetHealth.Reason
-```
-
-## 10. 직접 설명하기
-
-- ALB는 서버 프로세스가 죽었다는 사실을 어떻게 알까?
-- 왜 한 번 실패했다고 바로 unhealthy로 만들지 않을까?
-- Health Check endpoint가 너무 무거우면 어떤 문제가 생길까?
-- 애플리케이션은 정상인데 잘못된 Health Check 때문에 서비스에서 제외될 수 있는 이유는?
-
-## 11. 완료 체크
-
-- [ ] 두 Target이 healthy인 상태에서 시작했다.
-- [ ] nginx를 중지하고 unhealthy 전환을 관찰했다.
-- [ ] 정상 Target으로만 요청이 가는 것을 확인했다.
-- [ ] nginx 복구 후 healthy 전환을 확인했다.
-- [ ] 별도 Health Check path를 구성했다.
-- [ ] 잘못된 Health Check가 정상 서버를 제외할 수 있음을 확인했다.
-- [ ] CLI로 장애 전/중/복구 상태를 비교했다.
-
-## 12. 다음 단계 / 비용 정리
-
-Example 04를 바로 진행한다면 Example 02의 리소스를 유지한다. 여기서 종료한다면 Example 02의 삭제 검증 절차로 ALB, Target Group, EC2, SG를 정리하고 잔존 리소스를 확인한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 03 CLI — Health Check 장애를 상태값으로 확인하기
-
 Example 03은 새 리소스를 많이 만드는 예제가 아니라 **같은 CLI를 장애 전/중/복구 후 반복 실행하는 것**이 핵심이다.
 
 \`\`\`bash
@@ -196,3 +158,26 @@ nginx 중지 또는 잘못된 health path
 \`\`\`
 
 Console의 색깔만 보는 대신 \`State / Reason / Description\`을 읽는 습관을 만든다.
+
+## 10. 직접 설명하기
+
+- ALB는 서버 프로세스가 죽었다는 사실을 어떻게 알까?
+- 왜 한 번 실패했다고 바로 unhealthy로 만들지 않을까?
+- Health Check endpoint가 너무 무거우면 어떤 문제가 생길까?
+- 애플리케이션은 정상인데 잘못된 Health Check 때문에 서비스에서 제외될 수 있는 이유는?
+
+## 11. 완료 체크
+
+- [ ] 두 Target이 healthy인 상태에서 시작했다.
+- [ ] nginx를 중지하고 unhealthy 전환을 관찰했다.
+- [ ] 정상 Target으로만 요청이 가는 것을 확인했다.
+- [ ] nginx 복구 후 healthy 전환을 확인했다.
+- [ ] 별도 Health Check path를 구성했다.
+- [ ] 잘못된 Health Check가 정상 서버를 제외할 수 있음을 확인했다.
+- [ ] CLI로 장애 전/중/복구 상태를 비교했다.
+
+## 12. 다음 단계 / 비용 정리
+
+Example 04를 바로 진행한다면 Example 02의 리소스를 유지한다. 여기서 종료한다면 Example 02의 삭제 검증 절차로 ALB, Target Group, EC2, SG를 정리하고 잔존 리소스를 확인한다.
+
+---
