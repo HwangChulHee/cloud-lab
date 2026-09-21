@@ -538,7 +538,7 @@ PrivateLink 진입점 없음
 
 ## VPC Peering과 PrivateLink를 실제 구조로 비교
 
-## VPC Peering
+### VPC Peering
 
 ```text
 Consumer VPC 10.2.0.0/16
@@ -556,7 +556,7 @@ VPC 간 IP network reachability 제공
 - SG/NACL 허용
 ```
 
-## PrivateLink
+### PrivateLink
 
 ```text
 Consumer EC2
@@ -578,7 +578,7 @@ Provider VPC 전체 연결 없음
 Consumer → 게시된 특정 서비스 접근
 ```
 
-## 면접용 한 문장
+### 면접용 한 문장
 
 > "VPC Peering은 두 VPC 사이에 IP routing을 열어 네트워크 reachability를 제공하지만, PrivateLink는 Provider가 NLB 뒤의 특정 서비스를 Endpoint Service로 게시하고 Consumer가 자기 VPC의 Interface Endpoint ENI를 통해 그 서비스만 private하게 소비하는 구조입니다. 그래서 Consumer Route Table에 Provider CIDR route를 추가하지 않아도 되고 Provider의 다른 리소스까지 연결되는 것도 아닙니다."
 
