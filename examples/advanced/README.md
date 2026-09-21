@@ -30,6 +30,6 @@ Advanced Example은 필요한 주제를 골라 수행한다. 번호는 핵심 �
 
 ## CLI 원칙
 
-Advanced Example도 중앙 CLI 문서만 보고 실행하지 않는다. 각 실습 README 하단의 **로컬 CLI 검증 가이드**에서 명령과 출력 필드의 의미를 함께 학습한다.
+Advanced Example도 중앙 CLI 문서만 보고 실행하지 않는다. 각 실습 README 흐름 안의 **CLI 구축 검증** 섹션에서 명령과 출력 필드의 의미를 함께 학습한다.
 
 `examples/advanced/CLI_VERIFICATION.md`는 여러 Advanced 실습을 한 번에 비교하거나 삭제 후 잔존 리소스를 통합 점검하는 참고 문서로 유지한다.
