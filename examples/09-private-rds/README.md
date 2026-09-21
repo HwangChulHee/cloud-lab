@@ -100,54 +100,54 @@ rule을 복구하고 다시 연결한다.
 
 ### 1. RDS 상태 / Endpoint / 배치
 
-\`\`\`bash
+```bash
 aws rds describe-db-instances --region $AWS_REGION \
   --query "DBInstances[?contains(DBInstanceIdentifier, 'example-09')].{Id:DBInstanceIdentifier,Status:DBInstanceStatus,Public:PubliclyAccessible,MultiAZ:MultiAZ,Endpoint:Endpoint.Address,Port:Endpoint.Port,Vpc:DBSubnetGroup.VpcId,Subnets:DBSubnetGroup.Subnets[].SubnetIdentifier,SG:VpcSecurityGroups[].VpcSecurityGroupId}" \
   --output json
-\`\`\`
+```
 
 특히:
 
-- \`PubliclyAccessible=false\`: 인터넷 공개 DB가 아님.
-- \`Subnets\`: DB Subnet Group이 어느 subnet들을 사용하는가.
-- \`Endpoint\`: 애플리케이션이 실제 접속할 DNS 이름.
-- \`VpcSecurityGroups\`: DB 접근을 제어하는 SG.
+- `PubliclyAccessible=false`: 인터넷 공개 DB가 아님.
+- `Subnets`: DB Subnet Group이 어느 subnet들을 사용하는가.
+- `Endpoint`: 애플리케이션이 실제 접속할 DNS 이름.
+- `VpcSecurityGroups`: DB 접근을 제어하는 SG.
 
 ### 2. RDS Security Group
 
-\`\`\`bash
+```bash
 aws ec2 describe-security-groups --region $AWS_REGION \
   --group-ids <rds-sg-id> \
   --query 'SecurityGroups[].IpPermissions'
-\`\`\`
+```
 
-DB port의 source가 \`0.0.0.0/0\`가 아니라 **App/EC2 Security Group**인지 확인한다.
+DB port의 source가 `0.0.0.0/0`가 아니라 **App/EC2 Security Group**인지 확인한다.
 
 ### 3. 애플리케이션 관점 검증
 
-\`\`\`bash
+```bash
 curl -i http://<alb-dns>/db-health
-\`\`\`
+```
 
 이 명령은 AWS control plane 설정을 조회하는 것이 아니라 **실제 사용자 요청 경로로 애플리케이션이 DB까지 연결되는지** 확인한다.
 
-\`\`\`text
+```text
 RDS status=available
 ≠ 애플리케이션 DB 연결 정상
 
 /db-health 성공
 → ALB → App → RDS 실제 data path까지 확인
-\`\`\`
+```
 
 ### 4. 삭제 후 DB와 Snapshot 확인
 
-\`\`\`bash
+```bash
 aws rds describe-db-instances --region $AWS_REGION \
   --query "DBInstances[?contains(DBInstanceIdentifier, 'example-09')].[DBInstanceIdentifier,DBInstanceStatus]"
 
 aws rds describe-db-snapshots --region $AWS_REGION --snapshot-type manual \
   --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'example-09')].[DBSnapshotIdentifier,Status]"
-\`\`\`
+```
 
 DB Instance를 삭제해도 Manual Snapshot은 남을 수 있으므로 별도로 조회한다.
 
