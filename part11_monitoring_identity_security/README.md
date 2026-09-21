@@ -1,5 +1,7 @@
 # 11부 — Monitoring, Advanced Identity & Security
 
+> ✅ 학습 완료 — CloudWatch / CloudTrail / KMS / Systems Manager
+
 이 파트는 SAA 강의의 Monitoring / Advanced Identity / Security 영역을 정리한다.
 
 현재 `examples/` 실습을 시작하기 전에 우선 깊게 볼 것은 다음 네 챕터다.
