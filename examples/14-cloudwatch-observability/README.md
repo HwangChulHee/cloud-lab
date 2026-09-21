@@ -121,31 +121,6 @@ ALB target이 healthy라고 해서 애플리케이션의 모든 하위 의존성
 - GroupDesiredCapacity와 GroupInServiceInstances가 다르면 무엇을 의미할 수 있을까?
 
 ## CLI 구축 검증
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 14 명령을 실행한다.
-
-## 기억만으로 설명하기
-`사용자 증상 → ALB → Target → EC2 앱 → RDS` 순서로 어디에서 어떤 metric/log를 볼지 설명한다.
-
-## 완료 체크
-- [ ] ALB 핵심 metric을 확인했다.
-- [ ] EC2 metric을 확인했다.
-- [ ] ASG metric collection을 활성화했다.
-- [ ] ASG group metric을 확인했다.
-- [ ] RDS metric을 확인했다.
-- [ ] Alarm을 만들고 상태 변화를 봤다.
-- [ ] 장애 발생 시 여러 화면의 신호를 연결해봤다.
-- [ ] Metric과 Log의 역할을 구분할 수 있다.
-
-## 비용 정리
-불필요한 Alarm/Log Group과 테스트 인프라를 정리한다. Log Group은 리소스를 지워도 자동으로 남을 수 있으므로 별도로 확인한다.
-
-삭제 후 CLI 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 14 CLI — Metric, Alarm, Log가 각각 무엇을 말하는지 보기
 
 ### 1. ASG Group Metric 활성화
 
@@ -205,3 +180,23 @@ aws logs describe-log-groups --region $AWS_REGION \
 \`\`\`
 
 Metric이 수치라면 Log는 사건/문맥을 담는다. \`retentionInDays\`를 확인해 로그를 무기한 보관하는지 여부도 본다.
+
+## 기억만으로 설명하기
+`사용자 증상 → ALB → Target → EC2 앱 → RDS` 순서로 어디에서 어떤 metric/log를 볼지 설명한다.
+
+## 완료 체크
+- [ ] ALB 핵심 metric을 확인했다.
+- [ ] EC2 metric을 확인했다.
+- [ ] ASG metric collection을 활성화했다.
+- [ ] ASG group metric을 확인했다.
+- [ ] RDS metric을 확인했다.
+- [ ] Alarm을 만들고 상태 변화를 봤다.
+- [ ] 장애 발생 시 여러 화면의 신호를 연결해봤다.
+- [ ] Metric과 Log의 역할을 구분할 수 있다.
+
+## 비용 정리
+불필요한 Alarm/Log Group과 테스트 인프라를 정리한다. Log Group은 리소스를 지워도 자동으로 남을 수 있으므로 별도로 확인한다.
+
+삭제 후 CLI 삭제 검증을 실행한다.
+
+---
