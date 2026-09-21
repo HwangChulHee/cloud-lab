@@ -77,7 +77,7 @@ Session Manager 연결 실패 시 무작정 SG의 22번을 열지 않는다.
 
 ## 7. 완료 기준
 
-- [ ] Private EC2 운영 접근 문제를 설명할 수 있다.
-- [ ] Session Manager와 SSH의 차이를 설명할 수 있다.
-- [ ] SSM Agent / IAM Role / 네트워크 경로의 역할을 구분할 수 있다.
-- [ ] 연결 실패 시 확인 순서를 말할 수 있다.
+- [x] Private EC2 운영 접근 문제를 설명할 수 있다.
+- [x] Session Manager와 SSH의 차이를 설명할 수 있다.
+- [x] SSM Agent / IAM Role / 네트워크 경로의 역할을 구분할 수 있다.
+- [x] 연결 실패 시 확인 순서를 말할 수 있다.
