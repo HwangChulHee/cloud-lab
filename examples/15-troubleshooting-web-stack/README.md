@@ -176,51 +176,6 @@ DNS/TLS/ALB backend 문제를 한 덩어리로 취급하지 않는다.
 
 ## CLI 장애 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 15 명령을 사용해 다음을 출력한다.
-
-```text
-ALB / Listener
-Target Group / Target Health
-ASG Activity
-EC2 상태
-RDS 상태
-CloudWatch Alarm
-```
-
-장애 전/중/복구 후 출력을 비교한다.
-
-## 최종 구술 연습
-다음 질문에 1~2분씩 말로 답한다.
-
-- ALB 503이면 Target unhealthy라고 바로 결론 내려도 되는가?
-- Target이 0개인 상태와 모든 Target이 unhealthy인 상태는 어떻게 다른가?
-- Timeout과 Connection Refused는 어떤 후보 원인이 다른가?
-- EC2가 healthy인데 API만 500이면 어느 계층 문제일 가능성이 큰가?
-- DB 연결 실패에서 SG 문제와 credential 문제를 어떻게 구분할 것인가?
-- 새 ASG 인스턴스가 unhealthy일 때 bootstrap과 NAT를 왜 확인하는가?
-- S3 AccessDenied에서 무엇을 확인할 것인가?
-
-## 완료 체크
-- [ ] 최소 6개 Case를 직접 재현했다.
-- [ ] Target 0개 / 일부 unhealthy / 전체 unhealthy를 비교했다.
-- [ ] ALB fail-open 개념을 실제 결과와 연결했다.
-- [ ] 정답을 보기 전에 가설을 세웠다.
-- [ ] CloudWatch/Target Group/로그로 증거를 찾았다.
-- [ ] 복구 후 정상 상태를 다시 확인했다.
-- [ ] 각 장애의 재발 방지 방법을 적었다.
-- [ ] 증상만 듣고 진단 순서를 설명할 수 있다.
-
-## 비용 정리
-모든 테스트 리소스를 정상 복구한 뒤 필요 없는 인프라를 삭제한다. NAT Gateway, RDS, ALB, EC2/ASG, EBS, S3 versions, Log Group을 특히 확인한다.
-
-삭제 후 CLI 전체 잔존 리소스 검사를 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 15 CLI — 장애를 계층별로 좁히는 진단 순서
-
 이 Example에서는 명령 하나의 암기보다 **항상 같은 진단 순서**를 반복한다.
 
 ### 1. ALB 자체
@@ -300,3 +255,31 @@ aws cloudwatch describe-alarms --region $AWS_REGION \
 → RDS/IAM
 → Metric/Log
 \`\`\`
+
+## 최종 구술 연습
+다음 질문에 1~2분씩 말로 답한다.
+
+- ALB 503이면 Target unhealthy라고 바로 결론 내려도 되는가?
+- Target이 0개인 상태와 모든 Target이 unhealthy인 상태는 어떻게 다른가?
+- Timeout과 Connection Refused는 어떤 후보 원인이 다른가?
+- EC2가 healthy인데 API만 500이면 어느 계층 문제일 가능성이 큰가?
+- DB 연결 실패에서 SG 문제와 credential 문제를 어떻게 구분할 것인가?
+- 새 ASG 인스턴스가 unhealthy일 때 bootstrap과 NAT를 왜 확인하는가?
+- S3 AccessDenied에서 무엇을 확인할 것인가?
+
+## 완료 체크
+- [ ] 최소 6개 Case를 직접 재현했다.
+- [ ] Target 0개 / 일부 unhealthy / 전체 unhealthy를 비교했다.
+- [ ] ALB fail-open 개념을 실제 결과와 연결했다.
+- [ ] 정답을 보기 전에 가설을 세웠다.
+- [ ] CloudWatch/Target Group/로그로 증거를 찾았다.
+- [ ] 복구 후 정상 상태를 다시 확인했다.
+- [ ] 각 장애의 재발 방지 방법을 적었다.
+- [ ] 증상만 듣고 진단 순서를 설명할 수 있다.
+
+## 비용 정리
+모든 테스트 리소스를 정상 복구한 뒤 필요 없는 인프라를 삭제한다. NAT Gateway, RDS, ALB, EC2/ASG, EBS, S3 versions, Log Group을 특히 확인한다.
+
+삭제 후 CLI 전체 잔존 리소스 검사를 실행한다.
+
+---
