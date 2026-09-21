@@ -143,47 +143,6 @@ http://<ALB_DNS_NAME>
 
 ## 8. CLI 구축 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 02 명령을 실행한다.
-
-확인할 것:
-
-```text
-EC2 2대
-서로 다른 AZ
-ALB active / internet-facing
-Target Group 연결
-Target 2개 healthy
-```
-
-## 9. 완료 체크
-
-- [ ] 공통 태그와 이름 규칙을 적용했다.
-- [ ] EC2를 두 대 생성했다.
-- [ ] 각 EC2가 서로 다른 내용을 반환한다.
-- [ ] Target Group을 만들었다.
-- [ ] 두 Target이 healthy인 것을 확인했다.
-- [ ] ALB를 만들었다.
-- [ ] ALB DNS 이름으로 접속했다.
-- [ ] 여러 요청이 서로 다른 EC2에서 처리되는 것을 확인했다.
-- [ ] Listener → Target Group → EC2 흐름을 설명할 수 있다.
-- [ ] CLI로 구조를 검증했다.
-
-## 10. 다음 질문
-
-현재 EC2-A의 nginx를 끄면 ALB는 계속 A로 요청을 보낼까? 어느 순간 제외할까? 바로 제외할까, 시간이 걸릴까? 다음 예제에서 Health Check를 직접 관찰한다.
-
-## 11. 비용 정리와 삭제 검증
-
-Example 03/04를 바로 이어서 할 예정이면 리소스를 유지해도 된다. 종료할 경우 ALB, Target Group, EC2 두 대, 불필요한 Security Group을 삭제한다.
-
-삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 02 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 02 CLI — ALB → Target Group → EC2 관계 읽기
-
 ### 1. EC2 두 대와 AZ 확인
 
 \`\`\`bash
@@ -240,3 +199,28 @@ aws elbv2 describe-target-groups --region $AWS_REGION \
 \`\`\`
 
 이 두 명령은 이름에 \`example-02\`가 들어간 ALB와 Target Group이 남았는지 찾는다. 실습 종료 후 의도적으로 유지하지 않았다면 비어 있어야 한다.
+
+## 9. 완료 체크
+
+- [ ] 공통 태그와 이름 규칙을 적용했다.
+- [ ] EC2를 두 대 생성했다.
+- [ ] 각 EC2가 서로 다른 내용을 반환한다.
+- [ ] Target Group을 만들었다.
+- [ ] 두 Target이 healthy인 것을 확인했다.
+- [ ] ALB를 만들었다.
+- [ ] ALB DNS 이름으로 접속했다.
+- [ ] 여러 요청이 서로 다른 EC2에서 처리되는 것을 확인했다.
+- [ ] Listener → Target Group → EC2 흐름을 설명할 수 있다.
+- [ ] CLI로 구조를 검증했다.
+
+## 10. 다음 질문
+
+현재 EC2-A의 nginx를 끄면 ALB는 계속 A로 요청을 보낼까? 어느 순간 제외할까? 바로 제외할까, 시간이 걸릴까? 다음 예제에서 Health Check를 직접 관찰한다.
+
+## 11. 비용 정리와 삭제 검증
+
+Example 03/04를 바로 이어서 할 예정이면 리소스를 유지해도 된다. 종료할 경우 ALB, Target Group, EC2 두 대, 불필요한 Security Group을 삭제한다.
+
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 02 삭제 검증을 실행한다.
+
+---
