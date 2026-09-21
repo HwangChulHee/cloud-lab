@@ -72,14 +72,14 @@ Failover 또는 일시적 DB 중단 시 애플리케이션 로그, RDS 상태, C
 
 ### 1. Primary / Multi-AZ / Replica 관계
 
-\`\`\`bash
+```bash
 aws rds describe-db-instances --region $AWS_REGION \
   --query "DBInstances[?contains(DBInstanceIdentifier, 'example-10')].{Id:DBInstanceIdentifier,Status:DBInstanceStatus,MultiAZ:MultiAZ,AZ:AvailabilityZone,SecondaryAZ:SecondaryAvailabilityZone,ReplicaSource:ReadReplicaSourceDBInstanceIdentifier,ReadReplicas:ReadReplicaDBInstanceIdentifiers,BackupRetention:BackupRetentionPeriod,Endpoint:Endpoint.Address}"
-\`\`\`
+```
 
 이 출력 하나로 다음을 구분한다.
 
-\`\`\`text
+```text
 MultiAZ
 → standby/failover 구성 여부
 
@@ -91,29 +91,29 @@ ReadReplicaDBInstanceIdentifiers
 
 BackupRetentionPeriod
 → Automated Backup 보존 기간
-\`\`\`
+```
 
 ### 2. Failover 관련 Event
 
-\`\`\`bash
+```bash
 aws rds describe-events --region $AWS_REGION \
   --source-type db-instance \
   --duration 180 \
   --query 'Events[].{Time:Date,Source:SourceIdentifier,Message:Message}' \
   --output table
-\`\`\`
+```
 
 최근 180분 동안의 RDS Instance Event를 조회한다. Failover를 수행했다면 **시간 순서와 Message**를 애플리케이션 연결 끊김/복구 시점과 맞춰 본다.
 
 ### 3. Snapshot
 
-\`\`\`bash
+```bash
 aws rds describe-db-snapshots --region $AWS_REGION \
   --snapshot-type manual \
   --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'example-10')].[DBSnapshotIdentifier,Status,SnapshotCreateTime]"
-\`\`\`
+```
 
-Manual Snapshot이 실제 생성되었고 \`available\`인지 확인한다.
+Manual Snapshot이 실제 생성되었고 `available`인지 확인한다.
 
 실습 종료 시 DB Instance와 Snapshot을 **각각 따로 조회**한다. Instance가 없다고 비용/데이터 리소스가 모두 사라진 것은 아니다.
 
