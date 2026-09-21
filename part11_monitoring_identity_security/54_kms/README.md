@@ -163,10 +163,10 @@ examples/16 Final Architecture
 
 ## 완료 기준
 
-- [ ] KMS Key의 역할을 설명할 수 있다.
-- [ ] AWS owned / AWS managed / Customer managed key를 구분할 수 있다.
-- [ ] SSE-S3와 SSE-KMS의 차이를 설명할 수 있다.
-- [ ] Key Policy와 IAM Policy가 함께 권한 판단에 관여한다는 것을 이해한다.
-- [ ] Envelope Encryption의 큰 흐름을 설명할 수 있다.
-- [ ] S3/EBS/RDS 암호화와 KMS를 연결해서 설명할 수 있다.
-- [ ] `s3:GetObject`와 `kms:Decrypt`가 별도 권한이라는 것을 이해한다.
+- [x] KMS Key의 역할을 설명할 수 있다.
+- [x] AWS owned / AWS managed / Customer managed key를 구분할 수 있다.
+- [x] SSE-S3와 SSE-KMS의 차이를 설명할 수 있다.
+- [x] Key Policy와 IAM Policy가 함께 권한 판단에 관여한다는 것을 이해한다.
+- [x] Envelope Encryption의 큰 흐름을 설명할 수 있다.
+- [x] S3/EBS/RDS 암호화와 KMS를 연결해서 설명할 수 있다.
+- [x] `s3:GetObject`와 `kms:Decrypt`가 별도 권한이라는 것을 이해한다.
