@@ -182,43 +182,6 @@ Session Manager
 
 ## 10. CLI 구축/장애 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 06 명령을 실행한다.
-
-판단 포인트:
-
-```text
-Private EC2 PublicIP 없음
-ALB active
-Target healthy
-NAT 사용 시 NAT가 public subnet에 존재
-NAT가 있는 동안 SSM PingStatus=Online
-NAT route 제거 전/후 outbound 차이
-```
-
-## 완료 체크
-
-- [ ] ALB를 Public Subnet에 배치했다.
-- [ ] EC2를 Private Subnet에 배치했다.
-- [ ] EC2에 Public IP가 없음을 확인했다.
-- [ ] NAT 없는 bootstrap 실패 가능성을 직접 관찰했다.
-- [ ] NAT route 추가 후 새 인스턴스 bootstrap 성공을 확인했다.
-- [ ] ALB를 통해 서비스가 정상 동작했다.
-- [ ] NAT가 있는 상태에서 Session Manager 접속을 확인했다.
-- [ ] NAT route 제거 후 inbound와 outbound의 차이를 관찰했다.
-- [ ] Session Manager의 IAM/네트워크 요구사항을 설명할 수 있다.
-
-## 비용 정리
-
-특히 NAT Gateway와 Elastic IP를 즉시 정리한다. 다음 Example에서 재사용하지 않는다면 ALB, EC2, VPC 관련 리소스도 삭제한다.
-
-삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 06 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 06 CLI — Private EC2, NAT, SSM의 경로를 확인하기
-
 ### 1. Private EC2에 Public IP가 없는지 확인
 
 \`\`\`bash
@@ -274,3 +237,23 @@ aws ec2 describe-addresses --region $AWS_REGION \
 \`\`\`
 
 NAT Gateway 삭제와 **Elastic IP 해제는 별개**로 확인한다. 비용 정리에서 중요한 명령이다.
+
+## 완료 체크
+
+- [ ] ALB를 Public Subnet에 배치했다.
+- [ ] EC2를 Private Subnet에 배치했다.
+- [ ] EC2에 Public IP가 없음을 확인했다.
+- [ ] NAT 없는 bootstrap 실패 가능성을 직접 관찰했다.
+- [ ] NAT route 추가 후 새 인스턴스 bootstrap 성공을 확인했다.
+- [ ] ALB를 통해 서비스가 정상 동작했다.
+- [ ] NAT가 있는 상태에서 Session Manager 접속을 확인했다.
+- [ ] NAT route 제거 후 inbound와 outbound의 차이를 관찰했다.
+- [ ] Session Manager의 IAM/네트워크 요구사항을 설명할 수 있다.
+
+## 비용 정리
+
+특히 NAT Gateway와 Elastic IP를 즉시 정리한다. 다음 Example에서 재사용하지 않는다면 ALB, EC2, VPC 관련 리소스도 삭제한다.
+
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 06 삭제 검증을 실행한다.
+
+---
