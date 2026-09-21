@@ -105,58 +105,58 @@ Public Subnet 하나를 Private 쪽 Route Table에 association 해본다. 같은
 
 ### 1. 실습 VPC ID 얻기
 
-\`\`\`bash
+```bash
 export VPC_ID=$(aws ec2 describe-vpcs --region $AWS_REGION \
   --filters 'Name=tag:Name,Values=example-05-vpc' \
   --query 'Vpcs[0].VpcId' --output text)
 
 echo $VPC_ID
-\`\`\`
+```
 
 먼저 사람이 VPC ID를 복사하는 대신 CLI로 찾아 변수에 저장한다. 이후 모든 조회를 같은 VPC로 제한할 수 있다.
 
 ### 2. Subnet과 AZ
 
-\`\`\`bash
+```bash
 aws ec2 describe-subnets --region $AWS_REGION \
   --filters "Name=vpc-id,Values=$VPC_ID" \
-  --query 'Subnets[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,PublicIP:MapPublicIpOnLaunch}' \
+  --query 'Subnets[].{Name:Tags[?Key==`Name`]|[0].Value,Id:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,PublicIP:MapPublicIpOnLaunch}' \
   --output table
-\`\`\`
+```
 
-- \`CIDR\`: subnet 주소 범위.
-- \`AZ\`: subnet이 속한 단일 AZ.
-- \`MapPublicIpOnLaunch\`: 새 EC2에 public IPv4를 자동 부여하도록 설정했는지 보여준다. 이것만으로 public subnet이 되는 것은 아니다.
+- `CIDR`: subnet 주소 범위.
+- `AZ`: subnet이 속한 단일 AZ.
+- `MapPublicIpOnLaunch`: 새 EC2에 public IPv4를 자동 부여하도록 설정했는지 보여준다. 이것만으로 public subnet이 되는 것은 아니다.
 
 ### 3. Route Table
 
-\`\`\`bash
+```bash
 aws ec2 describe-route-tables --region $AWS_REGION \
   --filters "Name=vpc-id,Values=$VPC_ID" \
-  --query 'RouteTables[].{Name:Tags[?Key==\`Name\`]|[0].Value,Id:RouteTableId,Routes:Routes,Associations:Associations[].SubnetId}'
-\`\`\`
+  --query 'RouteTables[].{Name:Tags[?Key==`Name`]|[0].Value,Id:RouteTableId,Routes:Routes,Associations:Associations[].SubnetId}'
+```
 
-핵심은 \`Routes\`와 \`Associations\`를 같이 보는 것이다.
+핵심은 `Routes`와 `Associations`를 같이 보는 것이다.
 
-\`\`\`text
+```text
 Routes
 → 어디로 보내는가?
 
 Associations
 → 이 Route Table을 어느 Subnet이 사용하는가?
-\`\`\`
+```
 
 Public Subnet의 Route Table에는 인터넷 default route가 IGW를 가리켜야 한다.
 
 ### 4. Internet Gateway
 
-\`\`\`bash
+```bash
 aws ec2 describe-internet-gateways --region $AWS_REGION \
   --filters "Name=attachment.vpc-id,Values=$VPC_ID" \
   --query 'InternetGateways[].{Id:InternetGatewayId,Attachments:Attachments}'
-\`\`\`
+```
 
-\`Attachments\`를 통해 IGW가 **실제로 이 VPC에 attach되어 있는지** 확인한다.
+`Attachments`를 통해 IGW가 **실제로 이 VPC에 attach되어 있는지** 확인한다.
 
 장애 실험에서는 route 삭제 전/후에 2번과 3번 명령을 반복하면 "EC2와 SG는 그대로인데 Route만 사라졌다"는 것을 증명할 수 있다.
 
