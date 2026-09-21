@@ -97,35 +97,35 @@ Target Group Health Check가 실패하고 Target이 unhealthy가 되는지 확�
 
 Example 02 리소스를 재사용했다면 태그보다 **실제 SG ID를 직접 지정**하는 편이 명확하다.
 
-\`\`\`bash
+```bash
 export ALB_SG_ID=<alb-security-group-id>
 export EC2_SG_ID=<ec2-security-group-id>
 
 aws ec2 describe-security-groups --region $AWS_REGION \
   --group-ids $ALB_SG_ID $EC2_SG_ID \
   --query 'SecurityGroups[].{Name:GroupName,Id:GroupId,Ingress:IpPermissions}'
-\`\`\`
+```
 
-여기서 중요한 것은 EC2-SG의 \`IpPermissions\` 안에 source CIDR 대신 **ALB Security Group ID**가 보이는지 확인하는 것이다.
+여기서 중요한 것은 EC2-SG의 `IpPermissions` 안에 source CIDR 대신 **ALB Security Group ID**가 보이는지 확인하는 것이다.
 
-\`\`\`text
+```text
 나쁜 상태
 EC2-SG :80 source = 0.0.0.0/0
 
 의도한 상태
 EC2-SG :80 source = sg-... (ALB-SG)
-\`\`\`
+```
 
 SG rule을 제거한 뒤 Target 상태도 같이 본다.
 
-\`\`\`bash
+```bash
 export TG_ARN=<target-group-arn>
 
 aws elbv2 describe-target-health --region $AWS_REGION \
   --target-group-arn $TG_ARN \
   --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason}' \
   --output table
-\`\`\`
+```
 
 이 두 명령을 함께 보면 **설정 변화(SG) → 결과 변화(Target Health)**를 연결해서 볼 수 있다.
 
