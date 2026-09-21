@@ -147,3 +147,52 @@ TargetHealth.Reason
 ## 12. 다음 단계 / 비용 정리
 
 Example 04를 바로 진행한다면 Example 02의 리소스를 유지한다. 여기서 종료한다면 Example 02의 삭제 검증 절차로 ALB, Target Group, EC2, SG를 정리하고 잔존 리소스를 확인한다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 03 CLI — Health Check 장애를 상태값으로 확인하기
+
+Example 03은 새 리소스를 많이 만드는 예제가 아니라 **같은 CLI를 장애 전/중/복구 후 반복 실행하는 것**이 핵심이다.
+
+\`\`\`bash
+export TG_ARN=<target-group-arn>
+
+aws elbv2 describe-target-groups --region $AWS_REGION \
+  --target-group-arns $TG_ARN \
+  --query 'TargetGroups[].{Path:HealthCheckPath,Interval:HealthCheckIntervalSeconds,Timeout:HealthCheckTimeoutSeconds,Healthy:HealthyThresholdCount,Unhealthy:UnhealthyThresholdCount,Matcher:Matcher.HttpCode}'
+\`\`\`
+
+이 명령은 ALB가 Target을 어떤 규칙으로 판단하는지 보여준다.
+
+- \`HealthCheckPath\`: 어느 URL path를 검사하는가.
+- \`HealthCheckIntervalSeconds\`: 몇 초 간격으로 검사하는가.
+- \`HealthyThresholdCount\`: 몇 번 연속 성공해야 healthy가 되는가.
+- \`UnhealthyThresholdCount\`: 몇 번 연속 실패해야 unhealthy가 되는가.
+- \`Matcher.HttpCode\`: 어떤 HTTP 응답 코드를 성공으로 보는가.
+
+실제 Target 상태:
+
+\`\`\`bash
+aws elbv2 describe-target-health --region $AWS_REGION \
+  --target-group-arn $TG_ARN \
+  --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason,Description:TargetHealth.Description}' \
+  --output table
+\`\`\`
+
+관찰 순서:
+
+\`\`\`text
+nginx 정상
+→ State=healthy
+
+nginx 중지 또는 잘못된 health path
+→ 잠시 후 State=unhealthy
+→ Reason/Description으로 원인 후보 확인
+
+복구
+→ threshold 충족 후 healthy
+\`\`\`
+
+Console의 색깔만 보는 대신 \`State / Reason / Description\`을 읽는 습관을 만든다.
