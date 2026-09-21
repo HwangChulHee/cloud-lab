@@ -102,3 +102,60 @@ ASG 평균 CPU 상승
 테스트용 인스턴스 수를 원복하거나 ASG/ALB를 삭제한다. NAT를 사용했다면 NAT Gateway와 EIP도 함께 정리한다.
 
 삭제 후 CLI 삭제 검증을 실행한다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 08 CLI — Metric → Scaling Policy → Desired Capacity 변화 추적
+
+### 1. 현재 ASG 용량
+
+\`\`\`bash
+aws autoscaling describe-auto-scaling-groups --region $AWS_REGION \
+  --auto-scaling-group-names example-08-asg \
+  --query 'AutoScalingGroups[].{Desired:DesiredCapacity,Min:MinSize,Max:MaxSize,Instances:Instances[].{Id:InstanceId,Health:HealthStatus,Lifecycle:LifecycleState}}'
+\`\`\`
+
+\`DesiredCapacity\`는 지금 ASG가 유지하려는 인스턴스 수다.
+
+### 2. Scaling Policy
+
+\`\`\`bash
+aws autoscaling describe-policies --region $AWS_REGION \
+  --auto-scaling-group-name example-08-asg \
+  --query 'ScalingPolicies[].{Name:PolicyName,Type:PolicyType,Target:TargetTrackingConfiguration.TargetValue,Metric:TargetTrackingConfiguration.PredefinedMetricSpecification.PredefinedMetricType}'
+\`\`\`
+
+여기서 **어떤 Metric을 어느 Target 값으로 맞추려 하는지** 확인한다.
+
+### 3. 실제 Scaling Activity
+
+\`\`\`bash
+aws autoscaling describe-scaling-activities --region $AWS_REGION \
+  --auto-scaling-group-name example-08-asg \
+  --max-items 20 \
+  --query 'Activities[].{Time:StartTime,Status:StatusCode,Cause:Cause,Description:Description}' \
+  --output table
+\`\`\`
+
+부하를 만든 뒤 다음 흐름을 연결해서 본다.
+
+\`\`\`text
+Metric 상승
+→ Target Tracking 조건 충족
+→ Scaling Activity 발생
+→ Desired Capacity 증가
+→ 새 EC2 InService
+\`\`\`
+
+### 4. EC2 CPU Metric 자체가 존재하는지
+
+\`\`\`bash
+aws cloudwatch list-metrics --region $AWS_REGION \
+  --namespace AWS/EC2 \
+  --metric-name CPUUtilization \
+  --query 'Metrics[].Dimensions'
+\`\`\`
+
+\`namespace AWS/EC2\`는 EC2 기본 지표 영역이다. 한 인스턴스 CPU와 **ASG가 판단에 사용하는 평균값**을 같은 것으로 착각하지 않는다.
