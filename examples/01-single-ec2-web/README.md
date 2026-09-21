@@ -150,54 +150,6 @@ Private IP와 Public IP가 각각 어떻게 되는지 확인하고, 왜 서비�
 
 ## 8. CLI 구축 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 01 명령을 실행한다.
-
-CLI 출력만 보고 다음을 확인할 수 있어야 한다.
-
-```text
-EC2 상태
-Public/Private IP
-Subnet/VPC
-Security Group
-HTTP 80 inbound
-```
-
-## 9. 완료 체크
-
-- [ ] EC2를 직접 생성했다.
-- [ ] 공통 태그와 이름 규칙을 적용했다.
-- [ ] User Data로 웹 서버를 자동 실행했다.
-- [ ] Public IP로 접속했다.
-- [ ] Public/Private IP를 확인했다.
-- [ ] Security Group에서 HTTP를 차단해봤다.
-- [ ] 웹 서버 프로세스를 중지해봤다.
-- [ ] Stop/Start 후 Public IP 변화를 확인했다.
-- [ ] CLI로 실제 구성을 검증했다.
-
-## 10. 정리
-
-이 단계의 구조에는 명확한 한계가 있다.
-
-```text
-User
- ↓
-EC2 1대
-```
-
-EC2가 죽으면 서비스도 같이 죽는다. 다음 예제에서는 EC2를 두 대 만들고 그 앞에 Application Load Balancer를 둔다.
-
-## 11. 비용 정리와 삭제 검증
-
-실습 종료 후 필요 없다면 EC2, 불필요한 Security Group, 추가 EBS Volume 등을 삭제한다.
-
-삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 01 삭제 검증을 실행한다. 실습 종료는 콘솔에서 삭제 버튼을 누른 시점이 아니라 **과금 가능한 리소스가 남지 않았음을 확인한 시점**으로 본다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 01 CLI — EC2와 Security Group을 읽어보기
-
 이 예제부터 CLI는 단순 복붙이 아니라 **"무슨 리소스를 어떤 조건으로 조회하고, 출력의 어느 필드를 보는가"**까지 이해한다.
 
 먼저 공통 변수다.
@@ -268,3 +220,35 @@ aws ec2 describe-volumes --region $AWS_REGION \
 \`\`\`
 
 첫 명령은 아직 실행/정지 상태로 남은 EC2가 있는지, 두 번째는 **EC2를 삭제했는데 EBS Volume이 별도로 남아 있지 않은지** 확인한다. 의도적으로 남긴 리소스가 없다면 결과가 비어 있어야 한다.
+
+## 9. 완료 체크
+
+- [ ] EC2를 직접 생성했다.
+- [ ] 공통 태그와 이름 규칙을 적용했다.
+- [ ] User Data로 웹 서버를 자동 실행했다.
+- [ ] Public IP로 접속했다.
+- [ ] Public/Private IP를 확인했다.
+- [ ] Security Group에서 HTTP를 차단해봤다.
+- [ ] 웹 서버 프로세스를 중지해봤다.
+- [ ] Stop/Start 후 Public IP 변화를 확인했다.
+- [ ] CLI로 실제 구성을 검증했다.
+
+## 10. 정리
+
+이 단계의 구조에는 명확한 한계가 있다.
+
+```text
+User
+ ↓
+EC2 1대
+```
+
+EC2가 죽으면 서비스도 같이 죽는다. 다음 예제에서는 EC2를 두 대 만들고 그 앞에 Application Load Balancer를 둔다.
+
+## 11. 비용 정리와 삭제 검증
+
+실습 종료 후 필요 없다면 EC2, 불필요한 Security Group, 추가 EBS Volume 등을 삭제한다.
+
+삭제 후 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 01 삭제 검증을 실행한다. 실습 종료는 콘솔에서 삭제 버튼을 누른 시점이 아니라 **과금 가능한 리소스가 남지 않았음을 확인한 시점**으로 본다.
+
+---
