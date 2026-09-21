@@ -37,6 +37,23 @@ Example=05
 
 Name은 `example-05-*` 형식을 사용한다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| VPC | `example-05-vpc` |
+| Public Subnet A | `example-05-public-a` |
+| Public Subnet B | `example-05-public-b` |
+| Private Subnet A | `example-05-private-a` |
+| Private Subnet B | `example-05-private-b` |
+| Internet Gateway | `example-05-igw` |
+| Public Route Table | `example-05-public-rt` |
+| Main/Private Route Table Name tag | `example-05-private-rt` |
+| EC2 | `example-05-web` |
+| EC2 Security Group | `example-05-web-sg` |
+
+Main Route Table은 VPC 생성 시 자동으로 생긴다. 새로 만들 필요는 없고, Name tag만 `example-05-private-rt`로 붙여 식별하기 쉽게 한다.
+
 ## 목표 구조
 
 ```text
