@@ -30,6 +30,21 @@ ALB, Target Group, Security Group, Health Check, Route 53 record 확인을 반�
 ## 이번에는 도움 없이
 ALB + Target Group + EC2/ASG 기본 구조는 요구사항만 보고 구성한다.
 
+## 리소스 이름표
+
+| 리소스 | 이름/식별자 |
+| --- | --- |
+| ALB | `example-13-alb` |
+| Target Group | `example-13-tg` |
+| ALB Security Group | `example-13-alb-sg` |
+| EC2/ASG Security Group | `example-13-web-sg` |
+| ACM Certificate domain | `lab.chulheehwang.com` |
+| Route 53 Hosted Zone | 기존 `chulheehwang.com` 재사용 |
+| Route 53 A Alias Record | `lab.chulheehwang.com` |
+| 장애 실험용 Record | `broken.lab.chulheehwang.com` |
+
+Hosted Zone은 새로 만들지 않고 기존 도메인 자산을 재사용한다.
+
 ## 목표 구조
 ```text
 User
