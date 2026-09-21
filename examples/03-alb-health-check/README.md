@@ -12,6 +12,19 @@ User → ALB → Target Group
 
 > Example 02의 리소스를 재사용한다면 기존 `Example=02` 태그를 억지로 바꾸지 않는다. 이 예제에서 새 리소스를 만든다면 `Project=cloud-lab`, `Stage=examples`, `Example=03`을 적용한다.
 
+## 리소스 이름표
+
+이 예제는 Example 02 리소스를 그대로 재사용한다. 새 이름을 만들지 않는다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| EC2 A | `example-02-web-a` |
+| EC2 B | `example-02-web-b` |
+| EC2 Security Group | `example-02-web-sg` |
+| Target Group | `example-02-tg` |
+| ALB | `example-02-alb` |
+| ALB Security Group | `example-02-alb-sg` |
+
 ## 목표
 
 - ALB Health Check가 실제로 무엇을 하는지 확인한다.
