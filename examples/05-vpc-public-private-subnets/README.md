@@ -103,49 +103,6 @@ Public Subnet 하나를 Private 쪽 Route Table에 association 해본다. 같은
 
 ## 9. CLI 구축/장애 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 05 명령을 실행한다.
-
-출력으로 다음을 확인한다.
-
-```text
-Subnet 4개 / CIDR 비중복 / 2AZ
-Public RT의 인터넷 default route → IGW
-Private RT에는 해당 IGW default route 없음
-Subnet ↔ Route Table association
-IGW ↔ VPC attachment
-```
-
-가능하면 장애 전/중/복구 후 Route Table 출력을 저장해 차이를 비교한다.
-
-## 10. 기억만으로 설명하기
-
-- Public Subnet과 Private Subnet의 차이를 Route Table 기준으로 설명한다.
-- Public EC2가 인터넷과 직접 통신하려면 route뿐 아니라 Public IPv4/EIP도 필요하다는 것을 설명한다.
-- SG와 Route Table의 역할 차이를 설명한다.
-- `10.0.0.0/16 local`이 필요한 이유를 설명한다.
-
-## 완료 체크
-
-- [ ] 공통 태그와 이름 규칙을 적용했다.
-- [ ] VPC를 직접 만들었다.
-- [ ] 2AZ에 Public/Private Subnet을 만들었다.
-- [ ] IGW와 Public Route Table을 연결했다.
-- [ ] EC2를 Public Subnet에 배치했다.
-- [ ] IGW route 삭제 장애를 재현했다.
-- [ ] 잘못된 Route Table association을 재현/복구했다.
-- [ ] SG 문제와 Route 문제를 구분해 설명할 수 있다.
-- [ ] CLI로 네트워크 연결 관계를 검증했다.
-
-## 비용 정리와 삭제 검증
-
-다음 Example을 바로 할 예정이면 VPC/Subnet을 유지해도 된다. 종료한다면 EC2와 VPC 관련 리소스를 정리하고 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 05 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 05 CLI — VPC, Subnet, Route Table을 연결해서 읽기
-
 ### 1. 실습 VPC ID 얻기
 
 \`\`\`bash
@@ -202,3 +159,28 @@ aws ec2 describe-internet-gateways --region $AWS_REGION \
 \`Attachments\`를 통해 IGW가 **실제로 이 VPC에 attach되어 있는지** 확인한다.
 
 장애 실험에서는 route 삭제 전/후에 2번과 3번 명령을 반복하면 "EC2와 SG는 그대로인데 Route만 사라졌다"는 것을 증명할 수 있다.
+
+## 10. 기억만으로 설명하기
+
+- Public Subnet과 Private Subnet의 차이를 Route Table 기준으로 설명한다.
+- Public EC2가 인터넷과 직접 통신하려면 route뿐 아니라 Public IPv4/EIP도 필요하다는 것을 설명한다.
+- SG와 Route Table의 역할 차이를 설명한다.
+- `10.0.0.0/16 local`이 필요한 이유를 설명한다.
+
+## 완료 체크
+
+- [ ] 공통 태그와 이름 규칙을 적용했다.
+- [ ] VPC를 직접 만들었다.
+- [ ] 2AZ에 Public/Private Subnet을 만들었다.
+- [ ] IGW와 Public Route Table을 연결했다.
+- [ ] EC2를 Public Subnet에 배치했다.
+- [ ] IGW route 삭제 장애를 재현했다.
+- [ ] 잘못된 Route Table association을 재현/복구했다.
+- [ ] SG 문제와 Route 문제를 구분해 설명할 수 있다.
+- [ ] CLI로 네트워크 연결 관계를 검증했다.
+
+## 비용 정리와 삭제 검증
+
+다음 Example을 바로 할 예정이면 VPC/Subnet을 유지해도 된다. 종료한다면 EC2와 VPC 관련 리소스를 정리하고 [CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 05 삭제 검증을 실행한다.
+
+---
