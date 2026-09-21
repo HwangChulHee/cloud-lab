@@ -23,6 +23,21 @@ VPC, Public/Private Subnet, ALB, Target Group, EC2 Security Group, User Data를 
 ## 이번에는 도움 없이
 ALB, Target Group, ALB-SG, EC2-SG는 이전 예제의 상세 절차를 보지 않고 만든다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| ALB | `example-07-alb` |
+| ALB Security Group | `example-07-alb-sg` |
+| Target Group | `example-07-tg` |
+| EC2 Security Group | `example-07-web-sg` |
+| Launch Template | `example-07-lt` |
+| Auto Scaling Group | `example-07-asg` |
+| NAT Gateway (사용 시) | `example-07-nat` |
+| NAT Elastic IP Name tag | `example-07-nat-eip` |
+
+VPC/Subnet/Route Table을 Example 06에서 유지했다면 기존 이름을 그대로 사용한다. 새로 만든다면 `example-07-vpc`, `example-07-public-a/b`, `example-07-private-a/b`, `example-07-public-rt`, `example-07-private-rt` 형식을 사용한다.
+
 ## 목표 구조
 ```text
 Internet
