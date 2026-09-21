@@ -109,3 +109,46 @@ aws s3api list-object-versions --bucket <bucket-name>
 ```
 
 모든 version과 delete marker까지 삭제한 뒤 bucket을 삭제한다. 삭제 후 CLI 삭제 검증을 실행한다.
+
+---
+
+## 로컬 CLI 검증 가이드
+
+### Example 12 CLI — S3 보안/Versioning/복구 상태 확인
+
+\`\`\`bash
+aws s3api get-public-access-block --bucket <bucket-name>
+aws s3api get-bucket-versioning --bucket <bucket-name>
+aws s3api get-bucket-encryption --bucket <bucket-name>
+aws s3api list-object-versions --bucket <bucket-name>
+\`\`\`
+
+각 명령의 질문은 다르다.
+
+\`\`\`text
+get-public-access-block
+→ public access를 막고 있는가?
+
+get-bucket-versioning
+→ Versioning이 Enabled인가?
+
+get-bucket-encryption
+→ 기본 암호화 설정은 무엇인가?
+
+list-object-versions
+→ 현재 version뿐 아니라 old version / delete marker가 무엇이 남았는가?
+\`\`\`
+
+선택적으로 더 깊게 본다.
+
+\`\`\`bash
+aws s3api get-bucket-policy --bucket <bucket-name> --query Policy --output text
+aws s3api get-bucket-lifecycle-configuration --bucket <bucket-name>
+aws s3api head-object --bucket <bucket-name> --key <object-key>
+\`\`\`
+
+- \`get-bucket-policy\`: Resource Policy 확인.
+- \`get-bucket-lifecycle-configuration\`: 오래된 version 이동/삭제 정책 확인.
+- \`head-object\`: object 본문을 다운로드하지 않고 metadata를 확인.
+
+삭제 시 특히 \`list-object-versions\`를 다시 실행한다. S3 Console에서 object 목록이 비어 보여도 old version이나 delete marker가 남을 수 있다.
