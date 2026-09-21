@@ -19,6 +19,19 @@ ALB, ASG, EC2, RDS, Health Check, 장애 재현을 다시 사용한다.
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=14`를 붙인다.
 
+## 리소스 이름표
+
+기존 인프라는 재사용하고, 이 예제에서 새로 만드는 관측 리소스만 아래 이름을 사용한다.
+
+| 리소스 | 이름 |
+| --- | --- |
+| Application Log Group | `example-14-app` |
+| EC2 CPU Alarm | `example-14-ec2-cpu-high` |
+| ALB Unhealthy Host Alarm | `example-14-alb-unhealthy-host` |
+| RDS Free Storage Alarm | `example-14-rds-free-storage-low` |
+
+기존 ALB/ASG/RDS를 새로 재구축해야 한다면 각 이름에 `example-14-` prefix를 사용한다.
+
 ## 이번에는 도움 없이
 기존 전체 구조가 없다면 최소한 `ALB → ASG/EC2 → RDS`를 다시 구성한다.
 
