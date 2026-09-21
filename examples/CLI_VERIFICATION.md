@@ -1,5 +1,24 @@
 # AWS CLI Verification & Cleanup Guide
 
+## 이 문서의 역할
+
+각 Example에서 실제로 실행할 CLI 명령과 해설은 이제 **각 Example의 README 안에 함께 둔다.**
+
+이 파일은 다음 용도로 남긴다.
+
+```text
+여러 Example의 명령을 한 번에 찾기
+→ 전체 상태 비교
+
+모든 실습 종료 후
+→ 계정에 남은 과금 리소스 통합 점검
+
+명령의 자세한 의미를 공부할 때
+→ 해당 Example README의 "로컬 CLI 검증 가이드" 사용
+```
+
+즉 **실습 중에는 로컬 README를 우선**, 이 문서는 aggregate/reference 용도다.
+
 각 Example은 콘솔에서 구축한 뒤 **AWS CLI 출력으로 구조를 검증**하고, 종료 후 **잔존 리소스가 없는지 다시 검증**한다.
 
 목표는 단순히 `됐다/안 됐다`를 보는 것이 아니라, CLI 출력만 보고도 다음을 판단할 수 있게 하는 것이다.
