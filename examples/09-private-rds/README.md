@@ -20,6 +20,21 @@ VPC, Private Subnet, EC2, IAM/SG, ALB 구조를 다시 사용한다.
 
 모든 태그 가능 리소스에는 `Project=cloud-lab`, `Stage=examples`, `Example=09`을 붙인다.
 
+## 리소스 이름표
+
+| 리소스 | 이름 |
+| --- | --- |
+| ALB | `example-09-alb` |
+| Target Group | `example-09-tg` |
+| ALB Security Group | `example-09-alb-sg` |
+| App/EC2 Security Group | `example-09-app-sg` |
+| App EC2 | `example-09-app` |
+| DB Subnet Group | `example-09-db-subnet-group` |
+| RDS Security Group | `example-09-db-sg` |
+| RDS DB Instance Identifier | `example-09-db` |
+
+기존 VPC를 재사용하지 않고 새로 만든다면 `example-09-vpc`, `example-09-public-a/b`, `example-09-private-a/b` 형식을 사용한다.
+
 ## 이번에는 도움 없이
 ALB-SG와 EC2-SG를 다시 구성하고, EC2를 Private Subnet에 배치한다.
 
