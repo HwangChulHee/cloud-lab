@@ -95,39 +95,6 @@ Target Group Health Check가 실패하고 Target이 unhealthy가 되는지 확�
 
 ## 10. CLI 구축/장애 검증
 
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 04 명령을 실행한다.
-
-다음을 출력만 보고 설명할 수 있어야 한다.
-
-```text
-ALB-SG: client HTTP 허용
-EC2-SG: app port source = ALB-SG
-EC2-SG에 인터넷 전체를 source로 둔 app rule 없음
-```
-
-장애 실험 전/중/복구 후 SG rule과 Target Health를 비교한다.
-
-## 11. 완료 체크
-
-- [ ] ALB-SG와 EC2-SG를 구분했다.
-- [ ] ALB는 인터넷에서 접근 가능하다.
-- [ ] EC2 HTTP source를 ALB-SG로 제한했다.
-- [ ] ALB DNS를 통한 요청은 성공한다.
-- [ ] EC2 Public IP 직접 요청은 실패한다.
-- [ ] EC2-SG rule 제거로 Health Check 실패를 관찰했다.
-- [ ] Security Group Reference의 의미를 설명할 수 있다.
-- [ ] CLI로 SG 관계를 검증했다.
-
-## 12. 비용 정리와 삭제 검증
-
-Example 05에서는 새 VPC를 만들 예정이므로 02~04 리소스를 더 이상 쓰지 않는다면 정리한다. Example 02 삭제 검증을 다시 실행해 ALB, Target Group, EC2가 남지 않았는지 확인한다. 이 예제에서 별도로 생성한 SG도 다른 리소스에 연결되어 있지 않다면 삭제한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 04 CLI — Security Group Reference가 실제로 어떻게 보이는가
-
 Example 02 리소스를 재사용했다면 태그보다 **실제 SG ID를 직접 지정**하는 편이 명확하다.
 
 \`\`\`bash
@@ -161,3 +128,20 @@ aws elbv2 describe-target-health --region $AWS_REGION \
 \`\`\`
 
 이 두 명령을 함께 보면 **설정 변화(SG) → 결과 변화(Target Health)**를 연결해서 볼 수 있다.
+
+## 11. 완료 체크
+
+- [ ] ALB-SG와 EC2-SG를 구분했다.
+- [ ] ALB는 인터넷에서 접근 가능하다.
+- [ ] EC2 HTTP source를 ALB-SG로 제한했다.
+- [ ] ALB DNS를 통한 요청은 성공한다.
+- [ ] EC2 Public IP 직접 요청은 실패한다.
+- [ ] EC2-SG rule 제거로 Health Check 실패를 관찰했다.
+- [ ] Security Group Reference의 의미를 설명할 수 있다.
+- [ ] CLI로 SG 관계를 검증했다.
+
+## 12. 비용 정리와 삭제 검증
+
+Example 05에서는 새 VPC를 만들 예정이므로 02~04 리소스를 더 이상 쓰지 않는다면 정리한다. Example 02 삭제 검증을 다시 실행해 ALB, Target Group, EC2가 남지 않았는지 확인한다. 이 예제에서 별도로 생성한 SG도 다른 리소스에 연결되어 있지 않다면 삭제한다.
+
+---
