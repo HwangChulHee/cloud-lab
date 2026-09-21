@@ -145,31 +145,31 @@ http://<ALB_DNS_NAME>
 
 ### 1. EC2 두 대와 AZ 확인
 
-\`\`\`bash
+```bash
 aws ec2 describe-instances --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=02' 'Name=instance-state-name,Values=running' \
   --query 'Reservations[].Instances[].{Id:InstanceId,AZ:Placement.AvailabilityZone,PrivateIP:PrivateIpAddress}' \
   --output table
-\`\`\`
+```
 
-\`Placement.AvailabilityZone\`을 보는 이유는 두 EC2가 실제로 어느 AZ에 있는지 확인하기 위해서다.
+`Placement.AvailabilityZone`을 보는 이유는 두 EC2가 실제로 어느 AZ에 있는지 확인하기 위해서다.
 
 ### 2. ALB 확인
 
-\`\`\`bash
+```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION \
   --names example-02-alb \
   --query 'LoadBalancers[].{DNS:DNSName,State:State.Code,Scheme:Scheme,Vpc:VpcId,AZs:AvailabilityZones[].ZoneName}'
-\`\`\`
+```
 
-- \`elbv2\`: ALB/NLB와 Target Group을 다루는 CLI namespace다.
-- \`Scheme=internet-facing\`: 인터넷 사용자가 접근할 수 있는 ALB인지 확인한다.
-- \`State=active\`: ALB 자체가 사용 가능한 상태인지 확인한다.
-- \`AZs\`: ALB가 어느 AZ의 subnet을 사용하는지 본다.
+- `elbv2`: ALB/NLB와 Target Group을 다루는 CLI namespace다.
+- `Scheme=internet-facing`: 인터넷 사용자가 접근할 수 있는 ALB인지 확인한다.
+- `State=active`: ALB 자체가 사용 가능한 상태인지 확인한다.
+- `AZs`: ALB가 어느 AZ의 subnet을 사용하는지 본다.
 
 ### 3. Target Group과 Target Health
 
-\`\`\`bash
+```bash
 aws elbv2 describe-target-groups --region $AWS_REGION \
   --names example-02-tg \
   --query 'TargetGroups[].{Arn:TargetGroupArn,Protocol:Protocol,Port:Port,Vpc:VpcId,HealthPath:HealthCheckPath}'
@@ -182,23 +182,23 @@ aws elbv2 describe-target-health --region $AWS_REGION \
   --target-group-arn $TG_ARN \
   --query 'TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason}' \
   --output table
-\`\`\`
+```
 
-\`$(...)\`는 **안쪽 명령의 출력값을 변수에 저장**하는 shell 문법이다. 여기서는 긴 Target Group ARN을 \`TG_ARN\`에 넣어 다음 명령에서 재사용한다.
+`$(...)`는 **안쪽 명령의 출력값을 변수에 저장**하는 shell 문법이다. 여기서는 긴 Target Group ARN을 `TG_ARN`에 넣어 다음 명령에서 재사용한다.
 
-\`describe-target-health\` 결과에서 두 EC2가 모두 \`healthy\`여야 정상이다.
+`describe-target-health` 결과에서 두 EC2가 모두 `healthy`여야 정상이다.
 
 ### 4. 삭제 후 확인
 
-\`\`\`bash
+```bash
 aws elbv2 describe-load-balancers --region $AWS_REGION \
   --query "LoadBalancers[?contains(LoadBalancerName, 'example-02')].[LoadBalancerName,State.Code]"
 
 aws elbv2 describe-target-groups --region $AWS_REGION \
   --query "TargetGroups[?contains(TargetGroupName, 'example-02')].TargetGroupName"
-\`\`\`
+```
 
-이 두 명령은 이름에 \`example-02\`가 들어간 ALB와 Target Group이 남았는지 찾는다. 실습 종료 후 의도적으로 유지하지 않았다면 비어 있어야 한다.
+이 두 명령은 이름에 `example-02`가 들어간 ALB와 Target Group이 남았는지 찾는다. 실습 종료 후 의도적으로 유지하지 않았다면 비어 있어야 한다.
 
 ## 9. 완료 체크
 
