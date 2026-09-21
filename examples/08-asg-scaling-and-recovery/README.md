@@ -85,29 +85,6 @@ ASG 평균 CPU 상승
 - ASG가 계속 늘었다 줄었다 반복하면 어떤 설정을 의심할까?
 
 ## CLI 구축/장애 검증
-[CLI Verification Guide](../CLI_VERIFICATION.md)의 Example 08 명령을 실행한다. Scaling Activity의 `Cause`와 `Description`을 함께 확인한다.
-
-## 기억만으로 설명하기
-`Metric → Target Tracking Policy → ASG → EC2 → bootstrap → Target Group → ALB` 흐름을 그림 없이 설명한다.
-
-## 완료 체크
-- [ ] EC2 강제 종료 후 replacement를 관찰했다.
-- [ ] Scaling Policy를 설정했다.
-- [ ] ASG 평균 CPU라는 의미를 확인했다.
-- [ ] 전체 인스턴스에 부하를 만들어 scale-out을 확인했다.
-- [ ] scale-in까지 관찰했다.
-- [ ] ASG Activity와 CloudWatch Metric을 함께 볼 수 있다.
-
-## 비용 정리
-테스트용 인스턴스 수를 원복하거나 ASG/ALB를 삭제한다. NAT를 사용했다면 NAT Gateway와 EIP도 함께 정리한다.
-
-삭제 후 CLI 삭제 검증을 실행한다.
-
----
-
-## 로컬 CLI 검증 가이드
-
-### Example 08 CLI — Metric → Scaling Policy → Desired Capacity 변화 추적
 
 ### 1. 현재 ASG 용량
 
@@ -159,3 +136,21 @@ aws cloudwatch list-metrics --region $AWS_REGION \
 \`\`\`
 
 \`namespace AWS/EC2\`는 EC2 기본 지표 영역이다. 한 인스턴스 CPU와 **ASG가 판단에 사용하는 평균값**을 같은 것으로 착각하지 않는다.
+
+## 기억만으로 설명하기
+`Metric → Target Tracking Policy → ASG → EC2 → bootstrap → Target Group → ALB` 흐름을 그림 없이 설명한다.
+
+## 완료 체크
+- [ ] EC2 강제 종료 후 replacement를 관찰했다.
+- [ ] Scaling Policy를 설정했다.
+- [ ] ASG 평균 CPU라는 의미를 확인했다.
+- [ ] 전체 인스턴스에 부하를 만들어 scale-out을 확인했다.
+- [ ] scale-in까지 관찰했다.
+- [ ] ASG Activity와 CloudWatch Metric을 함께 볼 수 있다.
+
+## 비용 정리
+테스트용 인스턴스 수를 원복하거나 ASG/ALB를 삭제한다. NAT를 사용했다면 NAT Gateway와 EIP도 함께 정리한다.
+
+삭제 후 CLI 삭제 검증을 실행한다.
+
+---
