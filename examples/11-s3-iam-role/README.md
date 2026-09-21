@@ -109,57 +109,57 @@ aws s3 ls s3://<bucket-name>/
 
 ### 1. Bucket 상태
 
-\`\`\`bash
+```bash
 aws s3api get-bucket-location --bucket <bucket-name>
 aws s3api get-public-access-block --bucket <bucket-name>
-\`\`\`
+```
 
-- \`s3api\`: S3의 저수준 API를 비교적 그대로 호출한다.
-- \`get-public-access-block\`: bucket이 public 노출을 막는 설정을 확인한다.
+- `s3api`: S3의 저수준 API를 비교적 그대로 호출한다.
+- `get-public-access-block`: bucket이 public 노출을 막는 설정을 확인한다.
 
 ### 2. IAM Role의 Trust Policy
 
-\`\`\`bash
+```bash
 aws iam get-role --role-name <role-name> \
   --query 'Role.{RoleName:RoleName,Arn:Arn,AssumeRolePolicyDocument:AssumeRolePolicyDocument}'
-\`\`\`
+```
 
-\`AssumeRolePolicyDocument\`는 "이 Role을 누가 사용할 수 있는가?"를 정의하는 **Trust Policy**다. EC2 Role이라면 EC2 service principal이 보이는지 확인한다.
+`AssumeRolePolicyDocument`는 "이 Role을 누가 사용할 수 있는가?"를 정의하는 **Trust Policy**다. EC2 Role이라면 EC2 service principal이 보이는지 확인한다.
 
 ### 3. EC2에 실제 Role이 붙었는지
 
-\`\`\`bash
+```bash
 aws ec2 describe-instances --region $AWS_REGION \
   --filters 'Name=tag:Example,Values=11' 'Name=instance-state-name,Values=running' \
   --query 'Reservations[].Instances[].{Id:InstanceId,IamProfile:IamInstanceProfile.Arn}'
-\`\`\`
+```
 
 Role을 만들기만 하고 EC2에 연결하지 않은 실수를 잡는다.
 
 ### 4. EC2 안에서 S3 권한 검증
 
-\`\`\`bash
+```bash
 aws s3 ls s3://<bucket-name>/
 aws s3 cp s3://<bucket-name>/test.txt ./test.txt
-\`\`\`
+```
 
 첫 명령은 특정 bucket의 object 목록 조회, 두 번째는 object 읽기 권한을 실제로 사용한다.
 
 비교:
 
-\`\`\`bash
+```bash
 aws s3 ls
-\`\`\`
+```
 
-이 명령은 계정의 bucket 목록을 조회하므로 \`s3:ListAllMyBuckets\`가 필요하다. 특정 bucket 최소 권한만 준 경우 이 명령이 실패해도 이상하지 않다.
+이 명령은 계정의 bucket 목록을 조회하므로 `s3:ListAllMyBuckets`가 필요하다. 특정 bucket 최소 권한만 준 경우 이 명령이 실패해도 이상하지 않다.
 
-\`\`\`text
+```text
 aws s3 ls
 → ListAllMyBuckets
 
 aws s3 ls s3://bucket/
 → 해당 bucket의 ListBucket
-\`\`\`
+```
 
 ## 기억만으로 설명하기
 - Access Key보다 EC2 Role이 나은 이유는?
