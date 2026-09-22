@@ -165,13 +165,13 @@ aws autoscaling describe-scaling-activities --region $AWS_REGION \
 EC2 한 대를 terminate한 뒤 이 명령을 다시 실행해 replacement 기록을 찾는다.
 
 ## 완료 체크
-- [ ] Launch Template을 만들었다.
-- [ ] 2AZ ASG를 만들었다.
-- [ ] Target Group 자동 등록을 확인했다.
-- [ ] Desired Capacity 변경을 관찰했다.
-- [ ] EC2 강제 종료 후 자동 복구를 확인했다.
-- [ ] replacement 인스턴스의 bootstrap까지 확인했다.
-- [ ] ALB와 ASG의 역할을 구분해 설명할 수 있다.
+- [x] Launch Template을 만들었다.
+- [x] 2AZ ASG를 만들었다.
+- [x] Target Group 자동 등록을 확인했다.
+- [x] Desired Capacity의 동작을 이해했다. (직접 3으로 변경 실험은 생략)
+- [x] EC2 강제 종료 후 자동 복구를 확인했다.
+- [x] replacement 인스턴스의 bootstrap까지 확인했다.
+- [x] ALB와 ASG의 역할을 구분해 설명할 수 있다.
 
 ## 비용 정리
 ASG를 먼저 삭제해 관리 대상 EC2가 정리되는지 확인한 뒤 ALB, Target Group, Launch Template, NAT Gateway/EIP 등을 정리한다.
