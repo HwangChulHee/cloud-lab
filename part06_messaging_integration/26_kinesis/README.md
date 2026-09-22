@@ -15,11 +15,11 @@ Kinesis Data Streams
 
 ## Units
 
-- [ ] [u1. Streaming Model & Data Streams](./u1_streaming_model/README.md)
-- [ ] [u2. Shard / Partition / Ordering / Capacity](./u2_shards_partition_capacity/README.md)
-- [ ] [u3. Consumers / Retention / Replay](./u3_consumers_retention_replay/README.md)
-- [ ] [u4. Amazon Data Firehose](./u4_data_firehose/README.md)
-- [ ] [u5. SQS vs SNS vs Kinesis](./u5_selection_comparison/README.md)
+- [x] [u1. Streaming Model & Data Streams](./u1_streaming_model/README.md)
+- [x] [u2. Shard / Partition / Ordering / Capacity](./u2_shards_partition_capacity/README.md)
+- [x] [u3. Consumers / Retention / Replay](./u3_consumers_retention_replay/README.md)
+- [x] [u4. Amazon Data Firehose](./u4_data_firehose/README.md)
+- [x] [u5. SQS vs SNS vs Kinesis](./u5_selection_comparison/README.md)
 
 ## 대표 사용 사례
 
