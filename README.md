@@ -223,13 +223,13 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 실습과 운영 이해를 위해 **50 CloudWatch, 51 CloudTrail, 54 KMS, 56 Systems Manager는 우선 깊게 학습**한다. 나머지는 우선 SAA Coverage 중심으로 본다.
 
-- [ ] 50. CloudWatch — Deep
-- [ ] 51. CloudTrail — Deep
+- [x] 50. CloudWatch — Deep
+- [x] 51. CloudTrail — Deep
 - [ ] 52. AWS Config — Coverage
 - [ ] 53. Advanced Identity — Coverage
-- [ ] 54. KMS — Deep
+- [x] 54. KMS — Deep
 - [ ] 55. Secrets Manager / Parameter Store — Coverage
-- [ ] 56. Systems Manager — Deep
+- [x] 56. Systems Manager — Deep
 - [ ] 57. WAF / Shield / Firewall Manager — Coverage
 - [ ] 58. GuardDuty / Inspector / Macie 등 Security Services — Coverage
 
