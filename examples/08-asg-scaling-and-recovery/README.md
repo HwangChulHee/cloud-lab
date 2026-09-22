@@ -155,12 +155,12 @@ aws cloudwatch list-metrics --region $AWS_REGION \
 `Metric → Target Tracking Policy → ASG → EC2 → bootstrap → Target Group → ALB` 흐름을 그림 없이 설명한다.
 
 ## 완료 체크
-- [ ] EC2 강제 종료 후 replacement를 관찰했다.
-- [ ] Scaling Policy를 설정했다.
-- [ ] ASG 평균 CPU라는 의미를 확인했다.
-- [ ] 전체 인스턴스에 부하를 만들어 scale-out을 확인했다.
-- [ ] scale-in까지 관찰했다.
-- [ ] ASG Activity와 CloudWatch Metric을 함께 볼 수 있다.
+- [x] EC2 강제 종료 후 replacement를 관찰했다. (Example 07에서 동일 실험 완료, Example 08에서는 생략)
+- [x] Scaling Policy를 설정했다.
+- [x] ASG 평균 CPU라는 의미를 확인했다.
+- [x] 전체 인스턴스에 부하를 만들어 scale-out을 확인했다.
+- [x] scale-in까지 관찰했다.
+- [x] ASG Activity와 CloudWatch Metric을 함께 볼 수 있다.
 
 ## 비용 정리
 테스트용 인스턴스 수를 원복하거나 ASG/ALB를 삭제한다. NAT를 사용했다면 NAT Gateway와 EIP도 함께 정리한다.
