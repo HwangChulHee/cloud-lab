@@ -182,7 +182,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 23. SQS
 - [x] 24. SNS
 - [x] 25. EventBridge
-- [ ] 26. Kinesis
+- [x] 26. Kinesis
 - [ ] 27. Amazon MQ / Integration 선택 기준
 
 ## 7부 — Containers
