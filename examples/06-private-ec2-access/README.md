@@ -263,15 +263,15 @@ NAT Gateway 삭제와 **Elastic IP 해제는 별개**로 확인한다. 비용 �
 
 ## 완료 체크
 
-- [ ] ALB를 Public Subnet에 배치했다.
-- [ ] EC2를 Private Subnet에 배치했다.
-- [ ] EC2에 Public IP가 없음을 확인했다.
-- [ ] NAT 없는 bootstrap 실패 가능성을 직접 관찰했다.
-- [ ] NAT route 추가 후 새 인스턴스 bootstrap 성공을 확인했다.
-- [ ] ALB를 통해 서비스가 정상 동작했다.
-- [ ] NAT가 있는 상태에서 Session Manager 접속을 확인했다.
-- [ ] NAT route 제거 후 inbound와 outbound의 차이를 관찰했다.
-- [ ] Session Manager의 IAM/네트워크 요구사항을 설명할 수 있다.
+- [x] ALB를 Public Subnet에 배치했다.
+- [x] EC2를 Private Subnet에 배치했다.
+- [x] EC2에 Public IP가 없음을 확인했다.
+- [x] NAT 없는 bootstrap 실패 가능성을 직접 관찰했다.
+- [x] NAT route 추가 후 새 인스턴스 bootstrap 성공을 확인했다.
+- [x] ALB를 통해 서비스가 정상 동작했다.
+- [x] NAT가 있는 상태에서 Session Manager 접속을 확인했다.
+- [x] NAT route 제거 시 inbound/outbound 차이를 개념적으로 설명했다. (실제 route 제거 실험은 생략)
+- [x] Session Manager의 IAM/네트워크 요구사항을 설명할 수 있다.
 
 ## 비용 정리
 
