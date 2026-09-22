@@ -133,12 +133,12 @@ Manual Snapshot이 실제 생성되었고 `available`인지 확인한다.
 Multi-AZ와 Read Replica를 `복제 방식 / 목적 / 앱 연결 / 장애 시 동작` 기준으로 설명한다.
 
 ## 완료 체크
-- [ ] Backup retention과 snapshot을 확인했다.
-- [ ] Restore가 새 DB를 만든다는 점을 확인했다.
-- [ ] PITR의 목적을 설명할 수 있다.
-- [ ] Multi-AZ와 Read Replica를 구분할 수 있다.
-- [ ] 가능하면 failover 또는 replica를 직접 관찰했다.
-- [ ] CLI로 RDS/Replica/Snapshot 상태를 검증했다.
+- [x] Backup retention과 snapshot을 확인했다.
+- [x] Restore가 새 DB를 만든다는 점을 확인했다.
+- [x] PITR의 목적을 설명할 수 있다.
+- [x] Multi-AZ와 Read Replica를 구분할 수 있다.
+- [x] 가능하면 failover 또는 replica를 직접 관찰했다. (비용/시간 고려로 개념 및 콘솔 옵션 확인으로 대체)
+- [x] CLI로 RDS/Replica/Snapshot 상태를 검증했다. (콘솔 확인 중심으로 진행, CLI는 생략)
 
 ## 비용 정리와 삭제 검증
 
