@@ -27,7 +27,7 @@ AWS 서비스/애플리케이션 이벤트를 rule로 routing한다
 
 - [x] [23. SQS](./23_sqs/README.md)
 - [x] [24. SNS](./24_sns/README.md)
-- [x] 25. EventBridge
+- [x] [25. EventBridge](./25_eventbridge/README.md)
 - [x] [26. Kinesis](./26_kinesis/README.md)
 - [x] [27. Amazon MQ / Integration 선택 기준](./27_amazon_mq_integration_selection/README.md)
 
