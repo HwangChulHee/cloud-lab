@@ -17,10 +17,10 @@ Publisher
 
 ## Units
 
-- [ ] [u1. Topic / Publisher / Subscriber](./u1_topic_pubsub/README.md)
-- [ ] [u2. Fan-Out with SQS](./u2_fanout_sqs/README.md)
-- [ ] [u3. Message Filtering / FIFO](./u3_filtering_fifo/README.md)
-- [ ] [u4. Security & SAA Selection](./u4_security_saa_selection/README.md)
+- [x] [u1. Topic / Publisher / Subscriber](./u1_topic_pubsub/README.md)
+- [x] [u2. Fan-Out with SQS](./u2_fanout_sqs/README.md)
+- [x] [u3. Message Filtering / FIFO](./u3_filtering_fifo/README.md)
+- [x] [u4. Security & SAA Selection](./u4_security_saa_selection/README.md)
 
 ## 핵심
 
