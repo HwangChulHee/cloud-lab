@@ -8,10 +8,10 @@ Amazon MQ는 SQS/SNS처럼 AWS 전용 API를 중심으로 설계된 cloud-native
 
 ## Units
 
-- [ ] [u1. 왜 Amazon MQ가 필요한가](./u1_why_amazon_mq/README.md)
-- [ ] [u2. Queue / Topic / Broker 구조](./u2_broker_queue_topic/README.md)
-- [ ] [u3. High Availability / Failover](./u3_high_availability/README.md)
-- [ ] [u4. Messaging 서비스 최종 선택 지도](./u4_integration_selection/README.md)
+- [x] [u1. 왜 Amazon MQ가 필요한가](./u1_why_amazon_mq/README.md)
+- [x] [u2. Queue / Topic / Broker 구조](./u2_broker_queue_topic/README.md)
+- [x] [u3. High Availability / Failover](./u3_high_availability/README.md)
+- [x] [u4. Messaging 서비스 최종 선택 지도](./u4_integration_selection/README.md)
 
 ## 핵심 구조
 
