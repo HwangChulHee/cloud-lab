@@ -18,12 +18,12 @@ Consumer
 
 ## Units
 
-- [ ] [u1. Queue / Decoupling / Producer & Consumer](./u1_queue_decoupling/README.md)
-- [ ] [u2. Standard Queue / At-Least-Once / Ordering](./u2_standard_queue/README.md)
-- [ ] [u3. Visibility Timeout / Long Polling](./u3_visibility_long_polling/README.md)
-- [ ] [u4. FIFO Queue](./u4_fifo_queue/README.md)
-- [ ] [u5. DLQ / Scaling / Buffer Pattern](./u5_dlq_scaling_buffer/README.md)
-- [ ] [u6. Security & SAA Selection](./u6_security_saa_selection/README.md)
+- [x] [u1. Queue / Decoupling / Producer & Consumer](./u1_queue_decoupling/README.md)
+- [x] [u2. Standard Queue / At-Least-Once / Ordering](./u2_standard_queue/README.md)
+- [x] [u3. Visibility Timeout / Long Polling](./u3_visibility_long_polling/README.md)
+- [x] [u4. FIFO Queue](./u4_fifo_queue/README.md)
+- [x] [u5. DLQ / Scaling / Buffer Pattern](./u5_dlq_scaling_buffer/README.md)
+- [x] [u6. Security & SAA Selection](./u6_security_saa_selection/README.md)
 
 ## 전체 그림
 
