@@ -6,11 +6,11 @@ Amazon API Gateway는 HTTP/REST/WebSocket API의 진입점을 관리하는 서�
 
 ## Units
 
-- [ ] [u1. API Gateway 기본 역할 / Lambda Integration](./u1_basics_lambda_integration/README.md)
-- [ ] [u2. HTTP / AWS Service Integration](./u2_http_aws_service_integration/README.md)
-- [ ] [u3. Endpoint Types](./u3_endpoint_types/README.md)
-- [ ] [u4. Security / Auth / Custom Domain](./u4_security_auth_domain/README.md)
-- [ ] [u5. Throttling / Cache / Stages / SAA Selection](./u5_throttling_cache_stages_selection/README.md)
+- [x] [u1. API Gateway 기본 역할 / Lambda Integration](./u1_basics_lambda_integration/README.md)
+- [x] [u2. HTTP / AWS Service Integration](./u2_http_aws_service_integration/README.md)
+- [x] [u3. Endpoint Types](./u3_endpoint_types/README.md)
+- [x] [u4. Security / Auth / Custom Domain](./u4_security_auth_domain/README.md)
+- [x] [u5. Throttling / Cache / Stages / SAA Selection](./u5_throttling_cache_stages_selection/README.md)
 
 ## 대표 구조
 
