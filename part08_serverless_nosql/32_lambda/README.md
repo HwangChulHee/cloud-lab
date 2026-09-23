@@ -19,12 +19,12 @@ Lambda
 
 ## Units
 
-- [ ] [u1. Serverless / Lambda 기본 구조](./u1_serverless_lambda_basics/README.md)
-- [ ] [u2. Event Sources / Integrations](./u2_event_sources_integrations/README.md)
-- [ ] [u3. Limits / Memory / Timeout / Storage](./u3_limits_memory_timeout_storage/README.md)
-- [ ] [u4. Concurrency / Throttling / Cold Start](./u4_concurrency_cold_start/README.md)
-- [ ] [u5. VPC / IAM / Logging](./u5_vpc_iam_logging/README.md)
-- [ ] [u6. SAA 선택 기준](./u6_saa_selection/README.md)
+- [x] [u1. Serverless / Lambda 기본 구조](./u1_serverless_lambda_basics/README.md)
+- [x] [u2. Event Sources / Integrations](./u2_event_sources_integrations/README.md)
+- [x] [u3. Limits / Memory / Timeout / Storage](./u3_limits_memory_timeout_storage/README.md)
+- [x] [u4. Concurrency / Throttling / Cold Start](./u4_concurrency_cold_start/README.md)
+- [x] [u5. VPC / IAM / Logging](./u5_vpc_iam_logging/README.md)
+- [x] [u6. SAA 선택 기준](./u6_saa_selection/README.md)
 
 ## 대표 구조
 
