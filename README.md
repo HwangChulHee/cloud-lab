@@ -194,8 +194,8 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 ## 8부 — Serverless & NoSQL
 
-- [ ] 32. Lambda
-- [ ] 33. API Gateway
+- [x] 32. Lambda
+- [x] 33. API Gateway
 - [ ] 34. DynamoDB
 - [ ] 35. Step Functions / Cognito 등 Serverless 연계 서비스
 
