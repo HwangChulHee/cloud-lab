@@ -140,13 +140,13 @@ aws s3api head-object --bucket <bucket-name> --key <object-key>
 - SSE-S3와 SSE-KMS는 무엇이 다른가?
 
 ## 완료 체크
-- [ ] Block Public Access를 확인했다.
-- [ ] IAM 접근과 Public 접근을 비교했다.
-- [ ] Bucket Policy로 AccessDenied를 재현했다.
-- [ ] Versioning과 Delete Marker를 확인했다.
-- [ ] 이전 version을 복구했다.
-- [ ] Lifecycle의 목적을 설명할 수 있다.
-- [ ] 현재 기본 암호화 상태를 CLI로 확인했다.
+- [x] Block Public Access를 확인했다.
+- [x] IAM 접근과 Public 접근을 비교했다.
+- [x] Bucket Policy로 AccessDenied를 재현했다.
+- [x] Versioning과 Delete Marker를 확인했다.
+- [x] 이전 version을 복구했다.
+- [x] Lifecycle의 목적을 설명할 수 있다.
+- [x] 현재 기본 암호화 상태를 CLI로 확인했다.
 
 ## 비용 정리
 
