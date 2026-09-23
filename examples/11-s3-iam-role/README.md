@@ -180,13 +180,13 @@ aws s3 ls s3://bucket/
 - S3 AccessDenied 발생 시 어떤 순서로 확인할 것인가?
 
 ## 완료 체크
-- [ ] S3 Bucket을 생성했다.
-- [ ] EC2에 IAM Role을 연결했다.
-- [ ] Access Key 없이 S3에 접근했다.
-- [ ] 특정 bucket 최소 권한으로 범위를 제한했다.
-- [ ] `aws s3 ls`와 `aws s3 ls s3://bucket/`의 차이를 확인했다.
-- [ ] AccessDenied를 재현하고 복구했다.
-- [ ] 네트워크 오류와 IAM 권한 오류를 구분할 수 있다.
+- [x] S3 Bucket을 생성했다.
+- [x] EC2에 IAM Role을 연결했다.
+- [x] Access Key 없이 S3에 접근했다.
+- [x] 특정 bucket 최소 권한으로 범위를 제한했다.
+- [x] `aws s3 ls`와 `aws s3 ls s3://bucket/`의 차이를 확인했다.
+- [x] AccessDenied를 재현하고 복구했다.
+- [x] 네트워크 오류와 IAM 권한 오류를 구분할 수 있다.
 
 ## 비용 정리
 테스트 object와 bucket을 삭제하고 필요 없는 IAM policy/role을 정리한다.
