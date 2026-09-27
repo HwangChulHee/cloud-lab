@@ -13,11 +13,11 @@ FSx for OpenZFS
 
 ## Units
 
-- [ ] [u1. FSx 전체 지도](./u1_overview_map/README.md)
-- [ ] [u2. FSx for Windows File Server](./u2_windows_file_server/README.md)
-- [ ] [u3. FSx for Lustre](./u3_lustre/README.md)
-- [ ] [u4. FSx for NetApp ONTAP](./u4_netapp_ontap/README.md)
-- [ ] [u5. FSx for OpenZFS / SAA Selection](./u5_openzfs_selection/README.md)
+- [x] [u1. FSx 전체 지도](./u1_overview_map/README.md)
+- [x] [u2. FSx for Windows File Server](./u2_windows_file_server/README.md)
+- [x] [u3. FSx for Lustre](./u3_lustre/README.md)
+- [x] [u4. FSx for NetApp ONTAP](./u4_netapp_ontap/README.md)
+- [x] [u5. FSx for OpenZFS / SAA Selection](./u5_openzfs_selection/README.md)
 
 ## 전체 지도
 
