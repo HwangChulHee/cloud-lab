@@ -15,11 +15,11 @@ Amazon Cognito
 
 ## Units
 
-- [ ] [u1. Step Functions Overview](./u1_step_functions_overview/README.md)
-- [ ] [u2. Workflow / Error Handling / Integrations](./u2_workflow_error_handling_integrations/README.md)
-- [ ] [u3. Cognito Overview / API Gateway Authentication](./u3_cognito_overview_api_auth/README.md)
-- [ ] [u4. Cognito Identity Pools / Temporary Credentials](./u4_identity_pools_temporary_credentials/README.md)
-- [ ] [u5. Serverless Architecture Selection](./u5_serverless_architecture_selection/README.md)
+- [x] [u1. Step Functions Overview](./u1_step_functions_overview/README.md)
+- [x] [u2. Workflow / Error Handling / Integrations](./u2_workflow_error_handling_integrations/README.md)
+- [x] [u3. Cognito Overview / API Gateway Authentication](./u3_cognito_overview_api_auth/README.md)
+- [x] [u4. Cognito Identity Pools / Temporary Credentials](./u4_identity_pools_temporary_credentials/README.md)
+- [x] [u5. Serverless Architecture Selection](./u5_serverless_architecture_selection/README.md)
 
 ## 대표 Serverless API
 
