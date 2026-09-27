@@ -6,11 +6,11 @@ Aurora는 MySQL / PostgreSQL 호환 API를 제공하는 AWS의 관계형 데이�
 
 ## Units
 
-- [ ] u1. Aurora Architecture & Storage
-- [ ] u2. Writer, Reader & Read Replicas
-- [ ] u3. High Availability, Failover & Auto Scaling
-- [ ] u4. Aurora Serverless & Global Database
-- [ ] u5. Machine Learning, Cloning & SAA Selection
+- [x] u1. Aurora Architecture & Storage
+- [x] u2. Writer, Reader & Read Replicas
+- [x] u3. High Availability, Failover & Auto Scaling
+- [x] u4. Aurora Serverless & Global Database
+- [x] u5. Machine Learning, Cloning & SAA Selection
 
 ## 전체 지도
 
