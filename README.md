@@ -189,7 +189,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 - [x] 28. Docker
 - [x] 29. ECR
-- [ ] 30. ECS
+- [x] 30. ECS
 - [ ] 31. EKS / App Runner 개념 비교
 
 ## 8부 — Serverless & NoSQL
