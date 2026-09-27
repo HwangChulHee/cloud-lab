@@ -6,11 +6,11 @@ AWS Storage Gateway는 **on-premises 환경과 AWS storage 사이를 연결하�
 
 ## Units
 
-- [ ] [u1. Hybrid Storage / 전체 구조](./u1_hybrid_storage_overview/README.md)
-- [ ] [u2. S3 File Gateway](./u2_s3_file_gateway/README.md)
-- [ ] [u3. Volume Gateway](./u3_volume_gateway/README.md)
-- [ ] [u4. Tape Gateway](./u4_tape_gateway/README.md)
-- [ ] [u5. SAA Selection](./u5_saa_selection/README.md)
+- [x] [u1. Hybrid Storage / 전체 구조](./u1_hybrid_storage_overview/README.md)
+- [x] [u2. S3 File Gateway](./u2_s3_file_gateway/README.md)
+- [x] [u3. Volume Gateway](./u3_volume_gateway/README.md)
+- [x] [u4. Tape Gateway](./u4_tape_gateway/README.md)
+- [x] [u5. SAA Selection](./u5_saa_selection/README.md)
 
 ## 전체 그림
 
