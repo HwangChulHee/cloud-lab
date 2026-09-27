@@ -6,10 +6,10 @@ Amazon ECR(Elastic Container Registry)은 AWS의 Container Image 저장소다.
 
 ## Units
 
-- [ ] [u1. Repository / Push / Pull](./u1_repository_push_pull/README.md)
-- [ ] [u2. IAM / Authentication](./u2_iam_authentication/README.md)
-- [ ] [u3. Scanning / Tags / Lifecycle](./u3_scanning_tags_lifecycle/README.md)
-- [ ] [u4. ECS 연동과 SAA 선택](./u4_ecs_integration/README.md)
+- [x] [u1. Repository / Push / Pull](./u1_repository_push_pull/README.md)
+- [x] [u2. IAM / Authentication](./u2_iam_authentication/README.md)
+- [x] [u3. Scanning / Tags / Lifecycle](./u3_scanning_tags_lifecycle/README.md)
+- [x] [u4. ECS 연동과 SAA 선택](./u4_ecs_integration/README.md)
 
 ## 전체 흐름
 
