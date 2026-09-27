@@ -16,13 +16,13 @@ EventBridge / SQS integration
 
 ## Units
 
-- [ ] [u1. Cluster / Task / Service](./u1_cluster_task_service/README.md)
-- [ ] [u2. EC2 Launch Type vs Fargate](./u2_ec2_vs_fargate/README.md)
-- [ ] [u3. ECS IAM Roles](./u3_iam_roles/README.md)
-- [ ] [u4. Load Balancer / EFS](./u4_load_balancer_efs/README.md)
-- [ ] [u5. ECS Service Auto Scaling](./u5_service_auto_scaling/README.md)
-- [ ] [u6. EventBridge / SQS Integration Patterns](./u6_eventbridge_sqs_patterns/README.md)
-- [ ] [u7. SAA 선택 기준](./u7_saa_selection/README.md)
+- [x] [u1. Cluster / Task / Service](./u1_cluster_task_service/README.md)
+- [x] [u2. EC2 Launch Type vs Fargate](./u2_ec2_vs_fargate/README.md)
+- [x] [u3. ECS IAM Roles](./u3_iam_roles/README.md)
+- [x] [u4. Load Balancer / EFS](./u4_load_balancer_efs/README.md)
+- [x] [u5. ECS Service Auto Scaling](./u5_service_auto_scaling/README.md)
+- [x] [u6. EventBridge / SQS Integration Patterns](./u6_eventbridge_sqs_patterns/README.md)
+- [x] [u7. SAA 선택 기준](./u7_saa_selection/README.md)
 
 ## 전체 그림
 
