@@ -6,11 +6,11 @@ ElastiCache는 Redis 또는 Memcached를 관리형으로 제공하는 **in-memor
 
 ## Units
 
-- [ ] u1. ElastiCache Overview & Cache Flow
-- [ ] u2. Redis vs Memcached
-- [ ] u3. Lazy Loading, Write Through & Invalidation
-- [ ] u4. Session Store & Stateless Application
-- [ ] u5. Security, HA & SAA Selection
+- [x] u1. ElastiCache Overview & Cache Flow
+- [x] u2. Redis vs Memcached
+- [x] u3. Lazy Loading, Write Through & Invalidation
+- [x] u4. Session Store & Stateless Application
+- [x] u5. Security, HA & SAA Selection
 
 ## 전체 지도
 
