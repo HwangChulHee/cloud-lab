@@ -9,7 +9,7 @@ SAA 강의의 **Storage Extras** 영역을 정리한다.
 - [x] [18. EFS](./18_efs/README.md)
 - [x] [19. FSx](./19_fsx/README.md)
 - [x] [20. Storage Gateway](./20_storage_gateway/README.md)
-- [ ] [21. DataSync / Transfer Family](./21_datasync_transfer_family/README.md)
+- [x] [21. DataSync / Transfer Family](./21_datasync_transfer_family/README.md)
 - [ ] [22. Snow Family](./22_snow_family/README.md)
 
 ## 전체 지도
