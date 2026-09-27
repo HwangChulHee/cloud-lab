@@ -6,11 +6,11 @@
 
 ## Units
 
-- [ ] [u1. EKS / Kubernetes Overview](./u1_eks_kubernetes_overview/README.md)
-- [ ] [u2. EKS Node Types](./u2_node_types/README.md)
-- [ ] [u3. EKS Networking / Load Balancer 구조](./u3_networking_load_balancer/README.md)
-- [ ] [u4. EKS Storage / CSI](./u4_storage_csi/README.md)
-- [ ] [u5. ECS vs EKS vs App Runner 선택 기준](./u5_ecs_eks_app_runner_selection/README.md)
+- [x] [u1. EKS / Kubernetes Overview](./u1_eks_kubernetes_overview/README.md)
+- [x] [u2. EKS Node Types](./u2_node_types/README.md)
+- [x] [u3. EKS Networking / Load Balancer 구조](./u3_networking_load_balancer/README.md)
+- [x] [u4. EKS Storage / CSI](./u4_storage_csi/README.md)
+- [x] [u5. ECS vs EKS vs App Runner 선택 기준](./u5_ecs_eks_app_runner_selection/README.md)
 
 ## EKS 전체 그림
 
