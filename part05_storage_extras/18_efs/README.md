@@ -6,10 +6,10 @@ Amazon EFS(Elastic File System)는 **Linux 기반 EC2 등에서 공유해서 사
 
 ## Units
 
-- [ ] [u1. EFS 기본 구조 / NFS](./u1_basics_nfs/README.md)
-- [ ] [u2. Performance / Throughput Modes](./u2_performance_throughput/README.md)
-- [ ] [u3. Storage Classes / Lifecycle](./u3_storage_classes_lifecycle/README.md)
-- [ ] [u4. Security / Availability / SAA Selection](./u4_security_availability_selection/README.md)
+- [x] [u1. EFS 기본 구조 / NFS](./u1_basics_nfs/README.md)
+- [x] [u2. Performance / Throughput Modes](./u2_performance_throughput/README.md)
+- [x] [u3. Storage Classes / Lifecycle](./u3_storage_classes_lifecycle/README.md)
+- [x] [u4. Security / Availability / SAA Selection](./u4_security_availability_selection/README.md)
 
 ## 기본 구조
 
