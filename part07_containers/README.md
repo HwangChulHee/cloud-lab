@@ -25,7 +25,7 @@ Amazon ECR
 
 ## Chapters
 
-- [ ] [28. Docker](./28_docker/README.md)
+- [x] [28. Docker](./28_docker/README.md)
 - [ ] [29. ECR](./29_ecr/README.md)
 - [ ] [30. ECS](./30_ecs/README.md)
 - [ ] [31. EKS / App Runner 개념 비교](./31_eks_app_runner/README.md)
