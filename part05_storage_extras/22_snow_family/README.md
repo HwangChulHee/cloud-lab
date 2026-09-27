@@ -6,10 +6,10 @@ AWS Snow Family는 **네트워크만으로 옮기기 어려운 대용량 데이�
 
 ## Units
 
-- [ ] [u1. Snowball Data Migration](./u1_snowball_migration/README.md)
-- [ ] [u2. Snowball Edge Storage vs Compute Optimized](./u2_storage_compute_optimized/README.md)
-- [ ] [u3. Edge Computing](./u3_edge_computing/README.md)
-- [ ] [u4. Snowball → Glacier / SAA Selection](./u4_glacier_selection/README.md)
+- [x] [u1. Snowball Data Migration](./u1_snowball_migration/README.md)
+- [x] [u2. Snowball Edge Storage vs Compute Optimized](./u2_storage_compute_optimized/README.md)
+- [x] [u3. Edge Computing](./u3_edge_computing/README.md)
+- [x] [u4. Snowball → Glacier / SAA Selection](./u4_glacier_selection/README.md)
 
 ## 기본 구조
 
