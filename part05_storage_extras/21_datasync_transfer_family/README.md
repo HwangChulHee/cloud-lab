@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. AWS DataSync 기본 구조](./u1_datasync_overview/README.md)
-- [ ] [u2. DataSync 대상 / Agent / Scheduling](./u2_datasync_targets_agent_schedule/README.md)
-- [ ] [u3. AWS Transfer Family](./u3_transfer_family/README.md)
-- [ ] [u4. DataSync vs Transfer Family vs Storage Gateway](./u4_selection_comparison/README.md)
+- [x] [u1. AWS DataSync 기본 구조](./u1_datasync_overview/README.md)
+- [x] [u2. DataSync 대상 / Agent / Scheduling](./u2_datasync_targets_agent_schedule/README.md)
+- [x] [u3. AWS Transfer Family](./u3_transfer_family/README.md)
+- [x] [u4. DataSync vs Transfer Family vs Storage Gateway](./u4_selection_comparison/README.md)
 
 ## 핵심 구분
 
