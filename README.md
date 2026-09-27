@@ -143,8 +143,8 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 ## 3부 — Relational Data & Cache
 
 - [x] 10. RDS
-- [ ] 11. Aurora
-- [ ] 12. ElastiCache
+- [x] 11. Aurora
+- [x] 12. ElastiCache
 
 ## 4부 — Route 53, S3 & Global Delivery
 
