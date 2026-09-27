@@ -6,10 +6,10 @@ Docker는 애플리케이션과 실행에 필요한 환경을 **Container Image*
 
 ## Units
 
-- [ ] [u1. Container / Image / Dockerfile](./u1_container_image_dockerfile/README.md)
-- [ ] [u2. Docker vs Virtual Machine](./u2_docker_vs_vm/README.md)
-- [ ] [u3. Build / Run / Repository 흐름](./u3_build_run_repository/README.md)
-- [ ] [u4. AWS에서 Container를 어디서 실행하는가](./u4_aws_container_map/README.md)
+- [x] [u1. Container / Image / Dockerfile](./u1_container_image_dockerfile/README.md)
+- [x] [u2. Docker vs Virtual Machine](./u2_docker_vs_vm/README.md)
+- [x] [u3. Build / Run / Repository 흐름](./u3_build_run_repository/README.md)
+- [x] [u4. AWS에서 Container를 어디서 실행하는가](./u4_aws_container_map/README.md)
 
 ## 전체 흐름
 
