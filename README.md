@@ -175,7 +175,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 19. FSx
 - [x] 20. Storage Gateway
 - [x] 21. DataSync / Transfer Family
-- [ ] 22. Snow Family
+- [x] 22. Snow Family
 
 ## 6부 — Messaging & Integration
 
