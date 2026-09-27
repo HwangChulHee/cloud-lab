@@ -6,13 +6,13 @@ Amazon DynamoDB는 AWS의 **serverless NoSQL database**다.
 
 ## Units
 
-- [ ] [u1. Table / Item / Attribute / Primary Key](./u1_table_item_primary_key/README.md)
-- [ ] [u2. Partition Key / Sort Key / Data Distribution](./u2_partition_sort_key/README.md)
-- [ ] [u3. Read / Write Capacity Modes & Consistency](./u3_capacity_consistency/README.md)
-- [ ] [u4. GSI / LSI / Query / Scan](./u4_indexes_query_scan/README.md)
-- [ ] [u5. DAX / Cache](./u5_dax_cache/README.md)
-- [ ] [u6. Streams / Global Tables / TTL](./u6_streams_global_tables_ttl/README.md)
-- [ ] [u7. Backup / Import / Export / SAA Selection](./u7_backup_import_export_selection/README.md)
+- [x] [u1. Table / Item / Attribute / Primary Key](./u1_table_item_primary_key/README.md)
+- [x] [u2. Partition Key / Sort Key / Data Distribution](./u2_partition_sort_key/README.md)
+- [x] [u3. Read / Write Capacity Modes & Consistency](./u3_capacity_consistency/README.md)
+- [x] [u4. GSI / LSI / Query / Scan](./u4_indexes_query_scan/README.md)
+- [x] [u5. DAX / Cache](./u5_dax_cache/README.md)
+- [x] [u6. Streams / Global Tables / TTL](./u6_streams_global_tables_ttl/README.md)
+- [x] [u7. Backup / Import / Export / SAA Selection](./u7_backup_import_export_selection/README.md)
 
 ## 기본 구조
 
