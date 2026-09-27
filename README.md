@@ -171,8 +171,8 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 ## 5부 — Storage Extras
 
-- [ ] 18. EFS
-- [ ] 19. FSx
+- [x] 18. EFS
+- [x] 19. FSx
 - [ ] 20. Storage Gateway
 - [ ] 21. DataSync / Transfer Family
 - [ ] 22. Snow Family
