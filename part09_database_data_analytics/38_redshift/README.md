@@ -6,10 +6,10 @@ Amazon Redshift는 **OLAP / data warehousing**을 위한 analytics database다.
 
 ## Units
 
-- [ ] [u1. OLAP / Cluster Architecture](./u1_olap_cluster_architecture/README.md)
-- [ ] [u2. Loading / Spectrum](./u2_loading_spectrum/README.md)
-- [ ] [u3. Snapshots / DR / Multi-AZ](./u3_snapshots_dr_multiaz/README.md)
-- [ ] [u4. Athena와 비교 / SAA Selection](./u4_athena_comparison_selection/README.md)
+- [x] [u1. OLAP / Cluster Architecture](./u1_olap_cluster_architecture/README.md)
+- [x] [u2. Loading / Spectrum](./u2_loading_spectrum/README.md)
+- [x] [u3. Snapshots / DR / Multi-AZ](./u3_snapshots_dr_multiaz/README.md)
+- [x] [u4. Athena와 비교 / SAA Selection](./u4_athena_comparison_selection/README.md)
 
 ## 핵심 특징
 
