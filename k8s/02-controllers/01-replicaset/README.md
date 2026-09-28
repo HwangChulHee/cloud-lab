@@ -8,46 +8,37 @@ Template, replicas, selector와 desired state를 체감한다.
 
 ## Recall
 
-시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
+Pod, Label/Selector, desired state의 의미를 먼저 회상한다.
 
 ## Build & Observe
 
 1. ReplicaSet으로 Pod를 생성한다.
 2. replicas를 1→2→3으로 변경한다.
 3. Pod 하나를 수동 삭제해 자동 복구를 확인한다.
-4. `--cascade=orphan`으로 Controller만 삭제한다.
+4. ReplicaSet selector와 일치하는 독립 Pod를 먼저 만든 뒤, ReplicaSet이 해당 Pod를 관리 대상으로 인식하는지 확인한다.
+5. `--cascade=orphan`으로 Controller만 삭제했을 때 Pod가 남는 것을 확인한다.
 
-필요에 따라 다음 명령을 사용한다.
+## Validation Exercise
 
-```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod <pod>
-kubectl get events --sort-by=.lastTimestamp
-```
+실행 중인 ReplicaSet의 selector를 억지로 변경하는 실험 대신, 별도 YAML에서 `.spec.selector`와 `.spec.template.metadata.labels`를 불일치시켜 생성해 본다.
 
-## Break & Diagnose
-
-1. selector 조건을 바꿔 관리 대상 변화와 오류를 확인한다.
-
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+- API가 왜 해당 정의를 거부하는지 에러 메시지를 읽는다.
+- 정상 YAML과 비교해 어떤 계약이 깨졌는지 찾는다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+잘못된 manifest의 selector/template label을 일치시킨 뒤 정상 생성한다.
 
 ## 완료 검증
 
-1. ReplicaSet이 무엇을 계속 맞추려 하는지 설명한다.
+1. ReplicaSet이 replicas 수를 유지하는 과정을 설명한다.
+2. selector가 기존 Pod를 관리 대상으로 판단하는 기준임을 설명한다.
+3. selector와 template labels가 일치해야 하는 이유를 설명한다.
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+이 Lab에서 만든 ReplicaSet과 Pod를 삭제한다. orphan Pod가 남았다면 직접 정리한다.
 
 ## 설명하기
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+> ReplicaSet은 ______와 일치하는 Pod 수를 `replicas` 값에 맞추며, 부족하면 ______을 이용해 새 Pod를 만든다.
