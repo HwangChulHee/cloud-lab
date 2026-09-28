@@ -15,38 +15,34 @@
 1. `kubectl get nodes -o wide`로 master/worker1/worker2를 확인한다.
 2. `kubectl get pods -A -o wide`로 kube-system 구성요소를 확인한다.
 3. 각 노드의 IP, Kubernetes 버전, container runtime을 기록한다.
+4. `kubectl describe node`로 Conditions와 Allocatable/Allocated Resources를 확인한다.
 
 필요에 따라 다음 명령을 사용한다.
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod <pod>
-kubectl get events --sort-by=.lastTimestamp
+kubectl get nodes -o wide
+kubectl get pods -A -o wide
+kubectl describe node <node>
+kubectl get events -A --sort-by=.lastTimestamp
 ```
 
-## Break & Diagnose
+## Compare & Diagnose
 
-1. worker 하나를 잠시 종료해 Node 상태 변화를 관찰한 뒤 다시 기동한다.
+이 첫 실습에서는 클러스터를 일부러 중단시키지 않는다. 대신 정상 상태의 기준선을 만든다.
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
-
-## Recover
-
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+1. master와 worker의 Roles 차이를 확인한다.
+2. kube-system Pod가 어느 Node에 배치돼 있는지 비교한다.
+3. Node Conditions에서 Ready/MemoryPressure/DiskPressure/PIDPressure를 확인한다.
 
 ## 완료 검증
 
 1. 3개 Node가 모두 `Ready`인지 확인한다.
+2. 현재 클러스터의 기준 상태를 설명할 수 있다.
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+생성한 리소스가 없으므로 별도 삭제는 없다.
 
 ## 설명하기
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+> Node가 정상이라고 판단할 때 확인할 상태는 ______이고, 시스템 Pod는 ______ namespace에서 확인한다.
