@@ -8,46 +8,37 @@ Ingress Controller를 통한 path/host routing을 구성한다.
 
 ## Recall
 
-시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
+Service가 backend Pod를 선택하는 과정과 Ingress object / Ingress Controller의 역할 차이를 먼저 설명한다.
 
 ## Build & Observe
 
-1. Nginx Ingress Controller 상태를 확인한다.
-2. shopping/customer/order 서비스를 준비한다.
+1. Nginx Ingress Controller가 설치되어 있고 Ready인지 확인한다.
+2. shopping/customer/order backend와 Service를 준비한다.
 3. Path 기반 라우팅을 만든다.
 4. Host 기반 라우팅을 추가한다.
-
-필요에 따라 다음 명령을 사용한다.
-
-```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod <pod>
-kubectl get events --sort-by=.lastTimestamp
-```
+5. 요청 URL과 실제 도달 backend를 비교한다.
 
 ## Break & Diagnose
 
-1. Ingress Controller 없이/잘못된 serviceName으로 rule이 존재해도 요청이 실패하는 상황을 확인한다.
+Ingress Controller 자체를 제거하는 식의 큰 장애는 만들지 않는다.
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+1. Ingress rule의 backend Service 이름을 존재하지 않는 이름으로 바꾼다.
+2. 또는 path를 의도적으로 잘못 설정해 원하는 backend로 가지 않는 상태를 만든다.
+3. Ingress describe, Controller log, Service/Endpoint를 따라가며 원인을 찾는다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+잘못된 backend Service 이름/path를 복구하고 같은 요청이 정상 routing되는지 확인한다.
 
 ## 완료 검증
 
-1. Ingress object와 Ingress Controller 역할 차이를 설명한다.
+1. Ingress object만 존재해도 실제 라우팅을 수행하는 것은 아니라는 점을 설명한다.
+2. 요청이 실패할 때 Ingress → Service → Endpoint → Pod 순서로 추적한다.
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+Ingress와 이 Lab에서 만든 backend/Service를 삭제한다. 공용 Ingress Controller는 다음 실습에서 사용하므로 유지한다.
 
 ## 설명하기
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+> Ingress는 라우팅 규칙을 선언하고, 실제 규칙을 읽어 트래픽을 처리하는 것은 ______이다.
