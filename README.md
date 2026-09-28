@@ -211,7 +211,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 ## 10부 — Machine Learning for SAA
 
-- [ ] 43. Rekognition
+- [x] 43. Rekognition
 - [ ] 44. Transcribe / Polly / Translate
 - [ ] 45. Comprehend
 - [ ] 46. Lex
