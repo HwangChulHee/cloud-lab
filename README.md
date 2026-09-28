@@ -207,7 +207,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 39. EMR
 - [x] 40. Glue
 - [x] 41. OpenSearch
-- [ ] 42. Lake Formation / QuickSight / MSK 등 Analytics 서비스
+- [x] 42. Lake Formation / QuickSight / MSK 등 Analytics 서비스
 
 ## 10부 — Machine Learning for SAA
 
