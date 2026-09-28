@@ -216,7 +216,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 45. Comprehend
 - [x] 46. Lex
 - [x] 47. SageMaker
-- [ ] 48. Textract
+- [x] 48. Textract
 - [ ] 49. Kendra / Personalize 등 강의 등장 서비스
 
 ## 11부 — Monitoring, Advanced Identity & Security
