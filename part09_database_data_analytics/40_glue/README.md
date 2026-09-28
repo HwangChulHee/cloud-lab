@@ -6,11 +6,11 @@ AWS Glue는 **fully serverless ETL(Extract, Transform, Load) 서비스**다.
 
 ## Units
 
-- [ ] [u1. ETL / Serverless Data Preparation](./u1_etl_serverless/README.md)
-- [ ] [u2. Data Catalog / Crawler](./u2_data_catalog_crawler/README.md)
-- [ ] [u3. Parquet Conversion / Athena Integration](./u3_parquet_athena_integration/README.md)
-- [ ] [u4. Job Bookmark / DataBrew / Studio / Streaming](./u4_bookmark_databrew_streaming/README.md)
-- [ ] [u5. SAA Selection](./u5_saa_selection/README.md)
+- [x] [u1. ETL / Serverless Data Preparation](./u1_etl_serverless/README.md)
+- [x] [u2. Data Catalog / Crawler](./u2_data_catalog_crawler/README.md)
+- [x] [u3. Parquet Conversion / Athena Integration](./u3_parquet_athena_integration/README.md)
+- [x] [u4. Job Bookmark / DataBrew / Studio / Streaming](./u4_bookmark_databrew_streaming/README.md)
+- [x] [u5. SAA Selection](./u5_saa_selection/README.md)
 
 ## 기본 구조
 
