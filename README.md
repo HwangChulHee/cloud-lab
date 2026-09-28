@@ -225,7 +225,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 - [x] 50. CloudWatch — Deep
 - [x] 51. CloudTrail — Deep
-- [ ] 52. AWS Config — Coverage
+- [x] 52. AWS Config — Coverage
 - [ ] 53. Advanced Identity — Coverage
 - [x] 54. KMS — Deep
 - [ ] 55. Secrets Manager / Parameter Store — Coverage
