@@ -14,9 +14,9 @@ Amazon Personalize
 
 ## Units
 
-- [ ] [u1. Amazon Kendra](./u1_kendra/README.md)
-- [ ] [u2. Amazon Personalize](./u2_personalize/README.md)
-- [ ] [u3. ML Services 최종 선택 지도](./u3_ml_selection_map/README.md)
+- [x] [u1. Amazon Kendra](./u1_kendra/README.md)
+- [x] [u2. Amazon Personalize](./u2_personalize/README.md)
+- [x] [u3. ML Services 최종 선택 지도](./u3_ml_selection_map/README.md)
 
 ## 한 줄 구분
 
