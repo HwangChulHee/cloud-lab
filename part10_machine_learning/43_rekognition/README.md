@@ -16,10 +16,10 @@ Pathing
 
 ## Units
 
-- [ ] [u1. Image / Video Analysis](./u1_image_video_analysis/README.md)
-- [ ] [u2. Face Analysis / Verification](./u2_face_analysis_verification/README.md)
-- [ ] [u3. Content Moderation](./u3_content_moderation/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. Image / Video Analysis](./u1_image_video_analysis/README.md)
+- [x] [u2. Face Analysis / Verification](./u2_face_analysis_verification/README.md)
+- [x] [u3. Content Moderation](./u3_content_moderation/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 전체 감각
 
