@@ -8,10 +8,10 @@ Amazon Athena는 **Amazon S3에 저장된 데이터를 SQL로 분석하는 serve
 
 ## Units
 
-- [ ] [u1. Serverless SQL on S3](./u1_serverless_sql_s3/README.md)
-- [ ] [u2. Performance / Cost Optimization](./u2_performance_cost/README.md)
-- [ ] [u3. Federated Query](./u3_federated_query/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. Serverless SQL on S3](./u1_serverless_sql_s3/README.md)
+- [x] [u2. Performance / Cost Optimization](./u2_performance_cost/README.md)
+- [x] [u3. Federated Query](./u3_federated_query/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 기본 구조
 
