@@ -7,7 +7,7 @@ SAA의 **Databases in AWS / Data & Analytics** 영역을 정리한다.
 ## Chapters
 
 - [x] [36. AWS Database 선택 지도](./36_database_selection/README.md)
-- [ ] [37. Athena](./37_athena/README.md)
+- [x] [37. Athena](./37_athena/README.md)
 - [ ] [38. Redshift](./38_redshift/README.md)
 - [ ] [39. EMR](./39_emr/README.md)
 - [ ] [40. Glue](./40_glue/README.md)
