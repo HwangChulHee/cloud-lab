@@ -6,10 +6,10 @@ AWS Config는 **AWS 리소스의 설정과 변경 이력을 기록하고, 원하
 
 ## Units
 
-- [ ] [u1. Configuration Recording / Timeline](./u1_configuration_recording_timeline/README.md)
-- [ ] [u2. Config Rules / Compliance](./u2_rules_compliance/README.md)
-- [ ] [u3. Remediation / Notifications](./u3_remediation_notifications/README.md)
-- [ ] [u4. CloudWatch vs CloudTrail vs Config](./u4_comparison_selection/README.md)
+- [x] [u1. Configuration Recording / Timeline](./u1_configuration_recording_timeline/README.md)
+- [x] [u2. Config Rules / Compliance](./u2_rules_compliance/README.md)
+- [x] [u3. Remediation / Notifications](./u3_remediation_notifications/README.md)
+- [x] [u4. CloudWatch vs CloudTrail vs Config](./u4_comparison_selection/README.md)
 
 ## AWS Config가 답하는 질문
 
