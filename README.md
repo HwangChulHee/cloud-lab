@@ -204,7 +204,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 36. AWS Database 선택 지도
 - [x] 37. Athena
 - [x] 38. Redshift
-- [ ] 39. EMR
+- [x] 39. EMR
 - [ ] 40. Glue
 - [ ] 41. OpenSearch
 - [ ] 42. Lake Formation / QuickSight / MSK 등 Analytics 서비스
