@@ -6,10 +6,10 @@ AWS에는 데이터 모델과 접근 방식이 다른 여러 관리형 데이터
 
 ## Units
 
-- [ ] [u1. Database 선택 질문](./u1_selection_questions/README.md)
-- [ ] [u2. Database Type 전체 지도](./u2_database_types_map/README.md)
-- [ ] [u3. Specialized Databases](./u3_specialized_databases/README.md)
-- [ ] [u4. SAA 선택 기준](./u4_saa_selection/README.md)
+- [x] [u1. Database 선택 질문](./u1_selection_questions/README.md)
+- [x] [u2. Database Type 전체 지도](./u2_database_types_map/README.md)
+- [x] [u3. Specialized Databases](./u3_specialized_databases/README.md)
+- [x] [u4. SAA 선택 기준](./u4_saa_selection/README.md)
 
 ## 먼저 물어볼 것
 
