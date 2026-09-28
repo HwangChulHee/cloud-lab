@@ -6,10 +6,10 @@ Amazon Lex는 **대화형 챗봇/콜봇**을 만들기 위한 서비스다.
 
 ## Units
 
-- [ ] [u1. ASR / NLU](./u1_asr_nlu/README.md)
-- [ ] [u2. Chatbot / Call Center Bot](./u2_chatbot_callcenter/README.md)
-- [ ] [u3. Amazon Connect Integration](./u3_connect_integration/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. ASR / NLU](./u1_asr_nlu/README.md)
+- [x] [u2. Chatbot / Call Center Bot](./u2_chatbot_callcenter/README.md)
+- [x] [u3. Amazon Connect Integration](./u3_connect_integration/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 핵심
 
