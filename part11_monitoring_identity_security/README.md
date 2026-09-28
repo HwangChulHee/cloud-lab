@@ -16,7 +16,7 @@
 
 ### Coverage
 
-- [ ] [52. AWS Config](./52_aws_config/README.md)
+- [x] [52. AWS Config](./52_aws_config/README.md)
 - [ ] [53. Advanced Identity](./53_advanced_identity/README.md)
 - [ ] [55. Secrets Manager / Parameter Store](./55_secrets_parameter_store/README.md)
 - [ ] [57. WAF / Shield / Firewall Manager](./57_waf_shield_firewall_manager/README.md)
