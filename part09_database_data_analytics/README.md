@@ -12,7 +12,7 @@ SAA의 **Databases in AWS / Data & Analytics** 영역을 정리한다.
 - [x] [39. EMR](./39_emr/README.md)
 - [x] [40. Glue](./40_glue/README.md)
 - [x] [41. OpenSearch](./41_opensearch/README.md)
-- [ ] [42. Lake Formation / QuickSight / MSK 등](./42_lakeformation_quicksight_msk/README.md)
+- [x] [42. Lake Formation / QuickSight / MSK 등](./42_lakeformation_quicksight_msk/README.md)
 
 ## Database 선택 전체 지도
 
