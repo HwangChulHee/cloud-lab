@@ -6,10 +6,10 @@ Amazon OpenSearch Service는 **검색과 분석**을 위한 managed service다.
 
 ## Units
 
-- [ ] [u1. Search / Full-Text Use Case](./u1_search_fulltext_use_case/README.md)
-- [ ] [u2. DynamoDB + OpenSearch Pattern](./u2_dynamodb_pattern/README.md)
-- [ ] [u3. Logs / Kinesis Ingestion Patterns](./u3_logs_kinesis_ingestion/README.md)
-- [ ] [u4. Security / Dashboards / SAA Selection](./u4_security_dashboards_selection/README.md)
+- [x] [u1. Search / Full-Text Use Case](./u1_search_fulltext_use_case/README.md)
+- [x] [u2. DynamoDB + OpenSearch Pattern](./u2_dynamodb_pattern/README.md)
+- [x] [u3. Logs / Kinesis Ingestion Patterns](./u3_logs_kinesis_ingestion/README.md)
+- [x] [u4. Security / Dashboards / SAA Selection](./u4_security_dashboards_selection/README.md)
 
 ## 핵심
 
