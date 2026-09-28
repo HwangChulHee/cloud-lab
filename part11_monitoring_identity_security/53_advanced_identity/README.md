@@ -4,11 +4,11 @@
 
 ## Units
 
-- [ ] [u1. AWS Organizations / OU / Consolidated Billing](./u1_organizations_ou_billing/README.md)
-- [ ] [u2. SCP / Tag Policies](./u2_scp_tag_policies/README.md)
-- [ ] [u3. IAM Conditions / Permission Boundaries](./u3_conditions_permission_boundaries/README.md)
-- [ ] [u4. IAM Identity Center / Permission Sets](./u4_identity_center_permission_sets/README.md)
-- [ ] [u5. Directory Services / Control Tower](./u5_directory_services_control_tower/README.md)
+- [x] [u1. AWS Organizations / OU / Consolidated Billing](./u1_organizations_ou_billing/README.md)
+- [x] [u2. SCP / Tag Policies](./u2_scp_tag_policies/README.md)
+- [x] [u3. IAM Conditions / Permission Boundaries](./u3_conditions_permission_boundaries/README.md)
+- [x] [u4. IAM Identity Center / Permission Sets](./u4_identity_center_permission_sets/README.md)
+- [x] [u5. Directory Services / Control Tower](./u5_directory_services_control_tower/README.md)
 
 ## 전체 지도
 
