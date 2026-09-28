@@ -42,7 +42,7 @@ Textract
 ## Chapters
 
 - [x] [43. Rekognition](./43_rekognition/README.md)
-- [ ] [44. Transcribe / Polly / Translate](./44_transcribe_polly_translate/README.md)
+- [x] [44. Transcribe / Polly / Translate](./44_transcribe_polly_translate/README.md)
 - [ ] [45. Comprehend](./45_comprehend/README.md)
 - [ ] [46. Lex](./46_lex/README.md)
 - [ ] [47. SageMaker](./47_sagemaker/README.md)
