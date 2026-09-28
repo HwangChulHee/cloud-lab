@@ -10,7 +10,7 @@ SAA의 **Databases in AWS / Data & Analytics** 영역을 정리한다.
 - [x] [37. Athena](./37_athena/README.md)
 - [x] [38. Redshift](./38_redshift/README.md)
 - [x] [39. EMR](./39_emr/README.md)
-- [ ] [40. Glue](./40_glue/README.md)
+- [x] [40. Glue](./40_glue/README.md)
 - [ ] [41. OpenSearch](./41_opensearch/README.md)
 - [ ] [42. Lake Formation / QuickSight / MSK 등](./42_lakeformation_quicksight_msk/README.md)
 
