@@ -214,7 +214,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 43. Rekognition
 - [x] 44. Transcribe / Polly / Translate
 - [x] 45. Comprehend
-- [ ] 46. Lex
+- [x] 46. Lex
 - [ ] 47. SageMaker
 - [ ] 48. Textract
 - [ ] 49. Kendra / Personalize 등 강의 등장 서비스
