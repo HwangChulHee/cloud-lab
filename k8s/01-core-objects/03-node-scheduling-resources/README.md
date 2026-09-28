@@ -4,7 +4,7 @@
 
 ## 목표
 
-nodeSelector와 requests/limits가 배치와 실행에 미치는 영향을 확인한다.
+nodeSelector와 requests/limits가 배치 가능 여부와 실행 자원 제어에 미치는 영향을 확인한다.
 
 ## Recall
 
@@ -12,41 +12,39 @@ nodeSelector와 requests/limits가 배치와 실행에 미치는 영향을 확�
 
 ## Build & Observe
 
-1. Pod를 worker1에 nodeSelector로 고정한다.
-2. 서로 다른 memory requests를 가진 Pod를 생성해 배치를 비교한다.
-3. `kubectl describe pod`의 Events를 확인한다.
+1. Pod를 worker1에 nodeSelector로 고정하고 실제 배치 Node를 확인한다.
+2. memory requests/limits가 있는 Pod를 만들고 `kubectl describe pod`에서 Requests/Limits를 확인한다.
+3. `kubectl describe node`의 Allocatable과 현재 요청량을 함께 본다.
 
 필요에 따라 다음 명령을 사용한다.
 
 ```bash
 kubectl get pods -o wide
-kubectl get all
 kubectl describe pod <pod>
+kubectl describe node k8s-worker1
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. 노드 가용량보다 큰 request를 설정해 Pending/FailedScheduling을 만든다.
+1. 대상 Node가 수용할 수 없는 큰 memory request를 지정해 Pod를 Pending으로 만든다.
+2. `FailedScheduling` Event에서 실제 원인이 insufficient memory인지 확인한다.
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+> 서로 다른 request 값을 줬을 때 "자원이 가장 많은 Node로 간다"는 식의 배치 예측은 하지 않는다. Scheduler는 여러 조건과 점수를 함께 사용하므로, 이 실습은 **배치 가능/불가능과 request의 의미**에 집중한다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+request를 수용 가능한 값으로 낮춰 정상 스케줄링되는지 확인한다.
 
 ## 완료 검증
 
 1. requests와 limits의 역할 차이를 설명한다.
+2. Pending 상태에서 `Events`가 왜 중요한지 설명한다.
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+이 Lab에서 만든 Pod를 삭제한다.
 
 ## 설명하기
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+> Scheduler가 Pod를 배치할 수 있는지를 판단할 때 requests는 ______로 사용되고, limits는 ______을 제한한다.
