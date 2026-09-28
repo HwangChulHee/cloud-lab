@@ -6,10 +6,10 @@ Amazon EMR(Elastic MapReduce)은 **대규모 Big Data 처리용 managed cluster 
 
 ## Units
 
-- [ ] [u1. EMR Overview / Use Cases](./u1_emr_overview_use_cases/README.md)
-- [ ] [u2. Node Types](./u2_node_types/README.md)
-- [ ] [u3. Purchasing / Long-Running vs Transient](./u3_purchasing_cluster_lifecycle/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. EMR Overview / Use Cases](./u1_emr_overview_use_cases/README.md)
+- [x] [u2. Node Types](./u2_node_types/README.md)
+- [x] [u3. Purchasing / Long-Running vs Transient](./u3_purchasing_cluster_lifecycle/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 기본 구조
 
