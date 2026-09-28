@@ -15,10 +15,10 @@ Translate
 
 ## Units
 
-- [ ] [u1. Amazon Transcribe](./u1_transcribe/README.md)
-- [ ] [u2. Amazon Polly](./u2_polly/README.md)
-- [ ] [u3. Polly Lexicon / SSML](./u3_polly_lexicon_ssml/README.md)
-- [ ] [u4. Amazon Translate / SAA Selection](./u4_translate_selection/README.md)
+- [x] [u1. Amazon Transcribe](./u1_transcribe/README.md)
+- [x] [u2. Amazon Polly](./u2_polly/README.md)
+- [x] [u3. Polly Lexicon / SSML](./u3_polly_lexicon_ssml/README.md)
+- [x] [u4. Amazon Translate / SAA Selection](./u4_translate_selection/README.md)
 
 ## 한 줄 기억
 
