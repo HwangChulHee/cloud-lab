@@ -20,11 +20,11 @@ Amazon MSK
 
 ## Units
 
-- [ ] [u1. AWS Lake Formation](./u1_lake_formation/README.md)
-- [ ] [u2. Amazon QuickSight](./u2_quicksight/README.md)
-- [ ] [u3. Managed Service for Apache Flink](./u3_managed_flink/README.md)
-- [ ] [u4. Amazon MSK](./u4_msk/README.md)
-- [ ] [u5. Analytics 서비스 최종 선택 지도](./u5_analytics_selection/README.md)
+- [x] [u1. AWS Lake Formation](./u1_lake_formation/README.md)
+- [x] [u2. Amazon QuickSight](./u2_quicksight/README.md)
+- [x] [u3. Managed Service for Apache Flink](./u3_managed_flink/README.md)
+- [x] [u4. Amazon MSK](./u4_msk/README.md)
+- [x] [u5. Analytics 서비스 최종 선택 지도](./u5_analytics_selection/README.md)
 
 ## 전체 그림
 
