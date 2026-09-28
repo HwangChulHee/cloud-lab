@@ -47,7 +47,7 @@ Textract
 - [x] [46. Lex](./46_lex/README.md)
 - [x] [47. SageMaker](./47_sagemaker/README.md)
 - [x] [48. Textract](./48_textract/README.md)
-- [ ] [49. Kendra / Personalize 등](./49_kendra_personalize/README.md)
+- [x] [49. Kendra / Personalize 등](./49_kendra_personalize/README.md)
 
 ## 입력 → 출력으로 먼저 구분
 
