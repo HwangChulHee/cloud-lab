@@ -203,7 +203,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 - [x] 36. AWS Database 선택 지도
 - [x] 37. Athena
-- [ ] 38. Redshift
+- [x] 38. Redshift
 - [ ] 39. EMR
 - [ ] 40. Glue
 - [ ] 41. OpenSearch
