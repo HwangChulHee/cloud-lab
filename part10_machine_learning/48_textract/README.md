@@ -4,9 +4,9 @@ Amazon Textract는 **scanned document에서 text, handwriting, form, table 데�
 
 ## Units
 
-- [ ] [u1. Document Text / Handwriting Extraction](./u1_document_text_handwriting/README.md)
-- [ ] [u2. Forms / Tables / Structured Data](./u2_forms_tables_structured_data/README.md)
-- [ ] [u3. Use Cases / SAA Selection](./u3_use_cases_selection/README.md)
+- [x] [u1. Document Text / Handwriting Extraction](./u1_document_text_handwriting/README.md)
+- [x] [u2. Forms / Tables / Structured Data](./u2_forms_tables_structured_data/README.md)
+- [x] [u3. Use Cases / SAA Selection](./u3_use_cases_selection/README.md)
 
 ## 기본 구조
 
