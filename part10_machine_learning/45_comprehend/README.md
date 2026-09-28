@@ -6,10 +6,10 @@ Amazon Comprehend는 **Natural Language Processing(NLP)** 서비스다.
 
 ## Units
 
-- [ ] [u1. NLP / Text Analysis](./u1_nlp_text_analysis/README.md)
-- [ ] [u2. Sentiment / Entities / Topics](./u2_sentiment_entities_topics/README.md)
-- [ ] [u3. Comprehend Medical](./u3_comprehend_medical/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. NLP / Text Analysis](./u1_nlp_text_analysis/README.md)
+- [x] [u2. Sentiment / Entities / Topics](./u2_sentiment_entities_topics/README.md)
+- [x] [u3. Comprehend Medical](./u3_comprehend_medical/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 핵심
 
