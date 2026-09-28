@@ -8,45 +8,37 @@ Node가 Pod를 거부하는 조건과 예외 허용 방식을 확인한다.
 
 ## Recall
 
-시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
+nodeSelector/Node Affinity처럼 "어디로 갈지 정하는 기능"과 Taint/Toleration처럼 "들어올 수 있는지 제한하는 기능"을 구분한다.
 
 ## Build & Observe
 
-1. worker1에 `NoSchedule` taint를 건다.
-2. toleration 있는/없는 Pod를 비교한다.
-3. NoExecute와 tolerationSeconds를 이용해 퇴거 시점을 관찰한다.
+1. worker1에 실습용 `hw=gpu:NoSchedule` taint를 건다.
+2. worker1을 nodeSelector로 지정한 Pod를 두 개 만들고, toleration 있는 Pod와 없는 Pod를 비교한다.
+3. toleration이 있는 Pod만 스케줄링되는지 Events로 확인한다.
+4. Toleration만 넣고 nodeSelector를 빼서 **허용했다고 해서 해당 Node를 선택하는 것은 아님**을 확인한다.
 
-필요에 따라 다음 명령을 사용한다.
+## Optional: NoExecute
 
-```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod <pod>
-kubectl get events --sort-by=.lastTimestamp
-```
+`NoExecute`는 해당 Node의 기존 Pod를 퇴거시킬 수 있으므로 **현재 worker에 다른 사용자 workload가 없는 것을 확인한 경우에만** 진행한다.
 
-## Break & Diagnose
-
-1. Toleration만 넣고 nodeSelector를 빼서 '허용=선택'이 아님을 확인한다.
-
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+1. 실습용 Pod 두 개를 같은 worker에 배치한다.
+2. 한 Pod에는 `tolerationSeconds`를 짧게 지정하고, 다른 Pod에는 시간 제한 없는 NoExecute toleration을 준다.
+3. 실습용 NoExecute taint를 적용하고 두 Pod의 퇴거 차이를 관찰한다.
+4. 관찰 직후 taint를 제거한다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+NoSchedule/NoExecute 실습용 taint를 모두 제거하고 Node 상태가 정상인지 확인한다.
 
 ## 완료 검증
 
-1. NoSchedule/PreferNoSchedule/NoExecute 차이를 설명한다.
+1. NoSchedule / PreferNoSchedule / NoExecute 차이를 설명한다.
+2. Toleration은 Node 선택 기능이 아니라 taint에 대한 **허용 조건**임을 설명한다.
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+Pod와 실습용 Node label/taint를 모두 삭제한다. `kubectl describe node`로 taint가 남지 않았는지 확인한다.
 
 ## 설명하기
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+> Taint는 Node가 Pod를 ______하기 위한 조건이고, Toleration은 그 조건을 ______하지만 해당 Node를 선택해 주지는 않는다.
