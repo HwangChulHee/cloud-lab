@@ -6,10 +6,10 @@ Amazon SageMaker AI는 **개발자와 data scientist가 ML model을 만들기 �
 
 ## Units
 
-- [ ] [u1. Managed ML Platform](./u1_managed_ml_platform/README.md)
-- [ ] [u2. Build / Train / Tune / Predict](./u2_build_train_tune_predict/README.md)
-- [ ] [u3. Aurora Machine Learning Integration](./u3_aurora_integration/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. Managed ML Platform](./u1_managed_ml_platform/README.md)
+- [x] [u2. Build / Train / Tune / Predict](./u2_build_train_tune_predict/README.md)
+- [x] [u3. Aurora Machine Learning Integration](./u3_aurora_integration/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 전체 흐름
 
