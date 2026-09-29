@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. More Solutions Architecture Patterns](./u1_more_architecture_patterns/README.md)
-- [ ] [u2. AWS Architecture Resources](./u2_architecture_resources/README.md)
-- [ ] [u3. Trusted Advisor](./u3_trusted_advisor/README.md)
-- [ ] [u4. White Papers / FAQ / SAA 접근법](./u4_whitepapers_faq_selection/README.md)
+- [x] [u1. More Solutions Architecture Patterns](./u1_more_architecture_patterns/README.md)
+- [x] [u2. AWS Architecture Resources](./u2_architecture_resources/README.md)
+- [x] [u3. Trusted Advisor](./u3_trusted_advisor/README.md)
+- [x] [u4. White Papers / FAQ / SAA 접근법](./u4_whitepapers_faq_selection/README.md)
 
 ## 강의 Summary
 
