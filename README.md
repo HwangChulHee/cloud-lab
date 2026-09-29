@@ -249,7 +249,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 ## 13부 — Disaster Recovery & Migration
 
 - [x] 67. RPO / RTO
-- [ ] 68. Backup & Restore
+- [x] 68. Backup & Restore
 - [ ] 69. Pilot Light
 - [ ] 70. Warm Standby
 - [ ] 71. Multi-Site / Active-Active
