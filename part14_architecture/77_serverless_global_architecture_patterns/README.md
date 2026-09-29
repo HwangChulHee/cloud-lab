@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. Global Serverless Website](./u1_global_serverless_website/README.md)
-- [ ] [u2. Event-Driven Processing](./u2_event_driven_processing/README.md)
-- [ ] [u3. Microservices Communication](./u3_microservices_communication/README.md)
-- [ ] [u4. Global Data / Caching Selection](./u4_global_data_caching/README.md)
+- [x] [u1. Global Serverless Website](./u1_global_serverless_website/README.md)
+- [x] [u2. Event-Driven Processing](./u2_event_driven_processing/README.md)
+- [x] [u3. Microservices Communication](./u3_microservices_communication/README.md)
+- [x] [u4. Global Data / Caching Selection](./u4_global_data_caching/README.md)
 
 ## 대표 구조
 
