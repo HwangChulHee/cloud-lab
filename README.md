@@ -260,7 +260,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 
 - [x] 74. CloudFormation
 - [x] 75. Classic Solutions Architecture
-- [ ] 76. High Availability / Scalability Patterns
+- [x] 76. High Availability / Scalability Patterns
 - [ ] 77. Serverless / Global Architecture Patterns
 - [ ] 78. 비용 최적화 개념
 - [ ] 79. AWS Well-Architected Framework
