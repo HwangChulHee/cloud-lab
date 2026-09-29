@@ -254,7 +254,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 70. Warm Standby
 - [x] 71. Multi-Site / Active-Active
 - [x] 72. DMS / SCT
-- [ ] 73. Application Migration Service / Migration Strategies
+- [x] 73. Application Migration Service / Migration Strategies
 
 ## 14부 — CloudFormation & Architecture Coverage
 
