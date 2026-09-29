@@ -259,7 +259,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 ## 14부 — CloudFormation & Architecture Coverage
 
 - [x] 74. CloudFormation
-- [ ] 75. Classic Solutions Architecture
+- [x] 75. Classic Solutions Architecture
 - [ ] 76. High Availability / Scalability Patterns
 - [ ] 77. Serverless / Global Architecture Patterns
 - [ ] 78. 비용 최적화 개념
