@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. AWS Database Migration Service](./u1_dms/README.md)
-- [ ] [u2. DMS Full Load / CDC / Multi-AZ](./u2_full_load_cdc_multiaz/README.md)
-- [ ] [u3. AWS Schema Conversion Tool](./u3_sct/README.md)
-- [ ] [u4. DMS + SCT 선택 기준](./u4_selection/README.md)
+- [x] [u1. AWS Database Migration Service](./u1_dms/README.md)
+- [x] [u2. DMS Full Load / CDC / Multi-AZ](./u2_full_load_cdc_multiaz/README.md)
+- [x] [u3. AWS Schema Conversion Tool](./u3_sct/README.md)
+- [x] [u4. DMS + SCT 선택 기준](./u4_selection/README.md)
 
 ## 핵심 구분
 
