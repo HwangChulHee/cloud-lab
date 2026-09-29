@@ -228,7 +228,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 52. AWS Config — Coverage
 - [x] 53. Advanced Identity — Coverage
 - [x] 54. KMS — Deep
-- [ ] 55. Secrets Manager / Parameter Store — Coverage
+- [x] 55. Secrets Manager / Parameter Store — Coverage
 - [x] 56. Systems Manager — Deep
 - [ ] 57. WAF / Shield / Firewall Manager — Coverage
 - [ ] 58. GuardDuty / Inspector / Macie 등 Security Services — Coverage
