@@ -22,7 +22,7 @@ Migration
 
 ## Chapters
 
-- [ ] [67. RPO / RTO](./67_rpo_rto/README.md)
+- [x] [67. RPO / RTO](./67_rpo_rto/README.md)
 - [ ] [68. Backup & Restore](./68_backup_restore/README.md)
 - [ ] [69. Pilot Light](./69_pilot_light/README.md)
 - [ ] [70. Warm Standby](./70_warm_standby/README.md)
