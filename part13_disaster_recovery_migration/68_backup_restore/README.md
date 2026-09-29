@@ -6,10 +6,10 @@ Backup & Restore는 가장 기본적인 DR 전략이다.
 
 ## Units
 
-- [ ] [u1. Backup & Restore Architecture](./u1_architecture/README.md)
-- [ ] [u2. AWS Backup](./u2_aws_backup/README.md)
-- [ ] [u3. Backup Vault Lock / Cross-Region / Cross-Account](./u3_vault_lock_cross_region/README.md)
-- [ ] [u4. SAA Selection](./u4_saa_selection/README.md)
+- [x] [u1. Backup & Restore Architecture](./u1_architecture/README.md)
+- [x] [u2. AWS Backup](./u2_aws_backup/README.md)
+- [x] [u3. Backup Vault Lock / Cross-Region / Cross-Account](./u3_vault_lock_cross_region/README.md)
+- [x] [u4. SAA Selection](./u4_saa_selection/README.md)
 
 ## 구조
 
