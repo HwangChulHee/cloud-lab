@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. SSM Parameter Store 기본 구조](./u1_parameter_store_basics/README.md)
-- [ ] [u2. Hierarchy / Standard vs Advanced](./u2_hierarchy_tiers_policies/README.md)
-- [ ] [u3. AWS Secrets Manager / Rotation](./u3_secrets_manager_rotation/README.md)
-- [ ] [u4. Multi-Region Secrets / SAA Selection](./u4_multiregion_selection/README.md)
+- [x] [u1. SSM Parameter Store 기본 구조](./u1_parameter_store_basics/README.md)
+- [x] [u2. Hierarchy / Standard vs Advanced](./u2_hierarchy_tiers_policies/README.md)
+- [x] [u3. AWS Secrets Manager / Rotation](./u3_secrets_manager_rotation/README.md)
+- [x] [u4. Multi-Region Secrets / SAA Selection](./u4_multiregion_selection/README.md)
 
 ## 핵심 구분
 
