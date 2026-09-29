@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. EC2 Purchasing Options](./u1_ec2_purchasing_options/README.md)
-- [ ] [u2. Caching / Offloading / Scaling](./u2_caching_offloading_scaling/README.md)
-- [ ] [u3. Storage Lifecycle / Data Transfer](./u3_storage_lifecycle_transfer/README.md)
-- [ ] [u4. Idle Resource / Cost Visibility](./u4_idle_resource_cost_visibility/README.md)
+- [x] [u1. EC2 Purchasing Options](./u1_ec2_purchasing_options/README.md)
+- [x] [u2. Caching / Offloading / Scaling](./u2_caching_offloading_scaling/README.md)
+- [x] [u3. Storage Lifecycle / Data Transfer](./u3_storage_lifecycle_transfer/README.md)
+- [x] [u4. Idle Resource / Cost Visibility](./u4_idle_resource_cost_visibility/README.md)
 
 ## 핵심 질문
 
