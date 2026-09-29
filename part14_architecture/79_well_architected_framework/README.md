@@ -4,10 +4,10 @@ AWS Well-Architected Framework는 workload를 **6개 Pillar 관점에서 검토�
 
 ## Units
 
-- [ ] [u1. General Guiding Principles](./u1_general_principles/README.md)
-- [ ] [u2. Six Pillars](./u2_six_pillars/README.md)
-- [ ] [u3. Well-Architected Tool](./u3_well_architected_tool/README.md)
-- [ ] [u4. Architecture Review Thinking](./u4_review_thinking/README.md)
+- [x] [u1. General Guiding Principles](./u1_general_principles/README.md)
+- [x] [u2. Six Pillars](./u2_six_pillars/README.md)
+- [x] [u3. Well-Architected Tool](./u3_well_architected_tool/README.md)
+- [x] [u4. Architecture Review Thinking](./u4_review_thinking/README.md)
 
 ## 6 Pillars
 
