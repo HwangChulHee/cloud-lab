@@ -6,11 +6,11 @@
 
 ## Units
 
-- [ ] [u1. Application Discovery Service / Migration Hub](./u1_discovery_migration_hub/README.md)
-- [ ] [u2. Application Migration Service (MGN)](./u2_mgn/README.md)
-- [ ] [u3. Elastic Disaster Recovery (DRS)](./u3_drs/README.md)
-- [ ] [u4. VMware Cloud / Large Data Migration](./u4_vmware_large_data/README.md)
-- [ ] [u5. Migration 서비스 선택 지도](./u5_selection/README.md)
+- [x] [u1. Application Discovery Service / Migration Hub](./u1_discovery_migration_hub/README.md)
+- [x] [u2. Application Migration Service (MGN)](./u2_mgn/README.md)
+- [x] [u3. Elastic Disaster Recovery (DRS)](./u3_drs/README.md)
+- [x] [u4. VMware Cloud / Large Data Migration](./u4_vmware_large_data/README.md)
+- [x] [u5. Migration 서비스 선택 지도](./u5_selection/README.md)
 
 ## 전체 지도
 
