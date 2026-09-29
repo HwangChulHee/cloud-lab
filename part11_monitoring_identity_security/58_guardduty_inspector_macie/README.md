@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. Amazon GuardDuty](./u1_guardduty/README.md)
-- [ ] [u2. Amazon Inspector](./u2_inspector/README.md)
-- [ ] [u3. Amazon Macie](./u3_macie/README.md)
-- [ ] [u4. Security Services 선택 지도](./u4_security_selection/README.md)
+- [x] [u1. Amazon GuardDuty](./u1_guardduty/README.md)
+- [x] [u2. Amazon Inspector](./u2_inspector/README.md)
+- [x] [u3. Amazon Macie](./u3_macie/README.md)
+- [x] [u4. Security Services 선택 지도](./u4_security_selection/README.md)
 
 ## 핵심 구분
 
