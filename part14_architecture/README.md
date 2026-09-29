@@ -7,7 +7,7 @@ SAA 강의의 **CloudFormation / Classic Solutions Architecture / More Solutions
 ## Chapters
 
 - [x] [74. CloudFormation](./74_cloudformation/README.md)
-- [ ] [75. Classic Solutions Architecture](./75_classic_solutions_architecture/README.md)
+- [x] [75. Classic Solutions Architecture](./75_classic_solutions_architecture/README.md)
 - [ ] [76. High Availability / Scalability Patterns](./76_high_availability_scalability_patterns/README.md)
 - [ ] [77. Serverless / Global Architecture Patterns](./77_serverless_global_architecture_patterns/README.md)
 - [ ] [78. 비용 최적화 개념](./78_cost_optimization/README.md)
