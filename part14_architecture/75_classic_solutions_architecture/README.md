@@ -4,11 +4,11 @@
 
 ## Units
 
-- [ ] [u1. Stateless Web App](./u1_stateless_web_app/README.md)
-- [ ] [u2. Stateful Web App / Session](./u2_stateful_session/README.md)
-- [ ] [u3. Database / Cache Scaling](./u3_database_cache_scaling/README.md)
-- [ ] [u4. Shared Storage / WordPress](./u4_shared_storage_wordpress/README.md)
-- [ ] [u5. Security Group Chaining](./u5_security_group_chaining/README.md)
+- [x] [u1. Stateless Web App](./u1_stateless_web_app/README.md)
+- [x] [u2. Stateful Web App / Session](./u2_stateful_session/README.md)
+- [x] [u3. Database / Cache Scaling](./u3_database_cache_scaling/README.md)
+- [x] [u4. Shared Storage / WordPress](./u4_shared_storage_wordpress/README.md)
+- [x] [u5. Security Group Chaining](./u5_security_group_chaining/README.md)
 
 ## 전체 그림
 
