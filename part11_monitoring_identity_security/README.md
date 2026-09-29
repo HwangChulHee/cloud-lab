@@ -20,7 +20,7 @@
 - [x] [53. Advanced Identity](./53_advanced_identity/README.md)
 - [x] [55. Secrets Manager / Parameter Store](./55_secrets_parameter_store/README.md)
 - [x] [57. WAF / Shield / Firewall Manager](./57_waf_shield_firewall_manager/README.md)
-- [ ] [58. GuardDuty / Inspector / Macie 등 Security Services](./58_guardduty_inspector_macie/README.md)
+- [x] [58. GuardDuty / Inspector / Macie 등 Security Services](./58_guardduty_inspector_macie/README.md)
 
 ## 전체 지도
 
