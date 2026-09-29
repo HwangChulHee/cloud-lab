@@ -264,7 +264,7 @@ EC2, VPC, RDS, ALB, S3, IAM, CloudWatch 등은 Deep Practice 대상으로 다시
 - [x] 77. Serverless / Global Architecture Patterns
 - [x] 78. 비용 최적화 개념
 - [x] 79. AWS Well-Architected Framework
-- [ ] 80. More Solutions Architecture / White Papers Coverage
+- [x] 80. More Solutions Architecture / White Papers Coverage
 
 ---
 
