@@ -4,10 +4,10 @@ AWS CloudFormation은 AWS 인프라를 **선언형(Declarative) 코드로 정의
 
 ## Units
 
-- [ ] [u1. Declarative Infrastructure as Code](./u1_declarative_iac/README.md)
-- [ ] [u2. Stack / Template / Dependency](./u2_stack_template_dependency/README.md)
-- [ ] [u3. Benefits / Cost / Productivity](./u3_benefits_cost_productivity/README.md)
-- [ ] [u4. Service Role / IAM](./u4_service_role_iam/README.md)
+- [x] [u1. Declarative Infrastructure as Code](./u1_declarative_iac/README.md)
+- [x] [u2. Stack / Template / Dependency](./u2_stack_template_dependency/README.md)
+- [x] [u3. Benefits / Cost / Productivity](./u3_benefits_cost_productivity/README.md)
+- [x] [u4. Service Role / IAM](./u4_service_role_iam/README.md)
 
 ## 기본 구조
 
