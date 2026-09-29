@@ -6,9 +6,9 @@ Pilot Light는 **애플리케이션의 critical core만 cloud에서 항상 작�
 
 ## Units
 
-- [ ] [u1. Pilot Light Architecture](./u1_architecture/README.md)
-- [ ] [u2. Failover Flow](./u2_failover_flow/README.md)
-- [ ] [u3. Backup & Restore와 비교](./u3_comparison_selection/README.md)
+- [x] [u1. Pilot Light Architecture](./u1_architecture/README.md)
+- [x] [u2. Failover Flow](./u2_failover_flow/README.md)
+- [x] [u3. Backup & Restore와 비교](./u3_comparison_selection/README.md)
 
 ## 기본 구조
 
