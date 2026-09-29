@@ -11,7 +11,7 @@ SAA 강의의 **CloudFormation / Classic Solutions Architecture / More Solutions
 - [x] [76. High Availability / Scalability Patterns](./76_high_availability_scalability_patterns/README.md)
 - [x] [77. Serverless / Global Architecture Patterns](./77_serverless_global_architecture_patterns/README.md)
 - [x] [78. 비용 최적화 개념](./78_cost_optimization/README.md)
-- [ ] [79. AWS Well-Architected Framework](./79_well_architected_framework/README.md)
+- [x] [79. AWS Well-Architected Framework](./79_well_architected_framework/README.md)
 - [ ] [80. More Solutions Architecture / White Papers Coverage](./80_more_solutions_whitepapers/README.md)
 
 ## 전체 흐름
