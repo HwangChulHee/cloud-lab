@@ -6,9 +6,9 @@ Warm Standby는 **전체 application stack이 항상 실행 중이지만 minimum
 
 ## Units
 
-- [ ] [u1. Warm Standby Architecture](./u1_architecture/README.md)
-- [ ] [u2. Failover / Scale-Up](./u2_failover_scaleup/README.md)
-- [ ] [u3. Pilot Light와 비교](./u3_comparison_selection/README.md)
+- [x] [u1. Warm Standby Architecture](./u1_architecture/README.md)
+- [x] [u2. Failover / Scale-Up](./u2_failover_scaleup/README.md)
+- [x] [u3. Pilot Light와 비교](./u3_comparison_selection/README.md)
 
 ## 기본 구조
 
