@@ -4,10 +4,10 @@
 
 ## Units
 
-- [ ] [u1. Multi-AZ / Health Check / Replacement](./u1_multi_az_health_replacement/README.md)
-- [ ] [u2. Horizontal Scaling / Decoupling](./u2_horizontal_scaling_decoupling/README.md)
-- [ ] [u3. Read Scaling / Caching](./u3_read_scaling_caching/README.md)
-- [ ] [u4. Static Content Offloading](./u4_static_content_offloading/README.md)
+- [x] [u1. Multi-AZ / Health Check / Replacement](./u1_multi_az_health_replacement/README.md)
+- [x] [u2. Horizontal Scaling / Decoupling](./u2_horizontal_scaling_decoupling/README.md)
+- [x] [u3. Read Scaling / Caching](./u3_read_scaling_caching/README.md)
+- [x] [u4. Static Content Offloading](./u4_static_content_offloading/README.md)
 
 ## 판단 지도
 
