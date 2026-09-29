@@ -4,9 +4,9 @@
 
 ## Units
 
-- [ ] [u1. RPO](./u1_rpo/README.md)
-- [ ] [u2. RTO](./u2_rto/README.md)
-- [ ] [u3. RPO / RTO와 DR 전략 선택](./u3_strategy_selection/README.md)
+- [x] [u1. RPO](./u1_rpo/README.md)
+- [x] [u2. RTO](./u2_rto/README.md)
+- [x] [u3. RPO / RTO와 DR 전략 선택](./u3_strategy_selection/README.md)
 
 ## 핵심 정의
 
