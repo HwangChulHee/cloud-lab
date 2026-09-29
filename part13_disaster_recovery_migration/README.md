@@ -27,7 +27,7 @@ Migration
 - [x] [69. Pilot Light](./69_pilot_light/README.md)
 - [x] [70. Warm Standby](./70_warm_standby/README.md)
 - [x] [71. Multi-Site / Active-Active](./71_multi_site_active_active/README.md)
-- [ ] [72. DMS / SCT](./72_dms_sct/README.md)
+- [x] [72. DMS / SCT](./72_dms_sct/README.md)
 - [ ] [73. Application Migration Service / Migration Services](./73_application_migration_service/README.md)
 
 ## DR 전략 전체 지도
