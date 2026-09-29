@@ -6,9 +6,9 @@ Multi-Site 또는 Hot Site 전략은 **여러 환경이 production scale로 이�
 
 ## Units
 
-- [ ] [u1. Multi-Site / Hot Site Architecture](./u1_architecture/README.md)
-- [ ] [u2. AWS Multi-Region](./u2_aws_multiregion/README.md)
-- [ ] [u3. DR Strategy 최종 비교](./u3_strategy_comparison/README.md)
+- [x] [u1. Multi-Site / Hot Site Architecture](./u1_architecture/README.md)
+- [x] [u2. AWS Multi-Region](./u2_aws_multiregion/README.md)
+- [x] [u3. DR Strategy 최종 비교](./u3_strategy_comparison/README.md)
 
 ## 기본 구조
 
