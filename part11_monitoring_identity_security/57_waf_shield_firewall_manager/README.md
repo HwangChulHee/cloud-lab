@@ -4,11 +4,11 @@
 
 ## Units
 
-- [ ] [u1. AWS WAF](./u1_waf/README.md)
-- [ ] [u2. AWS Shield / Shield Advanced](./u2_shield/README.md)
-- [ ] [u3. AWS Firewall Manager](./u3_firewall_manager/README.md)
-- [ ] [u4. WAF vs Shield vs Firewall Manager](./u4_comparison_selection/README.md)
-- [ ] [u5. AWS Network Firewall](./u5_network_firewall/README.md)
+- [x] [u1. AWS WAF](./u1_waf/README.md)
+- [x] [u2. AWS Shield / Shield Advanced](./u2_shield/README.md)
+- [x] [u3. AWS Firewall Manager](./u3_firewall_manager/README.md)
+- [x] [u4. WAF vs Shield vs Firewall Manager](./u4_comparison_selection/README.md)
+- [x] [u5. AWS Network Firewall](./u5_network_firewall/README.md)
 
 ## 핵심 구분
 
