@@ -6,6 +6,12 @@
 
 인증된 주체에 namespace/cluster 권한을 부여하고 실제 API 허용/거부를 검증한다.
 
+## 핵심 개념과 오해 방지
+
+Role은 namespace에 권한 규칙을 정의하며 RoleBinding은 그 namespace 안에서 규칙을 주체에게 연결한다. ClusterRole을 RoleBinding으로 참조해도 해당 namespace 범위에 적용된다. ClusterRoleBinding은 클러스터 전역에 권한을 부여한다. apiGroups의 core API는 빈 문자열이고 deployments는 apps, jobs는 batch다.
+
+인증 실패(401), 인증됐지만 RBAC 거절(403), Admission 정책에 의한 거절을 구분한다. Quota/LimitRange 거절도 Forbidden일 수 있으므로 상태코드만으로 RBAC 문제라고 단정하지 않는다. 이 실습의 ClusterRole은 pods/services get/list 같은 필요한 권한만 부여하고 `*` 권한을 기본 풀이로 사용하지 않는다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

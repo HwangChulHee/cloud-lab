@@ -6,6 +6,12 @@
 
 Namespace 단위 자원 정책이 Pod 생성에 미치는 영향을 확인한다.
 
+## 핵심 개념과 오해 방지
+
+ResourceQuota는 namespace 전체의 총 요청량·제한량·객체 수를 관리하고, LimitRange는 개별 Container/Pod/PVC의 기본값과 허용 범위를 관리한다. 둘 다 노드의 실제 사용량을 기준으로 자동 확장하는 기능은 아니다.
+
+`defaultRequest`와 `default`의 차이, `min`/`max`, `maxLimitRequestRatio`를 비교한다. LimitRange로 기본값이 먼저 채워지면 자원값 없는 Pod도 quota 조건을 만족할 수 있다. 정책 추가가 기존 Pod의 설정을 자동 수정하거나 기존 Pod를 즉시 퇴거시키지는 않는다. API 거절로 Pod가 생성되지 않은 경우와 생성 후 Pending인 경우를 구분한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

@@ -6,6 +6,14 @@
 
 Static/Dynamic provisioning과 PV lifecycle/ReclaimPolicy를 비교한다.
 
+## 핵심 개념과 오해 방지
+
+PV는 namespace에 속하지 않고 PVC는 namespace에 속한다. 일반적인 PV/PVC 바인딩은 1:1이며 큰 PV 하나에 여러 PVC가 자동 분할 연결되지는 않는다. class/accessModes/용량/volumeMode/selector/volumeName 조건을 함께 확인한다.
+
+Available은 바인딩 가능한 상태, Bound는 PVC와 연결된 상태, Released는 이전 PVC가 없어졌으나 회수 처리가 필요한 상태다. Failed를 모든 마운트 오류의 상태라고 부르지 않는다. 마운트 실패는 Pod Events에 표시되면서 PV는 여전히 Bound일 수 있다. Retain 데이터는 수동 점검 후 재사용할 수 있으며 claimRef 처리가 필요하다. Recycle은 deprecated 상태이므로 신규 실습은 Retain/Delete에 집중한다.
+
+`storageClassName: ""` 자체가 hostPath를 생성하는 것은 아니다. 실제 생성·마운트 시점은 backing volume 종류와 provisioner의 동작에 달려 있다. local PV에는 기존 노드 경로와 nodeAffinity가 필요하고, 그 노드가 사라진다고 다른 노드에 같은 데이터가 자동 복제되지 않는다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

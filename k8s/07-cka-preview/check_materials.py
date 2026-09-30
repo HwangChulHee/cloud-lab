@@ -1,4 +1,4 @@
-"""Check k8s links/shell blocks and preview YAML syntax and isolation.
+"""Check k8s links/shell blocks and YAML syntax and lab isolation.
 
 Run from any directory: python3 k8s/07-cka-preview/check_materials.py
 Requires PyYAML. This is an offline content check, not a live cluster test.
@@ -30,7 +30,7 @@ for path in base.parent.rglob('*.md'):
             if section not in text:
                 errors.append(f'{path.parent.name}: missing {section}')
 
-for path in base.rglob('*.yaml'):
+for path in base.parent.rglob('*.yaml'):
     try:
         for doc in yaml.safe_load_all(path.read_text()):
             if not isinstance(doc, dict) or not all(k in doc for k in ('apiVersion', 'kind', 'metadata')):
@@ -38,8 +38,8 @@ for path in base.rglob('*.yaml'):
                 continue
             objects += 1
             namespace = doc['metadata'].get('namespace')
-            if namespace and not namespace.startswith('preview-'):
-                errors.append(f'{path}: non-preview namespace {namespace}')
+            if namespace and not namespace.startswith(('preview-', 'lab-')):
+                errors.append(f'{path}: non-lab namespace {namespace}')
             if doc['kind'] == 'Deployment':
                 spec = doc['spec']
                 labels = spec['template']['metadata']['labels']

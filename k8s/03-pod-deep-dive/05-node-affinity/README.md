@@ -6,6 +6,10 @@
 
 required/preferred와 matchExpressions로 Node 선택을 제어한다.
 
+## 핵심 개념과 오해 방지
+
+required는 후보 노드를 걸러내고 preferred는 후보의 점수에 영향을 준다. preferred weight 하나만으로 특정 노드 배치를 보장하지 않는다. nodeSelectorTerms 사이에는 OR, 한 term의 matchExpressions 사이에는 AND가 적용된다. IgnoredDuringExecution은 배치 후 노드 라벨이 바뀌어도 이 조건만으로 기존 Pod가 자동 이동하지 않는다는 뜻이다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

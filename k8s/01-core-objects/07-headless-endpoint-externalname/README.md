@@ -6,6 +6,12 @@
 
 Service discovery의 세 가지 변형을 비교한다.
 
+## 핵심 개념과 오해 방지
+
+Headless Service(`clusterIP: None`)는 Service 가상 IP 대신 backend 주소를 DNS에 제공한다. 개별 Pod의 안정적인 이름은 hostname/subdomain 또는 StatefulSet의 serviceName 구성과 Ready 조건을 함께 확인한다. 임의 Pod의 metadata.name만으로 모든 Pod별 DNS가 생긴다고 가정하지 않는다.
+
+ExternalName은 외부 이름을 가리키는 DNS CNAME이다. proxy, 포트 변환, HTTP Host 변경, TLS SNI 변경을 수행하지 않는다. DNS 별칭 조회가 성공해도 HTTP 가상 호스트나 인증서 이름 때문에 요청이 실패할 수 있으므로 `nslookup`과 실제 요청을 별도로 검증한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

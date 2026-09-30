@@ -63,6 +63,14 @@ kubectl -n preview-budget rollout status deploy/app --timeout=120s
 kubectl delete namespace preview-budget
 ```
 
+## namespace 예산에서 실제 노드 배치로 확장하기
+
+이번 quota 실습은 계산을 반복하기 위한 작은 모델이다. 원본 과제의 실제 노드 예산과 동일한 장애는 아니다. 노드별 `Allocatable - 이미 배치된 Pod requests - 여유분`을 CPU와 memory 각각 계산한다. 3개를 한 노드에 넣는 조건이면 각각 3으로 나누고, 여러 노드에 나누는 조건이면 각 노드에 들어갈 수 있는 Pod 수를 따로 계산한다. 클러스터 전체 여유량의 합만으로 한 Pod가 들어갈 노드가 있다고 결론내리지 않는다.
+
+일반 순차 init container는 자원별 `max(일반 컨테이너 requests 합, init requests 최댓값)`을 사용하고 설정된 Pod overhead도 고려한다. native sidecar는 겹쳐 실행되는 구간을 고려하는 별도 계산이 필요하다. affinity, taint, PVC topology 때문에 자원이 남아도 배치되지 않을 수 있다.
+
+[Scheduling 진단](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md)에서 큰 request로 Pending을 만든 경우와 이번 ReplicaSet FailedCreate를 비교하고, 어느 단계에서 막혔는지 설명한다.
+
 ## 강의에서 확인할 질문
 
 - quota 초과와 노드 자원 부족은 어느 리소스의 Events에서 차이가 나는가?

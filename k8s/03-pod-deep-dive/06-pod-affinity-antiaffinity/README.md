@@ -6,6 +6,10 @@
 
 다른 Pod의 label을 기준으로 함께/분리 배치한다.
 
+## 핵심 개념과 오해 방지
+
+topologyKey가 kubernetes.io/hostname이면 같은/다른 노드이고, topology.kubernetes.io/zone이면 같은/다른 zone을 의미한다. PodAffinity를 항상 같은 노드 배치라고 일반화하지 않는다. 기본 탐색 namespace 범위와 labelSelector도 확인한다. required Pod anti-affinity는 admission 설정에 따라 hostname topology만 허용할 수 있으므로, 기본 실습은 hostname을 사용한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

@@ -2,6 +2,16 @@
 
 작성 시점: 2026-09-30. 이 기록은 자료의 정적 검증과 Helm 렌더링 결과이며 실제 사용자 클러스터에서 모든 실습을 실행한 기록은 아니다.
 
+## 2026-09-30 두 자료의 내용 대조 후 보강
+
+[내용 대조 기록](../CONTENT_REVIEW.md)에 입문·CKA 주제의 연결, 원본의 단순화/오타와 남은 실습 범위를 기록했다. 개념 설명 보강과 NodePort 외부 트래픽 정책 비교 YAML을 추가했다.
+
+- `check_materials.py`: 전체 64개 문서 상대 링크, bash 132개 블록 문법 검사 통과. 기초의 추가 YAML까지 포함해 65개 객체 파싱·namespace·Deployment 연결 검사 통과.
+- kubeconform 0.6.7, Kubernetes 1.27.2 + Gateway/CRD catalog: 33개 YAML 파일, 63개 객체 Valid, Invalid/Errors 0. 기존 학습용 CRD/인스턴스 2개는 외부 스키마가 없어 Skipped.
+- `git diff --check`: 통과.
+
+NodePort의 외부 호출, HPA 계산에 대응하는 실제 확장, scheduler 진단은 사용자 클러스터에서 실행하지 않았다. 이번 검사는 정적 자료 검사이며 Helm을 다시 렌더링하지 않았다. 1.34 전용 설정의 실제 허용 여부와 애드온 동작은 해당 환경에서 별도로 확인한다.
+
 ## 2026-09-30 재검토와 수정
 
 기초 42개와 예습 16개 문서의 작업 순서·변경 가능 필드·검증 조건을 다시 검토했다. 아래는 이번 수정 후 실행한 검사이며, 아래쪽 최초 작성 기록의 Helm 렌더링을 이번에 다시 실행했다는 뜻은 아니다.
@@ -53,7 +63,7 @@ python3 k8s/07-cka-preview/check_materials.py
 kubeconform -strict -summary -kubernetes-version 1.27.2 \
   -schema-location default \
   -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
-  -ignore-missing-schemas k8s/07-cka-preview
+  -ignore-missing-schemas k8s
 git diff --check
 ```
 

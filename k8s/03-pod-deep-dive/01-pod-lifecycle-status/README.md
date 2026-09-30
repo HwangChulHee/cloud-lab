@@ -6,6 +6,10 @@
 
 Pod phase와 Container 상태/재시작을 관찰한다.
 
+## 핵심 개념과 오해 방지
+
+`status.phase`의 Pending/Running/Succeeded/Failed/Unknown과 kubectl 표의 STATUS는 같지 않다. CrashLoopBackOff는 컨테이너 재시작 대기 사유이고 Completed는 표시용 상태/종료 사유이며 별도의 Pod phase가 아니다. restartPolicy=Always인 짧은 명령은 exit 0이어도 반복 재시작할 수 있으므로 완료 Pod 비교에는 Never를 사용한다. 컨테이너 재시작은 같은 Pod 안에서, Controller 재생성은 새 Pod UID에서 발생한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

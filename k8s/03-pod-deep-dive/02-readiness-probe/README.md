@@ -6,6 +6,10 @@
 
 Running과 Ready의 차이 및 Service Endpoint 편입 조건을 확인한다.
 
+## 핵심 개념과 오해 방지
+
+Readiness 실패는 일반 Service의 트래픽 대상에서 빠지게 하며 컨테이너를 재시작하지 않는다. liveness와 함께 써야 할 역할이 서로 다르다. HTTP probe의 성공 범위는 200 이상 400 미만이므로 400은 실패다. failureThreshold/successThreshold는 연속 실패·성공 횟수이며, 파일 한 번 생성 후 즉시 Ready라고 단정하지 않는다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

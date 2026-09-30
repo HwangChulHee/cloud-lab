@@ -6,6 +6,12 @@
 
 애플리케이션 비정상 상태를 kubelet이 재시작으로 복구하는 과정을 확인한다.
 
+## 핵심 개념과 오해 방지
+
+Liveness 실패는 kubelet이 해당 컨테이너를 종료하고 restartPolicy에 따라 재시작하는 계기다. Pod 전체를 새 객체로 만드는 것과 구분한다. HTTP probe는 200 이상 400 미만이 성공이며 400/500은 실패다. liveness와 startup의 successThreshold는 1이어야 한다.
+
+느린 기동을 장애로 오인하지 않으려면 startupProbe를 고려한다. startupProbe가 성공하기 전에는 liveness/readiness를 실행하지 않는다. HTTP probe는 기본적으로 kubelet이 Pod IP로 요청하므로 host를 localhost로 고정하면 다른 의미가 될 수 있다. 앱의 외부 의존성 장애를 liveness로 연결하면 불필요한 재시작이 반복될 수 있다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

@@ -6,6 +6,10 @@
 
 휘발성 Pod IP 대신 Service의 고정 진입점을 사용하는 이유를 확인한다.
 
+## 핵심 개념과 오해 방지
+
+ClusterIP는 Service 객체가 유지되는 동안 안정적인 가상 IP다. Service를 삭제하고 다시 만들면 IP가 달라질 수 있다. API Server나 Service 객체가 HTTP 요청을 직접 중계하는 것은 아니며, kube-proxy 또는 대체 데이터 평면이 EndpointSlice의 backend로 전달한다. 요청마다 정확한 균등 분산을 보장하지 않고, 연결 재사용과 sessionAffinity도 결과에 영향을 준다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

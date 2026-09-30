@@ -11,6 +11,8 @@
 
 [예습 환경 안내](./07-cka-preview/ENVIRONMENT.md)에서 현재 1.27.2 클러스터와 별도 VM이 필요한 실습을 구분한다. Gateway API, NetworkPolicy, PriorityClass, Helm, CRD, CNI/CRI, 제어 평면 복구까지 자료 범위를 다루며 완료 체크는 실제 실행 후 직접 표시한다.
 
+[입문·CKA 내용 대조와 보강 기록](./CONTENT_REVIEW.md)에서 두 자료의 연결, 오해 방지 설명, 남은 개선 범위를 확인한다.
+
 ## 실습 철학
 
 1. **동작을 본다.** YAML 작성으로 끝내지 않고 요청, 상태, Endpoint, Event, Log, Metric 변화를 확인한다.

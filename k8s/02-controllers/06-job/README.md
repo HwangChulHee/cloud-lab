@@ -6,6 +6,10 @@
 
 완료형 workload의 재시도·병렬성·완료 횟수를 확인한다.
 
+## 핵심 개념과 오해 방지
+
+completions는 성공적으로 완료해야 할 작업 수이고, 실패 재시도 때문에 실제 생성된 Pod 수는 더 많을 수 있다. parallelism은 동시에 실행할 작업 수의 상한이며 항상 그 개수가 Running인 것은 아니다. restartPolicy=OnFailure는 같은 Pod 안의 컨테이너 재시작을, Never는 실패 Pod 이후 새 Pod 재시도를 관찰하기 좋다. backoffLimit와 activeDeadlineSeconds도 함께 본다. 완료한 Pod는 TTL 등 별도 정리 정책이 없으면 남아 있을 수 있다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

@@ -91,6 +91,23 @@ sudo rmdir /var/tmp/cloud-lab-control-backup
 
 복구가 실패했으면 backup을 지우지 않고 VM 스냅샷으로 되돌린다. 기존 학습 클러스터에는 장애를 주입하지 않는다.
 
+## 추가 관찰: scheduler 장애를 API 장애와 구분하기
+
+원본 Core Components 보충자료에는 scheduler의 자원 설정 확인도 있다. etcd 연결 복구만으로 모든 제어 평면 진단을 마쳤다고 판단하지 않는다. 정상 API에서도 scheduler가 실패하면 **새로 만드는** Pod가 노드 없이 Pending에 남을 수 있다. 기존 실행 Pod는 계속 실행될 수 있고 Node Ready도 scheduler 정상 여부를 보장하지 않는다.
+
+kubeadm control-plane의 SSH 셸에서 다음을 읽기만 한다.
+
+```bash
+sudo cat /etc/kubernetes/manifests/kube-scheduler.yaml
+sudo crictl ps -a --name kube-scheduler
+sudo journalctl -u kubelet -n 100 --no-pager
+kubectl -n kube-system get pods -l component=kube-scheduler -o wide
+```
+
+컨테이너가 실패하면 실제 ID로 `sudo crictl logs CONTAINER_ID`를 실행해 image, command/flag, kubeconfig·인증서·API 연결, probe 오류를 구분한다. 이들은 requests 값이 작다는 사실만으로 진단할 수 없다. static Pod는 kubelet이 직접 실행하므로 일반 Pod의 scheduler 배치 실패와도 다르다.
+
+강의 과제의 자원 비율은 해당 과제 조건으로 읽는다. scheduler CPU request를 worker CPU의 10%로 맞추는 것은 Kubernetes의 일반 설치 규칙이 아니다. 노드의 Allocatable, 실제 사용량, 기존 요청과 원래 manifest를 근거로 판단한다. 이 추가 관찰에는 scheduler 장애 주입을 포함하지 않는다.
+
 ## 강의에서 확인할 질문
 
 - API Server가 안 뜰 때 kubectl 대신 어떤 경로로 로그를 읽는가?

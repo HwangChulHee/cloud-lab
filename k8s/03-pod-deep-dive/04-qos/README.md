@@ -6,6 +6,12 @@
 
 requests/limits 조합에 따른 QoS Class를 비교한다.
 
+## 핵심 개념과 오해 방지
+
+기본 컨테이너 자원 설정에서 Guaranteed는 모든 일반/init 컨테이너의 CPU와 memory에 request/limit이 모두 있고 각각 같은 경우다. BestEffort는 CPU/memory request/limit이 없으며 나머지는 Burstable이다. 하나의 컨테이너만 Guaranteed 조건을 만족한다고 Pod 전체가 Guaranteed가 되지는 않는다.
+
+노드 압박 시 삭제 순서를 QoS 세 단계만으로 확정하지 않는다. kubelet은 압박 자원의 request 초과 사용 여부, Priority, request 대비 사용량 등을 고려한다. CPU는 보통 제한 초과 시 throttling하고 memory 제한 초과 시 컨테이너 OOMKilled가 발생할 수 있다. CPU를 많이 썼다는 이유로 memory 압박 퇴거와 동일하게 취급하지 않는다. 공용 클러스터에 실제 메모리 압박을 주입하지 않고 상태와 규칙을 비교한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

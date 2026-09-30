@@ -125,4 +125,30 @@ rm -f /tmp/preview-eviction.json
 
 kubelet과 runtime의 cgroup driver 일치도 런타임 준비에서 확인한다. `systemctl cat kubelet`과 실제 runtime 설정을 조사하되 기존 노드의 설정을 임의로 바꾸지 않는다. 이 예습 자료는 설치 마법사를 대체하기보다 각 구성 요소가 필요한 이유와 실패 지점을 먼저 익히는 경로다.
 
+## 6. 요청의 승인 단계와 실패 위치
+
+생성·변경 요청은 인증(Authentication), 권한 확인(Authorization), Admission의 기본값·정책 검사를 거쳐 저장된다. 인증 사용자라고 모든 리소스를 만들 수 있는 것은 아니고, RBAC가 허용해도 Quota나 Admission 정책이 요청을 거부할 수 있다.
+
+| 증상 | 우선 확인할 근거 |
+|---|---|
+| API 401 | kubeconfig context, 인증서/token 유효성 |
+| API 403 | 응답 원인과 `kubectl auth can-i`; RBAC 또는 Admission 거부 구분 |
+| Deployment는 있지만 Pod가 없음 | ReplicaSet Events의 FailedCreate, Quota/LimitRange |
+| Pod가 있고 Pending | Scheduled condition, requests/affinity/taints, PVC binding |
+| Pod가 배치됐지만 시작 실패 | image, volume mount, init container, runtime Events |
+
+Quota는 실제 CPU 사용률을 측정해 과부하 Pod를 퇴거시키는 기능이 아니다. namespace의 리소스 사용 집계와 생성·변경 허용 조건을 다룬다. scheduler도 단순히 `kubectl top`에서 가장 한가한 노드를 선택하지 않는다. requests와 배치 조건을 만족하는 노드를 찾은 뒤 scoring한다.
+
+## 7. 네트워크와 관찰 도구의 경계
+
+Node 네트워크, Pod CIDR, Service CIDR을 구분한다. 실제 클러스터 설정을 조회하고 노드/호스트/VPN 주소와 겹치지 않게 설계한다. 강의 그림의 주소를 그대로 설치값으로 복사하지 않는다. ClusterIP는 Service를 위한 가상 주소이며 일반적으로 실제 인터페이스 주소나 특정 Pod 주소가 아니다. CNI의 Pod 연결 기능과 NetworkPolicy 집행 지원도 따로 확인한다.
+
+API Server는 객체 제어 경로이고, 일반적인 애플리케이션 HTTP 요청은 Service/Ingress/Gateway 데이터 경로로 흐른다. CoreDNS는 Service 이름 등을 해석하지만 임의 Pod 이름이 항상 DNS 이름이 되는 것은 아니다. Headless Service와 hostname/subdomain 조건을 함께 본다.
+
+로그는 `앱 stdout/stderr → 런타임 로그 파일 → kubelet의 logs API → kubectl logs`로 관찰한다. 앱이 컨테이너 파일에만 기록하면 그 내용이 자동으로 `kubectl logs`에 나오지 않는다. 노드별 수집 에이전트와 중앙 저장소는 별도 구성이다. `kubectl logs --previous`는 직전 컨테이너 인스턴스 확인이며 영구 이력 저장소를 대신하지 않는다. Metrics Server의 최근 자원 사용량, Prometheus 같은 시계열 저장소, 앱 로그를 서로 구분한다.
+
+일반 init container는 순차 실행 후 성공해야 앱 컨테이너가 시작된다. 1.27의 일반 init container와 1.34 예습의 `restartPolicy: Always`인 native sidecar는 종료 조건과 자원 계산이 같지 않다. [Sidecar 예습](./10-sidecar-logging/README.md)의 버전 조건을 먼저 확인한다.
+
+공식 참고: [Admission](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/), [클러스터 로그](https://kubernetes.io/docs/concepts/cluster-administration/logging/), [Service](https://kubernetes.io/docs/concepts/services-networking/service/).
+
 [혼합 예습 경로](./README.md)

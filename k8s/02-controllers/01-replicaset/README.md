@@ -6,6 +6,10 @@
 
 Template, replicas, selector와 desired state를 체감한다.
 
+## 핵심 개념과 오해 방지
+
+ReplicaSet은 selector와 맞고 다른 Controller가 관리하지 않는 Pod를 소유할 수 있다. template.metadata.name과 기존 Pod 이름이 같아야 하는 것은 아니다. `metadata.ownerReferences`로 실제 소유를 확인한다. ReplicaSet template 이미지만 바꿔도 기존 Pod가 롤링 교체되는 것은 아니며, 배포 업데이트는 Deployment에서 담당한다.
+
 ## Recall
 
 Pod, Label/Selector, desired state의 의미를 먼저 회상한다.

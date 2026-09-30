@@ -6,6 +6,12 @@
 
 고정 identity, 순차 동작, Pod별 영속 볼륨을 ReplicaSet과 비교한다.
 
+## 핵심 개념과 오해 방지
+
+StatefulSet은 안정적인 ordinal 이름, 네트워크 identity와 PVC 연결을 관리한다. DB의 primary 선출, 복제, 샤딩, 데이터 백업은 DB나 Operator가 별도로 담당하며 Pod를 여러 개 만든 것만으로 DB 고가용성이 완성되지 않는다.
+
+기본 OrderedReady의 scale-up/down 순서를 관찰한다. podManagementPolicy=Parallel이면 scale 순서가 달라지고, StatefulSet 객체 삭제 자체가 역순의 안전한 종료를 보장하는 것은 아니다. 순차 종료를 보려면 먼저 scale-to-zero를 관찰한다. volumeClaimTemplates는 Pod별 PVC를 만들지만 실제 PV의 동적 생성에는 StorageClass/provisioner 또는 미리 준비한 매칭 PV가 필요하다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

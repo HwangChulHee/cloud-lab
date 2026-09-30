@@ -8,6 +8,12 @@
 
 HPA의 CPU 사용률은 CPU requests를 기준으로 계산한다. `limits` 대비 비율이 아니다. 안정화 시간은 최근 추천값을 고려해 잦은 축소를 줄이며, 정확히 30초 뒤 Pod를 삭제하는 타이머는 아니다.
 
+### 숫자로 먼저 예측하기
+
+`1000m = 1 CPU`이며 CPU 단위 `m`은 밀리초가 아니다. request 100m에 실제 사용량 50m이면 50%다. 1개 Pod가 200m을 사용하고 목표가 50%라면 단순 추천식 `ceil(1 × 200% / 50%)`의 결과는 4개다. 실제 확장에는 tolerance·metrics 누락·Ready 여부·min/max·behavior가 반영된다.
+
+[HPA/VPA/노드 확장 비교](../../05-advanced/04-hpa/README.md#계산과-확장-범위를-구분하기)를 읽고, HPA가 Pod를 늘린 뒤 Pending이 되는 상황을 노드 자동 증설과 구분한다.
+
 ## 1. 구축하고 관찰하기
 
 저장소 루트에서 `cd k8s/07-cka-preview/02-hpa-behavior`로 이동한 뒤 실행한다. 명령은 kubectl이 설정된 Linux 셸 기준이다.

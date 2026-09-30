@@ -6,6 +6,17 @@
 
 지금까지 사용한 오브젝트를 실제 Kubernetes 내부 구성요소와 연결해 종합 관찰한다.
 
+## 구성 요소를 하나의 장애 경로로 연결하기
+
+[개념 연결 지도](../../07-cka-preview/CONCEPT_BRIDGE.md)의 Admission·네트워크·로그 경계를 함께 읽는다. 아래 네 경우의 실패 위치와 첫 관찰 대상을 기록한다.
+
+1. RBAC가 요청을 거부해 객체가 생성되지 않음.
+2. Quota가 Pod 생성을 거부해 ReplicaSet에 FailedCreate가 남음.
+3. Pod는 생성됐지만 scheduler가 조건을 만족하는 노드를 찾지 못함.
+4. Pod는 Running이지만 readiness 실패로 Service 외부 요청에 응답하지 않음.
+
+같은 `접속 실패`라도 객체 제어 경로와 앱 트래픽 경로를 구분한다. 컨테이너 로그를 `kubectl logs`로 읽는 것과 노드 수집 에이전트·중앙 저장소로 장기간 보관하는 것도 나눠 설명한다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

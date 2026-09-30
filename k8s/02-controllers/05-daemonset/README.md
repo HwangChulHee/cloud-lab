@@ -6,6 +6,10 @@
 
 Node마다 하나의 Pod를 유지하는 Controller 특성을 확인한다.
 
+## 핵심 개념과 오해 방지
+
+DaemonSet은 모든 노드에 무조건 생성하는 것이 아니라 nodeSelector/affinity/taint 등 조건을 만족하는 노드마다 Pod를 유지한다. control-plane taint가 있는 노드까지 포함하는지는 toleration을 확인한다. hostPort와 NodePort는 다르다. hostPort는 해당 Pod가 배치된 노드의 포트를 사용하며, 다른 Pod와의 포트 충돌도 스케줄링에 영향을 줄 수 있다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.

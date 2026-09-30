@@ -6,6 +6,12 @@
 
 중단 없는 업데이트와 revision rollback을 실험한다.
 
+## 핵심 개념과 오해 방지
+
+RollingUpdate가 무중단을 자동 보장하지는 않는다. Ready Pod 수, readinessProbe, maxUnavailable/maxSurge, minReadySeconds, 새 Pod를 위한 노드 자원, 앱의 종료 처리가 함께 맞아야 한다. maxSurge는 일시적으로 추가 Pod를 허용하므로 quota와 노드 여유도 본다.
+
+Deployment rollback은 Pod template revision을 되돌린다. 외부 ConfigMap/Secret 내용이나 DB 스키마까지 자동 복구하지 않는다. `revisionHistoryLimit`에 따라 이전 ReplicaSet이 정리되면 돌아갈 revision도 제한된다.
+
 ## Recall
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
