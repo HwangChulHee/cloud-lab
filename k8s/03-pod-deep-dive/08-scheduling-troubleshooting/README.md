@@ -2,6 +2,10 @@
 
 > 학습 단계: **중간 가이드**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/05-resources-scheduling/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 Pending 원인을 requests, affinity, taint 관점에서 구분한다.
@@ -51,7 +55,7 @@ kubectl get events --sort-by=.lastTimestamp
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [자원 예산을 계산해 3개 Pod 복구하기](../../07-cka-preview/11-resource-budget/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 

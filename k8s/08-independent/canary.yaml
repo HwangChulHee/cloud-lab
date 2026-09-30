@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable
+  namespace: preview-gateway
+spec:
+  selector:
+    matchLabels: &id001
+      app: stable
+  template:
+    metadata:
+      labels: *id001
+    spec:
+      containers:
+      - name: web
+        image: busybox:1.37
+        command:
+        - sh
+        - -c
+        - mkdir -p /www; echo v1 > /www/index.html; exec httpd -f -p 80 -h /www
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable
+  namespace: preview-gateway
+spec:
+  selector:
+    app: stable
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: canary
+  namespace: preview-gateway
+spec:
+  selector:
+    matchLabels: &id001
+      app: canary
+  template:
+    metadata:
+      labels: *id001
+    spec:
+      containers:
+      - name: web
+        image: busybox:1.37
+        command:
+        - sh
+        - -c
+        - mkdir -p /www; echo v2 > /www/index.html; exec httpd -f -p 80 -h /www
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canary
+  namespace: preview-gateway
+spec:
+  selector:
+    app: canary
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-route
+  namespace: preview-gateway
+spec:
+  parentRefs:
+  - name: web-gateway
+    sectionName: https
+  hostnames:
+  - preview.local
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+      headers:
+      - type: Exact
+        name: X-Canary
+        value: always
+    backendRefs:
+    - name: canary
+      port: 80
+      weight: 1
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: stable
+      port: 80
+      weight: 80
+    - name: canary
+      port: 80
+      weight: 20

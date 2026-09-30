@@ -2,6 +2,22 @@
 
 작성 시점: 2026-09-30. 이 기록은 자료의 정적 검증과 Helm 렌더링 결과이며 실제 사용자 클러스터에서 모든 실습을 실행한 기록은 아니다.
 
+## 2026-09-30 독립 학습 커리큘럼 보강
+
+[독립 과정](../08-independent/README.md)을 기본 진입점으로 추가했다. 새 가이드 14개, YAML 파일 15개/객체 73개, 42개 기초와 16개 확장의 연결 데이터를 추가했다. 강의 수강은 선행 조건에서 제거하고 8단계 순서와 별도 플랫폼 경로, 애드온 준비, 정상/실패/복구/정리 기준을 제공했다.
+
+- 전체 Markdown 78개 상대 링크와 bash 185개 블록의 `bash -n` 검사 통과.
+- 전체 YAML 138개 객체 파싱, namespace, Pod/Deployment/ReplicaSet/DaemonSet/StatefulSet/Job/CronJob selector 및 volume 연결 검사 통과.
+- curriculum.json의 42개 기초·16개 확장 연결 누락/중복과 8단계 선행 순서 검사 통과.
+- kubeconform 0.6.7, Kubernetes 1.27.2 + Gateway/CRD catalog: YAML 48개 파일, 136개 객체 Valid, Invalid/Errors 0, 기존 학습용 CRD/인스턴스 2개 Skipped.
+- `git diff --check`: 통과.
+
+curriculum.json은 Kubernetes 객체가 아닌 학습 경로 메타데이터이므로 kubeconform에서 파일명으로 제외하고 check_materials.py에서 구조/연결을 검사한다. over.yaml은 LimitRange 거절을 관찰하기 위한 의도적인 실패 입력이며, API schema가 유효하다는 사실이 Admission 통과를 의미하지 않는다.
+
+공식 Metrics Server 호환표, Local Path 설치/제약, Traefik Ingress 설정, kubeadm 설치와 NGF 호환표를 대조했다. 신규 Gateway 준비는 공식 표의 NGF 2.3.0 / Gateway API 1.4.1 조합으로 정리했다. Local Path v0.0.37 공식 설치 manifest에 default StorageClass annotation이 없음을 확인했다.
+
+이 검사에는 VM 생성/OS 패키지 설치, 이미지 pull, 애드온 실행, 실제 TLS/HPA/정책/저장소 복구를 포함하지 않는다. 이번 커리큘럼 변경에서 Helm을 다시 렌더링하지도 않았다. 사용자 클러스터의 실행 완료는 CHECKPOINTS에 별도로 기록한다.
+
 ## 2026-09-30 두 자료의 내용 대조 후 보강
 
 [내용 대조 기록](../CONTENT_REVIEW.md)에 입문·CKA 주제의 연결, 원본의 단순화/오타와 남은 실습 범위를 기록했다. 개념 설명 보강과 NodePort 외부 트래픽 정책 비교 YAML을 추가했다.
@@ -63,7 +79,7 @@ python3 k8s/07-cka-preview/check_materials.py
 kubeconform -strict -summary -kubernetes-version 1.27.2 \
   -schema-location default \
   -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
-  -ignore-missing-schemas k8s
+  -ignore-missing-schemas -ignore-filename-pattern 'curriculum\.json$' k8s
 git diff --check
 ```
 

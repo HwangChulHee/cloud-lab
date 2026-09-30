@@ -1,8 +1,10 @@
 # 04. StorageClass와 지연 바인딩
 
-> 강의 전 예습 · 참고 주제: task-storageclass · 환경: 기존 클러스터 + 동적 provisioner
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-storageclass · 환경: 기존 클러스터 + 동적 provisioner
 
 기초 연결: [StorageClass](../../04-storage-security/01-longhorn-storageclass/README.md) · [동적 프로비저닝](../../04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md)
+
+[독립 과정에서의 위치](../../08-independent/06-storage/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -71,9 +73,9 @@ kubectl get sc
 
 원본 전체 YAML을 무조건 apply하지 않고 변경한 annotation만 복구한다. PVC의 PV와 실제 저장소가 Delete 정책에 따라 정리됐는지도 확인한다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - provisioner 문자열을 지정하는 것과 provisioner 설치는 어떻게 다른가?
 - Pending이 정상 대기인 경우와 오류인 경우는 Events에서 어떻게 구분하는가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

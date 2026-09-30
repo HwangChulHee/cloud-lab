@@ -2,9 +2,13 @@
 
 > 학습 단계: **가이드 축소**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/07-security/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
-Dashboard token 인증과 kubeconfig context 사용 흐름을 정리한다.
+ServiceAccount token 인증과 kubeconfig context 사용 흐름을 정리한다. 독립 과정에서는 API의 허용/거부를 직접 확인하고, Dashboard 로그인은 이미 UI가 설치된 경우의 선택 과제로 진행한다.
 
 ## Recall
 
@@ -13,7 +17,7 @@ Dashboard token 인증과 kubeconfig context 사용 흐름을 정리한다.
 ## Build & Observe
 
 1. Dashboard ServiceAccount/RoleBinding/Token 관계를 확인한다.
-2. Token으로 Dashboard 로그인한다.
+2. UI가 이미 설치됐다면 Token으로 로그인한다. 미설치 환경은 독립 가이드의 curl/kubectl 권한 비교로 본 단계를 진행한다.
 3. 현재 kubeconfig의 context를 조회하고 이름을 명확히 정리한다.
 4. 선택 과제로 두 번째 클러스터 kubeconfig 병합 절차를 문서화한다.
 

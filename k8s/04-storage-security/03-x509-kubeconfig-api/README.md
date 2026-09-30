@@ -2,6 +2,10 @@
 
 > 학습 단계: **가이드 축소**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/07-security/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 kubectl 뒤의 인증서 기반 API 접근을 직접 확인한다.
@@ -51,6 +55,6 @@ kubectl get events --sort-by=.lastTimestamp
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [CRD 조회와 kubectl explain 문서 추출](../../07-cka-preview/16-crd-discovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

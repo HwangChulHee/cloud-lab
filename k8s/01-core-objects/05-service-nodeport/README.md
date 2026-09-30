@@ -2,6 +2,10 @@
 
 > 학습 단계: **기초 개념·실습 과제**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/04-networking/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 Windows Host에서 NodePort를 통해 클러스터 내부 Pod에 접근한다.
@@ -84,6 +88,6 @@ kubectl get events --sort-by=.lastTimestamp
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [Service와 NodePort 연결 추적](../../07-cka-preview/05-service-nodeport/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

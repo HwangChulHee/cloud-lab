@@ -1,8 +1,10 @@
 # 01. ConfigMap으로 TLS 설정 바꾸기
 
-> 강의 전 예습 · 참고 주제: task-configmap / 카페 immutable 보충 · 환경: 기존 1.27 클러스터 + openssl/curl
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-configmap / 카페 immutable 보충 · 환경: 기존 1.27 클러스터 + openssl/curl
 
 기초 연결: [ConfigMap 파일 마운트](../../01-core-objects/12-configmap-secret-mount/README.md) · [롤링 업데이트](../../02-controllers/03-deployment-rollingupdate-rollback/README.md)
+
+[독립 과정에서의 위치](../../08-independent/02-configuration/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -74,9 +76,9 @@ kubectl delete namespace preview-config
 rm -f /tmp/preview-tls.key /tmp/preview-tls.crt
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - env, 일반 volume, subPath의 ConfigMap 변경 반영은 어떻게 다른가?
 - 인증서 검증 실패와 TLS 버전 협상 실패는 어떻게 구분하는가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

@@ -1,0 +1,281 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-self-ingress
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik
+  namespace: lab-self-ingress
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: lab-self-traefik
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingressclasses
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: lab-self-traefik
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: lab-self-traefik
+subjects:
+- kind: ServiceAccount
+  name: traefik
+  namespace: lab-self-ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: lab-traefik
+spec:
+  controller: traefik.io/ingress-controller
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: lab-self-ingress
+spec:
+  selector:
+    matchLabels: &id001
+      app: traefik
+  template:
+    metadata:
+      labels: *id001
+    spec:
+      serviceAccountName: traefik
+      containers:
+      - name: traefik
+        image: traefik:v3.6.1
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 300m
+            memory: 192Mi
+        args:
+        - --entrypoints.web.address=:8000
+        - --entrypoints.websecure.address=:8443
+        - --providers.kubernetesingress=true
+        - --providers.kubernetesingress.ingressclass=lab-traefik
+        - --providers.kubernetesingress.namespaces=lab-self-edge,preview-ingress,preview-gateway
+        - --ping=true
+        - --ping.entrypoint=web
+        - --accesslog=true
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 8000
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: lab-self-ingress
+spec:
+  selector:
+    app: traefik
+  ports:
+  - name: web
+    port: 80
+    targetPort: 8000
+  - name: websecure
+    port: 443
+    targetPort: 8443
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-self-edge
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: lab-self-traefik
+  namespace: lab-self-edge
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - services
+  - endpoints
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: lab-self-traefik
+  namespace: lab-self-edge
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: lab-self-traefik
+subjects:
+- kind: ServiceAccount
+  name: traefik
+  namespace: lab-self-ingress
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-ingress
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: lab-self-traefik
+  namespace: preview-ingress
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - services
+  - endpoints
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: lab-self-traefik
+  namespace: preview-ingress
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: lab-self-traefik
+subjects:
+- kind: ServiceAccount
+  name: traefik
+  namespace: lab-self-ingress
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-gateway
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: lab-self-traefik
+  namespace: preview-gateway
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - services
+  - endpoints
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: lab-self-traefik
+  namespace: preview-gateway
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: lab-self-traefik
+subjects:
+- kind: ServiceAccount
+  name: traefik
+  namespace: lab-self-ingress

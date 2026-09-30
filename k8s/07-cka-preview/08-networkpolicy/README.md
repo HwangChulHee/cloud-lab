@@ -1,8 +1,10 @@
 # 08. 최소 권한 NetworkPolicy
 
-> 강의 전 예습 · 참고 주제: task-networkpolicy · 환경: NetworkPolicy를 실제 집행하는 CNI
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-networkpolicy · 환경: NetworkPolicy를 실제 집행하는 CNI
 
 기초 연결: [Namespace](../../01-core-objects/13-namespace/README.md) · [Labels/Selectors](../../01-core-objects/02-label-selector/README.md)
+
+[독립 과정에서의 위치](../../08-independent/08-operations/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -84,9 +86,9 @@ kubectl -n preview-backend delete netpol too-broad wrong-label --ignore-not-foun
 kubectl delete namespace preview-frontend preview-backend
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - ingress만 허용했는데 통신이 안 될 수 있는 이유는?
 - 두 selector를 같은 peer에 쓰는 것과 서로 다른 peer로 쓰는 것은 어떻게 다른가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

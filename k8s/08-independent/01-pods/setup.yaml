@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-self-pods
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pair
+  namespace: lab-self-pods
+  labels:
+    app: pair
+    tier: frontend
+spec:
+  containers:
+  - name: web
+    image: nginx:1.28-alpine
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
+    volumeMounts:
+    - name: shared
+      mountPath: /shared
+  - name: observer
+    image: busybox:1.37
+    command:
+    - sh
+    - -c
+    - sleep 3600
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
+    volumeMounts:
+    - name: shared
+      mountPath: /shared
+  volumes:
+  - name: shared
+    emptyDir: {}
+  initContainers:
+  - name: prepare
+    image: busybox:1.37
+    command:
+    - sh
+    - -c
+    - echo init-ok > /shared/init; echo prepare-complete
+    volumeMounts:
+    - name: shared
+      mountPath: /shared
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi

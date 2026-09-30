@@ -2,6 +2,10 @@
 
 > 학습 단계: **중간 가이드**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/06-storage/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 로컬 3노드 클러스터에 동적 스토리지 계층을 추가한다.
@@ -40,6 +44,6 @@ Longhorn 내부 Controller를 일부러 중지시키지는 않는다. Storage �
 
 > PVC가 StorageClass를 지정하면 ______가 실제 PV/Volume 생성을 담당한다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [StorageClass와 지연 바인딩](../../07-cka-preview/04-storageclass-binding/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

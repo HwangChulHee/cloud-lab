@@ -2,6 +2,10 @@
 
 > 학습 단계: **기초 개념·실습 과제**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/05-resources-scheduling/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 nodeSelector와 requests/limits가 배치 가능 여부와 실행 자원 제어에 미치는 영향을 확인한다.
@@ -49,7 +53,7 @@ kubectl get events --sort-by=.lastTimestamp
 
 > Scheduler가 Pod를 배치할 수 있는지를 판단할 때 requests는 ______로 사용되고, limits는 ______을 제한한다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [HPA와 축소 안정화 시간](../../07-cka-preview/02-hpa-behavior/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 

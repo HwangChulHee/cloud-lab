@@ -1,8 +1,10 @@
 # 10. 파일 로그를 Sidecar로 stdout에 보내기
 
-> 강의 전 예습 · 참고 주제: task-sidecar · 환경: 기존 클러스터
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-sidecar · 환경: 기존 클러스터
 
 기초 연결: [멀티 컨테이너 Pod](../../01-core-objects/01-pod-multicontainer/README.md) · [emptyDir](../../01-core-objects/08-volume-emptydir/README.md)
+
+[독립 과정에서의 위치](../../08-independent/03-controllers/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -58,9 +60,9 @@ kubectl -n preview-logging rollout status deploy/legacy --timeout=120s
 kubectl delete namespace preview-logging
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - 같은 Pod라고 파일시스템까지 자동 공유되는가?
 - 로그 보존이 필요하면 emptyDir 외에 어떤 요소가 필요한가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

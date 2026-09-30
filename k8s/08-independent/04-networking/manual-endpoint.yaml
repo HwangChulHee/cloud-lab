@@ -1,0 +1,18 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: manual-backend
+  namespace: lab-self-network
+  labels:
+    kubernetes.io/service-name: manual
+    endpointslice.kubernetes.io/managed-by: cloud-lab-self-study
+addressType: IPv4
+ports:
+- name: http
+  protocol: TCP
+  port: 80
+endpoints:
+- addresses:
+  - REPLACE_BACKEND_IP
+  conditions:
+    ready: true

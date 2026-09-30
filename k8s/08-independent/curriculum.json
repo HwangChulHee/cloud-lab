@@ -1,0 +1,302 @@
+{
+  "stages": [
+    {
+      "guide": "08-independent/01-pods/README.md",
+      "requires": []
+    },
+    {
+      "guide": "08-independent/02-configuration/README.md",
+      "requires": [
+        "08-independent/01-pods/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/03-controllers/README.md",
+      "requires": [
+        "08-independent/02-configuration/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/04-networking/README.md",
+      "requires": [
+        "08-independent/03-controllers/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/05-resources-scheduling/README.md",
+      "requires": [
+        "08-independent/04-networking/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/06-storage/README.md",
+      "requires": [
+        "08-independent/05-resources-scheduling/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/07-security/README.md",
+      "requires": [
+        "08-independent/06-storage/README.md"
+      ]
+    },
+    {
+      "guide": "08-independent/08-operations/README.md",
+      "requires": [
+        "08-independent/07-security/README.md"
+      ]
+    }
+  ],
+  "foundation_labs": [
+    {
+      "lab": "00-foundation/01-cluster-verification/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "00-foundation/02-kubectl-observation-basics/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "01-core-objects/01-pod-multicontainer/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "01-core-objects/02-label-selector/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "01-core-objects/03-node-scheduling-resources/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "01-core-objects/04-service-clusterip/README.md",
+      "guide": "08-independent/04-networking/README.md"
+    },
+    {
+      "lab": "01-core-objects/05-service-nodeport/README.md",
+      "guide": "08-independent/04-networking/README.md"
+    },
+    {
+      "lab": "01-core-objects/06-service-dns/README.md",
+      "guide": "08-independent/04-networking/README.md"
+    },
+    {
+      "lab": "01-core-objects/07-headless-endpoint-externalname/README.md",
+      "guide": "08-independent/04-networking/README.md"
+    },
+    {
+      "lab": "01-core-objects/08-volume-emptydir/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "01-core-objects/09-volume-hostpath/README.md",
+      "guide": "08-independent/06-storage/README.md"
+    },
+    {
+      "lab": "01-core-objects/10-pv-pvc-static/README.md",
+      "guide": "08-independent/06-storage/README.md"
+    },
+    {
+      "lab": "01-core-objects/11-configmap-secret-env/README.md",
+      "guide": "08-independent/02-configuration/README.md"
+    },
+    {
+      "lab": "01-core-objects/12-configmap-secret-mount/README.md",
+      "guide": "08-independent/02-configuration/README.md"
+    },
+    {
+      "lab": "01-core-objects/13-namespace/README.md",
+      "guide": "08-independent/01-pods/README.md"
+    },
+    {
+      "lab": "01-core-objects/14-resourcequota-limitrange/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "02-controllers/01-replicaset/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/02-deployment-recreate/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/03-deployment-rollingupdate-rollback/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/04-deployment-bluegreen/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/05-daemonset/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/06-job/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/07-cronjob/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "02-controllers/08-controller-troubleshooting/README.md",
+      "guide": "08-independent/03-controllers/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/01-pod-lifecycle-status/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/02-readiness-probe/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/03-liveness-probe/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/04-qos/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/05-node-affinity/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/06-pod-affinity-antiaffinity/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/07-taints-tolerations/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "03-pod-deep-dive/08-scheduling-troubleshooting/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md"
+    },
+    {
+      "lab": "04-storage-security/01-longhorn-storageclass/README.md",
+      "guide": "08-independent/06-storage/README.md"
+    },
+    {
+      "lab": "04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md",
+      "guide": "08-independent/06-storage/README.md"
+    },
+    {
+      "lab": "04-storage-security/03-x509-kubeconfig-api/README.md",
+      "guide": "08-independent/07-security/README.md"
+    },
+    {
+      "lab": "04-storage-security/04-serviceaccount-rbac/README.md",
+      "guide": "08-independent/07-security/README.md"
+    },
+    {
+      "lab": "04-storage-security/05-dashboard-auth-contexts/README.md",
+      "guide": "08-independent/07-security/README.md"
+    },
+    {
+      "lab": "05-advanced/01-statefulset/README.md",
+      "guide": "08-independent/06-storage/README.md"
+    },
+    {
+      "lab": "05-advanced/02-ingress-routing/README.md",
+      "guide": "08-independent/08-operations/README.md"
+    },
+    {
+      "lab": "05-advanced/03-ingress-canary-tls/README.md",
+      "guide": "08-independent/08-operations/README.md"
+    },
+    {
+      "lab": "05-advanced/04-hpa/README.md",
+      "guide": "08-independent/08-operations/README.md"
+    },
+    {
+      "lab": "06-architecture/01-architecture-observability-capstone/README.md",
+      "guide": "08-independent/08-operations/README.md"
+    }
+  ],
+  "extension_labs": [
+    {
+      "lab": "07-cka-preview/01-configmap-tls/README.md",
+      "guide": "08-independent/02-configuration/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/02-hpa-behavior/README.md",
+      "guide": "08-independent/08-operations/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/03-pv-data-recovery/README.md",
+      "guide": "08-independent/06-storage/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/04-storageclass-binding/README.md",
+      "guide": "08-independent/06-storage/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/05-service-nodeport/README.md",
+      "guide": "08-independent/04-networking/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/06-ingress-routing/README.md",
+      "guide": "08-independent/08-operations/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/07-gateway-migration/README.md",
+      "guide": "08-independent/PLATFORM.md",
+      "track": "platform"
+    },
+    {
+      "lab": "07-cka-preview/08-networkpolicy/README.md",
+      "guide": "08-independent/08-operations/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/09-control-plane-recovery/README.md",
+      "guide": "08-independent/PLATFORM.md",
+      "track": "platform"
+    },
+    {
+      "lab": "07-cka-preview/10-sidecar-logging/README.md",
+      "guide": "08-independent/03-controllers/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/11-resource-budget/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/12-priorityclass/README.md",
+      "guide": "08-independent/05-resources-scheduling/README.md",
+      "track": "application"
+    },
+    {
+      "lab": "07-cka-preview/13-helm-argocd/README.md",
+      "guide": "08-independent/PLATFORM.md",
+      "track": "platform"
+    },
+    {
+      "lab": "07-cka-preview/14-cni-install/README.md",
+      "guide": "08-independent/PLATFORM.md",
+      "track": "platform"
+    },
+    {
+      "lab": "07-cka-preview/15-cri-linux-preparation/README.md",
+      "guide": "08-independent/PLATFORM.md",
+      "track": "platform"
+    },
+    {
+      "lab": "07-cka-preview/16-crd-discovery/README.md",
+      "guide": "08-independent/07-security/README.md",
+      "track": "application"
+    }
+  ]
+}

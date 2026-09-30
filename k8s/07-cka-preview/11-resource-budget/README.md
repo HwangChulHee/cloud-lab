@@ -1,8 +1,10 @@
 # 11. 자원 예산을 계산해 3개 Pod 복구하기
 
-> 강의 전 예습 · 참고 주제: task-resource · 환경: 기존 클러스터
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-resource · 환경: 기존 클러스터
 
 기초 연결: [Requests/Limits](../../01-core-objects/03-node-scheduling-resources/README.md) · [Quota/LimitRange](../../01-core-objects/14-resourcequota-limitrange/README.md) · [Scheduling 진단](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md)
+
+[독립 과정에서의 위치](../../08-independent/05-resources-scheduling/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -71,9 +73,9 @@ kubectl delete namespace preview-budget
 
 [Scheduling 진단](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md)에서 큰 request로 Pending을 만든 경우와 이번 ReplicaSet FailedCreate를 비교하고, 어느 단계에서 막혔는지 설명한다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - quota 초과와 노드 자원 부족은 어느 리소스의 Events에서 차이가 나는가?
 - 순차 init 컨테이너 요청을 일반 컨테이너처럼 모두 더하면 왜 부정확한가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

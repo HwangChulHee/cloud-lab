@@ -2,6 +2,10 @@
 
 > 학습 단계: **가이드 축소**
 
+## 강의 없이 시작하기
+
+[독립 학습 가이드](../../08-independent/08-operations/README.md)에서 개념 설명 → 실행 YAML → 예상 결과 → 장애/복구 → 정리를 순서대로 진행한다. 이 문서는 해당 주제의 복습·추가 과제로 사용한다.
+
 ## 목표
 
 Ingress Controller를 통한 path/host routing을 구성한다.
@@ -43,7 +47,7 @@ Ingress와 이 Lab에서 만든 backend/Service를 삭제한다. 공용 Ingress 
 
 > Ingress는 라우팅 규칙을 선언하고, 실제 규칙을 읽어 트래픽을 처리하는 것은 ______이다.
 
-## 연결된 CKA 강의 전 예습
+## 연결된 확장 실습
 
 - [Ingress의 host와 path 라우팅](../../07-cka-preview/06-ingress-routing/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 

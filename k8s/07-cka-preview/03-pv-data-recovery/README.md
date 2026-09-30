@@ -1,8 +1,10 @@
 # 03. Retain PV로 데이터 복구하기
 
-> 강의 전 예습 · 참고 주제: task-pvpvc · 환경: 기존 클러스터 + worker SSH
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-pvpvc · 환경: 기존 클러스터 + worker SSH
 
 기초 연결: [정적 PV/PVC](../../01-core-objects/10-pv-pvc-static/README.md) · [PV 수명주기](../../04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md)
+
+[독립 과정에서의 위치](../../08-independent/06-storage/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -101,9 +103,9 @@ sudo rmdir /var/tmp/cloud-lab-preview-data
 
 Retain은 호스트 파일까지 삭제해주지 않는다. 재실행은 디렉터리 생성부터 시작한다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - Available, Bound, Released의 차이는?
 - 기존 PV 재사용과 새 PV 자동 생성은 어떤 필드로 구분하는가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

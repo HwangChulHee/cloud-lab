@@ -1,8 +1,10 @@
 # 07. Ingress에서 Gateway API로 전환
 
-> 강의 전 예습 · 참고 주제: task-gateway · 환경: 별도 1.34 예습 클러스터 + Ingress/Gateway Controller
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-gateway · 환경: 별도 1.34 예습 클러스터 + Ingress/Gateway Controller
 
 기초 연결: [Ingress TLS](../../05-advanced/03-ingress-canary-tls/README.md) · [Ingress Routing](../../05-advanced/02-ingress-routing/README.md)
+
+[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -25,7 +27,7 @@ kubectl -n preview-gateway create secret tls web-tls \
   --key=/tmp/preview-gateway.key --cert=/tmp/preview-gateway.crt
 ```
 
-`old-ingress.yaml`의 클래스 placeholder를 바꾸고 apply한다. 기존 Controller Service의 443을 로컬 8443으로 port-forward해 `curl -k --resolve preview.local:8443:127.0.0.1 https://preview.local:8443/`가 성공하는 기준선을 만든다.
+`old-ingress.yaml`의 클래스 placeholder를 바꾸고 apply한다. 기존 Controller Service의 443을 로컬 8443으로 port-forward해 `curl --cacert /tmp/preview-gateway.crt --resolve preview.local:8443:127.0.0.1 https://preview.local:8443/`가 성공하는 기준선을 만든다.
 
 ## 2. 직접 바꿔보기
 
@@ -48,7 +50,7 @@ kubectl -n preview-gateway get svc
 Gateway 구현이 생성한 데이터 평면 Service의 이름과 HTTPS 포트를 확인해 9443으로 port-forward한다. Controller의 관리용 Service와 혼동하지 않는다.
 
 ```bash
-curl -k --resolve preview.local:9443:127.0.0.1 https://preview.local:9443/
+curl --cacert /tmp/preview-gateway.crt --resolve preview.local:9443:127.0.0.1 https://preview.local:9443/
 kubectl -n preview-gateway get ingress
 ```
 
@@ -74,6 +76,8 @@ kubectl apply -f solution.yaml
 
 </details>
 
+[Gateway Canary 가중치·헤더 비교](../../08-independent/CANARY.md)를 이어 할 경우 아래 정리를 하기 전에 실행한다.
+
 ## 4. 정리 및 재실행
 
 port-forward를 종료한다. 공용 CRD/Controller는 삭제하지 않는다.
@@ -83,9 +87,9 @@ kubectl delete namespace preview-gateway
 rm -f /tmp/preview-gateway.key /tmp/preview-gateway.crt
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - Gateway와 HTTPRoute를 분리하면 관리 책임을 어떻게 나눌 수 있는가?
 - 정상으로 생성됐지만 ResolvedRefs=False이면 어디를 확인할 것인가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

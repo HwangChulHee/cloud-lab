@@ -1,8 +1,10 @@
 # 14. CNI 설치와 NetworkPolicy 집행 확인
 
-> 강의 전 예습 · 참고 주제: task-cni · 환경: CNI 없는 별도 1.34 kubeadm 클러스터
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-cni · 환경: CNI 없는 별도 1.34 kubeadm 클러스터
 
 기초 연결: [클러스터 관찰](../../00-foundation/01-cluster-verification/README.md) · [NetworkPolicy 예습](../../07-cka-preview/08-networkpolicy/README.md)
+
+[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -74,9 +76,9 @@ kubectl get tigerastatus -w
 rm -f /tmp/preview-tigera-operator.yaml /tmp/preview-calico-custom.yaml
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - Operator만 설치하면 왜 Pod 네트워크가 아직 준비되지 않을 수 있는가?
 - Node podCIDR과 클러스터 Pod CIDR의 차이는?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

@@ -1,8 +1,10 @@
 # 02. HPA와 축소 안정화 시간
 
-> 강의 전 예습 · 참고 주제: task-hpa · 환경: 기존 클러스터 + 정상 Metrics Server
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-hpa · 환경: 기존 클러스터 + 정상 Metrics Server
 
 기초 연결: [HPA](../../05-advanced/04-hpa/README.md) · [기초 자원 설정](../../01-core-objects/03-node-scheduling-resources/README.md)
+
+[독립 과정에서의 위치](../../08-independent/08-operations/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -75,9 +77,9 @@ kubectl -n preview-hpa describe hpa web
 kubectl delete namespace preview-hpa
 ```
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - CPU 100m request에 사용량 50m이면 사용률은 얼마인가?
 - Metrics 미수집과 CPU request 누락은 어떤 진단 결과로 구분하는가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

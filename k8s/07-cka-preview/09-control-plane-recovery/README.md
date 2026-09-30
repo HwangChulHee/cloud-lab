@@ -1,8 +1,10 @@
 # 09. 제어 평면 장애를 호스트에서 복구하기
 
-> 강의 전 예습 · 참고 주제: task-core_components · 환경: 읽기 관찰은 기존 클러스터 / 장애 주입은 폐기 가능한 kubeadm VM
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-core_components · 환경: 읽기 관찰은 기존 클러스터 / 장애 주입은 폐기 가능한 kubeadm VM
 
 기초 연결: [클러스터 기준선](../../00-foundation/01-cluster-verification/README.md) · [아키텍처 관찰](../../06-architecture/01-architecture-observability-capstone/README.md)
+
+[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -108,9 +110,9 @@ kubectl -n kube-system get pods -l component=kube-scheduler -o wide
 
 강의 과제의 자원 비율은 해당 과제 조건으로 읽는다. scheduler CPU request를 worker CPU의 10%로 맞추는 것은 Kubernetes의 일반 설치 규칙이 아니다. 노드의 Allocatable, 실제 사용량, 기존 요청과 원래 manifest를 근거로 판단한다. 이 추가 관찰에는 scheduler 장애 주입을 포함하지 않는다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - API Server가 안 뜰 때 kubectl 대신 어떤 경로로 로그를 읽는가?
 - localhost:2379가 모든 클러스터에서 정답일 수 없는 이유는?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

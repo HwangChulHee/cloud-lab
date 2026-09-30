@@ -1,8 +1,10 @@
 # 16. CRD 조회와 kubectl explain 문서 추출
 
-> 강의 전 예습 · 참고 주제: task-crd · 환경: 기존 클러스터
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-crd · 환경: 기존 클러스터
 
 기초 연결: [API/kubeconfig](../../04-storage-security/03-x509-kubeconfig-api/README.md) · [kubectl 관찰](../../00-foundation/02-kubectl-observation-basics/README.md)
+
+[독립 과정에서의 위치](../../08-independent/07-security/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -70,9 +72,9 @@ rm -f /tmp/preview-resources.yaml /tmp/preview-subject.yaml /tmp/preview-cert-ma
 
 공용 cert-manager CRD는 삭제하지 않는다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - CRD, Custom Resource, Controller는 각각 무엇인가?
 - 파일 확장자와 실제 출력 형식을 구분해야 하는 이유는?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)

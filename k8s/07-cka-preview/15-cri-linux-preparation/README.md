@@ -1,8 +1,10 @@
 # 15. CRI와 Linux 네트워크 매개변수 준비
 
-> 강의 전 예습 · 참고 주제: task-cri · 환경: 별도 Ubuntu 22.04 VM + Docker + 로컬 cri-dockerd 패키지
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-cri · 환경: 별도 Ubuntu 22.04 VM + Docker + 로컬 cri-dockerd 패키지
 
 기초 연결: [클러스터 runtime 확인](../../00-foundation/01-cluster-verification/README.md)
+
+[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -85,9 +87,9 @@ sudo sysctl --system
 
 전용 VM을 설치 전 스냅샷으로 복원한다. 설정 파일만 지워도 이미 바뀐 커널 값과 활성화한 서비스는 자동 원복되지 않는다. 기존 학습 클러스터의 runtime이나 sysctl은 수정하지 않는다.
 
-## 강의에서 확인할 질문
+## 스스로 설명할 질문
 
 - runtime socket이 응답하는 것과 Pod 네트워크가 준비된 것은 어떻게 다른가?
 - modprobe 없이 bridge sysctl을 적용할 때 어떤 오류가 생길 수 있는가?
 
-[전체 예습 경로](../README.md)
+[전체 확장 경로](../README.md)
