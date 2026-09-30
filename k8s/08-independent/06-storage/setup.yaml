@@ -31,11 +31,12 @@ metadata:
   namespace: lab-self-storage
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: data
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: data
     spec:
       containers:
       - name: web

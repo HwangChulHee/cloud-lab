@@ -10,11 +10,12 @@ metadata:
   namespace: lab-self-control
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: web
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: web
     spec:
       containers:
       - name: web
@@ -35,11 +36,12 @@ metadata:
   namespace: lab-self-control
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: direct-rs
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: direct-rs
     spec:
       containers:
       - name: web
@@ -60,11 +62,12 @@ metadata:
   namespace: lab-self-control
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: agent
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: agent
     spec:
       containers:
       - name: app
@@ -145,11 +148,12 @@ metadata:
   namespace: lab-self-control
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: blue
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: blue
     spec:
       containers:
       - name: web
@@ -174,11 +178,12 @@ metadata:
   namespace: lab-self-control
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: green
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: green
     spec:
       containers:
       - name: web

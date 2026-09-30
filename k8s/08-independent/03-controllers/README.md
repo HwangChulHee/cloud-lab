@@ -13,11 +13,10 @@ kubectl -n lab-self-control get deploy,rs,pods,ds,job,cronjob
 CONTROL_POD=$(kubectl -n lab-self-control get pod -l app=web -o jsonpath='{.items[0].metadata.name}')
 kubectl -n lab-self-control get pod "$CONTROL_POD" -o jsonpath='{.metadata.ownerReferences}{"\n"}'
 kubectl -n lab-self-control delete pod "$CONTROL_POD" --wait=true
-kubectl -n lab-self-control rollout status deploy/web --timeout=120s
-kubectl -n lab-self-control get pods -l app=web
+kubectl -n lab-self-control get pods -l app=web --watch
 ```
 
-Pod 소유자는 ReplicaSet이며 Deployment까지 연결된다. 삭제한 이름이 아닌 새 이름의 Pod가 생기고 2개 Ready로 돌아온다.
+Pod 소유자는 ReplicaSet이며 Deployment까지 연결된다. watch에서 삭제한 이름이 아닌 새 이름의 Pod가 생기고, 삭제 중인 Pod를 제외해 두 개 모두 1/1 Ready인지 확인한 뒤 Ctrl+C로 종료한다. 이 삭제는 Deployment template을 변경하지 않으므로 rollout status만으로 새 Pod 준비 완료를 판단하지 않는다.
 
 ## 변경 → 실패 → 복구: 롤링과 Recreate
 
@@ -43,10 +42,27 @@ kubectl -n lab-self-control rollout status deploy/blue --timeout=120s
 kubectl -n lab-self-control rollout status deploy/green --timeout=120s
 kubectl -n lab-self-control run client --image=busybox:1.37 --restart=Never -- sleep 3600
 kubectl -n lab-self-control wait --for=condition=Ready pod/client --timeout=120s
-kubectl -n lab-self-control exec client -- wget -qO- http://color
+wait_color() {
+  local expected="$1" attempt body
+  for attempt in $(seq 1 30); do
+    body=$(kubectl -n lab-self-control exec client -- wget -T 2 -qO- http://color) || body=""
+    if [ "$body" = "$expected" ]; then printf '%s\n' "$body"; return 0; fi
+    sleep 2
+  done
+  echo "color 응답이 $expected 로 바뀌지 않았습니다. EndpointSlice/Pod를 확인하세요." >&2
+  return 1
+}
+wait_color blue
 kubectl -n lab-self-control patch svc color --type=merge -p '{"spec":{"selector":{"app":"green"}}}'
-kubectl -n lab-self-control exec client -- wget -qO- http://color
+wait_color green
+```
+
+green을 출력한 것을 확인한 뒤에만 blue로 복구한다. timeout이면 먼저 `kubectl -n lab-self-control get endpointslices -l kubernetes.io/service-name=color -o yaml`로 전달 대상을 확인한다.
+
+```bash
 kubectl -n lab-self-control patch svc color --type=merge -p '{"spec":{"selector":{"app":"blue"}}}'
+wait_color blue
+unset -f wait_color
 ```
 
 blue → green → blue가 각각 새 연결에서 관찰된다. 반영 지연 시 EndpointSlice가 바뀌었는지 확인하고 재요청한다. 두 Deployment가 살아 있고 Service selector만 바뀐 것이다.
@@ -61,10 +77,16 @@ kubectl -n lab-self-control get job batch
 kubectl -n lab-self-control create job manual-clock --from=cronjob/clock
 kubectl -n lab-self-control wait --for=condition=Complete job/manual-clock --timeout=120s
 kubectl -n lab-self-control logs job/manual-clock
+kubectl -n lab-self-control get jobs -o 'custom-columns=NAME:.metadata.name,OWNER:.metadata.ownerReferences[0].name' --watch
+```
+
+Job COMPLETIONS는 3/3이다. DaemonSet DESIRED는 보통 worker 2개이며 실제 taint/배치 조건에 따라 달라진다. watch에서 NAME이 clock-숫자 형태이고 OWNER가 clock인 자동 Job을 확인할 때까지 기다린다(분 경계와 Controller 처리 시간이 필요하다). manual-clock도 OWNER가 clock일 수 있으므로 그 행을 제외한다. manual-clock의 성공만으로 예약 실행을 확인했다고 판단하지 않는다. 자동 Job을 확인한 뒤 Ctrl+C로 watch를 종료하고 다음을 실행한다.
+
+```bash
 kubectl -n lab-self-control patch cronjob clock --type=merge -p '{"spec":{"suspend":true}}'
 ```
 
-Job COMPLETIONS는 3/3이다. DaemonSet DESIRED는 보통 worker 2개이며 실제 taint/배치 조건에 따라 달라진다. CronJob은 다음 분 경계까지 기다려 자동 생성도 확인한다. manual-clock은 예약 실행과 별개다. suspend는 이미 시작한 Job을 중단하지 않는다.
+suspend는 이미 시작한 Job을 중단하지 않는다.
 
 ## 완료와 정리
 

@@ -32,19 +32,19 @@ data-0/data-1와 disk-data-0/disk-data-1 각각의 PVC가 생기고 Bound가 된
 ## 삭제 → 복구 → 축소 비교
 
 ```bash
-kubectl -n lab-self-storage get pod data-0 -o jsonpath='{.metadata.uid}{"\n"}'
+STORAGE_OLD_UID=$(kubectl -n lab-self-storage get pod data-0 -o jsonpath='{.metadata.uid}')
 kubectl -n lab-self-storage delete pod data-0 --wait=true
-kubectl -n lab-self-storage rollout status statefulset/data --timeout=180s
+python3 k8s/08-independent/wait_for_pod.py lab-self-storage data-0 --different-uid "$STORAGE_OLD_UID" --timeout 180
 kubectl -n lab-self-storage exec data-0 -- cat /data/marker
 kubectl -n lab-self-storage scale statefulset data --replicas=1
 kubectl -n lab-self-storage wait --for=delete pod/data-1 --timeout=120s
 kubectl -n lab-self-storage get pvc
 kubectl -n lab-self-storage scale statefulset data --replicas=2
-kubectl -n lab-self-storage rollout status statefulset/data --timeout=180s
+python3 k8s/08-independent/wait_for_pod.py lab-self-storage data-1 --timeout 180
 kubectl -n lab-self-storage exec data-1 -- cat /data/marker
 ```
 
-이름은 같아도 Pod UID는 바뀌고 data-zero가 남아야 한다. scale-down 뒤에도 PVC가 남고 scale-up하면 data-one을 다시 읽는다. mount 실패는 Pod Events에서, binding 실패는 PVC Events에서 확인한다.
+이름은 같아도 Pod UID는 바뀌고 data-zero가 남아야 한다. [대기 도구](../wait_for_pod.py)는 Pod가 잠깐 없는 구간도 기다리며 새 UID와 Ready를 함께 확인한다. Pod 삭제만으로 StatefulSet generation이 바뀌지는 않으므로 rollout status만으로 재생성 완료를 판정하지 않는다. 대기 실패 시 다음 exec를 진행하지 말고 describe pod와 PVC Events를 확인한다. scale-down 뒤에도 PVC가 남고 scale-up하면 data-one을 다시 읽는다. mount 실패는 Pod Events에서, binding 실패는 PVC Events에서 확인한다.
 
 ## StorageClass 비교 확장
 

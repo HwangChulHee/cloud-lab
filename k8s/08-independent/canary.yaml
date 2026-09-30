@@ -5,11 +5,12 @@ metadata:
   namespace: preview-gateway
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: stable
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: stable
     spec:
       containers:
       - name: web
@@ -46,11 +47,12 @@ metadata:
   namespace: preview-gateway
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: canary
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: canary
     spec:
       containers:
       - name: web

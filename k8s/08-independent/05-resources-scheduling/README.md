@@ -56,6 +56,7 @@ kubectl apply -f k8s/08-independent/05-resources-scheduling/over.yaml
 ```bash
 HEALTH_POD=$(kubectl -n lab-self-placement get pod -l app=health -o jsonpath='{.items[0].metadata.name}')
 kubectl -n lab-self-placement exec "$HEALTH_POD" -- rm /tmp/ready
+kubectl -n lab-self-placement wait --for=condition=Ready=false pod/"$HEALTH_POD" --timeout=60s
 kubectl -n lab-self-placement get pod "$HEALTH_POD"
 kubectl -n lab-self-placement get endpointslices -l kubernetes.io/service-name=health -o yaml
 kubectl -n lab-self-placement exec "$HEALTH_POD" -- touch /tmp/ready

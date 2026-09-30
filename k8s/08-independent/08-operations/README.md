@@ -35,13 +35,32 @@ openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
 chmod 600 "$EDGE_TMP/tls.key"
 kubectl -n lab-self-edge create secret tls web-tls --cert="$EDGE_TMP/tls.crt" --key="$EDGE_TMP/tls.key"
 kubectl apply -f k8s/08-independent/08-operations/tls.yaml
-curl --cacert "$EDGE_TMP/tls.crt" --resolve study.local:8443:127.0.0.1 https://study.local:8443/
-kubectl -n lab-self-edge patch ingress web-tls --type=merge -p '{"spec":{"tls":[{"hosts":["study.local"],"secretName":"missing"}]}}'
-curl --cacert "$EDGE_TMP/tls.crt" --resolve study.local:8443:127.0.0.1 https://study.local:8443/
-kubectl apply -f k8s/08-independent/08-operations/tls.yaml
+curl --fail --max-time 5 --retry 10 --retry-delay 2 --retry-max-time 60 --retry-all-errors \
+  --cacert "$EDGE_TMP/tls.crt" --resolve study.local:8443:127.0.0.1 https://study.local:8443/
+openssl verify -CAfile "$EDGE_TMP/tls.crt" -verify_hostname study.local "$EDGE_TMP/tls.crt"
+openssl verify -CAfile "$EDGE_TMP/tls.crt" -verify_hostname wrong.local "$EDGE_TMP/tls.crt"
 ```
 
-정상 TLS 응답은 nginx HTML이다. 잘못된 Secret이 반영되면 인증서 검증/라우팅이 실패한다. Controller의 이전 설정 보존·인증서 반영 지연 여부도 로그로 확인한다. `curl -k` 성공만으로 TLS 복구를 판정하지 않는다. 새 연결에서 cacert 검증이 돌아올 때 완료한다.
+curl은 Controller 반영 지연을 고려해 재시도하며 정상 응답은 nginx HTML이다. 첫 verify는 OK, 두 번째는 hostname mismatch로 실패해야 한다. 두 번째 실패는 의도한 결과이고, 같은 신뢰 인증서도 이름이 다르면 검증을 통과하지 못함을 Controller 동작과 분리해 확인한다. 정상 curl이 실패하면 다음 장애를 주입하지 말고 port-forward/Ingress/Secret/Controller 로그를 먼저 확인한다.
+
+## Secret 참조 오류를 Controller 로그와 비교하기
+
+```bash
+kubectl -n lab-self-edge patch ingress web-tls --type=merge -p '{"spec":{"tls":[{"hosts":["study.local"],"secretName":"missing"}]}}'
+curl --cacert "$EDGE_TMP/tls.crt" --resolve study.local:8443:127.0.0.1 https://study.local:8443/
+kubectl -n lab-self-ingress logs deploy/traefik --since=2m
+kubectl -n lab-self-edge get ingress web-tls -o yaml
+```
+
+missing 참조가 저장된 것과 Controller의 Secret 조회 오류를 확인한다. 요청이 성공해도 주입 자체가 실패했다고 단정하지 않는다. Controller는 이전 인증서나 설정을 보존할 수 있고, 전파에 지연이 있을 수 있다. 요청 결과와 로그를 기록한 후 복구한다.
+
+```bash
+kubectl apply -f k8s/08-independent/08-operations/tls.yaml
+curl --fail --max-time 5 --retry 10 --retry-delay 2 --retry-max-time 60 --retry-all-errors \
+  --cacert "$EDGE_TMP/tls.crt" --resolve study.local:8443:127.0.0.1 https://study.local:8443/
+```
+
+Secret 오류와 인증서 이름 불일치는 서로 다른 검증이다. `curl -k` 성공만으로 TLS 복구를 판정하지 않는다. 새 연결에서 cacert 검증이 돌아올 때 완료한다.
 
 ## HPA와 NetworkPolicy를 이어 실행하기
 

@@ -10,11 +10,12 @@ metadata:
   namespace: lab-self-edge
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: web
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: web
     spec:
       containers:
       - name: web

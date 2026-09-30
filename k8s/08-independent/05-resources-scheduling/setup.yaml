@@ -10,11 +10,12 @@ metadata:
   namespace: lab-self-placement
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: health
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: health
     spec:
       containers:
       - name: web
@@ -128,11 +129,12 @@ metadata:
   namespace: lab-self-placement
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: place
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: place
     spec:
       containers:
       - name: app
@@ -166,11 +168,12 @@ metadata:
   namespace: lab-self-placement
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: spread
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: spread
     spec:
       containers:
       - name: app

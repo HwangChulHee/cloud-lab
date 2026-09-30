@@ -41,7 +41,7 @@ kubectl -n lab-self-config patch cm settings --type=merge -p '{"data":{"mode":"r
 
 ## 완료와 정리
 
-환경변수, 일반 mount, subPath의 갱신 차이를 세 줄로 설명한다. Secret 읽기 권한이 왜 필요한지도 설명한다.
+환경변수, 일반 mount, subPath의 갱신 차이를 세 줄로 설명한다. Secret을 API로 직접 조회하는 권한과 Pod에 주입하는 경로를 구분한다. 일반 Secret volume/env 주입은 kubelet이 처리하므로 Pod의 ServiceAccount에 secrets get 권한을 추가할 필요가 없다. 반면 같은 namespace에서 Pod를 생성할 수 있는 사용자는 Secret을 마운트해 내용을 읽을 수 있으므로, Secret API 조회 권한만 제한해서 충분하다고 생각하지 않는다. [공식 Secret 설명](https://kubernetes.io/docs/concepts/configuration/secret/)을 참고한다.
 
 ```bash
 kubectl delete namespace lab-self-config

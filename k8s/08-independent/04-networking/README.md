@@ -26,12 +26,18 @@ web DNS 응답은 Service IP이고 named의 DNS 응답은 Pod IP다. cluster dom
 ```bash
 kubectl -n lab-self-network patch svc web --type=merge -p '{"spec":{"selector":{"app":"missing"}}}'
 kubectl -n lab-self-network get endpointslices -l kubernetes.io/service-name=web -o yaml
+kubectl -n lab-self-network exec client -- nslookup web
 kubectl -n lab-self-network exec client -- wget -T 3 -qO- http://web
+```
+
+전파가 끝나기 전에는 이전 backend로 성공할 수 있다. EndpointSlice와 wget을 다시 조회해 실제 HTTP 실패를 확인한 뒤 아래 복구를 실행한다. API/exec 자체의 오류는 Service 전달 실패의 증거로 쓰지 않는다. 변화가 없다면 selector와 EndpointSlice를 먼저 확인한다.
+
+```bash
 kubectl -n lab-self-network patch svc web --type=merge -p '{"spec":{"selector":{"app":"web"}}}'
 kubectl -n lab-self-network exec client -- wget -T 3 -qO- http://web
 ```
 
-DNS는 성공해도 HTTP는 실패할 수 있다. selector 복구 후 nginx HTML이 돌아와야 한다. EndpointSlice controller와 데이터 평면 반영에는 지연이 있을 수 있다.
+DNS는 성공해도 HTTP는 실패할 수 있다. selector 복구 후 nginx HTML이 돌아와야 한다. 즉시 실패하면 같은 wget을 다시 실행해 성공을 확인한다. EndpointSlice controller와 데이터 평면 반영에는 지연이 있을 수 있다.
 
 ## selector 없는 Service를 수동으로 연결하기
 

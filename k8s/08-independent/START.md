@@ -43,7 +43,7 @@ Pod/Service 실습은 아직 Metrics Server·Ingress·동적 스토리지가 필
 
 ## 첫 실행에서 확인할 것
 
-[01 Pod](./01-pods/README.md)의 Ready 대기가 실패하면 `kubectl -n lab-self-pods describe pod pair`를 확인한다. 이미지 pull, CNI, 배치, init container 실패를 구분하고 원인을 해결한 뒤 다시 대기한다. 문서의 timeout은 성공을 대신하지 않는다.
+[01 Pod](./01-pods/README.md)의 Ready 대기가 실패하면 `kubectl -n lab-self-pods describe pod pair`를 확인한다. 이미지 pull, CNI, 배치, init container 실패를 구분하고 원인을 해결한 뒤 다시 대기한다. 문서의 timeout은 성공을 대신하지 않는다. 명령은 코드 블록별로 실행하고 예상 결과를 확인한 뒤 다음 블록으로 넘어간다. 의도한 실패라고 적힌 명령을 제외하고 오류나 timeout이 나오면 진행을 멈추고 원인을 해결한다. watch/port-forward는 안내된 시점에 Ctrl+C로 종료하거나 별도 셸에서 유지한다.
 
 `lab-self-*` 이름과 `cloud-lab/self-study` taint key는 이 과정 전용이다. 같은 이름의 기존 리소스가 있다면 이전 실습이 정리됐는지 확인하고 기존 목적을 모르는 리소스를 덮어쓰지 않는다. 강제로 시스템 리소스를 삭제할 필요는 없다.
 

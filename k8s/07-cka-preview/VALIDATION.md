@@ -2,6 +2,26 @@
 
 작성 시점: 2026-09-30. 이 기록은 자료의 정적 검증과 Helm 렌더링 결과이며 실제 사용자 클러스터에서 모든 실습을 실행한 기록은 아니다.
 
+## 2026-09-30 독립 과정 재검증
+
+실제 명령 순서와 성공/실패 판정 조건을 다시 읽고 다음을 수정했다.
+
+- Pod 삭제 후 generation이 그대로인 Controller의 rollout status만으로 복구를 판정하던 부분: Deployment는 새 Pod 두 개의 Ready를 watch로 확인하고, StatefulSet은 새 UID와 Ready를 함께 기다린다.
+- readiness 파일을 바로 복구해 실패 관찰을 건너뛸 수 있던 부분: Ready=false 대기를 추가했다.
+- Blue/Green 전환과 Service 장애를 전파 전에 원복할 수 있던 부분: 응답 비교/실패 관찰 후 다음 블록으로 넘어가도록 분리했다.
+- CronJob 자동 실행을 확인하기 전에 suspend하던 순서: 자동 Job을 먼저 확인한다. 수동 생성 Job도 ownerReference가 clock일 수 있어 이름으로 함께 구분한다.
+- Secret API 권한과 kubelet의 volume/env 주입 경로를 구분하고, TLS 인증서 이름 불일치와 Controller의 Secret 참조 오류를 별도로 확인하도록 했다.
+- 초보자가 selector/label 관계를 직접 읽을 수 있게 생성된 YAML anchor/alias를 풀었다. 변경된 YAML 7개 파일은 이전 commit과 파싱된 객체가 동일함을 확인했다.
+
+이번에 실행한 검사:
+
+- check_materials.py: 78개 문서 상대 링크, 190개 bash 블록 문법, 138개 YAML 객체와 커리큘럼 연결 검사 통과.
+- wait_for_pod.py: 가짜 kubectl 응답으로 이전 Ready Pod → 일시적 부재 → 새 NotReady Pod → 새 Ready Pod, 최초 생성, 삭제 중 Pod, Forbidden 즉시 실패, timeout의 5개 시나리오 통과. 실제 클러스터 실행 결과는 아니다.
+- OpenSSL: 문서와 같은 SAN 인증서를 실제 생성해 study.local 검증 성공과 wrong.local hostname mismatch 실패를 확인했다.
+- Python 문법과 git diff --check 통과.
+
+이번 환경에는 기존 kubeconform 실행 파일이 없고 release 다운로드가 timeout으로 실패해 스키마 검사는 재실행하지 못했다. 아래 이전 검사의 136 Valid/2 Skipped 기록과 구분한다. 이번 변경에서 Kubernetes YAML 객체의 값/구조는 바뀌지 않았고 파싱 동등성 및 기존 정적 검사를 확인했다. VM/실제 클러스터에서 전체 과정을 실행한 검증도 포함하지 않는다.
+
 ## 2026-09-30 독립 학습 커리큘럼 보강
 
 [독립 과정](../08-independent/README.md)을 기본 진입점으로 추가했다. 새 가이드 14개, YAML 파일 15개/객체 73개, 42개 기초와 16개 확장의 연결 데이터를 추가했다. 강의 수강은 선행 조건에서 제거하고 8단계 순서와 별도 플랫폼 경로, 애드온 준비, 정상/실패/복구/정리 기준을 제공했다.

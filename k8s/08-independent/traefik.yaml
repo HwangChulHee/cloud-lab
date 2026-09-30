@@ -58,11 +58,12 @@ metadata:
   namespace: lab-self-ingress
 spec:
   selector:
-    matchLabels: &id001
+    matchLabels:
       app: traefik
   template:
     metadata:
-      labels: *id001
+      labels:
+        app: traefik
     spec:
       serviceAccountName: traefik
       containers:
