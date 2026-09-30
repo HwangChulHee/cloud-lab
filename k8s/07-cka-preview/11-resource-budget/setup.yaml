@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-budget
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: budget
+  namespace: preview-budget
+spec:
+  hard:
+    requests.cpu: 1200m
+    requests.memory: 768Mi
+    limits.cpu: '4'
+    limits.memory: 2Gi
+    pods: '6'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: preview-budget
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+        resources: &id001
+          requests:
+            cpu: 600m
+            memory: 384Mi
+          limits:
+            cpu: 800m
+            memory: 512Mi
+        command:
+        - sleep
+        - '86400'
+      initContainers:
+      - name: init
+        image: busybox:1.37
+        command:
+        - sh
+        - -c
+        - echo init
+        resources: *id001

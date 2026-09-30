@@ -50,3 +50,7 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 연결된 CKA 강의 전 예습
+
+- [ConfigMap으로 TLS 설정 바꾸기](../../07-cka-preview/01-configmap-tls/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

@@ -39,3 +39,7 @@ Longhorn 내부 Controller를 일부러 중지시키지는 않는다. Storage �
 ## 설명하기
 
 > PVC가 StorageClass를 지정하면 ______가 실제 PV/Volume 생성을 담당한다.
+
+## 연결된 CKA 강의 전 예습
+
+- [StorageClass와 지연 바인딩](../../07-cka-preview/04-storageclass-binding/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

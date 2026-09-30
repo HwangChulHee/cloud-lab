@@ -1,0 +1,38 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: web-gateway
+  namespace: preview-gateway
+spec:
+  gatewayClassName: REPLACE_GATEWAY_CLASS
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 443
+    hostname: preview.local
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - group: ''
+        kind: Secret
+        name: web-tls
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-route
+  namespace: preview-gateway
+spec:
+  parentRefs:
+  - name: web-gateway
+    sectionName: https
+  hostnames:
+  - preview.local
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: web
+      port: 80

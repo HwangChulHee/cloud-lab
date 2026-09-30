@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-ingress
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+  namespace: preview-ingress
+data:
+  default.conf: server { listen 80; location / { return 200 "ingress-preview-ok\n";
+    } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: preview-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.28-alpine
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: config
+        configMap:
+          name: web-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: preview-ingress
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 80

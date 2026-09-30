@@ -1,0 +1,8 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: preview-high
+value: 900099
+globalDefault: false
+description: Preview reference class; no system classes involved
+preemptionPolicy: PreemptLowerPriority

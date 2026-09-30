@@ -48,3 +48,9 @@ request를 수용 가능한 값으로 낮춰 정상 스케줄링되는지 확인
 ## 설명하기
 
 > Scheduler가 Pod를 배치할 수 있는지를 판단할 때 requests는 ______로 사용되고, limits는 ______을 제한한다.
+
+## 연결된 CKA 강의 전 예습
+
+- [HPA와 축소 안정화 시간](../../07-cka-preview/02-hpa-behavior/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+- [자원 예산을 계산해 3개 Pod 복구하기](../../07-cka-preview/11-resource-budget/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

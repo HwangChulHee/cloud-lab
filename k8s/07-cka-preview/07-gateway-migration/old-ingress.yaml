@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: preview-gateway
+spec:
+  ingressClassName: REPLACE_INGRESS_CLASS
+  tls:
+  - hosts:
+    - preview.local
+    secretName: web-tls
+  rules:
+  - host: preview.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80

@@ -7,6 +7,8 @@ Cloud Engineer 취업에 필요한 기반 역량을 만드는 저장소.
 SAA 취득 전에는 강의 커버리지와 강의 Hands-on에 집중하고,
 이후 `examples/`에서 핵심 AWS를 반복 구축한 뒤 `portfolio/`에서 실제 프로젝트로 확장한다.
 
+Kubernetes는 [42개 기초 실습](./k8s/README.md)과 [16개 CKA 강의 전 예습](./k8s/07-cka-preview/README.md)을 연결해 병행한다. 기초 개념 → 직접 구축 → 변경·장애 진단 → 강의에서 이해 확인 순서로 진행한다.
+
 ## 저장소 구조
 
 ```text
@@ -15,6 +17,9 @@ part00~part14/
 
 examples/
   → 핵심 AWS 반복 구축 / 관측 / 장애 / 복구 / CLI 검증
+
+k8s/
+  → Kubernetes 기초 + CKA 강의 전 예습 / 구축 / 진단 / 복구
 
 portfolio/
   → 실제 애플리케이션 + IaC + CI/CD + 운영 자동화

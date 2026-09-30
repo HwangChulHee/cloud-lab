@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-crd
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: certificates.preview.cloud-lab.local
+spec:
+  group: preview.cloud-lab.local
+  scope: Namespaced
+  names:
+    plural: certificates
+    singular: certificate
+    kind: Certificate
+    shortNames:
+    - pvcert
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            required:
+            - subject
+            properties:
+              subject:
+                type: object
+                description: Preview certificate subject; no certificate controller
+                  is installed.
+                properties:
+                  organizations:
+                    type: array
+                    items:
+                      type: string
+                  commonName:
+                    type: string

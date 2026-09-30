@@ -46,3 +46,11 @@ kubectl get events -A --sort-by=.lastTimestamp
 ## 설명하기
 
 > Node가 정상이라고 판단할 때 확인할 상태는 ______이고, 시스템 Pod는 ______ namespace에서 확인한다.
+
+## 연결된 CKA 강의 전 예습
+
+- [제어 평면 장애를 호스트에서 복구하기](../../07-cka-preview/09-control-plane-recovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+- [CNI 설치와 NetworkPolicy 집행 확인](../../07-cka-preview/14-cni-install/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+- [CRI와 Linux 네트워크 매개변수 준비](../../07-cka-preview/15-cri-linux-preparation/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

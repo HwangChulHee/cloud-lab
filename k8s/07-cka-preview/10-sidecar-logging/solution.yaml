@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legacy
+  namespace: preview-logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: legacy
+  template:
+    metadata:
+      labels:
+        app: legacy
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - mkdir -p /var/log; while true; do date >> /var/log/legacy.log; sleep 2;
+          done
+        image: busybox:1.37
+        name: legacy
+        resources:
+          limits:
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
+        volumeMounts:
+        - name: logs
+          mountPath: /var/log
+      - name: sidecar
+        image: busybox:1.37
+        command:
+        - sh
+        - -c
+        - while [ ! -f /var/log/legacy.log ]; do sleep 1; done; tail -n+1 -f /var/log/legacy.log
+        volumeMounts:
+        - name: logs
+          mountPath: /var/log
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+      volumes:
+      - name: logs
+        emptyDir: {}

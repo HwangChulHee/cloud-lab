@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: preview-config
+data:
+  nginx.conf: "events {}\nhttp {\n  server {\n    listen 443 ssl;\n    ssl_certificate\
+    \ /etc/nginx/tls/tls.crt;\n    ssl_certificate_key /etc/nginx/tls/tls.key;\n \
+    \   ssl_protocols TLSv1.2 TLSv1.3;\n    location / { return 200 \"preview tls\
+    \ ok\\n\"; }\n  }\n}\n"

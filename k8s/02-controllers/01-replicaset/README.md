@@ -42,3 +42,7 @@ Pod, Label/Selector, desired state의 의미를 먼저 회상한다.
 ## 설명하기
 
 > ReplicaSet은 ______와 일치하는 Pod 수를 `replicas` 값에 맞추며, 부족하면 ______을 이용해 새 Pod를 만든다.
+
+## 연결된 CKA 강의 전 예습
+
+- [Helm으로 Argo CD 설치와 템플릿 비교](../../07-cka-preview/13-helm-argocd/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: preview-budget
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - command:
+        - sleep
+        - '86400'
+        image: busybox:1.37
+        name: app
+        resources: &id001
+          limits:
+            cpu: 800m
+            memory: 512Mi
+          requests:
+            cpu: 350m
+            memory: 224Mi
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - echo init
+        image: busybox:1.37
+        name: init
+        resources: *id001
+  strategy:
+    type: Recreate

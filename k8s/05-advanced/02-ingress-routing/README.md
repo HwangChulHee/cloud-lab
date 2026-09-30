@@ -42,3 +42,9 @@ Ingress와 이 Lab에서 만든 backend/Service를 삭제한다. 공용 Ingress 
 ## 설명하기
 
 > Ingress는 라우팅 규칙을 선언하고, 실제 규칙을 읽어 트래픽을 처리하는 것은 ______이다.
+
+## 연결된 CKA 강의 전 예습
+
+- [Ingress의 host와 path 라우팅](../../07-cka-preview/06-ingress-routing/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+- [Ingress에서 Gateway API로 전환](../../07-cka-preview/07-gateway-migration/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.

@@ -1,0 +1,10 @@
+apiVersion: preview.cloud-lab.local/v1
+kind: Certificate
+metadata:
+  name: sample
+  namespace: preview-crd
+spec:
+  subject:
+    organizations:
+    - cloud-lab
+    commonName: preview.local
