@@ -2,7 +2,35 @@
 
 작성 시점: 2026-09-30. 이 기록은 자료의 정적 검증과 Helm 렌더링 결과이며 실제 사용자 클러스터에서 모든 실습을 실행한 기록은 아니다.
 
-## 완료한 검사
+## 2026-09-30 재검토와 수정
+
+기초 42개와 예습 16개 문서의 작업 순서·변경 가능 필드·검증 조건을 다시 검토했다. 아래는 이번 수정 후 실행한 검사이며, 아래쪽 최초 작성 기록의 Helm 렌더링을 이번에 다시 실행했다는 뜻은 아니다.
+
+| 발견한 문제 | 수정 |
+|---|---|
+| HPA CPU request만 삭제하면 limit에서 request 자동 주입 | request/limit 함께 제거, rollout 후 실제 Pod 확인 |
+| 여러 종류를 한 번에 watch하는 명령 | HPA와 Pod watch를 별도 셸로 분리 |
+| NetworkPolicy의 other가 송신에서 막혀 광범위 수신 허용도 정답처럼 보임 | 검증용 두 클라이언트의 제한된 egress 허용, 수신 정책만 바꾸는 양성/음성 비교 추가 |
+| PV 기본 파일이 재생성돼도 복구 성공으로 오인 가능 | 장애 전에 고유 문구를 저장하고 복구 후 정확히 비교, Pod 삭제 대기 추가 |
+| Pod 자원·배치, PVC class, Job command 제자리 변경 가정 | Pod/PVC/Job 재생성 또는 새 객체 비교 방법 명시 |
+| Certificate kind가 API group 사이에서 모호함 | explain에 group이 붙은 리소스 이름과 api-version 모두 지정 |
+| Ingress canary annotation을 구현 공통 기능처럼 사용 | ingress-nginx 전용임을 표시하고 일반 Ingress/신규 환경과 구분 |
+| Ready=false 주소가 EndpointSlice에서 완전히 사라진다고 가정 | ready condition과 실제 Service 전달 대상 구분 |
+| 일반 ConfigMap mount와 subPath 갱신 혼동 가능 | 지연 갱신·subPath·앱 재읽기를 분리 |
+| 기본 사용자의 admin.conf 읽기 권한과 bash placeholder 오류 | 소유자/600 권한의 kubeconfig 준비, 셸에서 유효한 placeholder 표기 |
+| StatefulSet 삭제 후 PVC와 SA token 발급 방식 안내 부족 | PVC 별도 정리, 제한된 수명 TokenRequest 사용 |
+
+이번 검사 결과:
+
+- `check_materials.py`: k8s 전체 63개 문서의 상대 링크와 bash 130개 블록 검사 통과. 예습 YAML 60개 객체의 파싱·namespace·Deployment 연결 검사 통과.
+- kubeconform 0.6.7, Kubernetes 1.27.2 + Gateway/CRD catalog 스키마: 32개 YAML 파일, 58개 객체 Valid, Invalid/Errors 0. 학습용 CRD/인스턴스 2개는 외부 스키마가 없어 Skipped이며 YAML 파싱만 확인했다.
+- `git diff --check`: 통과.
+
+실제 사용자 Vagrant 클러스터에는 접속하지 않았다. HPA 확장, CNI 정책 전파/집행, PV 파일 보존과 Gateway/TLS 응답은 각 문서의 실제 검증 단계로 확인해야 한다. 기초 문서 상당수는 과제 개요이며 모든 폴더에 실행용 YAML을 갖춘 상태는 아니다. 기초 02는 독립 관찰 Pod 생성부터 삭제까지 실행 명령을 추가했고, 다른 기초는 연결된 예습과 함께 사용한다.
+
+수정 근거: [CPU limit에서 request 기본값 설정](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/), [Pod 변경](https://kubernetes.io/docs/concepts/workloads/pods/), [NetworkPolicy 허용 합집합](https://kubernetes.io/docs/concepts/services-networking/network-policies/), [PV 회수](https://kubernetes.io/docs/concepts/storage/persistent-volumes/), [Ingress NGINX 유지보수 종료](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/).
+
+## 최초 작성 때 완료한 검사
 
 | 검사 | 결과 |
 |---|---|

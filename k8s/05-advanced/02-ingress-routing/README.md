@@ -12,7 +12,7 @@ Service가 backend Pod를 선택하는 과정과 Ingress object / Ingress Contro
 
 ## Build & Observe
 
-1. Nginx Ingress Controller가 설치되어 있고 Ready인지 확인한다.
+1. 실제 설치된 Ingress Controller와 IngressClass를 확인한다. 일반 host/path 실습은 해당 구현을 사용한다. 커뮤니티 ingress-nginx는 2026년 3월 유지보수 종료 대상이므로 신규 설치는 유지보수되는 다른 구현을 사용한다. NGINX Inc.의 구현과 이름만으로 혼동하지 않는다.
 2. shopping/customer/order backend와 Service를 준비한다.
 3. Path 기반 라우팅을 만든다.
 4. Host 기반 라우팅을 추가한다.

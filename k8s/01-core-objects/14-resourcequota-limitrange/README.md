@@ -1,6 +1,6 @@
 # Lab 16 — ResourceQuota & LimitRange
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -22,7 +22,7 @@ Namespace 단위 자원 정책이 Pod 생성에 미치는 영향을 확인한다
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

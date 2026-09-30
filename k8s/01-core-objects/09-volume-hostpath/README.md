@@ -1,6 +1,6 @@
 # Lab 11 — Volume hostPath
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -20,13 +20,13 @@ Node 파일시스템과 Pod의 결합을 직접 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. Pod를 worker2로 옮겨 동일 경로가 같은 데이터가 아님을 확인한다.
+1. worker2를 선택하는 새 Pod를 만들어 동일 경로가 같은 데이터가 아님을 확인한다. 기존 Pod의 nodeName/nodeSelector를 수정해 이동시키지 않는다. worker1의 원본 Pod와 파일은 비교가 끝날 때까지 유지한다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

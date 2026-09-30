@@ -13,7 +13,7 @@
 ## Build & Observe
 
 1. v1/v2 backend를 준비한다.
-2. canary-weight로 일부 요청만 v2에 전달한다.
+2. 기존 격리된 ingress-nginx 학습 환경에서만 nginx.ingress.kubernetes.io/canary와 canary-weight로 일부 요청을 v2에 전달한다. 이 annotation은 Ingress 표준이 아니므로 다른 Controller에 그대로 적용하지 않는다. 신규 환경에서는 해당 구현의 트래픽 분할 기능 또는 Gateway API HTTPRoute의 backendRefs.weight로 대체한다.
 3. header 기반 Canary를 확인한다.
 4. TLS Secret을 만들고 HTTPS Ingress를 구성한다.
 
@@ -22,13 +22,13 @@
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. 잘못된 TLS Secret 또는 host를 설정해 실패 후 복구한다.
+1. 잘못된 TLS Secret 또는 host를 설정하고 실제 인증서/SNI/응답을 비교한 뒤 복구한다. Controller에 따라 기본 인증서로 HTTPS 연결이 계속될 수 있으므로 curl -k의 성공만으로 정상 TLS 설정이라고 판단하지 않는다. 자체 서명 인증서는 --cacert와 --resolve로 검증한다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

@@ -33,7 +33,29 @@ Kubernetes 1.27.2
 Container Runtime: containerd
 ```
 
-> kubeconfig가 기본 사용자에 설정되지 않은 경우 master에서 `KUBECONFIG=/etc/kubernetes/admin.conf`를 사용한다.
+> admin.conf는 root만 읽을 수 있으므로 master에서 단일 명령은 `sudo KUBECONFIG=/etc/kubernetes/admin.conf kubectl ...`로 실행한다. Linux 셸 전체를 실습에 사용하려면 아래처럼 본인 kubeconfig를 준비한다. Windows PowerShell에서 bash 문법을 그대로 실행하지 않는다.
+
+```bash
+mkdir -p "$HOME/.kube"
+# 기존 config가 있으면 덮어쓰지 말고 별도 파일/환경변수로 사용한다.
+test ! -e "$HOME/.kube/config" && sudo install -m 600 -o "$(id -u)" -g "$(id -g)" /etc/kubernetes/admin.conf "$HOME/.kube/config"
+kubectl config current-context
+kubectl get nodes -o wide
+```
+
+이 kubeconfig는 관리자 권한을 담고 있으므로 저장소에 넣지 않는다. 버전별 애드온 조건과 실행 위치는 [환경 안내](./07-cka-preview/ENVIRONMENT.md)를 따른다.
+
+## 자료의 사용 방식과 변경 규칙
+
+기초 42개 문서는 실습 목표와 관찰·장애 과제를 중심으로 구성돼 있다. 모든 기초 폴더에 실행용 YAML이 제공되는 것은 아니다. 연결된 CKA 예습에는 구축용 YAML과 풀이가 있으며, 기초의 개념을 읽고 예습으로 실행을 이어갈 수 있다. 이 과정은 강의 전 예습 경로이고 CKA 전체 시험 대비 완료를 뜻하지 않는다.
+
+- 독립 Pod의 command, volume, nodeSelector, affinity, resources 등 변경은 기본 1.27 환경에서 **YAML 수정 → 해당 실습 Pod 삭제 → 재생성**으로 한다. `kubectl edit pod`로 모두 변경할 수 있다고 가정하지 않는다.
+- Deployment는 Pod template을 수정하고 rollout을 기다린다. 기존 Pod가 직접 이동하는 것이 아니라 새 Pod가 생성된다.
+- PVC의 class/accessModes/volumeName 변경 실험은 새 PVC로 비교한다. 기존 데이터가 있으면 삭제하기 전에 PV의 reclaimPolicy부터 확인한다.
+- Job의 command/Pod template 변경은 새 Job으로 실행한다. QoS 비교도 새 Pod로 한다.
+- `kubectl get all`은 모든 리소스를 보여주지 않는다. ConfigMap, Secret, PVC, RBAC, Ingress 등은 종류를 직접 지정한다. `get ... -w`는 종류 하나씩 실행한다.
+- 앞 실습의 namespace를 암묵적으로 재사용하지 않고 `-n`을 명시한다. 노드 labels/taints는 변경 전 값을 기록하고 직접 바꾼 항목만 원복한다.
+
 
 ## 공통 흐름
 
@@ -41,13 +63,13 @@ Container Runtime: containerd
 Recall → Build → Observe → Break → Diagnose → Recover → Cleanup → Explain
 ```
 
-기본 진단 도구:
+기본 진단 도구 (`POD_NAME`, `NODE_NAME`, `RESOURCE_TYPE`, `RESOURCE_NAME`은 조회한 실제 값으로 바꾼다):
 
 ```bash
-kubectl get <resource> -o wide
-kubectl describe <resource> <name>
+kubectl get RESOURCE_TYPE -o wide
+kubectl describe RESOURCE_TYPE RESOURCE_NAME
 kubectl get events --sort-by=.lastTimestamp
-kubectl logs <pod>
+kubectl logs POD_NAME
 kubectl get endpoints
 ```
 

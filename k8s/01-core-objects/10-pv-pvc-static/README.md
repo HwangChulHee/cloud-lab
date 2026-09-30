@@ -1,6 +1,6 @@
 # Lab 12 — Static PV/PVC
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -21,13 +21,13 @@ Pod → PVC → PV → 실제 저장소 연결을 단계별로 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. 매칭 가능한 PV가 없도록 PVC 조건을 바꿔 Pending을 재현한다.
+1. 기존 Bound PVC는 유지하고, 매칭 가능한 PV가 없는 조건의 새 PVC를 별도 이름으로 만들어 Pending을 재현한다. Bound PVC의 accessModes/storageClassName/volumeName을 제자리에서 바꾸는 실험은 하지 않는다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

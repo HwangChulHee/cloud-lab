@@ -22,7 +22,7 @@ required/preferred와 matchExpressions로 Node 선택을 제어한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

@@ -22,13 +22,14 @@ Metrics를 기반으로 replicas가 자동 조절되는 과정을 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. requests를 제거해 HPA metric 계산 문제가 생기는지 확인하고 원인을 찾는다.
+1. 관찰할 자원(CPU 또는 memory)의 request와 limit을 모두 제거하고 rollout 완료 후 실제 Pod resources를 확인한다. limit만 남기면 request가 limit 값으로 자동 주입될 수 있다. LimitRange의 기본값도 확인한다.
+2. HPA의 utilization metric 계산 오류를 Conditions/Events에서 확인한다. 평균 사용량(AverageValue) 방식은 request 기반 사용률과 구분한다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

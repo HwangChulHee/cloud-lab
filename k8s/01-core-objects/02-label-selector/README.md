@@ -1,6 +1,6 @@
 # Lab 04 — Labels & Selectors
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -21,7 +21,7 @@ Label이 리소스 분류와 연결에 어떻게 쓰이는지 실험한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

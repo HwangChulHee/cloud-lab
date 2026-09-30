@@ -13,7 +13,7 @@ Running과 Ready의 차이 및 Service Endpoint 편입 조건을 확인한다.
 ## Build & Observe
 
 1. readiness exec probe Pod와 Service를 만든다.
-2. Ready=false일 때 Endpoint에서 제외되는지 확인한다.
+2. Ready=false일 때 EndpointSlice에 주소가 남아 있어도 conditions.ready=false라 일반 Service 트래픽 대상에서 제외되는지 확인한다. legacy Endpoints에서는 notReadyAddresses도 비교한다. publishNotReadyAddresses는 기본 false로 둔다.
 3. ready.txt를 생성해 probe 성공 후 Endpoint 편입을 관찰한다.
 4. Events와 Conditions를 함께 본다.
 
@@ -22,7 +22,7 @@ Running과 Ready의 차이 및 Service Endpoint 편입 조건을 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

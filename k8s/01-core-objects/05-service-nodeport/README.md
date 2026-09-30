@@ -1,6 +1,6 @@
 # Lab 07 — Service NodePort
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -21,7 +21,7 @@ Windows Host에서 NodePort를 통해 클러스터 내부 Pod에 접근한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

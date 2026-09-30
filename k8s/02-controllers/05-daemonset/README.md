@@ -21,7 +21,7 @@ Node마다 하나의 Pod를 유지하는 Controller 특성을 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

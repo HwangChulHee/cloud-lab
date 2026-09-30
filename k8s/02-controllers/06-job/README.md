@@ -13,7 +13,7 @@
 ## Build & Observe
 
 1. 단일 Job을 실행한다.
-2. completions/parallelism을 바꿔 Pod 실행 패턴을 관찰한다.
+2. 서로 다른 completions/parallelism 값을 가진 새 Job을 별도 이름으로 만들어 Pod 실행 패턴을 비교한다.
 3. activeDeadlineSeconds를 적용한다.
 
 필요에 따라 다음 명령을 사용한다.
@@ -21,13 +21,13 @@
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. 실패 command를 실행해 retry/Failed 상태를 관찰한다.
+1. 실패 command가 들어 있는 새 Job을 만들어 retry/Failed 상태를 관찰한다. 기존 Job의 Pod template command는 immutable이므로 직접 수정하지 않는다. 복구도 정상 command의 새 Job으로 실행한다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

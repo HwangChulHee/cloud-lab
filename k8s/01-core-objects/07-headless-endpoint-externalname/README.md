@@ -1,6 +1,6 @@
 # Lab 09 — Headless, Endpoint, ExternalName
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -14,7 +14,7 @@ Service discovery의 세 가지 변형을 비교한다.
 
 1. Headless Service를 만들고 DNS가 Pod IP를 반환하는지 확인한다.
 2. selector 기반 Endpoint를 조회한다.
-3. selector 없는 Service + 수동 Endpoint를 연결한다.
+3. selector 없는 Service + 수동 EndpointSlice를 연결한다. discovery.k8s.io/v1, kubernetes.io/service-name 라벨, 고유 endpointslice.kubernetes.io/managed-by 라벨과 실제 backend IP/port를 지정한다. legacy Endpoints는 1.27 비교 관찰에만 사용한다.
 4. ExternalName Service로 외부 도메인을 추상화한다.
 
 필요에 따라 다음 명령을 사용한다.
@@ -22,7 +22,7 @@ Service discovery의 세 가지 변형을 비교한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

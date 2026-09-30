@@ -12,7 +12,7 @@
 
 ## Build & Observe
 
-1. ServiceAccount와 token을 만든다.
+1. 실습 namespace에 ServiceAccount를 만들고 `kubectl -n NAMESPACE create token SERVICEACCOUNT_NAME --duration=10m`으로 제한된 수명의 token을 발급한다. 1.24 이후 자동 생성되는 영구 token Secret을 기대하지 않는다. NAMESPACE/SERVICEACCOUNT_NAME은 실습에서 만든 실제 이름으로 바꾼다.
 2. Pod get/list만 가능한 Role+RoleBinding을 만든다.
 3. Token으로 Pod API 성공, Service API 403을 확인한다.
 4. ClusterRole/ClusterRoleBinding으로 범위를 확장해 다시 호출한다.
@@ -22,7 +22,7 @@
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

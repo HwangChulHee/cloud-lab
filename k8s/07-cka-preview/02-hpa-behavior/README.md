@@ -29,10 +29,10 @@ CPU 목표 50%, 최소 1개·최대 4개, scaleDown 안정화 시간 30초인 HP
 ```bash
 kubectl -n preview-hpa run load --image=busybox:1.37 --restart=Never -- \
   sh -c 'while true; do wget -q -O- http://web >/dev/null; done'
-kubectl -n preview-hpa get hpa,pods -w
+kubectl -n preview-hpa get hpa web -w
 ```
 
-별도 셸에서 load Pod를 삭제해 축소를 관찰한다. 부하가 부족하면 load Pod를 추가한다. 마지막으로 CPU request를 지웠을 때 HPA가 무엇을 보고하는지 확인한다.
+별도 셸에서 `kubectl -n preview-hpa get pods -w`로 Pod 수를 관찰한다. watch는 리소스 종류 하나씩 실행한다. load Pod를 삭제해 축소를 관찰한다. 부하가 부족하면 load Pod를 추가한다. 마지막으로 CPU request와 CPU limit을 모두 지웠을 때 HPA가 무엇을 보고하는지 확인한다. request만 지우고 limit을 남기면 새 Pod의 request가 limit 값으로 자동 설정되므로 누락 장애가 재현되지 않는다. namespace의 LimitRange가 CPU 기본값을 주입하는지도 확인한다.
 
 먼저 예상 결과를 적고 시도한다. 막히면 `get → describe → events → logs`에서 필요한 도구를 고른다. 아래 풀이를 보기 전에 관찰 결과와 추측을 남긴다.
 
@@ -53,11 +53,13 @@ kubectl -n preview-hpa get hpa web -o yaml
 kubectl apply -f solution.yaml
 kubectl -n preview-hpa delete pod load --ignore-not-found
 kubectl -n preview-hpa patch deploy web --type=json \
-  -p='[{"op":"remove","path":"/spec/template/spec/containers/0/resources/requests/cpu"}]'
+  -p='[{"op":"remove","path":"/spec/template/spec/containers/0/resources/requests/cpu"},{"op":"remove","path":"/spec/template/spec/containers/0/resources/limits/cpu"}]'
+kubectl -n preview-hpa rollout status deploy/web --timeout=120s
+kubectl -n preview-hpa get pods -o yaml
 kubectl -n preview-hpa describe hpa web
 ```
 
-request가 없으면 utilization 계산이 불가능해진다. 복구는 `kubectl apply -f setup.yaml`이다. HPA가 동작하는 동안 Deployment replicas를 반복해서 덮어쓰지 않는다.
+새 Pod에서 CPU request가 실제로 없는지 확인한다. HPA가 새 metrics를 수집한 뒤 CPU request 누락을 Conditions/Events에 보고하는지 확인한다. request가 없으면 utilization 계산이 불가능해진다. 복구는 `kubectl apply -f setup.yaml`이다. HPA가 동작하는 동안 Deployment replicas를 반복해서 덮어쓰지 않는다.
 
 </details>
 

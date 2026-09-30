@@ -22,7 +22,7 @@
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
@@ -45,6 +45,8 @@ kubectl get events --sort-by=.lastTimestamp
 1. Stateless와 Stateful workload의 차이를 설명한다.
 
 ## Cleanup
+
+StatefulSet 삭제나 scale-down은 기본적으로 volumeClaimTemplates의 PVC를 삭제하지 않는다. 실습에서 생성한 PVC 이름을 먼저 확인하고 필요한 데이터가 없는 경우에만 개별 삭제한다. PVC/PV의 Retain/Delete 정책과 실제 저장소 정리도 확인한다.
 
 이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
 

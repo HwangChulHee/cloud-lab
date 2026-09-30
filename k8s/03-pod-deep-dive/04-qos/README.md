@@ -21,13 +21,13 @@ requests/limits 조합에 따른 QoS Class를 비교한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 
 ## Break & Diagnose
 
-1. requests/limits 값을 바꾸며 QoS가 예상대로 바뀌는지 확인한다.
+1. requests/limits 조합을 바꾼 새 Pod를 별도 이름으로 만들어 QoS를 비교한다. 기본 1.27 환경에서는 실행 중인 Pod의 resources를 직접 수정하지 않는다. 최신 resize 기능도 QoS 변경을 허용한다고 가정하지 않는다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.

@@ -28,8 +28,10 @@ metadata:
   namespace: preview-frontend
 spec:
   podSelector:
-    matchLabels:
-      app: frontend
+    matchExpressions:
+    - key: app
+      operator: In
+      values: [frontend, other]
   policyTypes:
   - Egress
   egress:

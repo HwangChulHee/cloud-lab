@@ -1,6 +1,6 @@
 # Lab 05 — Basic Scheduling & Resources
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -20,7 +20,7 @@ nodeSelector와 requests/limits가 배치 가능 여부와 실행 자원 제어�
 
 ```bash
 kubectl get pods -o wide
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl describe node k8s-worker1
 kubectl get events --sort-by=.lastTimestamp
 ```
@@ -34,7 +34,7 @@ kubectl get events --sort-by=.lastTimestamp
 
 ## Recover
 
-request를 수용 가능한 값으로 낮춰 정상 스케줄링되는지 확인한다.
+독립 Pod의 YAML에서 request를 낮춘 뒤 해당 실습 Pod를 삭제하고 재생성한다. 기본 1.27에서는 Pod resources를 제자리에서 바꿀 수 있다고 가정하지 않는다. Deployment를 사용했다면 Pod template 수정과 rollout으로 복구한다.
 
 ## 완료 검증
 

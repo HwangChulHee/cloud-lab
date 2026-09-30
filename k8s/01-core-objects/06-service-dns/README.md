@@ -1,6 +1,6 @@
 # Lab 08 — Service DNS
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -21,7 +21,7 @@ CoreDNS를 통해 Service 이름이 어떻게 발견되는지 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

@@ -1,6 +1,6 @@
 # Lab 02 — kubectl Observation Basics
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -16,18 +16,31 @@
 2. `-o wide`, `-o yaml`, `-w` 출력 차이를 확인한다.
 3. namespace 지정과 `-A` 차이를 확인한다.
 
-필요에 따라 다음 명령을 사용한다.
+독립 관찰용 Pod를 만들어 이름과 namespace를 확실히 고정한다. Linux kubectl 셸에서 실행한다.
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod <pod>
-kubectl get events --sort-by=.lastTimestamp
+kubectl create namespace lab-observation
+kubectl -n lab-observation run observer --image=busybox:1.37 --restart=Never -- sh -c 'while true; do date; sleep 5; done'
+kubectl -n lab-observation wait --for=condition=Ready pod/observer --timeout=120s
+kubectl -n lab-observation get pods -o wide
+kubectl -n lab-observation get pod observer -o yaml
+kubectl -n lab-observation describe pod observer
+kubectl -n lab-observation logs observer --tail=5
+kubectl -n lab-observation exec observer -- hostname
+kubectl -n lab-observation get events --sort-by=.lastTimestamp
+kubectl -n lab-observation get pods -w
 ```
+
+watch는 Ctrl+C로 종료한다. `get all`에 ConfigMap/Secret/PVC가 빠지는 점과 `get pods -A`의 namespace 열을 비교한다. ImagePullBackOff라면 wait를 반복하기 전에 Events에서 registry 연결과 이미지 태그를 확인한다.
 
 ## Break & Diagnose
 
-1. 존재하지 않는 리소스를 조회하고 에러 메시지에서 namespace/name을 구분한다.
+```bash
+kubectl -n lab-observation get pod missing
+kubectl -n default get pod observer
+```
+
+두 명령은 NotFound가 예상된다. 같은 이름이라도 namespace가 다르면 다른 객체다. `kubectl -n lab-observation get pod observer`로 원래 객체가 남아 있는지 확인한다.
 
 1. 예상 상태와 실제 상태를 비교한다.
 2. Conditions / Events를 확인한다.
@@ -45,7 +58,9 @@ kubectl get events --sort-by=.lastTimestamp
 
 ## Cleanup
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+```bash
+kubectl delete namespace lab-observation
+```
 
 ## 설명하기
 

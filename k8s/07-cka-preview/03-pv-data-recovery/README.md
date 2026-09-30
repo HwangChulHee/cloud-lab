@@ -29,6 +29,10 @@ kubectl create namespace preview-storage
 kubectl apply -f pv.yaml -f pvc.yaml -f workload.yaml
 kubectl -n preview-storage rollout status deploy/writer --timeout=120s
 kubectl -n preview-storage exec deploy/writer -- cat /data/message
+# 재생성된 기본 파일과 구별할 수 있는 고유 값으로 덮어쓴다.
+RECOVERY_MARKER="recovery-$(date +%s)-$RANDOM"
+printf '%s\n' "$RECOVERY_MARKER" > /tmp/preview-recovery-marker
+kubectl -n preview-storage exec deploy/writer -- sh -c 'printf "%s\n" "$1" > /data/message' sh "$RECOVERY_MARKER"
 kubectl get pv preview-retained-pv
 ```
 
@@ -40,6 +44,7 @@ kubectl get pv preview-retained-pv
 
 ```bash
 kubectl -n preview-storage delete deploy writer
+kubectl -n preview-storage wait --for=delete pod -l app=writer --timeout=120s
 kubectl -n preview-storage delete pvc data
 kubectl get pv preview-retained-pv -o yaml
 ```
@@ -56,7 +61,12 @@ kubectl -n preview-storage get pvc data
 kubectl -n preview-storage exec deploy/writer -- cat /data/message
 ```
 
-PV/PVC가 Bound이고 파일 내용이 `saved-before-recovery`인지 확인한다. 파일이 새로 생성된 것인지 구분하려면 장애 전 직접 고유 문구로 바꿔두어도 좋다.
+PV/PVC가 Bound이고 파일 내용이 `/tmp/preview-recovery-marker`의 고유 값과 정확히 같은지 확인한다. `saved-before-recovery`만 있으면 workload가 파일을 새로 만든 것일 수 있어 데이터 보존의 증거가 되지 않는다.
+
+```bash
+RECOVERED_MARKER=$(kubectl -n preview-storage exec deploy/writer -- cat /data/message)
+test "$RECOVERED_MARKER" = "$(cat /tmp/preview-recovery-marker)" && echo "data retained"
+```
 
 <details>
 <summary>막힐 때 보는 힌트와 예시 풀이</summary>
@@ -79,6 +89,7 @@ kubectl -n preview-storage rollout status deploy/writer --timeout=120s
 ```bash
 kubectl delete namespace preview-storage
 kubectl delete pv preview-retained-pv
+rm -f /tmp/preview-recovery-marker
 ```
 
 Pod가 모두 사라진 뒤 **선택했던 worker**에서 이 실습의 파일과 빈 디렉터리만 정리한다.

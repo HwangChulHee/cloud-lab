@@ -22,7 +22,7 @@ Recreate 전략의 다운타임과 ReplicaSet 교체를 관찰한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

@@ -25,7 +25,7 @@ Longhorn 내부 Controller를 일부러 중지시키지는 않는다. Storage �
 
 1. PVC가 Pending인지 확인한다.
 2. `kubectl describe pvc`와 Events에서 원인을 찾는다.
-3. 올바른 StorageClass로 수정해 다음 실습에서 Dynamic Provisioning을 진행한다.
+3. 잘못 만든 PVC를 삭제하고 올바른 storageClassName으로 새 PVC를 만든다. storageClassName을 기존 PVC에서 임의로 수정할 수 있다고 가정하지 않는다. 다음 실습에서 Dynamic Provisioning을 진행한다.
 
 ## 완료 검증
 

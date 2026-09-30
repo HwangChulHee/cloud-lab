@@ -21,7 +21,7 @@ kubectl 뒤의 인증서 기반 API 접근을 직접 확인한다.
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

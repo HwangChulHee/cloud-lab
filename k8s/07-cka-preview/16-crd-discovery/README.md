@@ -44,7 +44,7 @@ kubectl -n preview-crd get certificates.preview.cloud-lab.local sample -o yaml
 
 ```bash
 kubectl get crd certificates.preview.cloud-lab.local > /tmp/preview-resources.yaml
-kubectl explain certificate.spec.subject --api-version=preview.cloud-lab.local/v1 > /tmp/preview-subject.yaml
+kubectl explain certificates.preview.cloud-lab.local.spec.subject --api-version=preview.cloud-lab.local/v1 > /tmp/preview-subject.yaml
 kubectl -n preview-crd patch certificates.preview.cloud-lab.local sample --type=merge \
   -p '{"spec":{"subject":{"organizations":"wrong-type"}}}'
 ```
@@ -53,10 +53,10 @@ kubectl -n preview-crd patch certificates.preview.cloud-lab.local sample --type=
 
 ```bash
 kubectl get crds | grep cert-manager.io > /tmp/preview-cert-manager-resources.yaml
-kubectl explain certificate.spec.subject --api-version=cert-manager.io/v1 > /tmp/preview-cert-manager-subject.yaml
+kubectl explain certificates.cert-manager.io.spec.subject --api-version=cert-manager.io/v1 > /tmp/preview-cert-manager-subject.yaml
 ```
 
-다른 API group에 같은 kind가 있을 수 있으므로 api-version을 명시한다.
+다른 API group에 같은 kind가 있을 수 있으므로 리소스 이름에 group을 붙이고 api-version도 명시한다. api-version 옵션만으로는 리소스 이름 탐색의 모호함이 해결되지 않을 수 있다.
 
 </details>
 

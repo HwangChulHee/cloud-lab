@@ -1,6 +1,6 @@
 # Lab 14 — ConfigMap & Secret Mount
 
-> 학습 단계: **상세 가이드**
+> 학습 단계: **기초 개념·실습 과제**
 
 ## 목표
 
@@ -14,14 +14,14 @@ ConfigMap/Secret을 파일로 마운트하는 방식을 확인한다.
 
 1. 파일 기반 ConfigMap/Secret을 만든다.
 2. Pod의 `/mount`에 마운트하고 내용을 확인한다.
-3. ConfigMap 값을 변경하고 마운트 파일 갱신을 관찰한다.
+3. 일반 volume mount에서 ConfigMap 값을 변경하고 마운트 파일의 지연 갱신을 관찰한다. subPath 방식은 자동 갱신되지 않는다. 파일 갱신과 애플리케이션의 설정 재읽기는 별도로 확인한다.
 
 필요에 따라 다음 명령을 사용한다.
 
 ```bash
 kubectl get pods -o wide
 kubectl get all
-kubectl describe pod <pod>
+kubectl describe pod POD_NAME
 kubectl get events --sort-by=.lastTimestamp
 ```
 

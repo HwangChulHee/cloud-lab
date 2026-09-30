@@ -1,4 +1,4 @@
-"""Check relative links, YAML syntax, namespace isolation and shell block syntax.
+"""Check k8s links/shell blocks and preview YAML syntax and isolation.
 
 Run from any directory: python3 k8s/07-cka-preview/check_materials.py
 Requires PyYAML. This is an offline content check, not a live cluster test.
@@ -19,15 +19,13 @@ for path in base.parent.rglob('*.md'):
         target = target.split('#')[0]
         if target and not (path.parent / target).exists():
             errors.append(f'{path.relative_to(base.parent)}: broken link {target}')
-    if base not in path.parents:
-        continue
     docs += 1
     for script in re.findall(r'```bash\n(.*?)\n```', text, re.S):
         shells += 1
         result = subprocess.run(['bash', '-n'], input=script, text=True, capture_output=True)
         if result.returncode:
-            errors.append(f'{path.name}: shell syntax: {result.stderr.strip()}')
-    if path.name == 'README.md' and path.parent != base:
+            errors.append(f'{path.relative_to(base.parent)}: shell syntax: {result.stderr.strip()}')
+    if base in path.parents and path.name == 'README.md' and path.parent != base:
         for section in ('## 먼저 이해할 것', '## 1. 구축하고 관찰하기', '## 2. 직접 바꿔보기', '## 3. 검증하기', '## 4. 정리 및 재실행', '## 강의에서 확인할 질문'):
             if section not in text:
                 errors.append(f'{path.parent.name}: missing {section}')
