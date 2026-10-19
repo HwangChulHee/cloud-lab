@@ -1,6 +1,6 @@
 # Cloud / DevOps Interview
 
-클라우드 엔지니어 및 DevOps 면접 대비 문제은행입니다.
+클라우드 엔지니어 및 DevOps 기술면접 대비 문제은행입니다. AWS/Kubernetes 실습에서 확인한 근거로 답변을 확장합니다.
 
 단순 암기보다 `What → Why → When → Trade-off → Troubleshooting` 순서로 답변하는 것을 목표로 합니다.
 
@@ -21,7 +21,7 @@
 1. 질문을 보고 1~2분 동안 직접 말로 답한다.
 2. 정의만 말하지 않고 실제 상황을 예로 든다.
 3. 장애 문제는 `증상 → 범위 축소 → 확인 명령/지표 → 원인 → 조치` 순서로 답한다.
-4. AWS 문제는 현재 SAA 학습 내용과 연결해서 복습한다.
+4. AWS 문제는 [완료한 SAA 학습 내용](../aws/saa/README.md)과 [AWS Labs](../aws/labs/README.md)과 연결해서 복습한다.
 5. Kubernetes/Terraform/CI-CD는 실습한 뒤 다시 답변을 갱신한다.
 
 ## 핵심 사고 흐름

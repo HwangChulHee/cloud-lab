@@ -2,16 +2,16 @@
 
 이 문서는 Stéphane Maarek SAA-C03 강의와 `cloud-lab` 커리큘럼의 대응 관계를 관리한다.
 
-현재 우선순위는 **SAA 취득**이다.
-강의 커버리지를 세밀하게 따라가되, 핵심 AWS 심화 실습과 포트폴리오는 단계적으로 분리한다.
+**SAA-C03 합격 완료 (2026-10-19).** 학습 당시의 강의 대응 관계와 체크 기록을 보존한다.
+핵심 AWS 구축·장애·복구 실습은 [`../labs/`](../labs/README.md)에서 별도 관리한다.
 
 ## Depth Legend
 
 - **C — Coverage**: 개념 + SAA 선택 기준 중심
 - **H — Hands-on**: 강의에서 제공하는 실습 또는 최소 확인
-- **DP — Deep Practice**: `examples/` 또는 포트폴리오에서 구축 + 관측 + 장애 + 복구까지 반복
+- **DP — Deep Practice**: `aws/labs/`에서 구축 + 관측 + 장애 + 복구까지 반복
 
-`DP` 대상도 SAA 강의 진행 중에는 우선 C/H 수준으로 학습하고, 핵심 이론을 확보한 뒤 `examples/`에서 깊게 다룬다.
+`DP` 대상도 SAA 강의 진행 중에는 우선 C/H 수준으로 학습하고, 핵심 이론을 확보한 뒤 `aws/labs/`에서 깊게 다룬다.
 
 ---
 
@@ -27,14 +27,14 @@
 | High Availability & Scalability | 02부 / ELB, Auto Scaling | C~H | DP |
 | RDS, Aurora, ElastiCache | 03부 | C~H | RDS 중심 DP |
 | Route 53 | 04부 / Route 53 | C~H | DP |
-| Classic Solutions Architecture | 14부 + 각 관련 서비스 | C | 포트폴리오 설계에 활용 |
+| Classic Solutions Architecture | 14부 + 각 관련 서비스 | C | 아키텍처 설계에 활용 |
 | S3 | 04부 / S3 Core | C~H | DP |
 | S3 Advanced | 04부 / S3 Advanced & Security | C~H | 핵심 기능 DP |
 | S3 Security | 04부 / S3 Advanced & Security | C~H | DP |
 | CloudFront & Global Accelerator | 04부 | C~H | 필요 시 심화 |
 | Storage Extras | 05부 | C~H | 필요 시 심화 |
-| Messaging / Integration | 06부 | C~H | SQS 중심 포트폴리오 확장 |
-| Containers | 07부 | C~H | ECS 중심 포트폴리오 확장 |
+| Messaging / Integration | 06부 | C~H | SQS 중심 실무형 실습 확장 |
+| Containers | 07부 | C~H | ECS 중심 실무형 실습 확장 |
 | Serverless | 08부 | C~H | 필요 시 심화 |
 | Databases in AWS | 09부 Database 선택 지도 | C | 필요 시 보강 |
 | Data & Analytics | 09부 | C | 필요 시 보강 |
@@ -44,9 +44,9 @@
 | Security & Encryption | 11부 | C~H | KMS 중심 DP |
 | VPC | 12부 | C~H | DP |
 | Disaster Recovery & Migrations | 13부 | C~H | 필요 시 심화 |
-| More Solutions Architecture | 14부 | C | 포트폴리오 설계에 활용 |
+| More Solutions Architecture | 14부 | C | 아키텍처 설계에 활용 |
 | Other Services | 14부 또는 해당 기능별 파트 | C | 선택 |
-| White Papers & Architectures | 14부 | C | 포트폴리오 설계에 활용 |
+| White Papers & Architectures | 14부 | C | 아키텍처 설계에 활용 |
 
 ---
 
@@ -56,11 +56,11 @@
 1. part00~14
    SAA 개념 / 선택 기준 / 강의 Hands-on
 
-2. examples/01~16
+2. aws/labs/01~16
    핵심 AWS 반복 구축 / 관측 / 장애 / 복구 / CLI 검증
 
-3. portfolio/
-   실제 애플리케이션 + Terraform + Docker/ECS + CI/CD + 운영 자동화
+3. 별도 프로젝트 저장소
+   애플리케이션 개발 / IaC / CI/CD / 운영 경험
 ```
 
 ## 시험 전 운영 원칙
@@ -111,7 +111,7 @@ Kendra
 
 ## Deep Practice 대상
 
-`examples/`에서 우선 깊게 반복할 핵심은 다음과 같다.
+`aws/labs/`에서 우선 깊게 반복할 핵심은 다음과 같다.
 
 ```text
 IAM
@@ -141,41 +141,9 @@ Deep Practice의 기본 흐름:
 
 ---
 
-## 포트폴리오에서 확장할 것
+## 이후 활용
 
-`examples/`를 끝낸 뒤 다음을 실제 애플리케이션에 연결한다.
-
-### Spring / Backend
-
-- Java 21 최소 기반
-- Spring Boot / Web
-- JPA / Transaction
-- Validation / Security
-- Actuator
-
-### Operations
-
-- 장애 원인 계층화
-- 로그/메트릭 관측
-- Security Group 오설정 실험
-- Health Check 실패 실험
-- Application process 종료 실험
-- DB connection 장애 실험
-
-### Automation / Runtime
-
-- Docker
-- Terraform
-- GitHub Actions
-- ECR / ECS 배포 파이프라인
-- Rollback 전략
-
-### Portfolio
-
-강의 Hands-on을 그대로 제출하지 않는다.
-Java/Spring 기반 Cloud Shop을 단계적으로 발전시키고 AWS 서비스 선택 근거, 장애 실험, 비용/가용성 trade-off를 문서화한다.
-
-자세한 내용은 `portfolio/README.md`를 참고한다.
+SAA 이론은 이 디렉터리에 보존한다. AWS 실습은 [`../labs/`](../labs/README.md), 기술면접 대비는 [`../../interview/`](../../interview/README.md)에서 이어간다. 애플리케이션 포트폴리오는 별도 저장소에서 진행한다.
 
 ---
 
@@ -190,4 +158,4 @@ Java/Spring 기반 Cloud Shop을 단계적으로 발전시키고 AWS 서비스 �
 [ ] 헷갈리는 비교 대상은 무엇인가?
 ```
 
-`examples/`와 포트폴리오 반영 여부는 해당 핵심 이론을 학습한 뒤 진행한다.
+`aws/labs/`와 포트폴리오 반영 여부는 해당 핵심 이론을 학습한 뒤 진행한다.

@@ -1,4 +1,4 @@
-# AWS Guided Examples
+# AWS Infrastructure Labs
 
 AWS 콘솔에서 직접 따라 만들면서 핵심 인프라를 반복 구축하고 장애까지 다뤄보는 누적형 학습 과정이다.
 
@@ -12,7 +12,7 @@ AWS 콘솔에서 직접 따라 만들면서 핵심 인프라를 반복 구축하
 - 같은 핵심 작업을 여러 챕터에서 반복해 콘솔 조작과 트래픽 흐름을 체화한다.
 - 서비스 이름이 아니라 **왜 이 구조인지, 어디서 장애가 났는지** 설명할 수 있게 한다.
 - 뒤로 갈수록 클릭 가이드를 줄여 마지막에는 요구사항만 보고 직접 구축한다.
-- 15~16에서 장애 진단과 무가이드 구축까지 수행한 뒤 `portfolio/`에서 실제 시스템에 적용할 기반을 만든다.
+- 15~16에서 장애 진단과 무가이드 구축까지 수행한 뒤 별도 포트폴리오 저장소에서 실제 시스템에 적용할 기반을 만든다.
 
 ## 실제 도메인 사용 규칙
 
@@ -115,7 +115,7 @@ C. 인터넷 다운로드가 필요 없는 User Data 사용
   ↓
 16: 전체 아키텍처를 거의 무가이드로 재구축
   ↓
-portfolio/: 실제 시스템에 적용
+별도 프로젝트에서 실제 시스템에 적용
 ```
 
 ## 커리큘럼
@@ -235,7 +235,7 @@ Advanced 실습에서는 해당 README의 비용 리소스도 별도로 확인�
 - DynamoDB
 - EKS
 
-CloudFront는 예외적으로 실제 도메인을 활용할 가치가 높아 `part04/.../16_cloudfront_global_accelerator`에 `cdn.chulheehwang.com` 선택 실습을 둔다. PrivateLink처럼 핵심 과정의 흐름을 끊을 수 있는 심화 주제는 `advanced/`에 둔다. 나머지는 핵심 과정을 완주한 뒤 `advanced` 예제 또는 `portfolio/`에서 필요에 따라 확장한다.
+CloudFront는 예외적으로 실제 도메인을 활용할 가치가 높아 `../saa/part04/.../16_cloudfront_global_accelerator`에 `cdn.chulheehwang.com` 선택 실습을 둔다. PrivateLink처럼 핵심 과정의 흐름을 끊을 수 있는 심화 주제는 `advanced/`에 둔다. 나머지는 핵심 과정을 완주한 뒤 `advanced` 예제 또는 별도 포트폴리오 저장소에서 필요에 따라 확장한다.
 
 ## Examples 이후
 
@@ -257,7 +257,7 @@ portfolio/
 Terraform / CI/CD / Containers / 운영 심화
 
 선택 심화:
-part12 PrivateLink 학습 또는 Example 06 이후
+SAA part12 PrivateLink 학습 또는 Example 06 이후
    ↓
 advanced/A01 PrivateLink
 ```
