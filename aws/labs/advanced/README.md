@@ -1,13 +1,13 @@
 # AWS Optional / Advanced Examples
 
-이 디렉터리는 `examples/01~16`의 필수 Guided 흐름을 깨지 않고, 특정 AWS 기능을 더 깊게 확인하기 위한 **선택 심화 실습**을 모은다.
+이 디렉터리는 `aws/labs/01~16`의 필수 Guided 흐름을 깨지 않고, 특정 AWS 기능을 더 깊게 확인하기 위한 **선택 심화 실습**을 모은다.
 
 핵심 과정의 목적은 그대로 유지한다.
 
 ```text
-examples/01~16
+aws/labs/01~16
 → 핵심 웹 인프라 반복 구축 / 관측 / 장애 / 복구
-→ portfolio/
+→ 별도 프로젝트 저장소
 ```
 
 Advanced Example은 필요한 주제를 골라 수행한다. 번호는 핵심 과정과 별도로 `A01`, `A02`처럼 관리한다.
@@ -32,4 +32,4 @@ Advanced Example은 필요한 주제를 골라 수행한다. 번호는 핵심 �
 
 Advanced Example도 중앙 CLI 문서만 보고 실행하지 않는다. 각 실습 README 흐름 안의 **CLI 구축 검증** 섹션에서 명령과 출력 필드의 의미를 함께 학습한다.
 
-`examples/advanced/CLI_VERIFICATION.md`는 여러 Advanced 실습을 한 번에 비교하거나 삭제 후 잔존 리소스를 통합 점검하는 참고 문서로 유지한다.
+`aws/labs/advanced/CLI_VERIFICATION.md`는 여러 Advanced 실습을 한 번에 비교하거나 삭제 후 잔존 리소스를 통합 점검하는 참고 문서로 유지한다.

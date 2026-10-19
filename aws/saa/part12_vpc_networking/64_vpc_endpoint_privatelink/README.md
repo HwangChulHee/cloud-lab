@@ -1,6 +1,6 @@
 # 64. VPC Endpoint / PrivateLink
 
-`examples/06`, `11`, `12`에서 private EC2가 AWS 서비스에 접근하는 구조를 이해하기 위한 챕터다.
+`aws/labs/06`, `11`, `12`에서 private EC2가 AWS 서비스에 접근하는 구조를 이해하기 위한 챕터다.
 
 ## 1. 왜 필요한가?
 
@@ -130,7 +130,7 @@ PrivateLink
 
 개념을 실제 구축으로 확인하려면 다음 선택 실습을 진행한다.
 
-[A01 — PrivateLink Service Access](../../examples/advanced/01-privatelink-service-access/README.md)
+[A01 — PrivateLink Service Access](../../../labs/advanced/01-privatelink-service-access/README.md)
 
 실습에서는 다음을 직접 확인한다.
 
@@ -151,7 +151,7 @@ Endpoint DNS 호출 성공
 Provider EC2 private IP 직접 호출 실패
 ```
 
-필수 Guided Example은 아니며, Part 12 학습 후 또는 `examples/06` 이후에 선택해서 진행한다.
+필수 Guided Example은 아니며, Part 12 학습 후 또는 `aws/labs/06` 이후에 선택해서 진행한다.
 
 ## 9. Recall Check
 

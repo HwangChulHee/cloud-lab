@@ -186,4 +186,4 @@ static content를 왜 CloudFront로 offload하는가?
 6 Pillar 관점에서 어떤 risk가 있는가?
 ```
 
-시험 이후에는 이 내용을 `examples/`와 `portfolio/`에서 **서비스 선택 근거, HA/보안/비용 trade-off 설명**으로 재사용한다.
+시험 이후에는 이 내용을 `aws/labs/`와 별도 프로젝트 저장소에서 **서비스 선택 근거, HA/보안/비용 trade-off 설명**으로 재사용한다.

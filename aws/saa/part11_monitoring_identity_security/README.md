@@ -61,30 +61,30 @@ GuardDuty / Inspector / Macie
 
 ```text
 CloudWatch
-  → examples/08 ASG Scaling
-  → examples/14 Observability
-  → examples/15 Troubleshooting
-  → examples/16 Final Architecture
+  → aws/labs/08 ASG Scaling
+  → aws/labs/14 Observability
+  → aws/labs/15 Troubleshooting
+  → aws/labs/16 Final Architecture
 
 CloudTrail
-  → examples/15 설정 변경 원인 추적
-  → examples/16 SG/IAM/EC2 변경 이력 확인
+  → aws/labs/15 설정 변경 원인 추적
+  → aws/labs/16 SG/IAM/EC2 변경 이력 확인
 
 AWS Config
   → 설정 변경 timeline
   → compliance / auto-remediation 개념
 
 KMS
-  → examples/11 IAM Role + S3
-  → examples/12 S3 Security / Encryption
-  → examples/15 S3 권한과 KMS 권한 장애 구분
-  → examples/16 보안 설계 근거
+  → aws/labs/11 IAM Role + S3
+  → aws/labs/12 S3 Security / Encryption
+  → aws/labs/15 S3 권한과 KMS 권한 장애 구분
+  → aws/labs/16 보안 설계 근거
 
 Secrets Manager / Parameter Store
   → application config / DB credential 설계
 
 Systems Manager / Session Manager
-  → examples/06 Private EC2 Access
+  → aws/labs/06 Private EC2 Access
   → private subnet의 EC2 운영 접근
 
 WAF / Shield
