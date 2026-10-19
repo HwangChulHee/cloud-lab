@@ -172,4 +172,4 @@ on-premises가 계속 AWS storage를 사용해야 하나?
 network로 옮길 수 있는가?
 ```
 
-현재 `examples/01~16`의 필수 선행조건은 아니지만, EFS/FSx/Storage Gateway/DataSync/Snowball의 선택 기준은 SAA 문제에서 구분할 수 있어야 한다.
+현재 `aws/labs/01~16`의 필수 선행조건은 아니지만, EFS/FSx/Storage Gateway/DataSync/Snowball의 선택 기준은 SAA 문제에서 구분할 수 있어야 한다.

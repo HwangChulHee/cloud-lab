@@ -137,10 +137,10 @@ Q5. 장애 대응에서 CloudTrail은 어느 단계에 쓰이는가?
 직접적인 신규 서비스 구축보다는 15~16의 장애 분석을 보강한다.
 
 ```text
-examples/15 Troubleshooting
+aws/labs/15 Troubleshooting
 → 설정 변경 원인 추적
 
-examples/16 Final Architecture
+aws/labs/16 Final Architecture
 → SG/IAM/EC2 설정 변경 이력 확인
 ```
 

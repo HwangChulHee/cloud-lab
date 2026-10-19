@@ -178,4 +178,4 @@ Managed Service for Apache Flink
 
 에 먼저 답할 수 있어야 한다.
 
-현재 `examples/01~16`의 필수 선행조건은 아니며, 이후 portfolio나 analytics 관련 실습이 필요할 때 특정 서비스를 더 깊게 확장한다.
+현재 `aws/labs/01~16`의 필수 선행조건은 아니며, 이후 portfolio나 analytics 관련 실습이 필요할 때 특정 서비스를 더 깊게 확장한다.

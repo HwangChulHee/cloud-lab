@@ -181,6 +181,6 @@ workflow / identity
 
 ## 현재 examples와의 관계
 
-8부는 현재 `examples/01~16`의 필수 선행조건은 아니다.
+8부는 현재 `aws/labs/01~16`의 필수 선행조건은 아니다.
 
 시험 전에는 **서비스 선택 기준과 serverless architecture 조합**을 정확히 이해하는 데 집중한다. 이후 실제 프로젝트에서는 API Gateway + Lambda + DynamoDB나 Cognito 기반 별도 serverless 기능을 추가할 수 있다.

@@ -91,7 +91,7 @@ SSE-KMS
 → KMS 권한/감사/제어 추가
 ```
 
-`examples/12`에서 기본 SSE-S3를 확인한 뒤 SSE-KMS가 왜 더 강한 제어를 제공하는지 연결해서 이해한다.
+`aws/labs/12`에서 기본 SSE-S3를 확인한 뒤 SSE-KMS가 왜 더 강한 제어를 제공하는지 연결해서 이해한다.
 
 ### EBS / RDS
 
@@ -147,17 +147,17 @@ Q6. EBS/RDS/S3 암호화가 KMS와 어떻게 연결되는가?
 ## examples 연결
 
 ```text
-examples/11 S3 + IAM Role
+aws/labs/11 S3 + IAM Role
 → 서비스 권한과 IAM Role
 
-examples/12 S3 Security & Recovery
+aws/labs/12 S3 Security & Recovery
 → SSE-S3 확인
 → SSE-KMS와 권한 모델 비교
 
-examples/15 Troubleshooting
+aws/labs/15 Troubleshooting
 → S3 권한 문제와 KMS 권한 문제 구분
 
-examples/16 Final Architecture
+aws/labs/16 Final Architecture
 → 암호화와 최소 권한 설계 근거 설명
 ```
 

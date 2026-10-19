@@ -69,7 +69,7 @@ local / IGW / NAT / VPC Endpoint / Peering ...
 
 ## 5. 실습 연결
 
-`examples/05`에서 직접:
+`aws/labs/05`에서 직접:
 
 - 2개 AZ
 - Public subnet 2개
