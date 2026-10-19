@@ -1,6 +1,6 @@
 # A01 — AWS PrivateLink로 특정 서비스만 VPC 간 private하게 노출하기
 
-이 실습은 `examples/01~16`의 필수 흐름과 분리된 **Optional / Advanced Example**이다.
+이 실습은 `aws/labs/01~16`의 필수 흐름과 분리된 **Optional / Advanced Example**이다.
 
 목표는 VPC Peering처럼 두 VPC의 네트워크를 서로 연결하지 않고, Provider VPC의 **특정 HTTP 서비스 하나만** Consumer VPC에서 private하게 호출하는 구조를 직접 만드는 것이다.
 

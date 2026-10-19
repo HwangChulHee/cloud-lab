@@ -51,7 +51,7 @@ VPC 두 개를 단순 연결
 
 ## 4. 실습과의 연결
 
-현재 `examples/01~16`에서는 직접 구축하지 않는다. 다만 59~62에서 배운 CIDR과 route table 개념이 그대로 확장된다.
+현재 `aws/labs/01~16`에서는 직접 구축하지 않는다. 다만 59~62에서 배운 CIDR과 route table 개념이 그대로 확장된다.
 
 ## 5. Recall Check
 

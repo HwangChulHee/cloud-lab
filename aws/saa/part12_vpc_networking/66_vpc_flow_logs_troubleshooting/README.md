@@ -1,6 +1,6 @@
 # 66. VPC Flow Logs / Networking Troubleshooting
 
-이 챕터는 `examples/15-troubleshooting-web-stack`을 준비하기 위한 네트워크 진단 파트다.
+이 챕터는 `aws/labs/15-troubleshooting-web-stack`을 준비하기 위한 네트워크 진단 파트다.
 
 ## 1. VPC Flow Logs
 

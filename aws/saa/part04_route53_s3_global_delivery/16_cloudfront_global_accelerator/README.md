@@ -109,7 +109,7 @@ S3 object 변경 후 예전 내용 표시
 → DNS 문제가 아니라 cache 문제
 ```
 
-이 실습은 `examples/13`의 ALB 기반 실제 도메인/HTTPS 경험과 비교한다.
+이 실습은 `aws/labs/13`의 ALB 기반 실제 도메인/HTTPS 경험과 비교한다.
 
 ```text
 lab.chulheehwang.com

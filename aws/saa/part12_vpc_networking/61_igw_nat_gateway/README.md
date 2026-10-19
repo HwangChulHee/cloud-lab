@@ -45,7 +45,7 @@ Private subnet 인스턴스의 outbound 인터넷 접근 지원
 
 ## 4. 실습에서 왜 필요한가?
 
-`examples/06`에서 EC2를 private subnet에 두면 public IP 없이도 ALB를 통해 사용자 요청을 받을 수 있다.
+`aws/labs/06`에서 EC2를 private subnet에 두면 public IP 없이도 ALB를 통해 사용자 요청을 받을 수 있다.
 
 하지만 EC2가 다음 작업을 해야 한다면 별도 outbound 경로가 필요할 수 있다.
 

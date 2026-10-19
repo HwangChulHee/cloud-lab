@@ -1,6 +1,6 @@
 # 56. Systems Manager — Session Manager 중심
 
-`examples/06-private-ec2-access`를 하기 전에 필요한 Systems Manager 핵심만 정리한다.
+`aws/labs/06-private-ec2-access`를 하기 전에 필요한 Systems Manager 핵심만 정리한다.
 
 ## 1. 왜 필요한가?
 
@@ -49,7 +49,7 @@ IAM 기반 접근 통제 가능
 
 ## 4. 실습에서 확인할 것
 
-`examples/06`에서 다음을 직접 확인한다.
+`aws/labs/06`에서 다음을 직접 확인한다.
 
 - EC2에 public IP가 없어도 Session Manager 세션을 열 수 있는가?
 - EC2-SG에 SSH 22 inbound가 없어도 되는가?

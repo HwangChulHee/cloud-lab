@@ -1,6 +1,6 @@
 # 50. CloudWatch
 
-`examples/08`, `14`, `15`, `16`을 하기 전에 필요한 CloudWatch 핵심을 정리한다.
+`aws/labs/08`, `14`, `15`, `16`을 하기 전에 필요한 CloudWatch 핵심을 정리한다.
 
 ## 1. 역할
 
