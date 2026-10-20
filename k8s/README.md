@@ -102,82 +102,84 @@ kubectl get endpoints
 
 ## 커리큘럼
 
+아래 **이론** 상태는 대화형 개념 학습 및 누적 복습 결과이며, **실습** 상태는 실제 클러스터 작업 기준이다. ✅ 완료 / 🔄 진행 중 / ⬜ 미완료.
+
 ### Foundation
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ⬜ |
-| 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ✅ | ⬜ |
+| 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ✅ | ⬜ |
 
 ### Core Objects
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 03 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ⬜ |
-| 04 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ⬜ |
-| 05 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ⬜ |
-| 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ⬜ |
-| 07 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | ⬜ |
-| 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ⬜ |
-| 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ⬜ |
-| 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ⬜ |
-| 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ⬜ |
-| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ⬜ |
-| 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ⬜ |
-| 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ⬜ |
-| 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ⬜ |
-| 16 | [ResourceQuota & LimitRange](./01-core-objects/14-resourcequota-limitrange/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 03 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ | ⬜ |
+| 04 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ | ⬜ |
+| 05 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ | ⬜ |
+| 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ | ⬜ |
+| 07 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | 🔄 | ⬜ |
+| 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ⬜ | ⬜ |
+| 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ⬜ | ⬜ |
+| 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ⬜ | ⬜ |
+| 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ⬜ | ⬜ |
+| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ⬜ | ⬜ |
+| 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ⬜ | ⬜ |
+| 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ⬜ | ⬜ |
+| 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ⬜ | ⬜ |
+| 16 | [ResourceQuota & LimitRange](./01-core-objects/14-resourcequota-limitrange/README.md) | ⬜ | ⬜ |
 
 ### Controllers
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ⬜ |
-| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ⬜ |
-| 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ⬜ |
-| 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ⬜ |
-| 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ⬜ |
-| 22 | [Job](./02-controllers/06-job/README.md) | ⬜ |
-| 23 | [CronJob](./02-controllers/07-cronjob/README.md) | ⬜ |
-| 24 | [Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ⬜ | ⬜ |
+| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ⬜ | ⬜ |
+| 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ⬜ | ⬜ |
+| 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ⬜ | ⬜ |
+| 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ⬜ | ⬜ |
+| 22 | [Job](./02-controllers/06-job/README.md) | ⬜ | ⬜ |
+| 23 | [CronJob](./02-controllers/07-cronjob/README.md) | ⬜ | ⬜ |
+| 24 | [Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md) | ⬜ | ⬜ |
 
 ### Pod Deep Dive
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 25 | [Pod Lifecycle & Status](./03-pod-deep-dive/01-pod-lifecycle-status/README.md) | ⬜ |
-| 26 | [Readiness Probe](./03-pod-deep-dive/02-readiness-probe/README.md) | ⬜ |
-| 27 | [Liveness Probe](./03-pod-deep-dive/03-liveness-probe/README.md) | ⬜ |
-| 28 | [Pod QoS](./03-pod-deep-dive/04-qos/README.md) | ⬜ |
-| 29 | [Node Affinity](./03-pod-deep-dive/05-node-affinity/README.md) | ⬜ |
-| 30 | [Pod Affinity / Anti-Affinity](./03-pod-deep-dive/06-pod-affinity-antiaffinity/README.md) | ⬜ |
-| 31 | [Taints & Tolerations](./03-pod-deep-dive/07-taints-tolerations/README.md) | ⬜ |
-| 32 | [Scheduling Troubleshooting](./03-pod-deep-dive/08-scheduling-troubleshooting/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 25 | [Pod Lifecycle & Status](./03-pod-deep-dive/01-pod-lifecycle-status/README.md) | ⬜ | ⬜ |
+| 26 | [Readiness Probe](./03-pod-deep-dive/02-readiness-probe/README.md) | ⬜ | ⬜ |
+| 27 | [Liveness Probe](./03-pod-deep-dive/03-liveness-probe/README.md) | ⬜ | ⬜ |
+| 28 | [Pod QoS](./03-pod-deep-dive/04-qos/README.md) | ⬜ | ⬜ |
+| 29 | [Node Affinity](./03-pod-deep-dive/05-node-affinity/README.md) | ⬜ | ⬜ |
+| 30 | [Pod Affinity / Anti-Affinity](./03-pod-deep-dive/06-pod-affinity-antiaffinity/README.md) | ⬜ | ⬜ |
+| 31 | [Taints & Tolerations](./03-pod-deep-dive/07-taints-tolerations/README.md) | ⬜ | ⬜ |
+| 32 | [Scheduling Troubleshooting](./03-pod-deep-dive/08-scheduling-troubleshooting/README.md) | ⬜ | ⬜ |
 
 ### Storage & Security
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 33 | [Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) | ⬜ |
-| 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ⬜ |
-| 35 | [X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) | ⬜ |
-| 36 | [ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) | ⬜ |
-| 37 | [Dashboard Auth & kubeconfig Contexts](./04-storage-security/05-dashboard-auth-contexts/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 33 | [Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) | ⬜ | ⬜ |
+| 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ⬜ | ⬜ |
+| 35 | [X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) | ⬜ | ⬜ |
+| 36 | [ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) | ⬜ | ⬜ |
+| 37 | [Dashboard Auth & kubeconfig Contexts](./04-storage-security/05-dashboard-auth-contexts/README.md) | ⬜ | ⬜ |
 
 ### Advanced Workloads
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 38 | [StatefulSet](./05-advanced/01-statefulset/README.md) | ⬜ |
-| 39 | [Ingress Routing](./05-advanced/02-ingress-routing/README.md) | ⬜ |
-| 40 | [Ingress Canary & TLS](./05-advanced/03-ingress-canary-tls/README.md) | ⬜ |
-| 41 | [Horizontal Pod Autoscaler](./05-advanced/04-hpa/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 38 | [StatefulSet](./05-advanced/01-statefulset/README.md) | ⬜ | ⬜ |
+| 39 | [Ingress Routing](./05-advanced/02-ingress-routing/README.md) | ⬜ | ⬜ |
+| 40 | [Ingress Canary & TLS](./05-advanced/03-ingress-canary-tls/README.md) | ⬜ | ⬜ |
+| 41 | [Horizontal Pod Autoscaler](./05-advanced/04-hpa/README.md) | ⬜ | ⬜ |
 
 ### Architecture & Capstone
 
-| # | Lab | 상태 |
-|---:|---|:---:|
-| 42 | [Architecture & Observability Capstone](./06-architecture/01-architecture-observability-capstone/README.md) | ⬜ |
+| # | Lab | 이론 | 실습 |
+|---:|---|:---:|:---:|
+| 42 | [Architecture & Observability Capstone](./06-architecture/01-architecture-observability-capstone/README.md) | ⬜ | ⬜ |
 
 ## 완료 기준
 
