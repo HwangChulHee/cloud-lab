@@ -38,6 +38,18 @@ PVC는 저장 요구이며 PV는 해당 요청과 결합되는 리소스다. Sto
 2. [독립 학습](../../08-independent/README.md)의 06-storage 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
+### 예시: PVC가 Bound인데 파일이 보이지 않는다면?
+
+`data-pvc`를 만든다고 가정한다. `StorageClass` 선택 → `PV/PVC Binding` → 소비 Pod의 Node 결정 → 드라이버/Node에서 볼륨 준비와 mount → 컨테이너 경로 사용으로 이어질 수 있다. **CSI 구현에 따라 Attach 단계가 없거나 순서가 달라질 수 있다.**
+
+| 증상 | 우선 확인 | 원리 |
+|---|---|---|
+| PVC Pending | StorageClass, provisioner, WaitForFirstConsumer | 볼륨 미할당/바인딩 지연 |
+| PVC Bound + Pod Pending | Pod Events, nodeAffinity, 스케줄링 | 저장소는 연결됐지만 Pod 배치 문제 |
+| PVC Bound + FailedMount | kubelet Events, driver, Node 경로 | Node에서 volume 준비 실패 |
+
+현재 Local Path 실습으로 CSI `ControllerPublishVolume`을 실행했다고 판단해서는 안 된다.
+
 ## 관찰 명령
 
 아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.

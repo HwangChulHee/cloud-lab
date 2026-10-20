@@ -38,6 +38,12 @@ API 객체의 spec은 원하는 상태, status는 관찰된 상태다. Deploymen
 2. [독립 학습](../../08-independent/README.md)의 03-controllers 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
+### 예시: replicas=2인 Deployment에서 Pod 하나를 삭제하면?
+
+`Deployment/web → ReplicaSet/web-abc → Pod/web-abc-1, web-abc-2`인 상황을 가정한다. `web-abc-1`을 삭제해도 Deployment의 `spec.replicas=2`는 그대로다. ReplicaSet Controller는 현재 수와 원하는 수의 차이를 보고 새 `web-abc-3`을 만든다. Scheduler와 kubelet은 새 Pod의 배치와 실행을 각각 진행한다. Deployment Controller가 매번 컨테이너를 직접 재시작하는 것은 아니다.
+
+관찰할 것은 **소유권(ownerReferences), 새로운 Pod UID, replicas/readyReplicas의 변화**다. 복구가 완료됐어도 원래 Pod UID가 돌아오는 것은 아니다.
+
 ## 관찰 명령
 
 아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.
