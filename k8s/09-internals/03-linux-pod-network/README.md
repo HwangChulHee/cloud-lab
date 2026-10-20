@@ -35,8 +35,16 @@ Linux 네트워크 네임스페이스는 인터페이스, 주소, 라우팅 테�
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 04-networking 시작 전 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../08-independent/README.md)의 04-networking의 setup.yaml을 적용해 Pod가 준비됐는지 확인하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
+
+### 예시: 동일 Node와 서로 다른 Node의 Pod 통신
+
+가상의 주소로 `worker1=192.168.56.31`, `worker2=192.168.56.32`, `pod-a=10.244.1.10`, `pod-b=10.244.2.20`을 사용한다. 이는 **설명용 예시**이며 실제 CNI의 Pod CIDR이나 IP는 반드시 조회해야 한다.
+
+`pod-a`가 `pod-b`로 요청하면 패킷 목적지는 `10.244.2.20`이다. Pod 네트워크 네임스페이스의 경로를 따라 호스트 측으로 이동하고, CNI가 구성한 Node 간 경로(직접 라우팅, 터널, 기타 데이터 평면 중 해당 구현)를 거쳐 worker2의 Pod에 도착한다. Service를 사용하지 않은 Pod IP 직접 요청에는 ClusterIP 규칙이 필요하지 않다.
+
+**관찰 분리:** ① 같은 Pod의 localhost ② 동일 Node의 다른 Pod IP ③ 다른 Node의 Pod IP 순서로 비교한다. 모든 CNI에 `cni0` 브리지나 `flannel.1` 장치가 있다고 가정해서는 안 된다.
 
 ## 관찰 명령
 

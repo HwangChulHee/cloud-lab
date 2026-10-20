@@ -35,7 +35,7 @@ etcd는 Kubernetes API 상태 저장소이며 PersistentVolume 내부 데이터 
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 [ADM-01](../01-kubeadm-bootstrap/README.md) 과정을 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../08-independent/README.md)에서 [ADM-01](../01-kubeadm-bootstrap/README.md) 과정을 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령

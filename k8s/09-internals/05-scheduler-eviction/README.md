@@ -38,6 +38,14 @@ FailedScheduling은 PodScheduled 조건에서, OOMKilled는 lastState.terminated
 2. [독립 학습](../../08-independent/README.md)의 05-resources-scheduling 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
+### 예시: 세 종류의 실패를 다른 단계에서 찾기
+
+- **Pending/FailedScheduling:** Pod가 `cpu: 2`를 요청하지만 조건에 맞는 Node에는 할당 가능한 자원이 없다. Scheduler 이벤트에 `Insufficient cpu`가 나타날 수 있다.
+- **OOMKilled:** Pod가 배치돼 실행되었으나 컨테이너가 메모리 제한을 넘겨 종료된다. `lastState.terminated.reason=OOMKilled`를 확인한다.
+- **Evicted:** Node의 메모리·디스크 압박에 kubelet이 대응하여 Pod를 축출한다. Pod의 `status.reason`과 Node Conditions를 함께 확인한다.
+
+즉 Scheduler가 보고 판단하는 **requests**와 실행 시 적용되는 **limits**, NodePressure는 서로 다른 계층이다. CPU 제한은 일반적으로 즉시 종료보다 throttling으로 나타날 수 있다.
+
 ## 관찰 명령
 
 아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.

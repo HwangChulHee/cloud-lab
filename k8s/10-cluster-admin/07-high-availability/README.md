@@ -35,7 +35,7 @@ Control Plane HA는 API Server 다중화뿐 아니라 안정된 controlPlaneEndp
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 ADM-01, ADM-02 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../08-independent/README.md)에서 [ADM-01](../01-kubeadm-bootstrap/README.md)과 [ADM-02](../02-etcd-backup-restore/README.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령

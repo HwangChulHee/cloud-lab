@@ -38,6 +38,18 @@ Pod 생성은 단일 호출이 아니다. kubectl은 API Server에 객체를 제
 2. [독립 학습](../../08-independent/README.md)의 01-pods 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
+### 예시: Pod 생성은 왜 여러 컴포넌트를 거칠까?
+
+가상의 `frontend` Pod를 생성한다고 하자. 처음에는 Pod가 API에 저장되지만 `spec.nodeName`이 없다. **API Server**는 요청 인증·인가·Admission과 저장을 처리하고 컨테이너를 직접 만들지 않는다. **Scheduler**가 조건에 맞는 `worker1`을 선택하여 Binding하면 `spec.nodeName=worker1`이 된다. **worker1의 kubelet**은 API에서 할당된 Pod를 관찰하고 CRI를 통해 Pod Sandbox와 컨테이너 실행을 요청한다. 런타임 및 CNI 설정 후 `status.phase=Running`이 될 수 있지만 readiness가 실패하면 `Ready=False`다.
+
+| 관찰값(예시) | 어디까지 진행됐는가? | 다음 확인 |
+|---|---|---|
+| `nodeName: <empty>`, `PodScheduled=False` | 아직 배치 전 | Events/스케줄링 조건 |
+| `nodeName: worker1`, `ImagePullBackOff` | 배치 완료, 실행 준비 실패 | kubelet/Image Pull Events |
+| `Running`, `Ready=False` | 실행 중이지만 요청 받을 준비 미완료 | readiness/컨테이너 로그 |
+
+같은 증상인 `Ready=False`라도 실제 병목 단계는 다를 수 있다.
+
 ## 관찰 명령
 
 아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.

@@ -6,7 +6,7 @@
 |---|---|---|---|
 | INT-01 | [INT-01 Pod 생성부터 실행까지](./01-pod-creation-pipeline/README.md) | 01 | 필수 개념 |
 | INT-02 | [INT-02 Watch와 Reconciliation](./02-reconciliation-watch/README.md) | 03 | 필수 개념 |
-| INT-03 | [INT-03 Linux 네트워크와 CNI](./03-linux-pod-network/README.md) | 04 시작 전 | 운영 심화 |
+| INT-03 | [INT-03 Linux 네트워크와 CNI](./03-linux-pod-network/README.md) | 04 setup 이후, Service 확인 전 | 운영 심화 |
 | INT-04 | [INT-04 Service와 kube-proxy 데이터 경로](./04-service-dataplane/README.md) | 04 완료 후 | 운영 심화 |
 | INT-05 | [INT-05 Scheduling과 Eviction](./05-scheduler-eviction/README.md) | 05 | 필수 개념 |
 | INT-06 | [INT-06 CSI와 볼륨 수명](./06-csi-volume-lifecycle/README.md) | 06 | 운영 심화 |

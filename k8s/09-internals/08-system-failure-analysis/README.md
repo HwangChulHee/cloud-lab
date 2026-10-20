@@ -55,6 +55,12 @@ kubectl get events -A --sort-by=.lastTimestamp
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 
+## 예시: 같은 HTTP 실패, 서로 다른 두 원인
+
+가상의 client Pod가 `http://web` 호출에 실패했다고 하자. **첫 가설**은 Service selector 불일치다. `nslookup web`은 성공해도 `kubectl get endpointslices -l kubernetes.io/service-name=web`에서 준비된 backend가 없다. **둘째 가설**은 Pod readiness 실패다. EndpointSlice의 주소 또는 ready condition과 Pod Conditions를 비교한다. 두 문제는 사용자 입장에서 비슷하게 보이지만 **원인에 따라 수정하는 리소스가 다르다**.
+
+세 번째 가설로 app이 잘못된 port에서 listen하는 경우를 추가한다. EndpointSlice가 있어도 `wget http://POD_IP:TARGET_PORT`가 실패할 수 있다. 원인을 보기 전에 해결책부터 적용하지 말고 **가설 → 이를 반증할 명령 → 실제 증거 → 최소 수정**을 표로 적는다.
+
 ## 난도별 통합 진단
 
 | 단계 | 학습자에게 제공되는 정보 | 완료 기준 |
