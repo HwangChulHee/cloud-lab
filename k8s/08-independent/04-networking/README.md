@@ -58,6 +58,10 @@ nginx HTML을 예상한다. web Pod가 교체되면 수동 EndpointSlice의 주�
 
 [외부 트래픽 정책 실습](../../01-core-objects/05-service-nodeport/README.md#트래픽-정책과-loadbalancer-비교-실습)을 실행한다. 별도 lab-service-path namespace를 만들고, Windows에서 두 worker를 호출해 Cluster/Local 결과표를 채운 뒤 그 namespace를 정리한다. 외부 LB 구현 없이 Pending인 상태는 LB 동작 완료와 구분해 기록한다.
 
+## 내부 패킷 경로 심화 (정리 전에 진행)
+
+아래 namespace를 삭제하기 전에 [INT-03 Linux Pod 네트워크](../../09-internals/03-linux-pod-network/README.md)와 [INT-04 Service 데이터 평면](../../09-internals/04-service-dataplane/README.md)을 실행한다. 삭제한 후 심화 문서를 진행하려면 이 단계의 setup.yaml을 다시 apply하고 Pod Ready를 확인한다. EndpointSlice·kube-proxy 커널 규칙과 신규 요청을 비교하는 데 실제 Service 리소스가 필요하다.
+
 ## 완료와 정리
 
 `이름 → Service → EndpointSlice → Pod` 중 어디가 잘못되면 DNS만 성공하는지 설명한다.

@@ -1,52 +1,61 @@
-# ADM-03 kubeadm 업그레이드
+# kubeadm 업그레이드 순서와 버전 스큐
 
-> 분류: **CKA 필수** · 연결/선행: **ADM-01** · [기본 학습](../../08-independent/README.md) · [환경 기준](../../07-cka-preview/ENVIRONMENT.md)
+> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../08-independent/README.md)의 ADM-01 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
-## Overview — 왜 배우는가?
+## Overview — 무엇을 이해해야 하는가
 
-kubeadm, kubelet, kubectl의 업그레이드 순서·버전 스큐를 설명한다. 기존의 관련 실습과 연결해, 객체 조회에 그치지 않고 **컴포넌트의 판단 → Linux/Runtime의 실행 → 상태·로그·이벤트 증거**를 이어서 설명한다.
+Kubernetes는 kubeadm, API Server, kubelet, kubectl 사이의 버전 스큐 규칙을 갖는다. 이 단원은 단순한 명령어 암기가 아니라 Kubernetes API 객체의 변화와 실제 Node/Runtime에서 일어나는 현상을 연결하는 학습이다.
 
-## 선수 지식과 동작 원리
+**학습 결과:** kubeadm 업그레이드 순서와 버전 스큐의 책임 컴포넌트, 관찰 증거, 실패 조건을 서로 연결해 설명한다.
 
-공식 kubeadm upgrade 가이드의 대상 버전 지원 여부를 먼저 확인한다. control-plane에서 kubeadm upgrade plan/apply, kubelet/패키지 갱신 후 worker를 drain·upgrade node·uncordon 순서로 처리한다.
+## 선수 개념과 내부 동작
 
-## 예측 후 관찰
+Kubernetes는 kubeadm, API Server, kubelet, kubectl 사이의 버전 스큐 규칙을 갖는다. 설치된 패키지 고정값과 실제 minor를 확인한 후 공식 지원 경로로 한 minor씩 업그레이드한다. Control Plane에서 kubeadm을 먼저 갱신하고 upgrade plan/apply를 진행하며 kubelet을 갱신·재시작한다. Worker는 drain, kubeadm upgrade node, kubelet 재시작, uncordon 흐름을 따른다.
 
-실행 전에 (1) 예상 상태, (2) 이 상태를 책임지는 컴포넌트, (3) 검증할 증거를 먼저 적는다. 아래 명령은 Linux/bash 셸에서 실행한다. 리소스가 이미 만들어져 있어야 하는 명령은 연결된 이전 단계를 먼저 수행한다.
+## 시작 전 상태와 예측
+
+1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
+2. [독립 학습](../../08-independent/README.md)의 ADM-01 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
+
+## 관찰 명령
+
+아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.
 
 ```bash
 kubectl version
-kubectl get nodes
+kubectl get nodes -o wide
 kubeadm version
-sudo apt-mark showhold | grep -E 'kubeadm|kubelet|kubectl'
+apt-cache madison kubeadm
+sudo apt-mark showhold
 ```
 
-출력이 비어 있거나 오류가 나면 도구 부재·리소스 미준비·실제 장애를 구분한다. 비어 있는 값이나 실패를 정상 동작의 증거로 사용하지 않는다.
+## 따라 하기 — 순서와 예상 결과
 
-## 장애 가설 → 증거 → 복구
+별도 PLATFORM VM에서 시작 버전, 목표 버전 및 apt repository minor 경로를 명시해 표를 만든다. VM 스냅샷과 etcd snapshot을 먼저 확보한다. 대상 minor의 kubeadm 패키지를 설치한 뒤 kubeadm upgrade plan으로 제약을 확인하고 공식 upgrade apply 과정을 진행한다. Control Plane kubelet 업데이트·재시작 후 Worker를 한 대씩 cordon/drain → kubeadm upgrade node → kubelet 패키지 업데이트·재시작 → uncordon한다. 각 노드의 버전과 Ready를 기록한다.
 
-업그레이드 전후 API/Node/기존 Deployment 가용성과 kubelet 로그를 비교한다.
+**관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 
-가설과 관찰 결과가 일치하는지 기록하고, 최소한의 변경으로 복구한 뒤 **처음과 같은 명령/요청**으로 성공을 확인한다. 이 문서는 안전한 관찰 순서가 기본이며, 위험한 장애 주입은 명시한 별도 VM에서만 수행한다.
+## 고장 가설과 복구
 
-## 환경 제약 및 정리
+API 접근 실패면 static Pod/kubelet 로그를, Worker NotReady면 kubelet/CRI/CNI를 확인한다. 전체 버전을 한번에 변경하거나 1.27에서 최신 minor로 건너뛰지 않는다.
 
-1.27에서 최신 버전으로 직접 점프하지 않는다. 지원되는 minor 경로를 연속적으로 적용한다. 08-independent/PLATFORM.md의 새 VM에만 실행.
+복구 완료 기준은 **동일한 조회나 요청으로 정상 결과를 다시 얻는 것**이다. 관찰할 수 없는 구현(예: CSI driver 미설치, kube-proxy 대체 데이터 평면)은 미검증으로 기록한다.
 
-- Kubernetes 1.27.2에서 실제 실행한 내용과 최신 버전의 공식 설명을 구분한다.
-- 이 문서 작성만으로 사용자 VM 실행 완료를 뜻하지 않는다.
-- 실습 완료 기록: [CHECKPOINTS](../../08-independent/CHECKPOINTS.md).
+## 스스로 설명할 문제
 
-## 설명 질문
+1. **kubeadm 업그레이드 순서와 버전 스큐**이 필요한 이유를 사용자가 겪을 수 있는 실제 문제로 설명할 수 있는가?
+2. 이 현상을 만든 API 객체와 실제 실행한 컴포넌트는 각각 무엇인가?
+3. 위 예시의 실패 원인과 동일한 외부 증상을 보이는 다른 원인은 무엇이며 첫 번째로 어떤 증거를 확인할 것인가?
+4. Pod/Node 또는 Controller를 재시작하지 않고도 진단 가능한 정보는 무엇인가?
 
-1. 이 상태는 어떤 컴포넌트가 만들거나 갱신하는가?
-2. 정상과 장애를 구분하는 가장 작은 증거는 무엇인가?
-3. 같은 증상이 다른 계층에서도 발생할 수 있다면 어떻게 반증할까?
+## 환경 및 정리
 
-## 공식 문서
+원래 실습 namespace와 공용 애드온은 연결된 기본 단계의 정리 지침을 따른다. Node taint/route/CNI/etcd 및 Kubernetes 패키지 변경은 별도 안전 조건이 명시된 경우에만 수행한다. 실제 VM 실행 여부는 [CHECKPOINTS](../../08-independent/CHECKPOINTS.md)에 별도로 기록한다.
 
-- [Kubernetes Architecture](https://kubernetes.io/docs/concepts/architecture/)
-- [Service virtual IP](https://kubernetes.io/docs/reference/networking/virtual-ips/)
-- [kubeadm upgrade](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
+## 공식 참고
 
-[모듈 목차](../README.md) · [독립 학습](../../08-independent/README.md)
+- [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
+- [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
+
+[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
