@@ -1,53 +1,60 @@
-# INT-07 Admission과 Pod Security
+# Admission·PSA·SecurityContext
 
-> 분류: **필수 개념** · 연결/선행: **07 완료 후** · [기본 학습](../../08-independent/README.md) · [환경 기준](../../07-cka-preview/ENVIRONMENT.md)
+> 분류: **필수 개념** · 선수 학습: [독립 학습](../../08-independent/README.md)의 07-security 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
-## Overview — 왜 배우는가?
+## Overview — 무엇을 이해해야 하는가
 
-Authentication, Authorization, Mutating/Validating Admission 및 PSA를 구분한다. 기존의 관련 실습과 연결해, 객체 조회에 그치지 않고 **컴포넌트의 판단 → Linux/Runtime의 실행 → 상태·로그·이벤트 증거**를 이어서 설명한다.
+API 요청은 인증과 인가 후 Mutating/Validating Admission을 거쳐 저장될 수 있다. 이 단원은 단순한 명령어 암기가 아니라 Kubernetes API 객체의 변화와 실제 Node/Runtime에서 일어나는 현상을 연결하는 학습이다.
 
-## 선수 지식과 동작 원리
+**학습 결과:** Admission·PSA·SecurityContext의 책임 컴포넌트, 관찰 증거, 실패 조건을 서로 연결해 설명한다.
 
-restricted 정책을 만족하지 않는 Pod 정의를 따로 만들어 server dry-run으로 거부 증거를 확인한다. 단순 nginx run의 dry-run 결과는 클러스터 정책에 따라 달라질 수 있다.
+## 선수 개념과 내부 동작
 
-## 예측 후 관찰
+API 요청은 인증과 인가 후 Mutating/Validating Admission을 거쳐 저장될 수 있다. RBAC가 허용해도 Admission은 Pod 구성을 거부할 수 있다. Pod Security Admission(PSA)은 namespace의 enforce/audit/warn 레이블로 privileged/baseline/restricted 수준을 적용한다. restricted는 권한 상승 방지, capability, seccomp 등 Pod의 보안 컨텍스트 제약을 요구한다. Pod Security Standards와 Linux UID/capabilities/seccomp는 서로 연결되지만 같은 개념은 아니다.
 
-실행 전에 (1) 예상 상태, (2) 이 상태를 책임지는 컴포넌트, (3) 검증할 증거를 먼저 적는다. 아래 명령은 Linux/bash 셸에서 실행한다. 리소스가 이미 만들어져 있어야 하는 명령은 연결된 이전 단계를 먼저 수행한다.
+## 시작 전 상태와 예측
+
+1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
+2. [독립 학습](../../08-independent/README.md)의 07-security 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
+
+## 관찰 명령
+
+아래는 kubeconfig가 준비된 Linux/bash 셸 기준이다. `sudo`가 필요한 명령은 해당 Node의 호스트 셸에서 실행한다. 해당 객체가 없으면 먼저 선수 실습을 수행한다.
 
 ```bash
 kubectl create namespace lab-int-psa
-kubectl label ns lab-int-psa pod-security.kubernetes.io/enforce=restricted
-kubectl -n lab-int-psa run unsafe --image=nginx:1.27-alpine --restart=Never --dry-run=server -o yaml
-kubectl describe namespace lab-int-psa
-kubectl delete namespace lab-int-psa
+kubectl label namespace lab-int-psa pod-security.kubernetes.io/enforce=restricted
+kubectl get namespace lab-int-psa --show-labels
+kubectl auth can-i create pods -n lab-int-psa
 ```
 
-출력이 비어 있거나 오류가 나면 도구 부재·리소스 미준비·실제 장애를 구분한다. 비어 있는 값이나 실패를 정상 동작의 증거로 사용하지 않는다.
+## 따라 하기 — 순서와 예상 결과
 
-## 장애 가설 → 증거 → 복구
+기존 07-security를 먼저 수행한다. lab-int-psa에 다음 두 Pod manifest를 별도 파일로 작성한다. 첫 번째는 기본 nginx Pod로 restricted 위반을 관찰한다. 두 번째에는 runAsNonRoot:true, allowPrivilegeEscalation:false, capabilities.drop:[ALL], seccompProfile.type:RuntimeDefault를 설정하고 이미지가 비root를 지원하는지 확인한다. 먼저 --dry-run=server로 양쪽을 비교한 다음 허용되는 Pod만 실제 생성하고 이벤트를 확인한다.
 
-RBAC의 Forbidden과 PSA/Admission의 정책 거부 응답을 구분해 기록한다. 실제 Pod를 만들어 실패를 보려면 별도 manifest를 명시적으로 작성한다.
+**관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 
-가설과 관찰 결과가 일치하는지 기록하고, 최소한의 변경으로 복구한 뒤 **처음과 같은 명령/요청**으로 성공을 확인한다. 이 문서는 안전한 관찰 순서가 기본이며, 위험한 장애 주입은 명시한 별도 VM에서만 수행한다.
+## 고장 가설과 복구
 
-## 환경 제약 및 정리
+RBAC의 forbidden과 PSA 위반 오류 메시지를 구분한다. restricted 위반 Pod는 API 생성 단계에서 실패하므로 kubelet 로그에 존재하지 않을 수 있다. 실습 후 namespace를 삭제하며 system namespace의 PSA 레이블은 수정하지 않는다.
 
-Namespace는 기존 실습 이름을 사용하지 않는다. 보안 정책은 namespace 단위로 변경하며 시스템 namespace는 변경하지 않는다.
+복구 완료 기준은 **동일한 조회나 요청으로 정상 결과를 다시 얻는 것**이다. 관찰할 수 없는 구현(예: CSI driver 미설치, kube-proxy 대체 데이터 평면)은 미검증으로 기록한다.
 
-- Kubernetes 1.27.2에서 실제 실행한 내용과 최신 버전의 공식 설명을 구분한다.
-- 이 문서 작성만으로 사용자 VM 실행 완료를 뜻하지 않는다.
-- 실습 완료 기록: [CHECKPOINTS](../../08-independent/CHECKPOINTS.md).
+## 스스로 설명할 문제
 
-## 설명 질문
+1. **Admission·PSA·SecurityContext**이 필요한 이유를 사용자가 겪을 수 있는 실제 문제로 설명할 수 있는가?
+2. 이 현상을 만든 API 객체와 실제 실행한 컴포넌트는 각각 무엇인가?
+3. 위 예시의 실패 원인과 동일한 외부 증상을 보이는 다른 원인은 무엇이며 첫 번째로 어떤 증거를 확인할 것인가?
+4. Pod/Node 또는 Controller를 재시작하지 않고도 진단 가능한 정보는 무엇인가?
 
-1. 이 상태는 어떤 컴포넌트가 만들거나 갱신하는가?
-2. 정상과 장애를 구분하는 가장 작은 증거는 무엇인가?
-3. 같은 증상이 다른 계층에서도 발생할 수 있다면 어떻게 반증할까?
+## 환경 및 정리
 
-## 공식 문서
+원래 실습 namespace와 공용 애드온은 연결된 기본 단계의 정리 지침을 따른다. Node taint/route/CNI/etcd 및 Kubernetes 패키지 변경은 별도 안전 조건이 명시된 경우에만 수행한다. 실제 VM 실행 여부는 [CHECKPOINTS](../../08-independent/CHECKPOINTS.md)에 별도로 기록한다.
 
-- [Kubernetes Architecture](https://kubernetes.io/docs/concepts/architecture/)
-- [Service virtual IP](https://kubernetes.io/docs/reference/networking/virtual-ips/)
-- [kubeadm upgrade](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
+## 공식 참고
 
-[모듈 목차](../README.md) · [독립 학습](../../08-independent/README.md)
+- [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/security/pod-security-admission/)
+- [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
+
+[09-internals 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
