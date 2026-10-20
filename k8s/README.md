@@ -79,6 +79,27 @@ kubectl get endpoints
 
 기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
 
+## 이론 학습 진행 현황 (대화형 학습)
+
+이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표의 `상태`는 실제 실습 수행 여부를 뜻하므로 변경하지 않는다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
+
+- 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
+- 이론 완료: **6/73 (8.2%)** · 기존 기초/CKA **6/58**, INT **0/8**, ADM **0/7**
+- 진행 중: **Core Objects 05 — Service NodePort**, 개념 **4/5** (누적 복습 미진행)
+- 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
+
+| 구분 | 항목 | 이론 상태 |
+|---|---|:---:|
+| Foundation 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ✅ |
+| Foundation 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ✅ |
+| Core Objects 01 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ |
+| Core Objects 02 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ |
+| Core Objects 03 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ |
+| Core Objects 04 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ |
+| Core Objects 05 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | 🔄 (4/5 개념) |
+
+완료되지 않은 나머지 단원은 미진행으로 간주한다. 선택 심화와 필수 수행 여부는 각 모듈의 기준을 따른다.
+
 ## 커리큘럼
 
 ### Foundation
