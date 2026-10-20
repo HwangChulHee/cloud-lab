@@ -97,6 +97,25 @@ if mapping_path.exists():
     if len(completed_guides) != 8 or len(expected_core) != 42 or len(expected_extensions) != 16:
         errors.append('Expected 8 standalone stages, 42 foundation labs and 16 extension labs')
 
+# Parallel internal/administrator curricula: preserve old 8+42+16 counts and validate additions.
+if mapping_path.exists():
+    for key, folder, count in (('internal_labs', '09-internals', 8),
+                               ('admin_labs', '10-cluster-admin', 7)):
+        rows = mapping.get(key, [])
+        actual = [row.get('lab') for row in rows]
+        identifiers = [row.get('id') for row in rows]
+        expected = {str(p.relative_to(base.parent))
+                    for p in (base.parent / folder).glob('[0-9][0-9]-*/README.md')}
+        if len(rows) != count or len(set(actual)) != count or set(actual) != expected:
+            errors.append(f'{key}: expected {count} uniquely mapped modules')
+        if len(set(identifiers)) != count:
+            errors.append(f'{key}: duplicated or missing module IDs')
+        for row in rows:
+            if not (base.parent / row['lab']).is_file():
+                errors.append(f'{key}: nonexistent module {row["lab"]}')
+            if not row.get('after_stage') or not row.get('type'):
+                errors.append(f'{key}: missing prerequisite/type for {row.get("lab")}')
+
 labs = [p for p in base.iterdir() if p.is_dir() and re.match(r'^\d\d-', p.name)]
 if len(labs) != 16:
     errors.append(f'Expected 16 labs, got {len(labs)}')

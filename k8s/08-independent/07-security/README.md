@@ -1,5 +1,9 @@
 # 07. 인증서·Token·RBAC·context를 실제 요청으로 확인하기
 
+## 내부 동작 연결
+
+[INT-07 내부 원리 심화](../../09-internals/07-admission-pod-security/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 인증은 누구인지, 권한은 무엇을 할 수 있는지, Admission은 요청이 정책을 만족하는지를 확인한다. kubeconfig는 서버·인증 정보·context를 묶는다. context는 사용할 cluster/user/namespace 조합이고 namespace를 바꾼다고 사용자 권한이 줄지는 않는다. 관리자와 ServiceAccount의 권한을 나눠 확인한다.

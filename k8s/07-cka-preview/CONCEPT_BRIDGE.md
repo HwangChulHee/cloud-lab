@@ -2,6 +2,10 @@
 
 16개 과제에 직접 등장하지 않더라도 개념 강의에 나온 내용은 기존 기초와 함께 확인한다. 아래 표에서 익숙하지 않은 주제를 고르고 연결된 기초를 읽은 뒤 관찰 명령을 실행한다. 이 문서는 16개 예습을 시작하기 위한 짧은 개념 지도다.
 
+## 컴포넌트 내부 추적
+
+구성요소 역할표를 읽은 후 [INT-01 Pod 생성](../09-internals/01-pod-creation-pipeline/README.md), [INT-02 Reconciliation](../09-internals/02-reconciliation-watch/README.md), [INT-04 Service 전달](../09-internals/04-service-dataplane/README.md)을 연결한다. EndpointSlice 자체가 패킷을 전달하지 않는다. kube-proxy 또는 CNI 대체 데이터 평면이 구성한 Linux/네트워크 규칙이 실제 트래픽을 처리한다.
+
 ## 1. 워크로드: 생성 요청부터 실행까지
 
 | 구성 요소 | 역할 | 관찰할 것 |

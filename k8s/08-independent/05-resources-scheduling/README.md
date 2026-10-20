@@ -1,5 +1,9 @@
 # 05. 자원·Probe·스케줄링 실패를 구분하기
 
+## 내부 동작 연결
+
+[INT-05 내부 원리 심화](../../09-internals/05-scheduler-eviction/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 requests는 배치 계산, limits는 실행 중 제한에 쓰인다. readiness는 트래픽 수신 가능 여부, liveness는 컨테이너 복구, startup은 기동 완료 여부다. nodeAffinity는 노드 조건, podAntiAffinity는 다른 Pod와 떨어질 범위다. toleration은 노드의 거부 조건을 허용할 뿐 그 노드를 선택하지는 않는다.

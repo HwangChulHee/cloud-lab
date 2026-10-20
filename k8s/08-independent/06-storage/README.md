@@ -1,5 +1,9 @@
 # 06. PVC·StorageClass·StatefulSet로 수명 비교하기
 
+## 내부 동작 연결
+
+[INT-06 내부 원리 심화](../../09-internals/06-csi-volume-lifecycle/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 emptyDir는 Pod 수명, hostPath는 특정 노드 경로, PVC는 저장소 요청이다. PV는 실제 저장소와 연결 조건을 나타낸다. StorageClass는 provisioner와 생성/바인딩 정책을 정의한다. StatefulSet은 이름과 Pod별 PVC를 유지하지만 DB 복제·선출·백업을 구현하지 않는다.

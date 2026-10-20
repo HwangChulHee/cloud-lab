@@ -1,5 +1,9 @@
 # 03. 원하는 상태·배포 전략·완료 작업을 구분하기
 
+## 내부 동작 연결
+
+[INT-02 내부 원리 심화](../../09-internals/02-reconciliation-watch/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 ReplicaSet은 개수를 맞추고, Deployment는 ReplicaSet을 교체해 배포한다. DaemonSet은 대상 노드마다 실행하며, Job은 성공 횟수를 채우고 CronJob은 일정에 맞춰 Job을 만든다. 같은 재시작 기능으로 묶지 않는다. YAML의 spec은 원하는 상태, status는 관측된 상태다.
