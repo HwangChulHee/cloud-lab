@@ -4,9 +4,29 @@
 
 ## Overview — 무엇을 이해해야 하는가
 
-Pod 생성은 단일 호출이 아니다. 이 단원은 단순한 명령어 암기가 아니라 Kubernetes API 객체의 변화와 실제 Node/Runtime에서 일어나는 현상을 연결하는 학습이다.
+Pod 생성은 단일 호출이 아니다. 이 단원에서는 실제 컴포넌트의 동작 순서를 학습하고 관찰 증거와 연결한다.
 
 **학습 결과:** Pod 생성 요청에서 프로세스 실행까지의 책임 컴포넌트, 관찰 증거, 실패 조건을 서로 연결해 설명한다.
+
+## 핵심 질문에서 내부 원리까지
+
+**Pod가 API에 저장되면 이미 실행된 것일까?**
+
+### 실행 흐름을 따라가기
+
+kubectl→API Server 저장→Scheduler Binding→kubelet 관찰→CRI Sandbox/Container 실행→상태 보고. 독립 Pod는 ReplicaSet을 거치지 않는다.
+
+### 예상 상태 해석 예시
+
+nodeName이 비어 있고 PodScheduled=false라면 스케줄 이전 문제다. nodeName은 있지만 ImagePullBackOff면 이미지 준비 문제가 의심된다.
+
+> 이 예시는 학습용이며 실제 클러스터 실행 결과가 아니다. 환경·CNI·버전에 따라 출력이 다를 수 있다.
+
+### 개념을 이해했는지 확인하기
+
+- Pod UID와 container ID의 차이는?
+- 이 과정에서 **API 객체 상태를 만드는 주체**와 **실제 Node에서 실행하는 주체**는 각각 누구인가?
+- 비슷한 증상을 유발할 수 있는 다른 원인 하나를 들고 확인할 첫 증거를 설명할 수 있는가?
 
 ## 선수 개념과 내부 동작
 
@@ -40,18 +60,15 @@ kubectl -n lab-self-pods get events --sort-by=.lastTimestamp
 
 이미지가 존재하지 않을 때 Pod는 스케줄되었어도 시작에 실패한다. describe의 Failed/Pulling/BackOff와 containerStatuses[*].state.waiting.reason을 찾아 image pull 문제와 scheduling 문제를 구분한다. 잘못된 이미지는 기존 03 Controller 실습의 실패 사례를 재사용한다.
 
-복구 완료 기준은 **동일한 조회나 요청으로 정상 결과를 다시 얻는 것**이다. 관찰할 수 없는 구현(예: CSI driver 미설치, kube-proxy 대체 데이터 평면)은 미검증으로 기록한다.
+복구 뒤에는 동일 조건의 조회/요청으로 다시 확인한다. 관찰할 수 없는 구현은 검증 완료로 표시하지 않는다.
 
-## 스스로 설명할 문제
+## 다음에 다시 확인하기
 
-1. **Pod 생성 요청에서 프로세스 실행까지**이 필요한 이유를 사용자가 겪을 수 있는 실제 문제로 설명할 수 있는가?
-2. 이 현상을 만든 API 객체와 실제 실행한 컴포넌트는 각각 무엇인가?
-3. 위 예시의 실패 원인과 동일한 외부 증상을 보이는 다른 원인은 무엇이며 첫 번째로 어떤 증거를 확인할 것인가?
-4. Pod/Node 또는 Controller를 재시작하지 않고도 진단 가능한 정보는 무엇인가?
+설명을 가리고 핵심 질문에 답한 뒤, 위에서 제시한 예상 상태를 자신의 말로 해석한다. 정답 대신 기존 실습의 실제 상태·Events를 근거로 제시한다.
 
 ## 환경 및 정리
 
-원래 실습 namespace와 공용 애드온은 연결된 기본 단계의 정리 지침을 따른다. Node taint/route/CNI/etcd 및 Kubernetes 패키지 변경은 별도 안전 조건이 명시된 경우에만 수행한다. 실제 VM 실행 여부는 [CHECKPOINTS](../../08-independent/CHECKPOINTS.md)에 별도로 기록한다.
+이 모듈의 관련 리소스는 기본 단계의 Cleanup 전에 관찰한다. 이전 단계가 정리됐다면 Setup부터 다시 실행한다. 위험한 제어 평면/호스트 변경은 별도 VM에서만 수행한다.
 
 ## 공식 참고
 

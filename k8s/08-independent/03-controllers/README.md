@@ -92,6 +92,16 @@ kubectl -n lab-self-control patch cronjob clock --type=merge -p '{"spec":{"suspe
 
 suspend는 이미 시작한 Job을 중단하지 않는다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. ReplicaSet과 Deployment의 책임 차이는?
+2. 독립 Pod 삭제와 관리 Pod 삭제의 결과는?
+3. rollback이 DB 데이터까지 복구하지 않는 이유는?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 독립 Pod와 Deployment의 삭제 후 차이, rollback이 ConfigMap/DB까지 되돌리지 않는 이유, Job 성공 수와 총 Pod 수의 차이를 설명한다.

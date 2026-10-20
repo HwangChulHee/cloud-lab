@@ -4,9 +4,29 @@
 
 ## Overview — 무엇을 이해해야 하는가
 
-스케줄러는 nodeSelector/affinity/taint, PVC 토폴로지와 requests를 토대로 후보 Node를 Filter한 다음 Score한다. 이 단원은 단순한 명령어 암기가 아니라 Kubernetes API 객체의 변화와 실제 Node/Runtime에서 일어나는 현상을 연결하는 학습이다.
+스케줄러는 nodeSelector/affinity/taint, PVC 토폴로지와 requests를 토대로 후보 Node를 Filter한 다음 Score한다. 이 단원에서는 실제 컴포넌트의 동작 순서를 학습하고 관찰 증거와 연결한다.
 
 **학습 결과:** Filtering·Scoring·OOMKilled·Node Eviction의 책임 컴포넌트, 관찰 증거, 실패 조건을 서로 연결해 설명한다.
+
+## 핵심 질문에서 내부 원리까지
+
+**Pod Pending과 OOMKilled를 왜 구별해야 할까?**
+
+### 실행 흐름을 따라가기
+
+Scheduler는 request와 배치 조건으로 Filter/Score한다. OOMKilled는 실행된 컨테이너의 메모리 종료, NodePressure Eviction은 kubelet이 Node 압박에 대응하는 별개 상황이다.
+
+### 예상 상태 해석 예시
+
+FailedScheduling은 PodScheduled 조건에서, OOMKilled는 lastState.terminated.reason에서 관찰하는 것이 출발점이다.
+
+> 이 예시는 학습용이며 실제 클러스터 실행 결과가 아니다. 환경·CNI·버전에 따라 출력이 다를 수 있다.
+
+### 개념을 이해했는지 확인하기
+
+- CPU throttling과 OOMKilled의 차이는?
+- 이 과정에서 **API 객체 상태를 만드는 주체**와 **실제 Node에서 실행하는 주체**는 각각 누구인가?
+- 비슷한 증상을 유발할 수 있는 다른 원인 하나를 들고 확인할 첫 증거를 설명할 수 있는가?
 
 ## 선수 개념과 내부 동작
 
@@ -39,18 +59,15 @@ kubectl -n lab-self-placement get events --sort-by=.lastTimestamp
 
 Pending에는 Pod spec.nodeName과 PodScheduled 조건을, OOMKilled에는 lastState.terminated.reason과 restartCount를, Evicted에는 Pod status.reason과 Node Conditions를 제시한다. Node를 실제 고갈시키는 장애 주입은 하지 않는다.
 
-복구 완료 기준은 **동일한 조회나 요청으로 정상 결과를 다시 얻는 것**이다. 관찰할 수 없는 구현(예: CSI driver 미설치, kube-proxy 대체 데이터 평면)은 미검증으로 기록한다.
+복구 뒤에는 동일 조건의 조회/요청으로 다시 확인한다. 관찰할 수 없는 구현은 검증 완료로 표시하지 않는다.
 
-## 스스로 설명할 문제
+## 다음에 다시 확인하기
 
-1. **Filtering·Scoring·OOMKilled·Node Eviction**이 필요한 이유를 사용자가 겪을 수 있는 실제 문제로 설명할 수 있는가?
-2. 이 현상을 만든 API 객체와 실제 실행한 컴포넌트는 각각 무엇인가?
-3. 위 예시의 실패 원인과 동일한 외부 증상을 보이는 다른 원인은 무엇이며 첫 번째로 어떤 증거를 확인할 것인가?
-4. Pod/Node 또는 Controller를 재시작하지 않고도 진단 가능한 정보는 무엇인가?
+설명을 가리고 핵심 질문에 답한 뒤, 위에서 제시한 예상 상태를 자신의 말로 해석한다. 정답 대신 기존 실습의 실제 상태·Events를 근거로 제시한다.
 
 ## 환경 및 정리
 
-원래 실습 namespace와 공용 애드온은 연결된 기본 단계의 정리 지침을 따른다. Node taint/route/CNI/etcd 및 Kubernetes 패키지 변경은 별도 안전 조건이 명시된 경우에만 수행한다. 실제 VM 실행 여부는 [CHECKPOINTS](../../08-independent/CHECKPOINTS.md)에 별도로 기록한다.
+이 모듈의 관련 리소스는 기본 단계의 Cleanup 전에 관찰한다. 이전 단계가 정리됐다면 Setup부터 다시 실행한다. 위험한 제어 평면/호스트 변경은 별도 VM에서만 수행한다.
 
 ## 공식 참고
 

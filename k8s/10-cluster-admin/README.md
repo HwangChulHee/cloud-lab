@@ -12,4 +12,6 @@
 | ADM-06 | [ADM-06 Node drain과 PDB](./06-node-maintenance/README.md) | 05 완료 후 | CKA 필수 |
 | ADM-07 | [ADM-07 HA Control Plane](./07-high-availability/README.md) | ADM-01, ADM-02 | CKA 필수·선택 실습 |
 
+**CKA 필수 개념**과 실제 VM에서의 **CKA 필수 수행**을 별도로 기록한다. HA는 토폴로지·quorum·LB 이해를 필수로, 대규모 다중 Control Plane 구축을 선택 심화로 취급한다. etcd/업그레이드/Node 관리 작업은 안전한 별도 VM과 공식 버전별 절차를 사용한다.
+
 기존 학습 진입점: [08-independent](../08-independent/README.md). 위험한 클러스터 변경은 [별도 플랫폼](../08-independent/PLATFORM.md) 경로에서만 수행한다. 관찰과 실제 실행 검증은 별도 기록한다.

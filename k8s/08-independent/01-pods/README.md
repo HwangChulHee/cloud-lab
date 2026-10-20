@@ -53,6 +53,16 @@ kubectl -n lab-self-pods exec pair -c web -- cat /shared/note
 
 Controller가 없는 독립 Pod는 삭제 후 스스로 돌아오지 않는다. 재생성 뒤 UID가 바뀌고 emptyDir 파일이 사라진다. Pod IP가 반드시 달라져야 하는 것은 아니다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. Pod 삭제 후 Controller가 없다면 복구되나?
+2. Pod IP와 localhost가 다른 이유는?
+3. PodScheduled와 Ready는 무엇이 다른가?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 label 변경은 프로세스를 멈추는가? 컨테이너 재시작과 Pod 삭제 중 어느 것이 emptyDir 수명을 끝내는가? 예상과 실제 결과를 기록한다. 파일 없음은 이번 단계의 예상한 실패다.
