@@ -1,5 +1,9 @@
 # 08. Ingress·TLS·HPA와 통합 장애 진단
 
+## 내부 동작 연결
+
+[INT-08 내부 원리 심화](../../09-internals/08-system-failure-analysis/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 Ingress는 요청 규칙이고 Controller가 실제 연결을 처리한다. Host header로 HTTP 라우팅을, SNI와 인증서 이름으로 HTTPS 연결을 확인한다. HPA는 metrics에 따라 Pod 수를 바꿀 뿐 노드를 늘리지 않는다. 여기까지 배운 배치·권한·저장소·네트워크를 연결해 장애 위치를 좁힌다.

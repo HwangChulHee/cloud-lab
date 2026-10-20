@@ -4,6 +4,8 @@
 
 [입문·CKA 내용 대조 기록](../CONTENT_REVIEW.md): 개념 설명 보강과 남은 실습 범위를 확인한다.
 
+CKA의 클러스터 설치·etcd 복구·업그레이드·Node 유지보수·HA·Kustomize는 [관리 경로](../10-cluster-admin/README.md)에서 보강하며, 네트워크·Pod/Storage/Security의 내부 동작은 [심화 경로](../09-internals/README.md)에서 관찰한다. 기존 16개 예습 번호는 변경하지 않는다.
+
 ## 어떻게 진행할까?
 
 1. 표의 **기초 연결**을 읽고 핵심 개념을 떠올린다. 처음 보는 개념이면 그 기초 실습을 먼저 한다.

@@ -298,5 +298,99 @@
       "guide": "08-independent/07-security/README.md",
       "track": "application"
     }
+  ],
+  "internal_labs": [
+    {
+      "id": "INT-01",
+      "lab": "09-internals/01-pod-creation-pipeline/README.md",
+      "after_stage": "01",
+      "type": "필수 개념"
+    },
+    {
+      "id": "INT-02",
+      "lab": "09-internals/02-reconciliation-watch/README.md",
+      "after_stage": "03",
+      "type": "필수 개념"
+    },
+    {
+      "id": "INT-03",
+      "lab": "09-internals/03-linux-pod-network/README.md",
+      "after_stage": "04 시작 전",
+      "type": "운영 심화"
+    },
+    {
+      "id": "INT-04",
+      "lab": "09-internals/04-service-dataplane/README.md",
+      "after_stage": "04 완료 후",
+      "type": "운영 심화"
+    },
+    {
+      "id": "INT-05",
+      "lab": "09-internals/05-scheduler-eviction/README.md",
+      "after_stage": "05",
+      "type": "필수 개념"
+    },
+    {
+      "id": "INT-06",
+      "lab": "09-internals/06-csi-volume-lifecycle/README.md",
+      "after_stage": "06",
+      "type": "운영 심화"
+    },
+    {
+      "id": "INT-07",
+      "lab": "09-internals/07-admission-pod-security/README.md",
+      "after_stage": "07 완료 후",
+      "type": "필수 개념"
+    },
+    {
+      "id": "INT-08",
+      "lab": "09-internals/08-system-failure-analysis/README.md",
+      "after_stage": "08 완료 후",
+      "type": "운영 심화"
+    }
+  ],
+  "admin_labs": [
+    {
+      "id": "ADM-01",
+      "lab": "10-cluster-admin/01-kubeadm-bootstrap/README.md",
+      "after_stage": "플랫폼",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-02",
+      "lab": "10-cluster-admin/02-etcd-backup-restore/README.md",
+      "after_stage": "ADM-01",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-03",
+      "lab": "10-cluster-admin/03-kubeadm-upgrade/README.md",
+      "after_stage": "ADM-01",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-04",
+      "lab": "10-cluster-admin/04-cni-cluster-network/README.md",
+      "after_stage": "ADM-01, INT-03",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-05",
+      "lab": "10-cluster-admin/05-kustomize/README.md",
+      "after_stage": "03 완료 후",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-06",
+      "lab": "10-cluster-admin/06-node-maintenance/README.md",
+      "after_stage": "05 완료 후",
+      "type": "CKA 필수"
+    },
+    {
+      "id": "ADM-07",
+      "lab": "10-cluster-admin/07-high-availability/README.md",
+      "after_stage": "ADM-01, ADM-02",
+      "type": "CKA 필수·선택 실습"
+    }
   ]
 }

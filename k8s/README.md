@@ -75,6 +75,10 @@ kubectl logs POD_NAME
 kubectl get endpoints
 ```
 
+## 내부 원리·CKA 관리 확장
+
+기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
+
 ## 커리큘럼
 
 ### Foundation

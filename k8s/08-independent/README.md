@@ -22,6 +22,21 @@
 
 03을 끝낸 뒤 01 ConfigMap TLS와 10 Sidecar 확장을 실행하고 정리한다. 04를 끝낸 뒤 05 Service 확장을 실행한다. 나머지 확장은 각 단계 문서 안의 위치에서 수행한다. 표에 이름이 나온 것은 각각 별도 namespace를 쓰므로 앞 단계 앱을 계속 유지할 필요는 없다.
 
+## 관련 시점의 내부 심화·CKA 관리
+
+기존 8단계는 그대로 진행한다. 단계가 끝나면 관련 심화로 이동했다가 기본 경로로 복귀한다. 필수 개념/CKA 필수/운영 심화/선택 학습을 각 모듈에서 구분한다.
+
+| 기존 단계 | 내부 심화 | 관리/CKA 경로 |
+|---|---|---|
+| 01 | [INT-01](../09-internals/01-pod-creation-pipeline/README.md) | — |
+| 02 | 기존 설명 보강 | — |
+| 03 | [INT-02](../09-internals/02-reconciliation-watch/README.md) | [ADM-05](../10-cluster-admin/05-kustomize/README.md) |
+| 04 | [INT-03](../09-internals/03-linux-pod-network/README.md), [INT-04](../09-internals/04-service-dataplane/README.md) | [ADM-04](../10-cluster-admin/04-cni-cluster-network/README.md) |
+| 05 | [INT-05](../09-internals/05-scheduler-eviction/README.md) | [ADM-06](../10-cluster-admin/06-node-maintenance/README.md) |
+| 06 | [INT-06](../09-internals/06-csi-volume-lifecycle/README.md) | — |
+| 07 | [INT-07](../09-internals/07-admission-pod-security/README.md) | — |
+| 08 | [INT-08](../09-internals/08-system-failure-analysis/README.md) | [ADM-01~03,07](../10-cluster-admin/README.md)는 별도 플랫폼에서 |
+
 ## 강의가 없어도 따라갈 수 있게 바꾼 점
 
 - 과제 문장만 있는 기초에 8단계 실행 가이드를 연결하고 Pod/Controller/Service/설정/배치/저장소/RBAC/TLS YAML을 제공한다.

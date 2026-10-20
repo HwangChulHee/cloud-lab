@@ -1,5 +1,9 @@
 # 04. Service·DNS·EndpointSlice로 연결 추적하기
 
+## 내부 동작 연결
+
+[INT-03 Linux 네트워크](../../09-internals/03-linux-pod-network/README.md) → [INT-04 kube-proxy·NAT](../../09-internals/04-service-dataplane/README.md)에서 이 단계의 객체가 어느 컴포넌트와 Linux 계층을 거쳐 처리되는지 확인한다. 연결된 심화는 현재 단계를 성공적으로 실행한 후 학습한다. 실제 검증은 별도로 기록한다.
+
 ## 먼저 이해할 것
 
 Service selector는 Pod label을 고르고 EndpointSlice에 주소가 기록된다. ClusterIP는 그 backend에 접근하는 가상 주소다. Headless는 backend 주소를 DNS로 제공한다. ExternalName은 DNS 별칭이며 프록시가 아니다. Service가 있어도 endpoint가 없으면 앱에 전달할 수 없다.
