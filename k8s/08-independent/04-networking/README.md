@@ -62,6 +62,16 @@ nginx HTML을 예상한다. web Pod가 교체되면 수동 EndpointSlice의 주�
 
 아래 namespace를 삭제하기 전에 [INT-03 Linux Pod 네트워크](../../09-internals/03-linux-pod-network/README.md)와 [INT-04 Service 데이터 평면](../../09-internals/04-service-dataplane/README.md)을 실행한다. 삭제한 후 심화 문서를 진행하려면 이 단계의 setup.yaml을 다시 apply하고 Pod Ready를 확인한다. EndpointSlice·kube-proxy 커널 규칙과 신규 요청을 비교하는 데 실제 Service 리소스가 필요하다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. Pod IP와 Service IP 차이는?
+2. DNS 성공·HTTP 실패의 가능한 원인 둘은?
+3. readiness와 EndpointSlice는 어떤 관계인가?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 `이름 → Service → EndpointSlice → Pod` 중 어디가 잘못되면 DNS만 성공하는지 설명한다.

@@ -54,6 +54,16 @@ kubectl -n lab-self-storage exec data-1 -- cat /data/marker
 
 [04 지연 바인딩](../../07-cka-preview/04-storageclass-binding/README.md)을 실행해 소비 Pod 생성 전후의 지연 바인딩과 default class를 비교한다. class.yaml의 provisioner placeholder를 위 준비에서 확인한 값으로 바꾸는 단계부터 진행한다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. PVC Pending과 Pod FailedMount의 차이는?
+2. WaitForFirstConsumer가 필요한 이유는?
+3. emptyDir와 PV의 생명주기는?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 Retain과 Delete 중 누가 데이터를 지우는지, RWO가 한 Pod인지 한 노드인지 설명한다. 다음 삭제는 이 단계의 테스트 데이터를 없애므로 비교가 끝난 뒤 실행한다.

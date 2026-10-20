@@ -103,6 +103,16 @@ kubectl taint node "$PLACEMENT_NODE" cloud-lab/self-study:NoSchedule-
 
 [11 자원 예산](../../07-cka-preview/11-resource-budget/README.md)을 구축→힌트→복구→정리까지 실행한다. ReplicaSet FailedCreate와 이번 Pending을 비교한다. 이어 [12 PriorityClass](../../07-cka-preview/12-priorityclass/README.md)를 진행한다. 이 두 문서의 풀이를 첫 회에는 참고하고 두 번째에는 닫고 실행한다. 선점 실험은 그 문서의 전용 노드 조건을 따른다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. FailedScheduling과 OOMKilled의 차이는?
+2. request와 limit 중 배치에 직접 사용되는 값은?
+3. Pod Ready와 Pod Scheduled가 다른 이유는?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 Ready=false, Pending, OOMKilled, API Forbidden을 같은 문제로 취급하지 않고 첫 확인 대상을 말한다. 실제 OOM/노드 메모리 압박 주입은 이 단계에 필요하지 않다.

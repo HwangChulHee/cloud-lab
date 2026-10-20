@@ -74,6 +74,16 @@ kubectl auth can-i list pods -n lab-self-security --as=system:serviceaccount:lab
 
 no → yes를 예상한다. token 재발급 없이 binding 복구만으로 권한이 돌아오는 이유를 설명한다. 이어 [16 CRD 탐색](../../07-cka-preview/16-crd-discovery/README.md)을 끝내면 API group/kind/schema도 연결된다.
 
+## 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. RBAC와 Admission의 책임 차이는?
+2. ServiceAccount와 RoleBinding의 관계는?
+3. Forbidden 오류를 어떻게 구분할까?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
 ## 완료와 정리
 
 ```bash
