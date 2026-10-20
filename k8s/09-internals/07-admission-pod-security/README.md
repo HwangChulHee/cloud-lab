@@ -31,7 +31,14 @@ kubectl auth can-i create pods -n lab-int-psa
 
 ## 따라 하기 — 순서와 예상 결과
 
-기존 07-security를 먼저 수행한다. lab-int-psa에 다음 두 Pod manifest를 별도 파일로 작성한다. 첫 번째는 기본 nginx Pod로 restricted 위반을 관찰한다. 두 번째에는 runAsNonRoot:true, allowPrivilegeEscalation:false, capabilities.drop:[ALL], seccompProfile.type:RuntimeDefault를 설정하고 이미지가 비root를 지원하는지 확인한다. 먼저 --dry-run=server로 양쪽을 비교한 다음 허용되는 Pod만 실제 생성하고 이벤트를 확인한다.
+기존 07-security를 먼저 수행한다. lab-int-psa에 다음 두 Pod manifest를 별도 파일로 작성한다. 첫 번째는 기본 nginx Pod로 restricted 위반을 관찰한다. 두 번째에는 runAsNonRoot:true, allowPrivilegeEscalation:false, capabilities.drop:[ALL], seccompProfile.type:RuntimeDefault를 설정하고 이미지가 비root를 지원하는지 확인한다. 먼저 다음 문서 제공 예제를 사용한다.
+
+```bash
+kubectl apply --dry-run=server -f k8s/09-internals/07-admission-pod-security/unsafe-pod.yaml
+kubectl apply --dry-run=server -f k8s/09-internals/07-admission-pod-security/restricted-pod.yaml
+```
+
+첫 번째는 Admission 거부, 두 번째는 서버 정책을 충족한다면 dry-run 통과를 예상한다. namespace는 앞 단계에서 만든 `lab-int-psa`를 사용한다. 단, 이미지가 비root 실행을 지원하는지도 실제 이미지 설정과 함께 확인한다. 먼저 --dry-run=server로 양쪽을 비교한 다음 허용되는 Pod만 실제 생성하고 이벤트를 확인한다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 

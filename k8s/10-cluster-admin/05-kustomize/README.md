@@ -38,6 +38,8 @@ kubectl kustomize /tmp/cloud-lab-kustomize/dev
 
 ## 고장 가설과 복구
 
+오류 재현은 dev의 kustomization.yaml에 `patches:`를 추가해 존재하지 않는 `Deployment/missing`을 대상으로 하는 patch를 지정한 뒤 `kubectl kustomize`의 실패 메시지를 비교하고, 패치를 제거한 후 정상 빌드를 확인한다.
+
 실제 적용을 선택할 때는 namespace를 별도로 만들고 kubectl diff -k와 kubectl apply --dry-run=server -k를 확인한다. 완료 시 /tmp/cloud-lab-kustomize를 정리한다.
 
 복구 완료 기준은 **동일한 조회나 요청으로 정상 결과를 다시 얻는 것**이다. 관찰할 수 없는 구현(예: CSI driver 미설치, kube-proxy 대체 데이터 평면)은 미검증으로 기록한다.

@@ -33,7 +33,7 @@ kubectl -n lab-self-network exec client -- wget -qO- http://web
 
 ## 따라 하기 — 순서와 예상 결과
 
-04-networking 실습의 Cleanup **이전**에 진행한다. 1) client Pod IP·web ClusterIP·backend Pod IP를 기록한다. 2) web DNS가 ClusterIP로 해석되는지 확인한다. 3) client에서 backend Pod IP 직접 요청과 ClusterIP 요청을 비교한다. 4) kube-proxy mode를 확인한 후 Node 호스트에서 iptables-save -t nat 또는 해당 구현의 규칙을 관찰한다. 5) conntrack 명령이 있으면 연결 전후 엔트리를 비교한다. 6) selector를 missing으로 바꿔 EndpointSlice 변경과 신규 연결 실패를 확인한 다음 복구한다.
+04-networking 실습의 Cleanup **이전**에 진행한다. 1) client Pod IP·web ClusterIP·backend Pod IP를 기록한다. 2) web DNS가 ClusterIP로 해석되는지 확인한다. 3) client에서 backend Pod IP 직접 요청과 ClusterIP 요청을 비교한다. 4) kube-proxy mode를 확인한 후 Node 호스트에서 iptables-save -t nat 또는 해당 구현의 규칙을 관찰한다. 5) conntrack 명령이 있으면 연결 전후 엔트리를 비교한다. Node 호스트에서 `sudo iptables-save -t nat | grep KUBE-SVC`와 `sudo conntrack -L`를 실행할 때는 iptables 모드임을 먼저 확인하고, 명령 도구가 없다면 관찰 불가로 기록한다. nftables/IPVS/eBPF 기반에서는 해당 구현의 규칙 조회 도구를 사용한다. 6) selector를 missing으로 바꿔 EndpointSlice 변경과 신규 연결 실패를 확인한 다음 복구한다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 
