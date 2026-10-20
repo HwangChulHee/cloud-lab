@@ -108,16 +108,16 @@ kubectl get endpoints
 
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
-| 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ✅ | ⬜ |
-| 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ✅ | ⬜ |
+| 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ✅ | ✅ |
+| 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ✅ | ✅ |
 
 ### Core Objects
 
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
-| 03 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ | ⬜ |
-| 04 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ | ⬜ |
-| 05 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ | ⬜ |
+| 03 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ | ✅ |
+| 04 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ | ✅ |
+| 05 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ | ✅ |
 | 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ | ⬜ |
 | 07 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | 🔄 | ⬜ |
 | 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ⬜ | ⬜ |
