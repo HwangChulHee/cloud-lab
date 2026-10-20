@@ -13,4 +13,6 @@
 | INT-07 | [INT-07 Admission과 Pod Security](./07-admission-pod-security/README.md) | 07 완료 후 | 필수 개념 |
 | INT-08 | [INT-08 계층별 장애 추론](./08-system-failure-analysis/README.md) | 08 완료 후 | 운영 심화 |
 
+모듈은 공통적으로 **핵심 질문 → 구성요소 흐름 → 학습용 예상 상태 → 관찰 → 장애 추론 → 주제별 이해 확인** 순서로 학습한다. 단원 내용의 *필수 개념*과 *운영 심화*를 구분하고, 실행 가능한 리소스가 삭제되었다면 선수 실습을 재생성한 뒤 관찰한다.
+
 기존 학습 진입점: [08-independent](../08-independent/README.md). 위험한 클러스터 변경은 [별도 플랫폼](../08-independent/PLATFORM.md) 경로에서만 수행한다. 관찰과 실제 실행 검증은 별도 기록한다.
