@@ -105,3 +105,10 @@ kubectl get events --sort-by=.lastTimestamp
 - [x] `externalTrafficPolicy: Cluster`로 원복 확인, `lab-nodeport` namespace 삭제 후 `NotFound` 확인.
 
 > 관측 주소와 분산 횟수는 해당 실습 환경·시점의 기록이다. 이 기초 Lab 완료는 별도 CKA 확장/독립 통합 실습이나 LoadBalancer 실제 동작 검증까지 완료했다는 의미가 아니다.
+
+## 누적 복습 완료 기록 (2026-10-22)
+
+- [x] 총 5/5문제 풀이 및 피드백 완료: kube-proxy/EndpointSlice/iptables DNAT, `Cluster`·`Local`, 내부 ClusterIP 정상·외부 NodePort 타임아웃 진단, ClusterIP 비경유 NodePort 패킷 경로, Readiness와 Local Endpoint의 관계.
+- [x] 보완 개념 확인: `iptables`의 NAT 규칙과 Linux 라우팅 구별, `localhost`와 외부 NodeIP 구별, Pod `Running`과 `Ready`의 차이.
+
+> 복습 5/5는 이 Lab 학습 검토 기록이며 전체 73개 모듈 완료 수에 중복 합산하지 않는다.
