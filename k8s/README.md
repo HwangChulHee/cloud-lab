@@ -83,16 +83,16 @@ kubectl get endpoints
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 8 | 19.0% |
+| 기초 주제 (00–06) | 42 | 9 | 21.4% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **8** | **11.0%** |
+| **합계** | **73** | **9** | **12.3%** |
 
-- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **6/14 완료**.
-- 최근 실습 완료: **01-core-objects / 06-service-dns** (2026-10-22). 동일 Namespace에서 short name/FQDN 조회 및 HTTP 성공, 다른 Namespace에서 short name 실패·qualified name 성공, DNS search/ndots 확인, 두 namespace 삭제 검증.
-- 다음 실습: [01-core-objects / 07-headless-endpoint-externalname](./01-core-objects/07-headless-endpoint-externalname/README.md).
-- 이론 학습(아래 10/73)과 실제 실습(8/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **7/14 완료**.
+- 최근 실습 완료: **01-core-objects / 07-headless-endpoint-externalname** (2026-10-22). Headless DNS에서 두 Worker의 Pod IP 조회 및 HTTP 응답(10회 중 Worker 1: 6회, Worker 2: 4회); selector 없는 Service와 수동 EndpointSlice 정상 통신, 잘못된 백엔드 IP로 Timeout 재현 및 복구; ExternalName CNAME 검증; namespace 삭제 후 NotFound 확인.
+- 다음 실습: [01-core-objects / 08-volume-emptydir](./01-core-objects/08-volume-emptydir/README.md).
+- 이론 학습(아래 10/73)과 실제 실습(9/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -141,7 +141,7 @@ kubectl get endpoints
 | 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ | ✅ |
 | 07 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | ✅ | ✅ |
 | 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ✅ | ✅ |
-| 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ⬜ |
+| 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ✅ |
 | 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ | ⬜ |
 | 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ⬜ | ⬜ |
 | 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ⬜ | ⬜ |
