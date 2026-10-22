@@ -79,6 +79,22 @@ kubectl get endpoints
 
 기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
 
+### 전체 실습 진행 현황 (2026-10-22)
+
+| 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
+|---|---:|---:|---:|
+| 기초 주제 (00–06) | 42 | 6 | 14.3% |
+| CKA 확장 (07) | 16 | 0 | 0% |
+| 내부 동작 심화 (09) | 8 | 0 | 0% |
+| 클러스터 관리 (10) | 7 | 0 | 0% |
+| **합계** | **73** | **6** | **8.2%** |
+
+- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **4/14 완료**.
+- 최근 실습 완료: **01-core-objects / 04-service-clusterip** (2026-10-22). ClusterIP HTTP 요청, Pod 교체와 EndpointSlice 갱신, iptables DNAT 관찰, selector 장애·복구, namespace 삭제 검증.
+- 다음 실습: [01-core-objects / 05-service-nodeport](./01-core-objects/05-service-nodeport/README.md).
+- 이론 학습(아래 9/73)과 실제 실습(6/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
+
 ## 이론 학습 진행 현황 (대화형 학습)
 
 이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
@@ -121,7 +137,7 @@ kubectl get endpoints
 | 03 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ | ✅ |
 | 04 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ | ✅ |
 | 05 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ | ✅ |
-| 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ | ⬜ |
+| 06 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ | ✅ |
 | 07 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | ✅ | ⬜ |
 | 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ✅ | ⬜ |
 | 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ⬜ |
