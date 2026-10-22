@@ -72,3 +72,13 @@ kubectl get events --sort-by=.lastTimestamp
 - [x] `lab-dns`, `lab-dns-client` Namespace 삭제 후 둘 다 `NotFound` 확인.
 
 > CoreDNS의 이름 해석과 Service의 HTTP 데이터 경로는 별개다. 이 기록은 기초 Service DNS Lab 완료를 뜻하며 별도 심화/CKA 확장 완료를 뜻하지 않는다.
+
+## 복습 완료 기록 (2026-10-22)
+
+- [x] 문제 1: CoreDNS는 DNS 이름 해석을 담당하며 HTTP 데이터 경로에는 직접 관여하지 않음을 설명.
+- [x] 문제 2: Namespace별 `/etc/resolv.conf`의 search domain 및 짧은 이름/qualified name 차이를 설명.
+- [x] 문제 3: DNS 성공 후 HTTP 실패 원인으로 애플리케이션 장애와 Node 네트워크 장애를 제시.
+- [x] 문제 4: `10.96.0.10`은 CoreDNS Pod IP가 아닌 kube-dns Service의 ClusterIP이며 Pod 재생성과 독립적임을 설명.
+- [x] 문제 5: CoreDNS 전체 장애 시 캐시 없는 DNS 이름 조회는 실패하지만, 내부 정상 Service ClusterIP 직접 요청은 성공할 수 있음을 설명.
+
+**복습 결과: 5/5 정답.** 기존 실습 완료 수치는 변경하지 않음.
