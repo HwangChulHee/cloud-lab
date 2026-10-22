@@ -1,6 +1,7 @@
 # Lab 08 — Service DNS
 
-> 학습 단계: **기초 개념·실습 과제**
+> 학습 단계: **기초 개념·실습 과제**  
+> **실습 상태: ✅ 완료 (2026-10-22)**
 
 ## 강의 없이 시작하기
 
@@ -58,3 +59,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [Ingress의 host와 path 라우팅](../../07-cka-preview/06-ingress-routing/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 완료 기록 (2026-10-22)
+
+- [x] `lab-dns`, `lab-dns-client` Namespace 생성 및 Active 확인.
+- [x] `k8s-worker1 (192.168.56.31)`의 Nginx `web` Pod (`20.100.194.82:80`) Running/Ready 확인.
+- [x] `web-svc` ClusterIP `10.106.76.229:80` 및 EndpointSlice의 `20.100.194.82:80` 확인.
+- [x] 동일 Namespace `lab-dns`의 BusyBox Client에서 `nslookup web-svc` 실행: FQDN `web-svc.lab-dns.svc.cluster.local`이 `10.106.76.229`로 해석됨. 검색 도메인 후보에 대한 NXDOMAIN도 출력되어 BusyBox `nslookup` 종료 코드 1 발생했으나 유효한 DNS 응답 확인.
+- [x] 루트 점을 포함한 절대 이름 `web-svc.lab-dns.svc.cluster.local.` 조회 성공 및 `wget http://web-svc`로 Nginx HTML 응답 확인.
+- [x] 별도 `lab-dns-client` Namespace의 BusyBox Client에서 `/etc/resolv.conf`의 `search lab-dns-client.svc.cluster.local svc.cluster.local cluster.local`, `nameserver 10.96.0.10`, `options ndots:5` 확인.
+- [x] 다른 Namespace에서 `wget http://web-svc`는 `bad address`로 실패, `wget http://web-svc.lab-dns`는 정상 HTML 응답. Namespace별 DNS 검색 도메인 영향 확인.
+- [x] `lab-dns`, `lab-dns-client` Namespace 삭제 후 둘 다 `NotFound` 확인.
+
+> CoreDNS의 이름 해석과 Service의 HTTP 데이터 경로는 별개다. 이 기록은 기초 Service DNS Lab 완료를 뜻하며 별도 심화/CKA 확장 완료를 뜻하지 않는다.
