@@ -77,3 +77,13 @@ kubectl get events --sort-by=.lastTimestamp
 - [x] `lab-headless` namespace 삭제 후 `NotFound` 확인.
 
 > 수동 EndpointSlice의 `ready: true`는 실제 서버의 가용성을 자동 검증하지 않는다. ExternalName은 HTTP 프록시가 아닌 DNS 별칭이다. 복습 문답은 별도로 기록한다.
+
+## 복습 완료 기록 (2026-10-22)
+
+- [x] 문제 1: ClusterIP Service는 Service 가상 IP를, Headless Service는 backend Pod IP들을 DNS로 반환하며 트래픽 대상 선택 주체가 다름을 설명.
+- [x] 문제 2: selector 없는 Service는 자동 EndpointSlice가 생성되지 않아 백엔드 연결이 없고, 수동 EndpointSlice로 해결함을 설명.
+- [x] 문제 3: 수동 EndpointSlice에 잘못된 IP를 매핑하면 `ready: true`여도 타임아웃하며 실제 IP로 수정해야 함을 설명.
+- [x] 문제 4: ExternalName은 `example.com`을 가리키는 CNAME 별칭을 제공하고 HTTP 프록시나 로드밸런싱을 수행하지 않음을 설명. 실제 A/AAAA 조회와 CNAME 응답을 구별하여 보완.
+- [x] 문제 5: 한 backend Pod 삭제 시 EndpointSlice와 Headless DNS에서 해당 Pod IP가 제외되고, 일반 ClusterIP Service DNS 응답은 그대로 유지됨을 설명.
+
+**복습 결과: 5/5 정답.** 실습 완료 수치는 별도로 변경하지 않음.
