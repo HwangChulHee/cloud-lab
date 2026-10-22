@@ -1,6 +1,7 @@
 # Lab 09 — Headless, Endpoint, ExternalName
 
-> 학습 단계: **기초 개념·실습 과제**
+> 학습 단계: **기초 개념·실습 과제**  
+> **실습 상태: ✅ 완료 (2026-10-22)**
 
 ## 강의 없이 시작하기
 
@@ -61,3 +62,18 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 실습 완료 기록 (2026-10-22)
+
+- [x] `lab-headless` namespace 생성 및 Active 확인.
+- [x] `web-1` Pod는 `k8s-worker1` (`20.100.194.84`), `web-2` Pod는 `k8s-worker2` (`20.110.126.10`)에서 Running/Ready 확인.
+- [x] `web-headless` Service `clusterIP: None` 및 EndpointSlice에 양쪽 Pod IP 자동 등록 확인.
+- [x] BusyBox `dns-client`에서 Headless FQDN 조회 시 실제 Pod IP 두 개 반환 확인.
+- [x] 각각의 Pod에 직접 HTTP 접근 성공. Headless DNS 이름으로 10회 HTTP 요청 시 Worker 1: 6회 / Worker 2: 4회 응답. 이는 kube-proxy VIP 로드밸런싱이 아닌 클라이언트 주소 선택 결과임.
+- [x] selector 없는 `manual-svc` 생성 시 ClusterIP `10.109.43.79`는 있으나 자동 EndpointSlice가 없는 것 확인.
+- [x] 수동 EndpointSlice `manual-svc-1`을 Worker 1의 실제 Pod IP `20.100.194.84`로 지정하고 `wget http://10.109.43.79` HTTP 성공 확인.
+- [x] EndpointSlice IP를 `20.100.194.200`으로 변경했을 때 `wget: download timed out` 재현, 원본 IP로 복원 후 HTTP 정상 확인.
+- [x] `external-web` ExternalName Service가 `example.com`을 가리키는 CNAME을 반환하고 외부 DNS에서 A/AAAA 레코드가 조회되는 것 확인.
+- [x] `lab-headless` namespace 삭제 후 `NotFound` 확인.
+
+> 수동 EndpointSlice의 `ready: true`는 실제 서버의 가용성을 자동 검증하지 않는다. ExternalName은 HTTP 프록시가 아닌 DNS 별칭이다. 복습 문답은 별도로 기록한다.
