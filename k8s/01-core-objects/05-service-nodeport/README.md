@@ -1,6 +1,7 @@
 # Lab 07 — Service NodePort
 
-> 학습 단계: **기초 개념·실습 과제**
+> 학습 단계: **기초 개념·실습 과제**  
+> **실습 상태: ✅ 완료 (2026-10-22)**
 
 ## 강의 없이 시작하기
 
@@ -91,3 +92,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [Service와 NodePort 연결 추적](../../07-cka-preview/05-service-nodeport/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 완료 기록 (2026-10-22)
+
+- [x] `lab-nodeport` namespace 생성, 독립 Nginx Pod `web-1`을 `k8s-worker1 (192.168.56.31)`, `web-2`를 `k8s-worker2 (192.168.56.32)`에 배치해 Running/Ready 확인.
+- [x] Service `web-svc` (ClusterIP `10.111.29.96:80`, NodePort `30080`) 생성, EndpointSlice에 두 Pod IP `20.100.194.81:80`과 `20.110.126.8:80` 확인.
+- [x] Windows PowerShell에서 양쪽 NodeIP:30080 호출, Nginx HTML 응답 확인.
+- [x] Pod별 index 페이지를 `Hello from web-1`, `Hello from web-2`로 변경하고 각각 직접 호출해 검증.
+- [x] Windows → **Worker 1:30080** 10회 호출 시 **Worker 1의 web-1 3회 / Worker 2의 web-2 7회** 응답 관찰. 기본 `externalTrafficPolicy: Cluster`에서 원격 Node의 Pod로도 요청이 전달될 수 있음을 검증 (분산 비율 보장 아님).
+- [x] **Worker 2의 web-2** 삭제 → EndpointSlice가 Worker 1의 web-1만 가리킴 → Windows → **Worker 2:30080** 호출 시 `Hello from web-1` 응답 확인.
+- [x] `externalTrafficPolicy: Local`로 변경 → Windows → **Worker 1:30080** 응답 성공, **Worker 2:30080** 3초 connect timeout 확인.
+- [x] `externalTrafficPolicy: Cluster`로 원복 확인, `lab-nodeport` namespace 삭제 후 `NotFound` 확인.
+
+> 관측 주소와 분산 횟수는 해당 실습 환경·시점의 기록이다. 이 기초 Lab 완료는 별도 CKA 확장/독립 통합 실습이나 LoadBalancer 실제 동작 검증까지 완료했다는 의미가 아니다.
