@@ -1,6 +1,7 @@
 # Lab 06 — Service ClusterIP
 
-> 학습 단계: **기초 개념·실습 과제**
+> 학습 단계: **기초 개념·실습 과제**  
+> **실습 상태: ✅ 완료 (2026-10-22)**
 
 ## 강의 없이 시작하기
 
@@ -58,3 +59,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 실습 완료 기록 (2026-10-22)
+
+- [x] `lab-clusterip` namespace 및 `web-1`, `web-2` Nginx Pod 생성. 두 Pod가 서로 다른 worker에서 Ready.
+- [x] `web-svc` ClusterIP `10.97.180.115:80` 및 두 backend EndpointSlice 확인.
+- [x] `kube-proxy` 설정 `mode: ""` 확인, 해당 v1.27 환경의 iptables NAT 규칙(`KUBE-SVC`, `KUBE-SEP`, DNAT) 관찰.
+- [x] 임시 BusyBox HTTP client로 ClusterIP 요청, Nginx HTML 수신.
+- [x] `web-1` 삭제 시 Service IP 유지 및 Endpoint 감소 확인. 재생성 후 Pod IP `20.100.194.76` → `20.100.194.78`, EndpointSlice 갱신 확인.
+- [x] Service selector를 `app=nonexistent`로 변경해 Endpoint가 비는 현상과 `Connection refused` 확인.
+- [x] selector를 `app=web`으로 복구해 두 Endpoint 및 HTTP 응답 재확인.
+- [x] namespace 삭제 후 `NotFound` 확인; 실습 리소스 정리 완료.
+
+> 기록된 IP와 출력은 당시 실습 환경의 관측값이며 이후 재실행 시 달라질 수 있다. 본 기록은 이 기초 Lab 완료 증거이며 별도의 `08-independent` 통합 단계나 `09-internals`/`10-cluster-admin` 수행 완료를 의미하지 않는다.
