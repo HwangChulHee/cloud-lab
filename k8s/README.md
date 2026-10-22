@@ -92,7 +92,7 @@ kubectl get endpoints
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **7/14 완료**.
 - 최근 실습 완료: **01-core-objects / 07-headless-endpoint-externalname** (2026-10-22). Headless DNS에서 두 Worker의 Pod IP 조회 및 HTTP 응답(10회 중 Worker 1: 6회, Worker 2: 4회); selector 없는 Service와 수동 EndpointSlice 정상 통신, 잘못된 백엔드 IP로 Timeout 재현 및 복구; ExternalName CNAME 검증; namespace 삭제 후 NotFound 확인.
 - 다음 실습: [01-core-objects / 08-volume-emptydir](./01-core-objects/08-volume-emptydir/README.md).
-- 이론 학습(아래 11/73)과 실제 실습(9/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 이론 학습(아래 12/73)과 실제 실습(9/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -100,9 +100,9 @@ kubectl get endpoints
 이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
 
 - 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
-- 이론 완료: **11/73 (15.1%)** · 기존 기초/CKA **11/58**, INT **0/8**, ADM **0/7**
-- 최근 이론 완료: **Core Objects 09 — hostPath** (개념 5/5 및 누적 복습 5/5)
-- 다음 이론 예정: **Core Objects 10 — Static PV/PVC**
+- 이론 완료: **12/73 (16.4%)** · 기존 기초/CKA **12/58**, INT **0/8**, ADM **0/7**
+- 최근 이론 완료: **Core Objects 10 — Static PV/PVC** (개념 5/5 및 누적 복습 5/5)
+- 다음 이론 예정: **Core Objects 11 — ConfigMap & Secret Env**
 - 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
 
 | 구분 | 항목 | 이론 상태 |
@@ -118,6 +118,7 @@ kubectl get endpoints
 | Core Objects 07 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ |
 | Core Objects 08 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ |
 | Core Objects 09 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ |
+| Core Objects 10 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ |
 
 완료되지 않은 나머지 단원은 미진행으로 간주한다. 선택 심화와 필수 수행 여부는 각 모듈의 기준을 따른다.
 
@@ -145,7 +146,7 @@ kubectl get endpoints
 | 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ✅ |
 | 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ | ⬜ |
 | 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ | ⬜ |
-| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ⬜ | ⬜ |
+| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ | ⬜ |
 | 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ⬜ | ⬜ |
 | 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ⬜ | ⬜ |
 | 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ⬜ | ⬜ |
