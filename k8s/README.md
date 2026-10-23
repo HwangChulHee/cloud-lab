@@ -83,16 +83,16 @@ kubectl get endpoints
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 10 | 23.8% |
+| 기초 주제 (00–06) | 42 | 11 | 26.2% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **10** | **13.7%** |
+| **합계** | **73** | **11** | **15.1%** |
 
-- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **8/14 완료**.
-- 최근 실습 완료: **01-core-objects / 08-volume-emptydir** (2026-10-23). Worker 1의 2-container Pod에서 emptyDir 공유 확인, 컨테이너별 /tmp 파일 격리 확인, crictl로 writer만 재시작하여 emptyDir 유지·컨테이너 로컬 파일 소멸 확인, Pod 삭제·동일 YAML 재생성 후 emptyDir 소멸 확인, namespace 삭제 후 NotFound 검증.
-- 다음 실습: [01-core-objects / 09-volume-hostpath](./01-core-objects/09-volume-hostpath/README.md).
-- 이론 학습(아래 15/73)과 실제 실습(10/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **9/14 완료**.
+- 최근 실습 완료: **01-core-objects / 09-volume-hostpath** (2026-10-23). Worker 1의 Pod A/B가 같은 Node 로컬 경로 파일을 공유함을 확인, Worker 2 Pod C에서 같은 경로의 파일이 없음을 확인, Worker 1의 Pod A 삭제·재생성 뒤에도 데이터 보존 확인. Namespace 삭제 후 Worker 1/2의 실습 디렉터리 직접 제거. 진행 중 Worker 1 NotReady 및 노드 간 연결 장애를 진단하고 Ready/Pod Running 복구를 확인.
+- 다음 실습: [01-core-objects / 10-pv-pvc-static](./01-core-objects/10-pv-pvc-static/README.md).
+- 이론 학습(아래 15/73)과 실제 실습(11/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -148,7 +148,7 @@ kubectl get endpoints
 | 08 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ✅ | ✅ |
 | 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ✅ |
 | 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ | ✅ |
-| 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ | ⬜ |
+| 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ | ✅ |
 | 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ | ⬜ |
 | 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ✅ | ⬜ |
 | 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ✅ | ⬜ |
