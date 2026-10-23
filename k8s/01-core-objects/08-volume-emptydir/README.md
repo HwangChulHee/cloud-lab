@@ -72,3 +72,13 @@ kubectl get events --sort-by=.lastTimestamp
 - [x] `lab-emptydir` namespace 삭제 후 `NotFound`로 정리 완료 검증.
 
 > 핵심 결론: `emptyDir`는 컨테이너 재시작보다 오래 유지되지만 Pod의 생명주기에는 종속된다. 별도 복습 문답은 이후 추가한다.
+
+## 복습 완료 기록 (2026-10-23)
+
+- [x] 문제 1: `emptyDir`는 컨테이너가 아닌 Pod 생명주기에 종속됨을 설명.
+- [x] 문제 2: 같은 emptyDir에 대한 서로 다른 mountPath와 컨테이너 자체 `/tmp` 파일 격리를 설명.
+- [x] 문제 3: Worker Node 장애 후 다른 Node에 새로 생성된 Pod는 이전 emptyDir 데이터에 접근할 수 없음을 설명.
+- [x] 문제 4: 애플리케이션·Sidecar의 공유 emptyDir 마운트 구조를 설명. `volumes`는 Pod spec에 한 번 정의하고 `volumeMounts`는 각 컨테이너에 둔다는 점, 파일보다 디렉터리를 mountPath로 지정하는 것을 보완.
+- [x] 문제 5: DB 컨테이너 재시작 시 emptyDir 유지, Pod 삭제·재생성 시 소멸, 영속 데이터에 PV/PVC 사용 필요성을 설명.
+
+**복습 결과: 5/5 정답.** 실습 완료 수치는 변경하지 않음.
