@@ -64,3 +64,15 @@ kubectl get events --sort-by=.lastTimestamp
 - 중간 장애 대응: Worker 1이 `NotReady`, Master→Worker 1 통신 불가, Pod Pending 상태였음. VM running, Worker 1의 `eth1` IP 및 kubelet active 확인, Worker 1→Master/Worker 2 ping 성공, 이후 3개 Node Ready 및 Pod A/B Running 확인. 정확한 일시적 장애 원인은 특정하지 않음.
 - 정리: `kubectl delete namespace lab-hostpath` 성공, Worker 1/2 각각 `/var/lib/lab-hostpath` 내용 확인 후 삭제. Master에는 해당 경로가 없었으며 Master의 `rm` 실패는 예상 가능한 동작. Namespace 삭제 뒤 `NotFound` 조회 검증은 별도로 진행하지 않았음.
 - 결론: `hostPath`의 파일은 Pod가 아니라 **특정 Node의 디스크/경로**에 종속된다. 다른 Node로 데이터가 자동 복제되지 않는다.
+
+## 복습 결과 (2026-10-23)
+
+**5/5 정답 — 대화형 복습 완료.**
+
+1. **Pod 재생성 후 데이터**: hostPath는 Node 파일시스템에 저장되므로 같은 Node/경로의 새 Pod에서 파일을 읽을 수 있음. emptyDir는 기존 Pod 삭제 시 소멸한다고 답변.
+2. **다른 Node·장애**: Worker 2는 Worker 1의 hostPath 데이터를 읽을 수 없고, 단순 재부팅과 디스크 소실의 차이도 추가 설명으로 확인.
+3. **보안 위험**: Node 루트 마운트 및 읽기·쓰기 권한으로 시스템 파일 변조·손상이 가능하다고 답변. 실제 접근 권한은 UID/GID·SELinux 등에 좌우됨을 보충.
+4. **PV/PVC**: hostPath의 Node 종속성을 설명하고, PV/PVC라도 로컬 스토리지라면 같은 제약이 유지됨을 정확히 지적.
+5. **Node NotReady 장애 진단**: Node 간 통신이 되지 않으면 해당 Node의 Pod 접근/관리에도 장애가 생기며, 컨테이너 자체는 계속 실행 중일 수 있다고 설명. VM running과 kubelet/API 서버 연결에 기반한 Node Ready는 서로 다름을 보충. 최초 장애 원인은 확정되지 않음.
+
+**다음 실습**: [10-pv-pvc-static](../10-pv-pvc-static/README.md).
