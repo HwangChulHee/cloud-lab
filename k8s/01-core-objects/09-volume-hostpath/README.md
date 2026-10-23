@@ -53,3 +53,14 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 실습 완료 기록 (2026-10-23)
+
+- **실습 상태: ✅ 완료** (복습 문제 5개는 별도 진행·기록).
+- `lab-hostpath` Namespace에 `pod-a`, `pod-b`를 Worker 1에, `pod-c`를 Worker 2에 생성했다. 모두 `/var/lib/lab-hostpath`를 `/data`로 마운트(`DirectoryOrCreate`).
+- Pod A에서 `/data/message.txt` 생성 → 같은 Worker 1의 Pod B와 Node 실제 디렉터리에서 내용 일치 확인.
+- Worker 2의 Pod C에서 `/data/message.txt`는 `No such file or directory`; `/data`는 비어 있음. 같은 경로 문자열이어도 다른 Node의 독립 파일시스템임을 확인.
+- Pod A 삭제 후 같은 YAML로 Worker 1에 재생성: Pod IP가 `20.100.194.90` → `20.100.194.91`로 바뀌었지만 기존 파일 유지 확인.
+- 중간 장애 대응: Worker 1이 `NotReady`, Master→Worker 1 통신 불가, Pod Pending 상태였음. VM running, Worker 1의 `eth1` IP 및 kubelet active 확인, Worker 1→Master/Worker 2 ping 성공, 이후 3개 Node Ready 및 Pod A/B Running 확인. 정확한 일시적 장애 원인은 특정하지 않음.
+- 정리: `kubectl delete namespace lab-hostpath` 성공, Worker 1/2 각각 `/var/lib/lab-hostpath` 내용 확인 후 삭제. Master에는 해당 경로가 없었으며 Master의 `rm` 실패는 예상 가능한 동작. Namespace 삭제 뒤 `NotFound` 조회 검증은 별도로 진행하지 않았음.
+- 결론: `hostPath`의 파일은 Pod가 아니라 **특정 Node의 디스크/경로**에 종속된다. 다른 Node로 데이터가 자동 복제되지 않는다.
