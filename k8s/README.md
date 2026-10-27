@@ -92,7 +92,7 @@ kubectl get endpoints
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **9/14 완료**.
 - 최근 실습 완료: **01-core-objects / 09-volume-hostpath** (2026-10-23). Worker 1의 Pod A/B가 같은 Node 로컬 경로 파일을 공유함을 확인, Worker 2 Pod C에서 같은 경로의 파일이 없음을 확인, Worker 1의 Pod A 삭제·재생성 뒤에도 데이터 보존 확인. Namespace 삭제 후 Worker 1/2의 실습 디렉터리 직접 제거. 진행 중 Worker 1 NotReady 및 노드 간 연결 장애를 진단하고 Ready/Pod Running 복구를 확인.
 - 다음 실습: [01-core-objects / 10-pv-pvc-static](./01-core-objects/10-pv-pvc-static/README.md).
-- 이론 학습(아래 17/73)과 실제 실습(11/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 이론 학습(아래 18/73)과 실제 실습(11/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -100,9 +100,9 @@ kubectl get endpoints
 이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
 
 - 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
-- 이론 완료: **17/73 (23.3%)** · 기존 기초/CKA **17/58**, INT **0/8**, ADM **0/7**
-- 최근 이론 완료: **Controllers 01 — ReplicaSet** (개념 5/5, 복합 복습 2문제 완료 후 협의에 따라 완료)
-- 다음 이론 예정: **Controllers 02 — Deployment Recreate**
+- 이론 완료: **18/73 (24.7%)** · 기존 기초/CKA **18/58**, INT **0/8**, ADM **0/7**
+- 최근 이론 완료: **Controllers 02 — Deployment Recreate** (핵심 개념 3/3 및 종합 복습 2/2)
+- 다음 이론 예정: **Controllers 03 — RollingUpdate & Rollback**
 - 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
 
 | 구분 | 항목 | 이론 상태 |
@@ -161,7 +161,7 @@ kubectl get endpoints
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
 | 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ✅ | ⬜ |
-| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ⬜ | ⬜ |
+| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ✅ | ⬜ |
 | 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ⬜ | ⬜ |
 | 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ⬜ | ⬜ |
 | 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ⬜ | ⬜ |
