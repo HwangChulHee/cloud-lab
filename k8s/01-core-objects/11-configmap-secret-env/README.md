@@ -61,3 +61,15 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 실습 완료 기록 (2026-10-28)
+
+- **실습 상태: ✅ 완료**. 압축 복습 2문제 별도 진행 예정.
+- Namespace `lab-config-env` 및 ConfigMap `app-config` (`APP_MODE=production`, `LOG_LEVEL=info`), Secret `app-secret` (실습 문자열) 생성.
+- Worker 1의 `config-env-pod`에 `envFrom.configMapRef`와 `env[].valueFrom.secretKeyRef`로 값을 주입. `APP_MODE`, `LOG_LEVEL`, `DATABASE_PASSWORD`를 직접 확인. Secret 내부 키 `DB_PASSWORD`를 다른 환경변수명으로 매핑.
+- ConfigMap 값 `development`/`debug` 및 Secret 값을 갱신했으나 실행 중 컨테이너의 값은 기존 그대로임을 확인. Secret 갱신 과정의 last-applied-configuration 누락 경고는 kubectl apply에서 자동 보완되었음.
+- Pod 삭제 및 동일 YAML 재생성 후 변경된 환경변수 3개가 모두 반영됨을 확인 (Pod IP `20.100.194.94` → `20.100.194.95`).
+- 별도 `config-error-pod`가 존재하지 않는 `APP_REGION` ConfigMap 키를 참조하도록 설정. `CreateContainerConfigError` 및 이벤트 `couldn't find key APP_REGION in ConfigMap lab-config-env/app-config` 확인. ConfigMap에 `APP_REGION=ap-northeast-2` 추가 후 Pod 재생성 없이 1/1 Running 복구, 환경변수 출력 확인.
+- `lab-config-env` Namespace 삭제 및 `kubectl get namespace lab-config-env` NotFound 확인. Node 파일·외부 볼륨 추가 없음.
+- 결론: 기존 컨테이너의 env는 리소스 변경으로 자동 갱신되지 않지만, 아직 컨테이너 생성 전 설정 오류라면 kubelet 재시도로 최신 값을 이용해 정상 시작 가능.
+
