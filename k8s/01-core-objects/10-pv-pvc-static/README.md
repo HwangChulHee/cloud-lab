@@ -71,3 +71,12 @@ kubectl get events --sort-by=.lastTimestamp
 - PV 삭제 후에도 Worker 1의 실제 `message.txt`가 남아 있음을 확인하고 Worker 1/Worker 2의 실습 디렉터리를 직접 삭제. Namespace 삭제 후 NotFound 별도 조회는 실시하지 않음.
 - 학습 메모: `Bound`는 실제 볼륨 마운트를 뜻하지 않음. PV/PVC의 클래스 이름 일치는 정적 바인딩에 활용되며 StorageClass 객체 부재는 동적 프로비저닝 실패 이벤트를 유발할 수 있음. Local PV 데이터는 해당 Node에 종속됨.
 
+
+## 복습 결과 (2026-10-28)
+
+**압축 복습 2/2 정답 — 완료.**
+
+1. **PV/PVC 바인딩과 마운트**: PVC A가 500Mi를 요청해 1Gi PV와 Bound되어도 PV 전체가 해당 PVC에 할당되므로 PVC B가 남은 용량을 별도로 요청해 같은 PV에 Bound될 수 없음을 정확히 설명. Bound 이후 Pod의 볼륨 마운트는 별도 과정임도 설명.
+2. **Local PV 스케줄링 충돌과 복구**: PV nodeAffinity=Worker 1, Pod nodeSelector=Worker 2는 충돌해 Pending이 되며 Node 조건을 일치시켜 해결해야 함을 설명. Local PV는 Node 종속적이므로 Worker 1 장애 시 설정만으로 Worker 2에 데이터를 이전할 수 없음을 설명. 실제 디스크가 보존되었다면 별도 복구/복사는 가능함을 보충.
+
+**다음 실습**: [11-configmap-secret-env](../11-configmap-secret-env/README.md).
