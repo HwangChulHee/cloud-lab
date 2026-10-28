@@ -73,3 +73,12 @@ kubectl get events --sort-by=.lastTimestamp
 - `lab-config-env` Namespace 삭제 및 `kubectl get namespace lab-config-env` NotFound 확인. Node 파일·외부 볼륨 추가 없음.
 - 결론: 기존 컨테이너의 env는 리소스 변경으로 자동 갱신되지 않지만, 아직 컨테이너 생성 전 설정 오류라면 kubelet 재시도로 최신 값을 이용해 정상 시작 가능.
 
+
+## 압축 복습 결과 (2026-10-28)
+
+**2/2 정답 — 대화형 복습 완료.**
+
+1. **환경변수 갱신**: `envFrom`과 `env.valueFrom.configMapKeyRef` 모두 기존 실행 중 컨테이너의 환경변수는 자동 갱신되지 않으며, 새 값을 적용하려면 새 컨테이너/Pod가 생성되어야 한다고 답변.
+2. **누락 Secret Key 오류**: Secret에 참조 Key가 없어서 `CreateContainerConfigError`가 발생하며, 의도가 `DB_PASSWORD`라면 YAML 참조를 바로잡아 Pod를 재생성할 수 있다고 답변. 기존 Pod를 유지하려면 Secret에 누락된 `API_KEY`를 추가해 kubelet의 생성 재시도를 유도해야 함을 보충. 컨테이너가 시작되지 않았으므로 `RESTARTS=0`이 가능함을 정확히 설명.
+
+**다음 실습**: [12-configmap-secret-mount](../12-configmap-secret-mount/README.md).
