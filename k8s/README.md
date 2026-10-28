@@ -90,7 +90,7 @@ kubectl get endpoints
 | **합계** | **73** | **14** | **19.2%** |
 
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **12/14 완료**.
-- 최근 실습 완료: **01-core-objects / 12-configmap-secret-mount** (2026-10-28). 파일 기반 ConfigMap/Secret을 생성하고 Worker1 Pod에서 일반 파일 마운트 검증. ConfigMap 변경 후 일반 마운트는 지연 갱신, subPath 파일 마운트는 이전 값 유지 확인. `..data` 심볼릭 링크 전환 관찰, Namespace 삭제 후 NotFound 검증. 잘못된 key/path 오류 재현은 미수행 추가 과제이며 복습 2문제 진행 예정.
+- 최근 실습 완료: **01-core-objects / 12-configmap-secret-mount** (2026-10-28). 파일 기반 ConfigMap/Secret을 생성하고 Worker1 Pod에서 일반 파일 마운트 검증. ConfigMap 변경 후 일반 마운트는 지연 갱신, subPath 파일 마운트는 이전 값 유지 확인. `..data` 심볼릭 링크 전환 관찰, Namespace 삭제 후 NotFound 검증. 잘못된 key/path 오류 재현은 미수행 추가 과제이며 복습 2/2 완료.
 - 다음 실습: [01-core-objects / 13-namespace](./01-core-objects/13-namespace/README.md).
 - 이론 학습(아래 22/73)과 실제 실습(14/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
