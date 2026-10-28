@@ -70,4 +70,4 @@ kubectl get events --sort-by=.lastTimestamp
 - **이해한 원리:** 두 방식 모두 API 객체 데이터를 kubelet이 Node 측 볼륨으로 제공하지만, 일반 디렉터리 마운트는 `..data` 링크 전환으로 새 파일을 읽는 반면 subPath 파일 바인드 마운트는 처음 연결한 파일에 고정됨. ConfigMap 원본 입력 파일과 Kubernetes 객체, kubelet이 제공하는 볼륨 파일은 구별해야 함.
 - **정리:** `kubectl delete namespace lab-config-mount` 후 `kubectl get namespace lab-config-mount`에서 `NotFound` 확인. 로컬 Master VM의 입력·YAML 파일은 자동 삭제되지 않음.
 - **미수행 추가 과제:** 존재하지 않는 ConfigMap key/path를 이용한 의도적 마운트 실패와 Events 진단은 별도로 재현하지 않음.
-- **복습:** 2문제 예정(완료 후 갱신).
+- **복습:** **2/2 완료**. ① `envFrom`은 기존 컨테이너에 변경 내용이 자동 반영되지 않아 Pod 재생성이 필요하고, 일반 ConfigMap 볼륨은 지연 갱신되어 파일을 다시 읽을 때 최신 값 확인 가능. ② `subPath`는 초기 파일 바인드 마운트에 고정되며, 일반 마운트는 kubelet의 `..data` 심볼릭 링크 전환을 따라간다는 원리 설명 완료.
