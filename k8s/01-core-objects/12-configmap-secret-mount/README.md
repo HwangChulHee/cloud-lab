@@ -58,3 +58,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [ConfigMap으로 TLS 설정 바꾸기](../../07-cka-preview/01-configmap-tls/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 기록 (2026-10-28)
+
+- **환경:** k8s-master에서 kubectl 실행, k8s-worker1에 두 Pod 스케줄링(Kubernetes v1.27.2).
+- **생성:** Namespace `lab-config-mount`; Master VM의 `app.conf`와 `credentials.txt`에서 각각 `app-file-config` ConfigMap과 `app-file-secret` Secret 생성(`kubectl create --from-file`).
+- **파일 마운트:** `config-mount-pod`(20.100.194.97)에서 `/etc/app/app.conf`와 `/etc/secret/credentials.txt` 확인. 값은 `APP_MODE=production`, `LOG_LEVEL=info`, 데모 Secret `demo-token-123`.
+- **내부 구조:** `app.conf -> ..data/app.conf`; 초기 `..data`가 `..2026_10_28_13_13_19...`를 가리켰고 ConfigMap 갱신 뒤 `..2026_10_28_13_17_02...`로 전환됨을 `ls -la`로 확인.
+- **일반 마운트 갱신:** `kubectl edit configmap`으로 `development/debug` 수정 후 Pod 재생성 없이 파일 변경 확인. 다시 `staging/warning`으로 수정한 직후 일시적으로 이전 값이 남았다가 이후 새 값 반영됨.
+- **subPath 비교:** 별도 `config-subpath-pod`(20.100.194.98)를 `/tmp/app.conf`에 `subPath: app.conf`로 마운트. ConfigMap을 `staging/warning`으로 수정한 후 일반 마운트는 최신 값, subPath는 `development/debug`으로 유지됨을 확인.
+- **이해한 원리:** 두 방식 모두 API 객체 데이터를 kubelet이 Node 측 볼륨으로 제공하지만, 일반 디렉터리 마운트는 `..data` 링크 전환으로 새 파일을 읽는 반면 subPath 파일 바인드 마운트는 처음 연결한 파일에 고정됨. ConfigMap 원본 입력 파일과 Kubernetes 객체, kubelet이 제공하는 볼륨 파일은 구별해야 함.
+- **정리:** `kubectl delete namespace lab-config-mount` 후 `kubectl get namespace lab-config-mount`에서 `NotFound` 확인. 로컬 Master VM의 입력·YAML 파일은 자동 삭제되지 않음.
+- **미수행 추가 과제:** 존재하지 않는 ConfigMap key/path를 이용한 의도적 마운트 실패와 Events 진단은 별도로 재현하지 않음.
+- **복습:** 2문제 예정(완료 후 갱신).
