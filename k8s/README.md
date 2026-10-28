@@ -79,20 +79,20 @@ kubectl get endpoints
 
 기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
 
-### 전체 실습 진행 현황 (2026-10-23)
+### 전체 실습 진행 현황 (2026-10-28)
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 11 | 26.2% |
+| 기초 주제 (00–06) | 42 | 12 | 28.6% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **11** | **15.1%** |
+| **합계** | **73** | **12** | **16.4%** |
 
-- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **9/14 완료**.
-- 최근 실습 완료: **01-core-objects / 09-volume-hostpath** (2026-10-23). Worker 1의 Pod A/B가 같은 Node 로컬 경로 파일을 공유함을 확인, Worker 2 Pod C에서 같은 경로의 파일이 없음을 확인, Worker 1의 Pod A 삭제·재생성 뒤에도 데이터 보존 확인. Namespace 삭제 후 Worker 1/2의 실습 디렉터리 직접 제거. 진행 중 Worker 1 NotReady 및 노드 간 연결 장애를 진단하고 Ready/Pod Running 복구를 확인.
-- 다음 실습: [01-core-objects / 10-pv-pvc-static](./01-core-objects/10-pv-pvc-static/README.md).
-- 이론 학습(아래 22/73)과 실제 실습(11/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **10/14 완료**.
+- 최근 실습 완료: **01-core-objects / 10-pv-pvc-static** (2026-10-28). Worker 1 Local PV(1Gi)와 PVC(500Mi 요청)가 Bound됨을 확인, PV nodeAffinity에 따른 Pod의 Worker 1 배치 및 Node 실제 파일 확인. 2Gi PVC Pending과 존재하지 않는 StorageClass 이벤트 확인 후 Worker 2에 2Gi Local PV를 생성해 PVC가 자동 Bound됨을 검증. Retain으로 PVC 삭제 뒤 PV Released, PV 삭제 뒤에도 Worker 1 실데이터가 남음을 확인. Pod/PVC/PV/Namespace 및 양쪽 Node 실습 경로 정리 완료. 복습 2문제 진행 예정.
+- 다음 실습: [01-core-objects / 11-configmap-secret-env](./01-core-objects/11-configmap-secret-env/README.md).
+- 이론 학습(아래 22/73)과 실제 실습(12/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -150,7 +150,7 @@ kubectl get endpoints
 | 09 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ | ✅ |
 | 10 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ | ✅ |
 | 11 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ | ✅ |
-| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ | ⬜ |
+| 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ | ✅ |
 | 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ✅ | ⬜ |
 | 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ✅ | ⬜ |
 | 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ✅ | ⬜ |
