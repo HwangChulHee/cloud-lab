@@ -58,3 +58,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [Retain PV로 데이터 복구하기](../../07-cka-preview/03-pv-data-recovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 완료 기록 (2026-10-28)
+
+- **실습 상태: ✅ 완료**. 대화형 복습은 2문제로 별도 진행한다.
+- 초기 `kubectl get pv`, `kubectl get storageclass`: 모두 자원 없음. Namespace `lab-static-pv` 생성.
+- Worker 1의 `/var/lib/lab-static-pv` 준비, `lab-local-pv` 생성(1Gi, RWO, Retain, class `lab-static-local`, Local PV nodeAffinity Worker 1). `Available` 확인.
+- `lab-local-pvc` 생성(500Mi 요청, volumeName 명시) 후 `lab-local-pv`와 `Bound` 확인. `pv-test-pod`는 nodeName 지정 없이 Worker 1(`20.100.194.93`)에 스케줄링. PVC 마운트 `/data/message.txt`에 `Hello from Local PV` 작성 및 Worker 1 디렉터리에서 동일 내용 확인.
+- `oversized-pvc`(2Gi, volumeName 미지정)를 먼저 만들자 `Pending` 발생. `kubectl describe pvc`에서 존재하지 않는 StorageClass `lab-static-local` 관련 `ProvisioningFailed` 이벤트 확인. 기존 PV는 이미 Bound이며 용량도 1Gi라 매칭 대상이 아님.
+- Worker 2 `/var/lib/lab-static-pv-2` 준비 및 `lab-local-pv-2` 생성(2Gi, RWO, Retain, 같은 class, nodeAffinity Worker 2). PVC 수정 없이 `oversized-pvc`가 자동 `Bound`됨을 확인. PV 생성 직후 조회에서는 `Available`, 다음 PVC 조회에서는 `Bound`로 관찰.
+- `oversized-pvc` 삭제 후 `lab-local-pv-2`의 `Released` 확인. 이후 Pod 삭제 → 첫 PVC 삭제 → PV 둘 다 `Released` 확인 → PV 둘 다 삭제 및 `kubectl get pv` 자원 없음 확인 → Namespace 삭제.
+- PV 삭제 후에도 Worker 1의 실제 `message.txt`가 남아 있음을 확인하고 Worker 1/Worker 2의 실습 디렉터리를 직접 삭제. Namespace 삭제 후 NotFound 별도 조회는 실시하지 않음.
+- 학습 메모: `Bound`는 실제 볼륨 마운트를 뜻하지 않음. PV/PVC의 클래스 이름 일치는 정적 바인딩에 활용되며 StorageClass 객체 부재는 동적 프로비저닝 실패 이벤트를 유발할 수 있음. Local PV 데이터는 해당 Node에 종속됨.
+
