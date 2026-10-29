@@ -79,20 +79,20 @@ kubectl get endpoints
 
 기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
 
-### 전체 실습 진행 현황 (2026-10-28)
+### 전체 실습 진행 현황 (2026-10-29)
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 14 | 33.3% |
+| 기초 주제 (00–06) | 42 | 15 | 35.7% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **14** | **19.2%** |
+| **합계** | **73** | **15** | **20.5%** |
 
-- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **12/14 완료**.
-- 최근 실습 완료: **01-core-objects / 12-configmap-secret-mount** (2026-10-28). 파일 기반 ConfigMap/Secret을 생성하고 Worker1 Pod에서 일반 파일 마운트 검증. ConfigMap 변경 후 일반 마운트는 지연 갱신, subPath 파일 마운트는 이전 값 유지 확인. `..data` 심볼릭 링크 전환 관찰, Namespace 삭제 후 NotFound 검증. 잘못된 key/path 오류 재현은 미수행 추가 과제이며 복습 2/2 완료.
-- 다음 실습: [01-core-objects / 13-namespace](./01-core-objects/13-namespace/README.md).
-- 이론 학습(아래 25/73)과 실제 실습(14/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **13/14 완료**.
+- 최근 실습 완료: **01-core-objects / 13-namespace** (2026-10-29). 같은 이름의 Pod 두 개를 Namespace별로 생성하고 Service EndpointSlice의 동일 Namespace 선택을 확인. Namespace 간 Service/Pod IP 통신 HTTP 200, 같은 Worker의 hostPath 파일 공유 확인. Namespace 누락 시 default에 생성되는 상황을 재현했고, Pod/Namespace/Worker hostPath 삭제와 NotFound를 검증함. 복습 2문제 진행 예정.
+- 다음 실습: [01-core-objects / 14-resourcequota-limitrange](./01-core-objects/14-resourcequota-limitrange/README.md).
+- 이론 학습(아래 25/73)과 실제 실습(15/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -153,7 +153,7 @@ kubectl get endpoints
 | 12 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ | ✅ |
 | 13 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ✅ | ✅ |
 | 14 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ✅ | ✅ |
-| 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ✅ | ⬜ |
+| 15 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ✅ | ✅ |
 | 16 | [ResourceQuota & LimitRange](./01-core-objects/14-resourcequota-limitrange/README.md) | ✅ | ⬜ |
 
 ### Controllers
