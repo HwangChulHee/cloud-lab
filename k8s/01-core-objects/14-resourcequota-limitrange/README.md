@@ -65,3 +65,17 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [자원 예산을 계산해 3개 Pod 복구하기](../../07-cka-preview/11-resource-budget/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 기록 (2026-10-29)
+
+- `lab-resource-policy` Namespace에 ResourceQuota `lab-quota` 생성: `requests.memory=512Mi`, `limits.memory=1Gi`, `pods=3`.
+- requests/limits 없이 `no-resources-pod` 생성 시 `Forbidden: failed quota ... must specify limits.memory; requests.memory` 확인. Pod 객체는 생성되지 않았고 Quota Used는 0.
+- 요청/제한을 128Mi/256Mi로 지정한 뒤 Pod가 `k8s-worker1`에서 Running, quota Used=128Mi/256Mi 및 pods=1 확인.
+- 두 번째 Pod에 request 400Mi를 주어 `requested: requests.memory=400Mi, used: 128Mi, limited: 512Mi` 거부 확인. 256Mi/512Mi로 수정 후 k8s-worker2에서 Running, Used=requests 384Mi, limits 768Mi, pods 2.
+- 세 번째 Pod(32Mi/64Mi)는 정상 생성, 네 번째 Pod는 `requested: pods=1, used: pods=3, limited: pods=3`로 거부. Used=requests 416Mi, limits 832Mi, pods 3.
+- 세 번째 Pod를 삭제해 예산 확보 후 LimitRange `lab-limits` 생성: 컨테이너 메모리 `defaultRequest=64Mi`, `default=128Mi`, `min=32Mi`, `max=512Mi`.
+- 자원 설정을 생략한 `default-resource-pod` 생성 성공. API 저장된 Pod spec에 `requests.memory=64Mi` 및 `limits.memory=128Mi` 자동 주입 검증. Used=requests 448Mi, limits 896Mi, pods 3.
+- `default-resource-pod`를 삭제한 후 `exceed-limit-pod`의 limit 768Mi는 `maximum memory usage per Container is 512Mi, but limit is 768Mi`로 거부됨. request/limit을 64Mi/128Mi로 수정하여 Pod 생성 성공, 최종 Used=requests 448Mi, limits 896Mi, pods 3.
+- YAML 수정 과정에 tab 문자 들여쓰기 오류 발생 후 공백 들여쓰기로 수정하여 재적용 성공.
+- **Cleanup:** `kubectl delete namespace lab-resource-policy` 후 namespace 조회 `NotFound` 확인. 실습 전용 Pod/Quota/LimitRange 정리 완료.
+- **복습:** 2문제 진행 예정.
