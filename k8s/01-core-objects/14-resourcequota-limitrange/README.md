@@ -78,4 +78,4 @@ kubectl get events --sort-by=.lastTimestamp
 - `default-resource-pod`를 삭제한 후 `exceed-limit-pod`의 limit 768Mi는 `maximum memory usage per Container is 512Mi, but limit is 768Mi`로 거부됨. request/limit을 64Mi/128Mi로 수정하여 Pod 생성 성공, 최종 Used=requests 448Mi, limits 896Mi, pods 3.
 - YAML 수정 과정에 tab 문자 들여쓰기 오류 발생 후 공백 들여쓰기로 수정하여 재적용 성공.
 - **Cleanup:** `kubectl delete namespace lab-resource-policy` 후 namespace 조회 `NotFound` 확인. 실습 전용 Pod/Quota/LimitRange 정리 완료.
-- **복습:** 2문제 진행 예정.
+- **복습:** **2/2 완료**. ① LimitRange 기본값 request 64Mi, limit 128Mi가 자동 주입되므로 기존 400Mi/800Mi에 더해 최종 464Mi/928Mi, Pod 3개로 ResourceQuota 이내임을 확인(초기 합산 실수 수정). ② 기본값 request 128Mi, limit 256Mi가 남은 Quota 100Mi/200Mi를 초과해 생성 거부됨을 이해하고, Pod에 Quota 및 LimitRange 조건을 만족하는 request/limit을 직접 지정하거나 정책을 조정하는 방안을 설명.
