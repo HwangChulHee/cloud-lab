@@ -58,3 +58,15 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [최소 권한 NetworkPolicy](../../07-cka-preview/08-networkpolicy/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+## 실습 기록 (2026-10-29)
+
+- Namespace `nm-1`, `nm-2`를 YAML로 생성하여 두 Namespace 모두 `Active`이고 초기 Pod가 없음을 확인.
+- 이름과 레이블이 동일한 `web-pod`를 두 Namespace에 생성하여 각각 `Running` 확인. 두 Pod는 k8s-worker1에 배치되었지만 IP는 각각 `20.100.194.100`, `20.100.194.101`.
+- `nm-1`에만 `web-service`(ClusterIP `10.111.129.177`, `selector: app=web`)를 생성. EndpointSlice에 `20.100.194.100`만 포함됐고 `nm-2`에는 해당 Service의 EndpointSlice가 없음을 확인.
+- `nm-2/web-pod`에서 `http://web-service.nm-1.svc.cluster.local`과 `http://20.100.194.100` 호출 모두 HTTP 200: Namespace만으로 Pod 네트워크 통신은 차단되지 않음.
+- `nm-1`, `nm-2` 각각의 `hostpath-pod`를 동일한 `k8s-worker1`의 `/var/lib/lab-namespace-share`에 마운트. `nm-1`에서 쓴 `data.txt`의 `Hello from nm-1`을 `nm-2`에서 확인: Namespace는 동일 Node의 hostPath 파일을 격리하지 않음.
+- YAML의 `metadata.namespace`를 생략한 `misplaced-pod`가 컨텍스트 기본 Namespace인 `default`에 생성됨을 확인. `nm-1` 조회는 NotFound, `kubectl get pods -A --field-selector metadata.name=misplaced-pod`로 위치 진단. `kubectl get pod misplaced-pod -A`는 이름 지정과 전체 Namespace 옵션의 충돌로 오류를 내므로 대체 명령 사용.
+- **정리 검증:** `default/misplaced-pod` 및 `nm-1`, `nm-2` 삭제. Worker1의 `/var/lib/lab-namespace-share` 삭제 후 `hostPath cleaned` 확인. Namespace 두 개와 잘못 배치한 Pod에 대해 NotFound 확인.
+- **범위 참고:** 두 Namespace에서 동일한 이름의 Service를 각각 생성하는 실험은 생략하고, 하나의 Service의 selector/EndpointSlice 범위를 검증했음.
+- **복습:** 2문제 예정.
