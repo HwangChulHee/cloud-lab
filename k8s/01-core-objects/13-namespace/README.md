@@ -69,4 +69,4 @@ kubectl get events --sort-by=.lastTimestamp
 - YAML의 `metadata.namespace`를 생략한 `misplaced-pod`가 컨텍스트 기본 Namespace인 `default`에 생성됨을 확인. `nm-1` 조회는 NotFound, `kubectl get pods -A --field-selector metadata.name=misplaced-pod`로 위치 진단. `kubectl get pod misplaced-pod -A`는 이름 지정과 전체 Namespace 옵션의 충돌로 오류를 내므로 대체 명령 사용.
 - **정리 검증:** `default/misplaced-pod` 및 `nm-1`, `nm-2` 삭제. Worker1의 `/var/lib/lab-namespace-share` 삭제 후 `hostPath cleaned` 확인. Namespace 두 개와 잘못 배치한 Pod에 대해 NotFound 확인.
 - **범위 참고:** 두 Namespace에서 동일한 이름의 Service를 각각 생성하는 실험은 생략하고, 하나의 Service의 selector/EndpointSlice 범위를 검증했음.
-- **복습:** 2문제 예정.
+- **복습:** **2/2 완료**. ① Service의 selector는 동일 Namespace의 Pod만 선택하지만 별도 NetworkPolicy 차단이 없으면 다른 Namespace에서도 Service를 호출할 수 있음을 설명. ② Namespace는 Kubernetes 리소스의 논리적 관리 범위만 분리하며, 같은 Worker Node의 동일 hostPath는 Namespace와 관계없이 공유된다는 점을 설명.
