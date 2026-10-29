@@ -92,7 +92,7 @@ kubectl get endpoints
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **13/14 완료**.
 - 최근 실습 완료: **01-core-objects / 13-namespace** (2026-10-29). 같은 이름의 Pod 두 개를 Namespace별로 생성하고 Service EndpointSlice의 동일 Namespace 선택을 확인. Namespace 간 Service/Pod IP 통신 HTTP 200, 같은 Worker의 hostPath 파일 공유 확인. Namespace 누락 시 default에 생성되는 상황을 재현했고, Pod/Namespace/Worker hostPath 삭제와 NotFound를 검증함. 복습 2문제 진행 예정.
 - 다음 실습: [01-core-objects / 14-resourcequota-limitrange](./01-core-objects/14-resourcequota-limitrange/README.md).
-- 이론 학습(아래 25/73)과 실제 실습(15/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 이론 학습(아래 26/73)과 실제 실습(15/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -100,9 +100,9 @@ kubectl get endpoints
 이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
 
 - 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
-- 이론 완료: **25/73 (34.2%)** · 기존 기초/CKA **25/58**, INT **0/8**, ADM **0/7**
-- 최근 이론 완료: **Pod Deep Dive 01 — Pod Lifecycle & Status** (핵심 개념 4/4 및 종합 복습 2/2)
-- 다음 이론 예정: **Pod Deep Dive 02 — Readiness Probe**
+- 이론 완료: **26/73 (35.6%)** · 기존 기초/CKA **26/58**, INT **0/8**, ADM **0/7**
+- 최근 이론 완료: **Pod Deep Dive 02 — Readiness Probe** (핵심 개념 4/4 및 종합 복습 2/2)
+- 다음 이론 예정: **Pod Deep Dive 03 — Liveness Probe**
 - 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
 
 | 구분 | 항목 | 이론 상태 |
@@ -174,7 +174,7 @@ kubectl get endpoints
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
 | 25 | [Pod Lifecycle & Status](./03-pod-deep-dive/01-pod-lifecycle-status/README.md) | ✅ | ⬜ |
-| 26 | [Readiness Probe](./03-pod-deep-dive/02-readiness-probe/README.md) | ⬜ | ⬜ |
+| 26 | [Readiness Probe](./03-pod-deep-dive/02-readiness-probe/README.md) | ✅ | ⬜ |
 | 27 | [Liveness Probe](./03-pod-deep-dive/03-liveness-probe/README.md) | ⬜ | ⬜ |
 | 28 | [Pod QoS](./03-pod-deep-dive/04-qos/README.md) | ⬜ | ⬜ |
 | 29 | [Node Affinity](./03-pod-deep-dive/05-node-affinity/README.md) | ⬜ | ⬜ |
