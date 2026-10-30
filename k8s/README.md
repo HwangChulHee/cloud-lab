@@ -90,7 +90,7 @@ kubectl get endpoints
 | **합계** | **73** | **17** | **23.3%** |
 
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
-- 최근 실습 완료: **02-controllers / 01-replicaset** (2026-10-30). replicas 1→2→3 확장, Pod 삭제 후 자동 복구, 기존 독립 Pod 편입 및 orphan 옵션 검증. selector와 template label 불일치 오류 재현·수정, Namespace 삭제 후 NotFound 확인. 복습 2문제 진행 예정.
+- 최근 실습 완료: **02-controllers / 01-replicaset** (2026-10-30). replicas 1→2→3 확장, Pod 삭제 후 자동 복구, 기존 독립 Pod 편입 및 orphan 옵션 검증. selector와 template label 불일치 오류 재현·수정, Namespace 삭제 후 NotFound 확인. 복습 2/2 완료.
 - 다음 실습: [02-controllers / 02-deployment-recreate](./02-controllers/02-deployment-recreate/README.md).
 - 이론 학습(아래 27/73)과 실제 실습(17/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
