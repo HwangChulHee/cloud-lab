@@ -92,7 +92,7 @@ kubectl get endpoints
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
 - 최근 실습 완료: **02-controllers / 02-deployment-recreate** (2026-10-30). Recreate 다운타임과 이미지 오류 재현, rollout undo 복구, Namespace 삭제 검증. 복습 2/2 완료.
 - 다음 실습: [02-controllers / 03-deployment-rollingupdate-rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md).
-- 이론 학습(아래 27/73)과 실제 실습(18/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 이론 학습(아래 28/73)과 실제 실습(18/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -100,9 +100,9 @@ kubectl get endpoints
 이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
 
 - 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
-- 이론 완료: **27/73 (37.0%)** · 기존 기초/CKA **27/58**, INT **0/8**, ADM **0/7**
-- 최근 이론 완료: **Pod Deep Dive 03 — Liveness Probe** (핵심 개념 4/4 및 종합 복습 2/2)
-- 다음 이론 예정: **Pod Deep Dive 04 — Pod QoS**
+- 이론 완료: **28/73 (38.4%)** · 기존 기초/CKA **28/58**, INT **0/8**, ADM **0/7**
+- 최근 이론 완료: **Pod Deep Dive 04 — Pod QoS** (핵심 개념 4/4 및 종합 복습 2/2)
+- 다음 이론 예정: **Pod Deep Dive 05 — Node Affinity**
 - 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
 
 | 구분 | 항목 | 이론 상태 |
@@ -176,7 +176,7 @@ kubectl get endpoints
 | 25 | [Pod Lifecycle & Status](./03-pod-deep-dive/01-pod-lifecycle-status/README.md) | ✅ | ⬜ |
 | 26 | [Readiness Probe](./03-pod-deep-dive/02-readiness-probe/README.md) | ✅ | ⬜ |
 | 27 | [Liveness Probe](./03-pod-deep-dive/03-liveness-probe/README.md) | ✅ | ⬜ |
-| 28 | [Pod QoS](./03-pod-deep-dive/04-qos/README.md) | ⬜ | ⬜ |
+| 28 | [Pod QoS](./03-pod-deep-dive/04-qos/README.md) | ✅ | ⬜ |
 | 29 | [Node Affinity](./03-pod-deep-dive/05-node-affinity/README.md) | ⬜ | ⬜ |
 | 30 | [Pod Affinity / Anti-Affinity](./03-pod-deep-dive/06-pod-affinity-antiaffinity/README.md) | ⬜ | ⬜ |
 | 31 | [Taints & Tolerations](./03-pod-deep-dive/07-taints-tolerations/README.md) | ⬜ | ⬜ |
