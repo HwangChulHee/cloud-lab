@@ -44,7 +44,7 @@ Pod, Label/Selector, desired state의 의미를 먼저 회상한다.
 - ✅ --cascade=orphan으로 Pod를 보존하고 소유 관계 제거 확인.
 - ✅ selector와 template label 불일치 오류 재현, 수정 후 정상 생성 확인.
 - ✅ lab-replicaset Namespace 삭제 후 NotFound 확인.
-- 복습 문제: 2문제 진행 예정.
+- 복습 문제: **2/2 완료**. (1) ReplicaSet Controller → API Server → Scheduler → kubelet의 복구 흐름, (2) selector·ownerReferences·replicas에 따른 독립 Pod 편입 및 초과 Pod 삭제 설명.
 
 ## 완료 검증
 
