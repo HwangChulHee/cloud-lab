@@ -37,6 +37,15 @@ Pod, Label/Selector, desired state의 의미를 먼저 회상한다.
 
 잘못된 manifest의 selector/template label을 일치시킨 뒤 정상 생성한다.
 
+## 실습 결과 (2026-10-30)
+
+- ✅ ReplicaSet replicas 1→2→3 증설 및 Pod 삭제 후 자동 복구 확인.
+- ✅ 독립 Pod의 ReplicaSet 편입 및 ownerReferences 확인.
+- ✅ --cascade=orphan으로 Pod를 보존하고 소유 관계 제거 확인.
+- ✅ selector와 template label 불일치 오류 재현, 수정 후 정상 생성 확인.
+- ✅ lab-replicaset Namespace 삭제 후 NotFound 확인.
+- 복습 문제: 2문제 진행 예정.
+
 ## 완료 검증
 
 1. ReplicaSet이 replicas 수를 유지하는 과정을 설명한다.
