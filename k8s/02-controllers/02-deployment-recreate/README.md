@@ -46,6 +46,9 @@ kubectl get events --sort-by=.lastTimestamp
 
 ## 완료 검증
 
+- 2026-10-30: 실습 완료 및 복습 2/2. Recreate 다운타임, 이미지 오류, 롤백, Namespace 정리 검증.
+
+
 1. Recreate의 장단점을 실제 요청 결과로 설명한다.
 
 ## Cleanup
