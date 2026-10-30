@@ -79,20 +79,20 @@ kubectl get endpoints
 
 기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
 
-### 전체 실습 진행 현황 (2026-10-29)
+### 전체 실습 진행 현황 (2026-10-30)
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 16 | 38.1% |
+| 기초 주제 (00–06) | 42 | 17 | 40.5% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **16** | **21.9%** |
+| **합계** | **73** | **17** | **23.3%** |
 
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
-- 최근 실습 완료: **01-core-objects / 14-resourcequota-limitrange** (2026-10-29). 메모리 requests/limits 누락, 누적 quota 및 Pod 개수 quota의 API 생성 거부를 재현하고 리소스 수정 후 복구. LimitRange 기본 request/limit 자동 주입과 max 위반을 확인. 실습 Namespace 삭제 후 NotFound 검증. 복습 2문제 진행 예정.
-- 다음 실습: [02-controllers / 01-replicaset](./02-controllers/01-replicaset/README.md).
-- 이론 학습(아래 27/73)과 실제 실습(16/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 최근 실습 완료: **02-controllers / 01-replicaset** (2026-10-30). replicas 1→2→3 확장, Pod 삭제 후 자동 복구, 기존 독립 Pod 편입 및 orphan 옵션 검증. selector와 template label 불일치 오류 재현·수정, Namespace 삭제 후 NotFound 확인. 복습 2문제 진행 예정.
+- 다음 실습: [02-controllers / 02-deployment-recreate](./02-controllers/02-deployment-recreate/README.md).
+- 이론 학습(아래 27/73)과 실제 실습(17/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -160,7 +160,7 @@ kubectl get endpoints
 
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
-| 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ✅ | ⬜ |
+| 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ✅ | ✅ |
 | 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ✅ | ⬜ |
 | 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ✅ | ⬜ |
 | 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ✅ | ⬜ |
