@@ -83,16 +83,16 @@ kubectl get endpoints
 
 | 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
 |---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 17 | 40.5% |
+| 기초 주제 (00–06) | 42 | 18 | 42.9% |
 | CKA 확장 (07) | 16 | 0 | 0% |
 | 내부 동작 심화 (09) | 8 | 0 | 0% |
 | 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **17** | **23.3%** |
+| **합계** | **73** | **18** | **24.7%** |
 
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
-- 최근 실습 완료: **02-controllers / 01-replicaset** (2026-10-30). replicas 1→2→3 확장, Pod 삭제 후 자동 복구, 기존 독립 Pod 편입 및 orphan 옵션 검증. selector와 template label 불일치 오류 재현·수정, Namespace 삭제 후 NotFound 확인. 복습 2/2 완료.
-- 다음 실습: [02-controllers / 02-deployment-recreate](./02-controllers/02-deployment-recreate/README.md).
-- 이론 학습(아래 27/73)과 실제 실습(17/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
+- 최근 실습 완료: **02-controllers / 02-deployment-recreate** (2026-10-30). Recreate 다운타임과 이미지 오류 재현, rollout undo 복구, Namespace 삭제 검증. 복습 2/2 완료.
+- 다음 실습: [02-controllers / 03-deployment-rollingupdate-rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md).
+- 이론 학습(아래 27/73)과 실제 실습(18/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
 
 ## 이론 학습 진행 현황 (대화형 학습)
@@ -161,7 +161,7 @@ kubectl get endpoints
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
 | 17 | [ReplicaSet](./02-controllers/01-replicaset/README.md) | ✅ | ✅ |
-| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ✅ | ⬜ |
+| 18 | [Deployment Recreate](./02-controllers/02-deployment-recreate/README.md) | ✅ | ✅ |
 | 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ✅ | ⬜ |
 | 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ✅ | ⬜ |
 | 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ✅ | ⬜ |
