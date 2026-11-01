@@ -2,7 +2,7 @@
 
 CCNA → CCNP Enterprise (ENCOR/ENARSI) → 데이터센터·VPN·보안·ISP·클라우드 네트워크로 이어지는 **독립 학습형 네트워크 엔지니어링 실습**.
 
-> 현재 상태: 커리큘럼 초안과 첫 Lab 문서 작성. 환경에서 직접 실행해 검증한 결과나 완성된 Packet Tracer .pkt 파일은 아직 없음.
+> 현재 상태: Lab 01 주요 실습 경로·종료 퀴즈 검증 완료. Pass A 30개 + 심화·전문화·프로젝트 백로그 설계, 나머지 Lab 문서/실행 검증은 미완료. Packet Tracer .pkt 파일 미첨부.
 
 ## 학습 원칙
 
@@ -15,7 +15,7 @@ CCNA → CCNP Enterprise (ENCOR/ENARSI) → 데이터센터·VPN·보안·ISP·�
 
 ## 학습 경로
 
-- [CURRICULUM.md](./CURRICULUM.md): 분야별 범위, 난이도·선수조건, 3단계 나선형 경로, 시험 대응.
+- [CURRICULUM.md](./CURRICULUM.md): 분야별 범위, 난이도·선수조건, 4단계 나선형 경로 및 세부 백로그, 시험 대응.
 - [Lab 템플릿](./templates/LAB-TEMPLATE.md): Lab당 README.md 하나에 개념·실습·장애 분석을 통합하는 기준.
 - [Lab 01 — 두 PC 간 이더넷 통신과 ARP](./01-foundation/01-ethernet-arp/README.md): 개념·구축·검증·장애 대응을 한 파일에 통합한 첫 독립 예제.
 
@@ -70,6 +70,7 @@ cloud-lab/networking/README.md와 현재 학습할 Lab의 README.md를 확인하
 | --- | ---: | --- |
 | Lab 문서 작성 | 1 | 나머지는 커리큘럼 초안 |
 | 직접 실습 검증 | 1 (NET-FD-001 주요 경로) | 선택 케이블 장애는 미실시 |
+| 종료 퀴즈 완료 | 1 (NET-FD-001: 2문항 통과) | 나머지 Lab은 미실시 |
 | 복합 시나리오 완료 | 0 | 개별 실습 이후 |
 | 종합 프로젝트 완료 | 0 | 최종 단계 |
 
