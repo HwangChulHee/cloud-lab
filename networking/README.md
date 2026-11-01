@@ -17,7 +17,8 @@ CCNA → CCNP Enterprise (ENCOR/ENARSI) → 데이터센터·VPN·보안·ISP·�
 
 - [CURRICULUM.md](./CURRICULUM.md): 분야별 범위, 난이도·선수조건, 4단계 나선형 경로 및 세부 백로그, 시험 대응.
 - [Lab 템플릿](./templates/LAB-TEMPLATE.md): Lab당 README.md 하나에 개념·실습·장애 분석을 통합하는 기준.
-- [Lab 01 — 두 PC 간 이더넷 통신과 ARP](./01-foundation/01-ethernet-arp/README.md): 개념·구축·검증·장애 대응을 한 파일에 통합한 첫 독립 예제.
+- [Lab 01 — 두 PC 간 이더넷 통신과 ARP](./01-foundation/01-ethernet-arp/README.md): 실습·퀴즈 완료.
+- [Lab 02 — IPv4/CIDR와 서브넷 판단](./01-foundation/02-ipv4-subnetting/README.md): 실습 전 문서 준비 완료, 실행 검증 전.
 
 ## GPT / LLM 대화형 학습 운영 규칙
 
@@ -68,7 +69,7 @@ cloud-lab/networking/README.md와 현재 학습할 Lab의 README.md를 확인하
 
 | 범위 | 완료 | 계획 |
 | --- | ---: | --- |
-| Lab 문서 작성 | 1 | 나머지는 커리큘럼 초안 |
+| Lab 문서 작성 | 2 | 나머지는 커리큘럼 초안 |
 | 직접 실습 검증 | 1 (NET-FD-001 주요 경로) | 선택 케이블 장애는 미실시 |
 | 종료 퀴즈 완료 | 1 (NET-FD-001: 2문항 통과) | 나머지 Lab은 미실시 |
 | 복합 시나리오 완료 | 0 | 개별 실습 이후 |
