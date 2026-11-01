@@ -57,6 +57,13 @@
 | C-1 | IP Fabric, ECMP | Leaf-Spine BGP Underlay |
 | C-2 | ISP 운영 | 두 ISP 멀티호밍, 회선 장애 복구 |
 
+## Lab 문서 및 의존성 규칙
+
+- 각 독립 Lab은 기본적으로 **README.md 단일 파일**에 핵심 개념 → 토폴로지 → 구축 → 검증 → 장애 분석 → 복습을 담는다.
+- 각 Lab에 고유 ID, 선수 Lab ID, 난이도, 나선형 Pass, 사용 도구와 문서/실습 상태를 기록한다.
+- 선수 Lab은 실제 존재하는 항목만 참조한다. 미래 Lab은 링크 대신 학습 주제로 기재한다.
+- [공통 템플릿](./templates/LAB-TEMPLATE.md) 및 [NET-FD-001](./01-foundation/01-ethernet-arp/README.md)을 기준으로 확장한다.
+
 ## 실습의 공통 완료 기준
 
 - **이론**: 개념·필요성·프레임/패킷 처리 순서를 설명.
