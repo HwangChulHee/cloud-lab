@@ -10,6 +10,7 @@ AWS SAA-C03은 **2026-10-19 합격 완료**했습니다. 기존 강의별 학습
 | --- | --- |
 | [AWS](./aws/README.md) | [SAA 학습 기록](./aws/saa/README.md) · [AWS Labs](./aws/labs/README.md) |
 | [Kubernetes](./k8s/README.md) | 기초, CKA 예습, 독립 실습, 장애 진단 |
+| [Networking](./networking/README.md) | CCNA → CCNP Enterprise → VPN·보안·데이터센터·ISP·하이브리드 클라우드 |
 | [Technical Interview](./interview/README.md) | Linux, Networking, AWS, Docker, K8s, Terraform, CI/CD, Monitoring, Troubleshooting |
 
 ## 학습 흐름
@@ -27,5 +28,6 @@ aws/
   saa/      SAA 강의 이론 / 선택 기준 / 완료 기록 (part00~14)
   labs/     AWS 01~16 기본 실습 + advanced 실습
 k8s/        Kubernetes 기초 + CKA + 독립 실습
+networking/ CCNA/CCNP 기반 나선형 네트워크 실습
 interview/  클라우드 / DevOps 기술면접 대비
 ```
