@@ -39,7 +39,7 @@ lab_status: not-tested
 
 ## 상태 및 검증 원칙
 
-- `document_status: planned | ready`, `lab_status: not-tested | in-progress | verified`.
+- `document_status: planned | ready`, `lab_status: not-tested | in-progress | verified-core | verified` (verified-core는 필수 경로만 검증하고 선택 과제가 남은 상태).
 - 문서 작성 ≠ 실제 구축 성공 ≠ 검증 완료.
 - Packet Tracer의 명령 지원·기능은 장비 모델/버전별로 차이가 있을 수 있다.
 - 전용 파일(.pkt, .gns3, .pcap)은 실제 생성·확인한 경우에만 추가한다.
