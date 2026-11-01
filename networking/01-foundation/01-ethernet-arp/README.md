@@ -6,13 +6,13 @@ pass: A
 prerequisites: []
 tools: [Cisco Packet Tracer]
 document_status: ready
-lab_status: not-tested
+lab_status: verified-core
 ---
 
 # Lab 01 — 두 PC 간 Ethernet 통신과 ARP
 
 > **목표:** 스위치를 통해 같은 서브넷의 PC 두 대가 통신할 때 ARP, MAC 학습, ICMP의 역할을 설명하고 직접 관찰한다.  
-> **실습 상태:** 문서 작성 완료 · 직접 검증 미완료 · `.pkt` 파일 없음  
+> **실습 상태:** 핵심 흐름 사용자 실습 검증 완료 · 선택 케이블 장애 미실시 · `.pkt` 파일 미첨부  
 > **학습 순서:** 핵심 개념 → 토폴로지 구축 → 패킷 관찰 → 장애 진단 → 복습
 
 ## 1. 학습 목표와 선수 지식
@@ -141,17 +141,39 @@ Packet Tracer Simulation Mode는 교육용 패킷 시각화로, Wireshark의 실
 
 ## 9. 실습 기록
 
-- [ ] 핵심 질문 설명
-- [ ] 토폴로지 구축
-- [ ] Ping 및 MAC 테이블 검증
-- [ ] ARP/ICMP 패킷 흐름 확인
-- [ ] 장애 재현·원인 분석·복구
-- 수행일:
-- Packet Tracer 버전:
-- PC-A / PC-B 실제 MAC:
-- 정상 Ping 및 ARP 관찰:
-- 오류 원인·복구 확인:
-- 실제 실습 검증 완료 여부: [ ]
+- [x] 핵심 질문 설명 (Ethernet, LAN/WAN, VLAN, 서브넷, 게이트웨이, ARP/ICMP)
+- [x] 토폴로지 구축
+- [x] Ping 및 MAC 테이블 검증
+- [x] ARP/ICMP 패킷 흐름 확인
+- [x] 서브넷 불일치 장애 재현·원인 분석·복구
+- [ ] 선택 과제: 케이블 분리 장애
+- 수행일: 2026-11-02 (대화 및 사용자가 공유한 실행 화면 기준)
+- Packet Tracer 버전: 미확인
+- PC0 / PC1 실제 MAC: `0030.A372.9018` / `0060.2FE4.558C`
+- 정상 Ping 및 ARP 관찰: Echo Reply 4/4 성공, `arp -a`에 `192.168.10.20 → 0060.2fe4.558c` 표시, 스위치 VLAN 1에서 Fa0/1·Fa0/2 동적 MAC 학습 확인.
+- Simulation 관찰: ARP Request 브로드캐스트 → ARP Reply 유니캐스트 → ICMP Echo Request(Type 8) → Reply(Type 0).
+- 오류 원인·복구 확인: PC1을 `192.168.20.20/24`로 변경했을 때 Ping 실패. PC0에서 동일 /24 밖 목적지임을 인식하고 기본 게이트웨이 부재로 패킷을 폐기하는 Simulation 메시지 확인. PC1 주소 복구 후 Ping 성공은 사용자 확인.
+- 실제 실습 검증 여부: [x] 핵심 과정 (선택 케이블 장애 제외)
+
+## 10. 실제 학습 기록 — 질문과 내부 동작 연결
+
+> 본 기록은 대화에서 질문·확인한 사항만 압축했다. 추가로 설명한 개념을 **별도 Lab으로 실습했다고 간주하지 않는다.**
+
+| 질문·혼동 지점 | 정리된 이해 | 확인 수준 / 후속 학습 |
+| --- | --- | --- |
+| 2960, Fa0/1의 숫자는? | 2960은 Cisco 제품군, Fa0/1은 FastEthernet 인터페이스 식별자. | 이론·장비 명칭 확인 |
+| Ethernet·LAN·WAN·VLAN의 차이? | Ethernet은 L1/L2 기술, LAN/WAN은 망의 역할·범위 분류, VLAN은 L2 브로드캐스트 도메인의 논리적 분리. | 개념 토론, VLAN은 향후 Lab |
+| Straight-Through와 Cross-Over? | 구리선을 펴는 것이 아니라 양 끝 RJ45 핀 배선 방식의 차이. Twisted Pair는 꼬인 선 구조이며 Auto-MDI/MDIX는 포트에서 송수신 방향을 자동 조정. | 개념 설명, Straight 케이블 실습 |
+| 같은 서브넷 vs 같은 VPC? | 같은 서브넷의 직접 전달과 다른 서브넷의 L3 라우팅을 구별. AWS VPC는 local 라우트를 통해 서로 다른 서브넷의 사설 IP 통신을 제공할 수 있음. | 개념 비교, AWS 실습으로 오인하지 않음 |
+| ARP는 누구에게 묻나? | PC가 ARP Request를 브로드캐스트하며, L2 스위치는 프레임 전달·출발지 MAC을 학습. 목적지 MAC 미학습 시 Unknown Unicast Flooding과 ARP 브로드캐스트의 차이를 구별. | Simulation에서 ARP Request/Reply 검증 |
+| Ping·ICMP·TTL의 의미? | ICMP Echo Type 8 요청/Type 0 응답. TTL은 라우터 경유 시 감소, L2 스위칭 자체로는 감소하지 않음. | Simulation에서 Type 8/0 확인 |
+| Ping timeout이면 서브넷 구분을 못한 걸까? | Timeout만으로 장애 원인 확정 불가. 다른 서브넷의 목적지는 라우팅 경로 확인 후 기본 게이트웨이가 없으면 전송 실패. | **직접 검증:** Packet Tracer에서 “destination ... not in same subnet” 및 “default gateway is not set ... drops the packet” 확인 |
+
+### 다음 Lab에서 되짚기
+- 서브넷 마스크 / CIDR 비트 계산과 기본 게이트웨이·라우팅 테이블 판정
+- Broadcast와 Unknown Unicast Flooding의 차이
+- VLAN을 실제로 분리하고 Inter-VLAN 라우팅 구성
+- 선택 미수행: 케이블 분리와 링크 상태 변화
 
 ## 참고 자료
 
