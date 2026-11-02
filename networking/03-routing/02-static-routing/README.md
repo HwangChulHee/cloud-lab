@@ -27,7 +27,7 @@ lab_status: not-tested
 - **TTL**: 라우터마다 감소. IPv4 출발지·목적지 IP는 NAT하지 않으면 그대로. 각 링크의 MAC은 새로 씌운다.
 
 ### 내부 의사결정 예시
-PC-A `192.168.10.10`에서 PC-B `192.168.30.20`으로 Ping → PC-A default gateway R1(.1) → R1에서 `192.168.30.0/24 via 10.0.12.2` → R2의 `via 10.0.23.3` → R3 LAN30 → PC-B. Reply는 R3→R2→R1의 반대 경로가 있어야 한다.
+PC-A `192.168.10.10`에서 PC-B `192.168.30.20`으로 Ping → PC-A default gateway R1(.1) → R1에서 `192.168.30.0/24 via 10.0.12.2` → R2의 `via 10.0.23.2` → R3 LAN30 → PC-B. Reply는 R3→R2→R1의 반대 경로가 있어야 한다.
 
 ## 3. 토폴로지
 ```text
