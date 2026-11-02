@@ -20,6 +20,10 @@ CCNA → CCNP Enterprise (ENCOR/ENARSI) → 데이터센터·VPN·보안·ISP·�
 - [Lab 01 — 두 PC 간 이더넷 통신과 ARP](./01-foundation/01-ethernet-arp/README.md): 실습·퀴즈 완료.
 - [Lab 02 — IPv4/CIDR와 서브넷 판단](./01-foundation/02-ipv4-subnetting/README.md): 필수 실습·주관식 퀴즈 완료 (선택 중복 IP 장애 미수행).
 
+- [Lab 03 — 기본 게이트웨이와 라우터 포워딩](./03-routing/01-default-gateway/README.md): 문서 준비, 실습 미검증.
+- [Lab 04 — 정적 경로·기본 경로](./03-routing/02-static-routing/README.md): 문서 준비, 실습 미검증.
+- [Lab 05 — VLAN·Access 포트](./02-switching/01-vlan-access/README.md): 문서 준비, 실습 미검증.
+
 ## GPT / LLM 대화형 학습 운영 규칙
 
 > 새 대화에서 이 README와 대상 Lab README를 읽도록 요청한다. 이 규칙은 **학습 진행 방법**이며, Lab 문서에 기록된 네트워크 사실·장비 명령을 대체하지 않는다.
@@ -69,7 +73,7 @@ cloud-lab/networking/README.md와 현재 학습할 Lab의 README.md를 확인하
 
 | 범위 | 완료 | 계획 |
 | --- | ---: | --- |
-| Lab 문서 작성 | 2 | 나머지는 커리큘럼 초안 |
+| Lab 문서 작성 | 5 | 나머지는 커리큘럼 초안 |
 | 직접 실습 검증 | 2 (NET-FD-001, NET-FD-002 필수 경로) | 선택 장애는 미실시 |
 | 종료 퀴즈 완료 | 2 (각 2문항 통과) | 나머지 Lab은 미실시 |
 | 복합 시나리오 완료 | 0 | 개별 실습 이후 |
