@@ -63,3 +63,24 @@ StatefulSet 삭제나 scale-down은 기본적으로 volumeClaimTemplates의 PVC�
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+## 병합 심화 — StatefulSet과 PVC의 생명주기
+
+예전 독립 과정의 동적 저장소 예제는 같은 Lab에 있는 [확장 YAML](./extended-setup.yaml)을 사용한다. StorageClass provisioner가 준비됐는지 먼저 확인하고, 없으면 [공용 애드온 안내](../../guides/ADDONS.md)를 참고한다.
+
+```bash
+kubectl apply -f k8s/05-advanced/01-statefulset/extended-setup.yaml
+kubectl -n lab-self-storage rollout status statefulset/data --timeout=180s
+kubectl -n lab-self-storage get pods,pvc -o wide
+kubectl -n lab-self-storage exec data-0 -- sh -c 'echo data-zero > /data/marker'
+kubectl -n lab-self-storage exec data-1 -- sh -c 'echo data-one > /data/marker'
+kubectl -n lab-self-storage delete pod data-0 --wait=true
+python3 k8s/05-advanced/01-statefulset/wait_for_pod.py lab-self-storage data-0 --timeout 180
+kubectl -n lab-self-storage exec data-0 -- cat /data/marker
+kubectl -n lab-self-storage scale statefulset data --replicas=1
+kubectl -n lab-self-storage get pvc
+kubectl -n lab-self-storage scale statefulset data --replicas=2
+kubectl -n lab-self-storage exec data-1 -- cat /data/marker
+```
+
+Pod가 삭제되어 UID가 바뀌더라도 StatefulSet의 PVC 데이터가 유지되는지 비교한다. Scale-down 시 PVC 유지 여부, Pod의 재생성 여부, WaitForFirstConsumer에서 PVC Pending이 정상일 수 있는 조건을 설명한다. 볼륨 Binding과 Mount 실패를 구분하고, 데이터 보존 정책을 확인한 후 실습 Namespace/PVC를 정리한다. 이 실습은 별도의 08단계 완료 항목으로 계산하지 않는다.
