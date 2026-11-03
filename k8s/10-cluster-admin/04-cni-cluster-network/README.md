@@ -75,3 +75,66 @@ CNI 설치 뒤 CoreDNS Pending이면 kube-system Pod 이벤트와 CNI daemonset 
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
 [10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
+
+
+## 작업형 실습 — CNI 설치 전후와 데이터 경로 구분
+
+**대상:** [ADM-01](../01-kubeadm-bootstrap/README.md)의 **별도 VM**. 기존 1.27 Calico CNI를 삭제하거나 교체하지 않는다. 아래 조회 단계는 현재 환경에서도 안전하며, CNI 설치·변경은 폐기 가능한 클러스터에서만 수행한다.
+
+```bash
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -o wide
+kubectl get --raw=/readyz
+kubectl get pods -A --field-selector=status.phase=Pending
+kubectl get endpointslices -A
+kubectl get networkpolicies -A
+```
+
+### 단계 A — CNI 설치 전 상태 예측
+
+1. 새 클러스터에서 kubeadm init 성공 뒤 CNI 설치 **전** Node Conditions와 CoreDNS Pending 여부를 기록한다.
+2. Pod CIDR, Service CIDR, VM LAN 대역이 서로 겹치지 않는지 확인한다.
+3. CRI가 kubelet과 정상 연결돼 있어도 왜 Pod sandbox 네트워크가 준비되지 않을 수 있는지 설명한다.
+
+### 단계 B — CNI 설치·검증
+
+[플랫폼의 Calico 설치 절차](../../guides/PLATFORM.md#5-cni-설치-control-plane)를 따라 **별도 VM에서만** 설치한다. 각 Node Ready, CNI Pod Ready 및 CoreDNS 정상화까지 기다린다. 다음 조회를 수행한다.
+
+```bash
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -o wide
+kubectl get pods -A -o wide
+kubectl describe node k8s-worker1
+```
+
+실제 별도 클러스터 Node 이름은 위 예제와 다를 수 있으므로 `kubectl get nodes`의 값을 사용한다. CNI DaemonSet이 성공해도 Pod 간 통신을 자동으로 증명한 것은 아니다.
+
+### 단계 C — 같은 Node / 다른 Node 요청
+
+```bash
+kubectl create namespace lab-cni
+kubectl -n lab-cni create deployment web --image=nginx:1.28-alpine --replicas=2
+kubectl -n lab-cni expose deployment web --port=80 --target-port=80
+kubectl -n lab-cni rollout status deploy/web --timeout=180s
+kubectl -n lab-cni get pods -o wide
+kubectl -n lab-cni get endpointslices
+kubectl -n lab-cni run client --image=busybox:1.37 --restart=Never -- sleep 3600
+kubectl -n lab-cni wait --for=condition=Ready pod/client --timeout=120s
+kubectl -n lab-cni exec client -- nslookup web
+kubectl -n lab-cni exec client -- wget -qO- http://web
+```
+
+Pod가 모두 같은 Node에 놓였으면 **다른 Node 통신이 입증되지 않았다**고 기록한다. NodeSelector/affinity를 이용해 2개 Pod가 서로 다른 Worker에 배치되도록 한 뒤 직접 Pod IP와 Service IP의 요청 결과를 비교한다. Pod CIDR의 VXLAN/IPIP/BGP 전달 여부는 **실제 CNI 모드**에 따라 다르다.
+
+### 진단 / 정리
+
+- DNS 실패: CoreDNS Pod, CoreDNS Service, Node DNS 설정부터 확인.
+- Pod IP 직접 통신 실패: Pod Ready, Node CIDR, CNI DaemonSet/노드 라우팅 확인.
+- ClusterIP만 실패: Service selector, EndpointSlice, kube-proxy 또는 대체 데이터 평면 확인.
+- NetworkPolicy에서만 실패: 정책 selector/ingress/egress 및 해당 CNI의 정책 집행 확인.
+
+```bash
+kubectl delete namespace lab-cni
+```
+
+**완료:** CNI 전/후 Node Ready 및 CoreDNS, 양쪽 Worker의 Pod 통신, DNS와 Service 분리 검증, Namespace 정리. 이미 설치된 CNI 자체는 이 Lab 종료 시 삭제하지 않는다.
