@@ -60,3 +60,16 @@ kubectl get events --sort-by=.lastTimestamp
 - [자원 예산을 계산해 3개 Pod 복구하기](../../07-cka-preview/11-resource-budget/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 
 - [PriorityClass와 스케줄링 우선순위](../../07-cka-preview/12-priorityclass/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## 운영 심화 연결: Scheduler Filter/Score와 Eviction 판단
+
+기존 스케줄링 장애 실습에 다음 세 가지 **서로 다른 실패 계층**을 분리해 기록한다.
+
+| 증상 | 책임 주체/계층 | 최초 확인 증거 |
+|---|---|---|
+| `Pending` + `FailedScheduling` | Scheduler의 Filter 조건 (requests, affinity, taint, PVC 토폴로지) | `describe pod`의 Events와 PodScheduled |
+| 컨테이너 `OOMKilled` | 실행 중 메모리 제한/커널 OOM | `lastState.terminated.reason`, restartCount |
+| Node 압박에 의한 `Evicted` | kubelet eviction | Pod status/message와 Node Conditions/Events |
+
+Scheduler는 `kubectl top`의 실시간 CPU가 가장 낮은 노드를 단순 선택하지 않는다. CPU limit 초과 시 throttling과 메모리 초과 시 OOMKilled, NodePressure Eviction을 구별한다. QoS 외에도 requests 초과 사용과 Priority가 eviction 판단에 영향을 미칠 수 있다. 독립 추가 실습을 새로 만들기보다는 Lab 25–32에서 얻은 결과를 이곳에 종합한다. [내부 참고](../../09-internals/05-scheduler-eviction/README.md).
