@@ -50,6 +50,15 @@ kubectl get events --sort-by=.lastTimestamp
 
 원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
 
+## 실습 완료 기록 (2026-11-03)
+
+- ✅ replicas=3, maxSurge=1, maxUnavailable=0, readinessProbe 설정 후 nginx 1.27 → 1.28 RollingUpdate 검증.
+- ✅ 신규 Pod Ready 이후 기존 Pod 종료와 두 ReplicaSet 공존 확인, rollout 성공 및 신규 Pod 3/3 Ready 확인.
+- ✅ 존재하지 않는 이미지로 ErrImagePull 및 ImagePullBackOff, rollout timeout 재현; 기존 정상 Pod 3개 유지와 Service HTTP 200 확인.
+- ✅ rollout undo 후 기존 정상 Pod 3개 유지, 실패한 ReplicaSet replicas=0 확인.
+- ✅ Namespace lab-rolling 삭제 후 NotFound 확인.
+- 복습 2문제 진행 예정.
+
 ## 완료 검증
 
 1. Deployment와 ReplicaSet의 관계를 설명한다.
