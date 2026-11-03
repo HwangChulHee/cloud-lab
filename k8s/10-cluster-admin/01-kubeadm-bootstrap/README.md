@@ -1,6 +1,6 @@
 # kubeadm·CRI·CNI 설치 순서
 
-> 분류: **CKA 필수** · 선수 학습: [플랫폼 준비](../../guides/PLATFORM.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [플랫폼 준비](../../guides/PLATFORM.md) · 환경: 새로 구축하는 격리된 Ubuntu VM 3대(Kubernetes 1.36 예시), 기존 1.27.2 VM 변경 금지
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -51,9 +51,21 @@ sudo crictl info
 
 ## 따라 하기 — 순서와 예상 결과
 
-기존 guides/PLATFORM.md의 Ubuntu 전용 VM 준비→kubeadm init/join→CNI 설치 순서를 따른다. init 직후/ CNI 설치 후 Ready 변화와 kube-system Pod를 비교한다.
+[플랫폼 구축 전체 절차](../../guides/PLATFORM.md#1-모든-vm--os커널-준비)의 OS → containerd → kubeadm → Control Plane init → CNI → Worker join 명령을 **실제 별도 VM**에 순서대로 실행한다. init 직후/ CNI 설치 후 Ready 변화와 kube-system Pod를 비교한다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
+
+## 실제 확인 명령과 판정
+
+```bash
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -o wide
+kubectl get --raw=/readyz
+kubectl get --raw=/livez
+kubectl describe node cp1
+```
+
+예상: 모든 Node Ready, CoreDNS Ready, API readyz/livez 정상. CNI가 아직 설치되지 않았다면 Node NotReady와 CoreDNS Pending을 관찰할 수 있으며 `kubeadm init` 자체의 성공과 구분한다. Control Plane/Worker 각각 다른 Node에서 Pod 생성·Service 접근을 테스트하고 출력 기록을 남긴다.
 
 ## 고장 가설과 복구
 
