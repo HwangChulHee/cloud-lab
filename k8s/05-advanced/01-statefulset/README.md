@@ -20,67 +20,64 @@ StatefulSet은 안정적인 ordinal 이름, 네트워크 identity와 PVC 연결�
 
 시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
 
-## Build & Observe
+## Build & Observe — StatefulSet identity와 PVC 보존
 
-1. ReplicaSet과 StatefulSet을 각각 scale해 이름/생성 순서를 비교한다.
-2. volumeClaimTemplates로 Pod별 PVC 생성을 확인한다.
-3. Pod별 파일을 만들고 재생성 후 동일 PVC 재연결을 확인한다.
-4. Headless Service DNS로 개별 Pod를 호출한다.
-
-필요에 따라 다음 명령을 사용한다.
+[Local Path Provisioner](../../guides/ADDONS.md#local-path-provisioner)가 설치됐는지 확인한다. `lab-self-local` StorageClass가 **다른 용도로 이미 사용 중이라면 덮어쓰지 않는다.**
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
-```
-
-## Break & Diagnose
-
-1. StatefulSet Pod 하나를 삭제하고 이름/볼륨이 어떻게 복구되는지 관찰한다.
-
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
-
-## Recover
-
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
-
-## 완료 검증
-
-1. Stateless와 Stateful workload의 차이를 설명한다.
-
-## Cleanup
-
-StatefulSet 삭제나 scale-down은 기본적으로 volumeClaimTemplates의 PVC를 삭제하지 않는다. 실습에서 생성한 PVC 이름을 먼저 확인하고 필요한 데이터가 없는 경우에만 개별 삭제한다. PVC/PV의 Retain/Delete 정책과 실제 저장소 정리도 확인한다.
-
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
-
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
-
-## 병합 심화 — StatefulSet과 PVC의 생명주기
-
-예전 독립 과정의 동적 저장소 예제는 같은 Lab에 있는 [확장 YAML](./extended-setup.yaml)을 사용한다. StorageClass provisioner가 준비됐는지 먼저 확인하고, 없으면 [공용 애드온 안내](../../guides/ADDONS.md)를 참고한다.
-
-```bash
+kubectl get storageclass
+kubectl get storageclass lab-self-local --ignore-not-found
 kubectl apply -f k8s/05-advanced/01-statefulset/extended-setup.yaml
 kubectl -n lab-self-storage rollout status statefulset/data --timeout=180s
-kubectl -n lab-self-storage get pods,pvc -o wide
+kubectl -n lab-self-storage get pods,pvc,svc -o wide
+kubectl -n lab-self-storage get endpointslices -l kubernetes.io/service-name=data
+```
+
+**예상:** `data-0`, `data-1`이라는 안정적인 Pod 이름, 각 Pod에 대응하는 `disk-data-0`, `disk-data-1` PVC가 Bound. Headless Service는 ClusterIP 없이 Pod 주소 발견에 사용된다.
+
+## Break & Diagnose — Pod 삭제와 데이터 보존
+
+```bash
 kubectl -n lab-self-storage exec data-0 -- sh -c 'echo data-zero > /data/marker'
 kubectl -n lab-self-storage exec data-1 -- sh -c 'echo data-one > /data/marker'
+kubectl -n lab-self-storage get pod data-0 -o jsonpath='{.metadata.uid}{"\n"}'
 kubectl -n lab-self-storage delete pod data-0 --wait=true
 python3 k8s/05-advanced/01-statefulset/wait_for_pod.py lab-self-storage data-0 --timeout 180
+kubectl -n lab-self-storage get pod data-0 -o jsonpath='{.metadata.uid}{"\n"}'
 kubectl -n lab-self-storage exec data-0 -- cat /data/marker
+```
+
+**예상:** UID는 바뀌었지만 Pod 이름과 데이터 `data-zero`는 유지된다. StatefulSet Controller가 안정적 Pod identity를 복원하고, StorageClass/provisioner와 PVC가 데이터 볼륨 연결을 담당한다. 이미 실행한 컨테이너의 메모리에 있던 데이터까지 보존한다고 주장하지 않는다.
+
+## Recover & Observe — Scale-down / Scale-up
+
+```bash
 kubectl -n lab-self-storage scale statefulset data --replicas=1
-kubectl -n lab-self-storage get pvc
+kubectl -n lab-self-storage get pods,pvc
 kubectl -n lab-self-storage scale statefulset data --replicas=2
+kubectl -n lab-self-storage rollout status statefulset/data --timeout=180s
+kubectl -n lab-self-storage get pods,pvc
 kubectl -n lab-self-storage exec data-1 -- cat /data/marker
 ```
 
-Pod가 삭제되어 UID가 바뀌더라도 StatefulSet의 PVC 데이터가 유지되는지 비교한다. Scale-down 시 PVC 유지 여부, Pod의 재생성 여부, WaitForFirstConsumer에서 PVC Pending이 정상일 수 있는 조건을 설명한다. 볼륨 Binding과 Mount 실패를 구분하고, 데이터 보존 정책을 확인한 후 실습 Namespace/PVC를 정리한다. 이 실습은 별도의 08단계 완료 항목으로 계산하지 않는다.
+**예상:** 기본 `persistentVolumeClaimRetentionPolicy=Retain`에서는 scale-down으로 `data-1` Pod가 사라져도 PVC `disk-data-1`는 남는다. Scale-up하면 같은 PVC에 재연결해 `data-one`을 읽을 수 있다. 이 동작은 데이터베이스 복제/리더 선출과는 별개다.
+
+## Cleanup — PVC와 StorageClass의 범위 확인
+
+```bash
+kubectl -n lab-self-storage get pvc
+kubectl delete namespace lab-self-storage
+kubectl get pv
+kubectl get storageclass lab-self-local
+```
+
+Namespace 삭제 완료와 PV의 `Delete` reclaim 처리 여부를 확인한다. **이번 Lab에서 새로 만든 전용 StorageClass인지 확인한 후에만** `kubectl delete storageclass lab-self-local`을 실행한다. 공용 Local Path Provisioner Deployment 및 원래 `local-path` Class는 삭제하지 않는다.
+
+## Explain — 완료 기준
+
+1. StatefulSet의 ordinal, headless DNS, stable storage의 차이를 설명한다.
+2. Pod 재생성 후 UID 변경과 파일 보존을 증거로 남긴다.
+3. scale 2 → 1 → 2 뒤 PVC와 데이터가 유지되는 조건을 설명한다.
+4. 어떤 조건에서 PVC가 자동 삭제될 수 있으며 `Retain`과 `Delete` 정책은 각각 무엇에 적용되는지 구분한다.
+
+[공식 StatefulSet 문서](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/).
