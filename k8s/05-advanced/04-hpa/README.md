@@ -78,3 +78,54 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [HPA와 축소 안정화 시간](../../07-cka-preview/02-hpa-behavior/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## 실행형 Lab — Metrics → HPA → Scale-Out/In
+
+기존 Vagrant 클러스터에서 [Metrics Server](../../guides/ADDONS.md#metrics-server)가 정상인지 먼저 확인한다. `kubectl top nodes`가 실패하면 HPA 문제로 결론 내리기 전에 metrics 수집을 점검한다.
+
+```bash
+kubectl top nodes
+kubectl get apiservice v1beta1.metrics.k8s.io
+kubectl apply -f k8s/05-advanced/04-hpa/hpa.yaml
+kubectl -n lab-hpa rollout status deploy/php-apache --timeout=180s
+kubectl -n lab-hpa get hpa,deploy,pods
+kubectl -n lab-hpa describe hpa php-apache
+```
+
+**예상:** cpu utilization `current/50%`를 표시하고 minReplicas=1, maxReplicas=5다. Metrics 수집 시점 때문에 초기에 `unknown`이 나올 수 있으니 Conditions/Events와 `kubectl top pods`로 구분한다.
+
+### 부하 주입과 관측
+
+```bash
+kubectl apply -f k8s/05-advanced/04-hpa/load.yaml
+kubectl -n lab-hpa get pods
+kubectl -n lab-hpa get hpa,deploy -w
+# 현재 사용률, desired replicas, 실제 Ready 변화를 관찰 후 Ctrl+C
+kubectl -n lab-hpa describe hpa php-apache
+kubectl -n lab-hpa top pods
+```
+
+**예상:** CPU 부하가 충분하면 HPA가 Deployment replicas를 늘리고 ReplicaSet이 Pod를 생성한다. 부하·Metrics 수집 주기·스케줄 자원에 따라 **정확한 replica 수와 시점은 달라진다**. Pod가 Pending이면 HPA가 아니라 Scheduler의 자원/배치 실패일 수 있다. Load Pod는 CPU limit를 갖춰 노드 전체에 과도한 부하를 주지 않게 했다.
+
+### 복구 및 축소
+
+```bash
+kubectl -n lab-hpa delete pod load --wait=true
+kubectl -n lab-hpa get hpa,deploy
+kubectl -n lab-hpa describe hpa php-apache
+```
+
+HPA scale-down은 기본 안정화 창 때문에 지연될 수 있다. 스케일 다운 완료까지의 대기와 Metrics 목표치를 기록한다. Scale-out이 관찰되지 않으면 `kubectl top pods`, HPA Conditions, request와 실제 CPU 부하를 확인한 후 판단한다. 정상 동작을 확인하기 위해 사용자가 `kubectl scale deploy`로 수동 replica 수를 강제하지 않는다.
+
+## 장애 분석: CPU request 누락
+
+[CKA 확장 02](../../07-cka-preview/02-hpa-behavior/README.md)는 request 없는 경우의 `ScalingActive` 오류, HPA 안정화 행동을 **별도의 시험형 문제**로 연습한다. 이 Lab에서는 CPU request와 Metrics API가 존재하는 정상 HPA 시나리오에 집중한다.
+
+## Cleanup / 인출
+
+```bash
+kubectl delete namespace lab-hpa
+```
+
+CPU request 200m와 사용량 100m이면 utilization은 몇 %인가? 1개의 현재 Pod가 사용률 200%, 목표 50%일 때 단순화된 추천 replica 수는? HPA, VPA, 노드 자동 확장은 각각 무엇을 조절하는가?
