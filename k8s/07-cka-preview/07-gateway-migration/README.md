@@ -76,7 +76,7 @@ kubectl apply -f solution.yaml
 
 </details>
 
-[Gateway Canary 가중치·헤더 비교](../../07-cka-preview/07-gateway-migration/README.md)를 이어 할 경우 아래 정리를 하기 전에 실행한다.
+아래 **Gateway Canary — 이전 확장 실습 병합** 절을 이어 진행하려면 위 기본 구성의 Namespace를 정리하기 전에 실행한다.
 
 ## 4. 정리 및 재실행
 
@@ -98,7 +98,7 @@ rm -f /tmp/preview-gateway.key /tmp/preview-gateway.crt
 ## Gateway Canary — 이전 확장 실습 병합
 
 
-별도 1.36 환경의 [07 Gateway](./README.md) 1–3단계에서 HTTPS를 정상 확인한 뒤, **07의 정리 전에** 진행한다. 이미 정리했다면 Gateway/TLS/HTTPRoute를 해당 문서대로 다시 구축한다. Gateway 데이터 평면 Service를 9443:443으로 port-forward한 첫 셸을 유지하고 같은 머신의 두 번째 셸에서 실행한다.
+별도 1.36 환경의 **이 문서 1–3단계**에서 HTTPS를 정상 확인한 뒤, **07의 정리 전에** 진행한다. 이미 정리했다면 Gateway/TLS/HTTPRoute를 해당 문서대로 다시 구축한다. Gateway 데이터 평면 Service를 9443:443으로 port-forward한 첫 셸을 유지하고 같은 머신의 두 번째 셸에서 실행한다.
 
 ### 먼저 이해할 것
 
