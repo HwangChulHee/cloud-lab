@@ -32,7 +32,7 @@ ls k8s/00-foundation
 
 Pod 생성은 API Server의 승인·저장, Controller의 원하는 상태 조정, scheduler의 노드 선택, kubelet/runtime의 실행으로 이어진다. 독립 Pod는 Controller의 개수 복구 대상이 아니다. [개념 지도](../07-cka-preview/CONCEPT_BRIDGE.md)의 1번 표로 구성 요소 역할을 먼저 읽는다.
 
-Pod/Service 실습은 아직 Metrics Server·Ingress·동적 스토리지가 필요 없다. [애드온 준비](./ADDONS.md)는 06 저장소와 08 운영 단계에 도착했을 때 진행한다. 이미 설치된 애드온은 재사용한다.
+Pod/Service 실습은 아직 Metrics Server·Ingress·동적 스토리지가 필요 없다. [애드온 준비](./ADDONS.md)는 Lab 34 동적 저장소와 Lab 39–41 Ingress/HPA에 도착했을 때 진행한다. 이미 설치된 애드온은 재사용한다.
 
 ## 실습 입력값
 
@@ -43,8 +43,8 @@ Pod/Service 실습은 아직 Metrics Server·Ingress·동적 스토리지가 필
 
 ## 첫 실행에서 확인할 것
 
-[01 Pod](./01-pods/README.md)의 Ready 대기가 실패하면 `kubectl -n lab-self-pods describe pod pair`를 확인한다. 이미지 pull, CNI, 배치, init container 실패를 구분하고 원인을 해결한 뒤 다시 대기한다. 문서의 timeout은 성공을 대신하지 않는다. 명령은 코드 블록별로 실행하고 예상 결과를 확인한 뒤 다음 블록으로 넘어간다. 의도한 실패라고 적힌 명령을 제외하고 오류나 timeout이 나오면 진행을 멈추고 원인을 해결한다. watch/port-forward는 안내된 시점에 Ctrl+C로 종료하거나 별도 셸에서 유지한다.
+[Lab 03 Pod](../01-core-objects/01-pod-multicontainer/README.md)의 Ready 대기가 실패하면 `kubectl -n lab-self-pods describe pod pair`를 확인한다. 이미지 pull, CNI, 배치, init container 실패를 구분하고 원인을 해결한 뒤 다시 대기한다. 문서의 timeout은 성공을 대신하지 않는다. 명령은 코드 블록별로 실행하고 예상 결과를 확인한 뒤 다음 블록으로 넘어간다. 의도한 실패라고 적힌 명령을 제외하고 오류나 timeout이 나오면 진행을 멈추고 원인을 해결한다. watch/port-forward는 안내된 시점에 Ctrl+C로 종료하거나 별도 셸에서 유지한다.
 
-`lab-self-*` 이름과 `cloud-lab/self-study` taint key는 이 과정 전용이다. 같은 이름의 기존 리소스가 있다면 이전 실습이 정리됐는지 확인하고 기존 목적을 모르는 리소스를 덮어쓰지 않는다. 강제로 시스템 리소스를 삭제할 필요는 없다.
+확장 실습에 등장하는 `lab-self-*` 이름과 `cloud-lab/self-study` taint key는 이 과정 전용이다. 같은 이름의 기존 리소스가 있다면 이전 실습이 정리됐는지 확인하고 기존 목적을 모르는 리소스를 덮어쓰지 않는다. 강제로 시스템 리소스를 삭제할 필요는 없다.
 
-[독립 학습 순서](./README.md)
+[공식 65개 모듈 목차](../README.md)
