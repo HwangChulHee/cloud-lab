@@ -160,6 +160,6 @@ umask "$SECURITY_OLD_UMASK"
 unset SECURITY_OLD_UMASK
 ```
 
-다음: [08 노출·확장·통합 진단](../08-operations/README.md).
+다음: [08 노출·확장·통합 진단](../../05-advanced/03-ingress-canary-tls/README.md).
 
 [독립 학습 순서](../../README.md)
