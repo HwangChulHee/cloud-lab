@@ -69,3 +69,22 @@ kubectl get events --sort-by=.lastTimestamp
 - [Retain PV로 데이터 복구하기](../../07-cka-preview/03-pv-data-recovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 
 - [StorageClass와 지연 바인딩](../../07-cka-preview/04-storageclass-binding/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## CSI 내부 동작: Provision → Bind → (Attach) → Mount
+
+PVC가 `Bound`라고 해서 컨테이너가 이미 볼륨을 마운트했다는 뜻은 아니다. StorageClass가 동적 프로비저닝을 지시하고, PV/PVC 바인딩 이후 Node 사용 단계에서 별도 오류가 발생할 수 있다.
+
+```bash
+kubectl get storageclass,pv
+kubectl get pvc,pods -n <namespace> -o wide
+kubectl describe pvc <pvc> -n <namespace>
+kubectl describe pod <pod> -n <namespace>
+```
+
+- `PVC Pending`: StorageClass/provisioner, 용량, topology, `volumeBindingMode` 확인.
+- `PVC Bound + FailedMount`: kubelet, Node, 드라이버와 마운트 Events 확인.
+- CSI 드라이버에 따라 ControllerPublish(Attach) 단계가 없을 수 있다. **Local Path Provisioner는 CSI 전체 경로를 보여주는 증거가 아니다.**
+- `WaitForFirstConsumer`에서는 소비 Pod의 스케줄링 제약과 볼륨 결정을 함께 다루므로 PVC만 만들어 놓고 Pending인 상태가 반드시 장애는 아니다.
+
+이 주제를 검증할 때는 저장소 운영 전반을 깨뜨리는 대신 잘못된 StorageClass를 가진 테스트 PVC처럼 범위가 제한된 장애를 우선 사용한다. [CSI 상세 관찰](../../09-internals/06-csi-volume-lifecycle/README.md).
