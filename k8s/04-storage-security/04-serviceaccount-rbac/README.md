@@ -65,3 +65,15 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [Helm으로 Argo CD 설치와 템플릿 비교](../../07-cka-preview/13-helm-argocd/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## 독립 심화: RBAC 허용과 Admission 거부 구분
+
+`kubectl auth can-i create pods`의 `yes`는 API 요청의 모든 단계가 성공한다는 뜻이 아니다. RBAC 허용 이후에도 Pod Security Admission(PSA)이나 리소스 정책이 객체를 거부할 수 있다.
+
+- 실습용 Namespace에 PSA `enforce=restricted`를 설정하고 권한이 허용된 주체로 제한 위반 Pod를 **server-side dry-run** 한다.
+- `kubectl auth can-i` 출력, API Server의 거부 메시지, Pod가 실제 생성되었는지를 분리해서 기록한다.
+- `enforce`/ `warn`/`audit`, `privileged`/`baseline`/`restricted`의 의미와 Linux securityContext(capabilities, seccomp, 권한 상승 금지)의 관계를 설명한다.
+- 실패 확인 후 해당 테스트 Namespace를 정리하고 다른 Lab에 PSA 제한을 남기지 않는다.
+
+자세한 예제와 검증 근거는 [Admission과 Pod Security](../../09-internals/07-admission-pod-security/README.md)를 참고한다. 이 주제는 기존 SA 토큰과 Role/RoleBinding 실습의 추가 심화이며 별도 기초 필수 Lab으로 중복 산입하지 않는다.
