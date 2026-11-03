@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-job
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: batch
+  namespace: lab-job
+spec:
+  completions: 3
+  parallelism: 2
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: worker
+        image: busybox:1.37
+        command: ["sh", "-c", "echo running; sleep 5; echo success"]
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 64Mi}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: failing
+  namespace: lab-job
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: worker
+        image: busybox:1.37
+        command: ["sh", "-c", "echo deliberate-failure; exit 1"]
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 64Mi}
