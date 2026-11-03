@@ -144,3 +144,18 @@ DNS 성공 + HTTP 실패면 DNS가 아닌 selector/EndpointSlice/앱 listen/전�
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
 [09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
+
+## Linux Pod 네트워크 심화 — netns, veth, Calico
+
+Pod는 고유한 Linux Network Namespace를 가지고, 같은 Pod의 컨테이너들은 그 Namespace를 공유하므로 localhost가 통한다. 별도 Pod는 고유한 주소와 라우팅 컨텍스트를 사용한다. 실제 연결 방법은 CNI 구현에 따라 veth, overlay, routing 또는 eBPF 등으로 달라질 수 있다.
+
+```bash
+kubectl get nodes -o wide
+kubectl get pods -A -o wide
+ip -br link
+ip -br addr
+ip route
+kubectl -n kube-system get pods -o wide
+```
+
+현재 Calico VXLAN 클러스터에서 서로 다른 Worker의 Pod IP 간 통신을 확인하고, PodIP 직접 접근 실패와 Service DNS 실패를 구별한다. Node에서 `ip link`와 `ip route`로 인터페이스/경로를 관찰하되 노드별 인터페이스 이름을 일반화하지 않는다. veth는 Pod와 호스트 네트워크를 잇는 가상 이더넷 쌍이고, 다른 노드로 나갈 때는 사용 중인 CNI의 캡슐화나 라우팅 정책을 거친다. 이 확장은 기존 Service Lab의 일부이며 별도 INT 항목으로 집계하지 않는다.
