@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/07-security/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../04-storage-security/03-x509-kubeconfig-api/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -66,7 +66,7 @@ kubectl get events --sort-by=.lastTimestamp
 
 그다음 제한된 ServiceAccount에 대해 `kubectl create token <sa> -n <namespace> --duration=10m`으로 짧은 유효기간의 토큰을 발급하고 `Authorization: Bearer`를 사용해 허용된 Pod 목록 요청과 금지된 Secret 목록 요청의 HTTP 상태를 비교한다. 인증(Authentication), 인가(Authorization), Admission 거절을 구분하며 **403만 보고 인증 실패로 단정하지 않는다**.
 
-파일 격리는 `umask 077`, `mktemp -d`로 수행하고 종료 시 키·토큰 파일을 제거한다. 실행 명령 예제: [x509/RBAC 직접 요청](../../08-independent/07-security/README.md). 기존 전역 kubeconfig를 덮어쓰지 말고 별도의 임시 `--kubeconfig` 파일로 context 변화를 확인한다.
+파일 격리는 `umask 077`, `mktemp -d`로 수행하고 종료 시 키·토큰 파일을 제거한다. 실행 명령 예제: [x509/RBAC 직접 요청](../../04-storage-security/03-x509-kubeconfig-api/README.md). 기존 전역 kubeconfig를 덮어쓰지 말고 별도의 임시 `--kubeconfig` 파일로 context 변화를 확인한다.
 
 
 ## 통합 확장 실습 — API 인증·인가
