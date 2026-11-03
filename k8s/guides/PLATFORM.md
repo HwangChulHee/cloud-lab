@@ -92,6 +92,28 @@ kubectl -n kube-system get pods -o wide
 
 [Calico 공식 설치 문서](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)를 기준으로 **해당 Kubernetes 버전과 호환되는** Calico 릴리스, Operator/CRD와 IPPool을 확인해 적용한다. 임의의 latest YAML을 바로 실행하거나 현재 1.27 실습 VM의 CNI를 제거해서는 안 된다.
 
+### 고정 버전 Calico 설치 예시 (Kubernetes 1.36)
+
+2026-11-03 기준 Calico 공식 가이드의 **v3.33.0** Operator/CRD 방식이다. 다른 Kubernetes minor에서는 공식 호환표와 manifest를 다시 확인한다. 처음 설치하는 **새 1.36 클러스터에서만** 진행한다.
+
+```bash
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
+curl -fsSLo /tmp/calico-custom-resources.yaml \
+  https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+grep -nE 'cidr:|encapsulation:|ipPools:' /tmp/calico-custom-resources.yaml
+```
+
+**필수 검토:** `/tmp/calico-custom-resources.yaml`의 `Installation.spec.calicoNetwork.ipPools` CIDR이 `kubeadm init --pod-network-cidr`와 동일한지 확인한다. 다르면 파일을 수정한 뒤에만 적용한다. VM LAN/Service 네트워크와 겹치면 안 된다. 이 예제는 `192.168.0.0/16`을 가정한다.
+
+```bash
+kubectl apply -f /tmp/calico-custom-resources.yaml
+kubectl get tigerastatus
+kubectl -n calico-system get pods -o wide
+```
+
+Operator, Calico node, 네트워크 구성요소가 준비될 때까지 기다리고 Conditions/Events를 확인한다. 배포가 실패하면 CRD, Operator 로그, IPPool CIDR을 우선 확인한다. 한편 기존 1.27 Calico 설정을 이것으로 덮어쓰지 않는다.
+
 CNI 설치가 끝나면:
 
 ```bash
