@@ -16,33 +16,35 @@ nodeSelector/Node Affinity처럼 "어디로 갈지 정하는 기능"과 Taint/To
 
 ## Build & Observe
 
-1. worker1에 실습용 `hw=gpu:NoSchedule` taint를 건다.
-2. worker1을 nodeSelector로 지정한 Pod를 두 개 만들고, toleration 있는 Pod와 없는 Pod를 비교한다.
-3. toleration이 있는 Pod만 스케줄링되는지 Events로 확인한다.
-4. Toleration만 넣고 nodeSelector를 빼서 **허용했다고 해서 해당 Node를 선택하는 것은 아님**을 확인한다.
+실습 대상은 본인 Vagrant Worker1이며 **NoSchedule만 사용**한다. 노드에 원래 존재하는 Taint와 label을 먼저 기록한다. 다른 사용자의 workload가 없는지 확인한다.
 
-## Optional: NoExecute
+```bash
+kubectl get nodes -o wide
+kubectl describe node k8s-worker1
+kubectl get nodes -L cloud-lab/taint-demo
+kubectl label node k8s-worker1 cloud-lab/taint-demo=target
+kubectl taint node k8s-worker1 cloud-lab/lab31=true:NoSchedule
+kubectl apply -f k8s/03-pod-deep-dive/07-taints-tolerations/taints.yaml
+kubectl -n lab-taints get pods -o wide
+kubectl -n lab-taints describe pod blocked
+kubectl -n lab-taints describe pod allowed
+```
 
-`NoExecute`는 해당 Node의 기존 Pod를 퇴거시킬 수 있으므로 **현재 worker에 다른 사용자 workload가 없는 것을 확인한 경우에만** 진행한다.
+**예상:** blocked는 NodeSelector로 worker1만 선택하지만 NoSchedule taint를 감당하지 못해 Pending, allowed는 Toleration이 있으므로 worker1에서 Running이다. 다른 Worker로 우회하지 못하도록 **둘 다 nodeSelector를 사용했다**.
 
-1. 실습용 Pod 두 개를 같은 worker에 배치한다.
-2. 한 Pod에는 `tolerationSeconds`를 짧게 지정하고, 다른 Pod에는 시간 제한 없는 NoExecute toleration을 준다.
-3. 실습용 NoExecute taint를 적용하고 두 Pod의 퇴거 차이를 관찰한다.
-4. 관찰 직후 taint를 제거한다.
+## Break & Diagnose
 
-## Recover
+`kubectl describe pod blocked`의 `FailedScheduling` Event에서 untolerated taint를 확인한다. `PodScheduled=False`와 `Ready=False`를 구분한다. Toleration은 Node를 선택하는 수단이 아니라 **배치 허용 조건**이다. NoExecute는 기존 Pod까지 퇴거시킬 수 있으므로 기본 실습에서 사용하지 않는다.
 
-NoSchedule/NoExecute 실습용 taint를 모두 제거하고 Node 상태가 정상인지 확인한다.
+## Recover / Cleanup
 
-## 완료 검증
+```bash
+kubectl taint node k8s-worker1 cloud-lab/lab31:NoSchedule-
+kubectl -n lab-taints get pods -o wide
+kubectl -n lab-taints wait --for=condition=Ready pod/blocked --timeout=120s
+kubectl delete namespace lab-taints
+kubectl label node k8s-worker1 cloud-lab/taint-demo-
+kubectl describe node k8s-worker1
+```
 
-1. NoSchedule / PreferNoSchedule / NoExecute 차이를 설명한다.
-2. Toleration은 Node 선택 기능이 아니라 taint에 대한 **허용 조건**임을 설명한다.
-
-## Cleanup
-
-Pod와 실습용 Node label/taint를 모두 삭제한다. `kubectl describe node`로 taint가 남지 않았는지 확인한다.
-
-## 설명하기
-
-> Taint는 Node가 Pod를 ______하기 위한 조건이고, Toleration은 그 조건을 ______하지만 해당 Node를 선택해 주지는 않는다.
+기존 동일 key가 있었다면 무작정 덮어쓰지 말고 원래 값으로 되돌린다. 인출: NoSchedule/PreferNoSchedule/NoExecute 차이, Taint와 Affinity 차이, tolerationSeconds의 의미.
