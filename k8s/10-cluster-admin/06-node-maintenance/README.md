@@ -1,6 +1,6 @@
 # cordon·drain·Eviction API·PDB
 
-> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 05-resources-scheduling 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [Lab 31 Taints/Tolerations](../../03-pod-deep-dive/07-taints-tolerations/README.md)와 [ADM-05 Kustomize](../05-kustomize/README.md) · 환경: 별도 폐기 가능한 1.36 VM에서만 drain·uncordon 실행
 
 ## Overview — 무엇을 이해해야 하는가
 
