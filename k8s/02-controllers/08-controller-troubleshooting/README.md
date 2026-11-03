@@ -124,4 +124,4 @@ Pod를 지우고도 새 Pod가 안 나타나면 ReplicaSet의 desired/current/re
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/architecture/controller/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
+[Kubernetes 공식 커리큘럼](../../README.md)
