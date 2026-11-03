@@ -4,7 +4,7 @@
 
 기초 연결: [NodePort](../../01-core-objects/05-service-nodeport/README.md) · [Labels/Selectors](../../01-core-objects/02-label-selector/README.md)
 
-[독립 과정에서의 위치](../../08-independent/04-networking/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../01-core-objects/07-headless-endpoint-externalname/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
