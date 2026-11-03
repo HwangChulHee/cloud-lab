@@ -4,7 +4,7 @@
 
 기초 연결: [HPA](../../05-advanced/04-hpa/README.md) · [기초 자원 설정](../../01-core-objects/03-node-scheduling-resources/README.md)
 
-[독립 과정에서의 위치](../../08-independent/08-operations/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../05-advanced/03-ingress-canary-tls/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
