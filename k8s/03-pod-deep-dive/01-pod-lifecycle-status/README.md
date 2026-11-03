@@ -20,41 +20,44 @@ Pod phase와 Container 상태/재시작을 관찰한다.
 
 ## Build & Observe
 
-1. 정상 Running Pod, 즉시 종료되는 Pod, 잘못된 이미지 Pod를 만든다.
-2. `get`, `describe`, containerStatuses를 비교한다.
-3. Completed/ImagePullBackOff/CrashLoopBackOff 사례를 관찰한다.
-
-필요에 따라 다음 명령을 사용한다.
-
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl apply -f k8s/03-pod-deep-dive/01-pod-lifecycle-status/lifecycle.yaml
+kubectl -n lab-pod-lifecycle get pods -o wide
+kubectl -n lab-pod-lifecycle get pods -o custom-columns=NAME:.metadata.name,PHASE:.status.phase
+kubectl -n lab-pod-lifecycle describe pod crash
+kubectl -n lab-pod-lifecycle describe pod bad-image
+kubectl -n lab-pod-lifecycle get pod crash -o jsonpath='{.status.containerStatuses[0].restartCount}{"\n"}'
 ```
+
+**예상:** running은 Running; completed는 Succeeded/표시 Completed; crash는 Pod phase Running일 수 있지만 컨테이너가 Waiting/CrashLoopBackOff, `restartCount` 증가; bad-image는 이미지 조회 오류로 Waiting/ImagePullBackOff 또는 ErrImagePull. 이미지를 가져오지 못한 Pod가 Phase Pending을 보일 수도 있다.
 
 ## Break & Diagnose
 
-1. 반복 실패 command로 CrashLoopBackOff를 재현한다.
+```bash
+kubectl -n lab-pod-lifecycle get pod crash -o jsonpath='{.metadata.uid}{"\n"}'
+kubectl -n lab-pod-lifecycle get pod crash -o jsonpath='{.status.containerStatuses[0].lastState.terminated.exitCode}{"\n"}'
+kubectl -n lab-pod-lifecycle logs crash --previous
+kubectl -n lab-pod-lifecycle get events --sort-by=.lastTimestamp
+```
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+**판별:** 같은 Pod UID와 증가하는 restartCount라면 컨테이너 재시작이다. 삭제 후 새 UID가 생기는 Controller 재생성과 구별한다. `--previous` 로그는 이전 컨테이너가 없을 때 오류를 반환할 수 있다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+독립 Pod의 컨테이너 command는 수정할 수 없으므로 **새 Pod 이름**으로 정상이 되는 예를 확인한다.
 
-## 완료 검증
+```bash
+kubectl -n lab-pod-lifecycle run recovered --image=busybox:1.37 --restart=Never -- sh -c 'echo recovered'
+kubectl -n lab-pod-lifecycle wait --for=jsonpath='{.status.phase}'=Succeeded pod/recovered --timeout=120s
+kubectl -n lab-pod-lifecycle logs recovered
+```
 
-1. Pod phase와 Container state가 같은 개념이 아님을 설명한다.
+## 완료 검증 / Cleanup / Explain
 
-## Cleanup
+각 Pod의 **Pod phase / kubectl STATUS / Container state / restartCount / Events**를 한 표로 기록한다.
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+```bash
+kubectl delete namespace lab-pod-lifecycle
+```
 
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+인출 질문: CrashLoopBackOff가 Pod phase가 아닌 이유? `OOMKilled`와 `Evicted`는 어느 계층의 상태를 확인해야 하는가? 독립 Pod를 지워도 자동 재생성되지 않는 이유?
