@@ -150,4 +150,4 @@ kubectl -n preview-gateway delete svc stable canary
 
 원래 HTTPS 응답을 확인하고 07 문서의 port-forward/namespace/인증서 정리를 완료한다.
 
-[플랫폼 경로](./PLATFORM.md) · [독립 학습 순서](./README.md)
+[별도 플랫폼 구축](../../guides/PLATFORM.md) · [CKA 확장 목차](../README.md)
