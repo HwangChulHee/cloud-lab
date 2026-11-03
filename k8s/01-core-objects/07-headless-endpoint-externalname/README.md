@@ -87,3 +87,15 @@ kubectl get events --sort-by=.lastTimestamp
 - [x] 문제 5: 한 backend Pod 삭제 시 EndpointSlice와 Headless DNS에서 해당 Pod IP가 제외되고, 일반 ClusterIP Service DNS 응답은 그대로 유지됨을 설명.
 
 **복습 결과: 5/5 정답.** 실습 완료 수치는 별도로 변경하지 않음.
+
+
+## 독립 심화: selector 없는 Service와 수동 EndpointSlice
+
+기존 Headless/ExternalName 관찰과 별도로, selector가 **없는** ClusterIP Service `manual`을 만들고 이 Service를 가리키는 `EndpointSlice`에 실제 Ready Pod IP/port를 직접 설정한다. 기존 Service의 자동 EndpointSlice와 차이를 관찰한다.
+
+1. `kubectl get pod -o wide`로 백엔드 IP를 확인하고 수동 EndpointSlice의 `addresses`를 채운다.
+2. `kubernetes.io/service-name: manual` 레이블을 설정하고, `kubectl get endpointslices -l kubernetes.io/service-name=manual -o yaml`로 확인한다.
+3. 테스트 Pod에서 `wget -qO- http://manual`로 응답을 확인한다.
+4. 백엔드 Pod를 재생성한 뒤 수동 EndpointSlice가 **자동 갱신되지 않는다**는 점을 관찰하고 올바른 IP로 복구한다.
+
+기존 실행 예제: [수동 EndpointSlice YAML](../../08-independent/04-networking/manual-endpoint.yaml), [네트워크 재현 환경](../../08-independent/04-networking/setup.yaml). 예제의 placeholder를 실제 주소로 변경해야 하며, 현재 Lab에서 쓰는 namespace와 자동 생성 EndpointSlice를 혼동하지 않는다.
