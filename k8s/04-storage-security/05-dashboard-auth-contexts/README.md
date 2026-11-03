@@ -10,7 +10,7 @@ kubeconfig는 **클러스터 연결 정보**, **사용자 인증 정보**, **con
 
 ## 2. Build — 원본 kubeconfig를 변경하지 않고 연습
 
-이 명령은 kubeconfig를 민감한 임시 파일로 복사한다. 임시 파일은 600 권한으로 만들고 실습 종료 시 삭제한다.
+이 명령은 인증서 경로가 상대경로여도 재현되도록 `--flatten`으로 포함시킨 kubeconfig를 민감한 임시 파일로 복사한다. 임시 파일은 600 권한으로 만들고 실습 종료 시 삭제한다.
 
 ```bash
 kubectl config current-context
@@ -18,7 +18,7 @@ kubectl config get-contexts
 kubectl create namespace lab-context
 umask 077
 CTX_TMP=$(mktemp)
-kubectl config view --raw > "$CTX_TMP"
+kubectl config view --raw --flatten > "$CTX_TMP"
 chmod 600 "$CTX_TMP"
 CTX_CLUSTER=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}')
 CTX_USER=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.user}')
