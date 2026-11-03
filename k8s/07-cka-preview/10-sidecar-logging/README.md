@@ -4,7 +4,7 @@
 
 기초 연결: [멀티 컨테이너 Pod](../../01-core-objects/01-pod-multicontainer/README.md) · [emptyDir](../../01-core-objects/08-volume-emptydir/README.md)
 
-[독립 과정에서의 위치](../../08-independent/03-controllers/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../02-controllers/08-controller-troubleshooting/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
