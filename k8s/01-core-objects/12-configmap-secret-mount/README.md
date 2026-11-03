@@ -71,3 +71,16 @@ kubectl get events --sort-by=.lastTimestamp
 - **정리:** `kubectl delete namespace lab-config-mount` 후 `kubectl get namespace lab-config-mount`에서 `NotFound` 확인. 로컬 Master VM의 입력·YAML 파일은 자동 삭제되지 않음.
 - **미수행 추가 과제:** 존재하지 않는 ConfigMap key/path를 이용한 의도적 마운트 실패와 Events 진단은 별도로 재현하지 않음.
 - **복습:** **2/2 완료**. ① `envFrom`은 기존 컨테이너에 변경 내용이 자동 반영되지 않아 Pod 재생성이 필요하고, 일반 ConfigMap 볼륨은 지연 갱신되어 파일을 다시 읽을 때 최신 값 확인 가능. ② `subPath`는 초기 파일 바인드 마운트에 고정되며, 일반 마운트는 kubelet의 `..data` 심볼릭 링크 전환을 따라간다는 원리 설명 완료.
+
+
+## 독립 심화: ConfigMap 변경 전파, subPath, immutable
+
+기존 환경변수/파일 마운트 실습 후 아래를 **추가 실습**으로 진행한다. 기존 완료 기록은 변경하지 않는다.
+
+- 동일한 ConfigMap 키 `mode: blue`를 `env.valueFrom.configMapKeyRef`, 일반 ConfigMap volume, `subPath` 파일로 각각 주입한 실습 Pod를 생성한다.
+- `kubectl patch configmap settings --type=merge -p '{"data":{"mode":"green"}}'`로 값을 변경한다. 일반 volume은 지연 후 바뀔 수 있지만 **환경변수와 subPath 마운트는 자동 반영되지 않는다**.
+- Pod만 재생성해 신규 환경변수·subPath 값이 green인지 비교한다. ConfigMap 정의까지 재적용해 blue로 되돌리지 않도록 주의한다.
+- `kubectl patch configmap settings --type=merge -p '{"immutable":true}'` 후 data 수정이 거부되는지 확인한다. immutable 객체의 data를 수정하려면 삭제·재생성이 필요하다.
+- Secret은 Base64가 암호화가 아니며, Pod의 ServiceAccount에 Secret API `get` 권한이 없어도 kubelet이 참조된 Secret을 volume/env로 주입할 수 있다는 점을 설명한다.
+
+실행용 참고 YAML은 이전 실습 자산 [configuration setup](../../08-independent/02-configuration/setup.yaml), [configuration pod](../../08-independent/02-configuration/pod.yaml)에 보존한다. 사용할 때는 `lab-self-config` namespace를 먼저 확인하고 다른 Lab의 리소스와 겹치지 않게 실행한다. 이 과제의 결과는 본 Lab의 확장 기록으로만 남긴다.
