@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/02-configuration/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../01-core-objects/12-configmap-secret-mount/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -83,7 +83,7 @@ kubectl get events --sort-by=.lastTimestamp
 - `kubectl patch configmap settings --type=merge -p '{"immutable":true}'` 후 data 수정이 거부되는지 확인한다. immutable 객체의 data를 수정하려면 삭제·재생성이 필요하다.
 - Secret은 Base64가 암호화가 아니며, Pod의 ServiceAccount에 Secret API `get` 권한이 없어도 kubelet이 참조된 Secret을 volume/env로 주입할 수 있다는 점을 설명한다.
 
-실행용 참고 YAML은 이전 실습 자산 [configuration setup](../../08-independent/02-configuration/setup.yaml), [configuration pod](../../08-independent/02-configuration/pod.yaml)에 보존한다. 사용할 때는 `lab-self-config` namespace를 먼저 확인하고 다른 Lab의 리소스와 겹치지 않게 실행한다. 이 과제의 결과는 본 Lab의 확장 기록으로만 남긴다.
+실행용 참고 YAML은 이전 실습 자산 [configuration setup](../../01-core-objects/12-configmap-secret-mount/extended-setup.yaml), [configuration pod](../../01-core-objects/12-configmap-secret-mount/extended-pod.yaml)에 보존한다. 사용할 때는 `lab-self-config` namespace를 먼저 확인하고 다른 Lab의 리소스와 겹치지 않게 실행한다. 이 과제의 결과는 본 Lab의 확장 기록으로만 남긴다.
 
 
 ## 통합 확장 실습 — 환경변수·파일·subPath 비교
@@ -145,4 +145,4 @@ kubectl delete namespace lab-self-config
 
 다음: [03 Controller](../../02-controllers/08-controller-troubleshooting/README.md).
 
-[독립 학습 순서](../../08-independent/README.md)
+[독립 학습 순서](../../README.md)
