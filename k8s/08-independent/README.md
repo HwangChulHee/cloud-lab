@@ -1,8 +1,28 @@
-# 강의 없이 진행하는 Kubernetes 독립 학습
+# 이전 독립 학습 코스 — 참고 자료 보존
 
-이 경로가 Kubernetes 과정의 기본 시작점이다. 영상이나 강의 ZIP 없이 **설명 읽기 → 실행 → 예상과 비교 → 실패·복구 → 정리 → 풀이 없는 재실행**으로 진행한다. 기존 42개 기초는 주제별 복습에, 16개 CKA 자료 기반 실습은 단계별 확장에 사용한다. 번호 순서대로 42개를 먼저 끝낼 필요는 없다.
+> **현재 공식 학습 경로가 아닙니다.** 기본 학습은 [k8s 루트 README의 00–06 Lab](../README.md#기초-커리큘럼-42개)에서 진행합니다. 08의 별도 8단계를 중복 완료할 필요가 없습니다.
 
-## 시작 방법
+이 경로는 기존 42개 Lab이 간단한 개요 중심이던 시기에 강의 없이 실행하도록 만든 보충 코스입니다. 이후 Lab별 실제 관찰·장애·복구 기록이 쌓였으며, 고유한 내용은 각 Lab으로 통합했습니다. 기존 링크/YAML/스크립트와 CKA 준비 환경을 깨뜨리지 않기 위해 삭제하지 않고 보존합니다.
+
+| 기존 주제 | 공식 학습 위치 |
+|---|---|
+| 01 Pod/관찰 | [Foundation](../00-foundation/), [Pod/Label/Volume](../01-core-objects/) |
+| 02 설정 주입 | [ConfigMap/Secret 마운트](../01-core-objects/12-configmap-secret-mount/README.md) |
+| 03 컨트롤러 | [Controllers](../02-controllers/), [Reconciliation/장애](../02-controllers/08-controller-troubleshooting/README.md) |
+| 04 네트워킹 | [Service/EndpointSlice](../01-core-objects/07-headless-endpoint-externalname/README.md) |
+| 05 자원/스케줄링 | [Pod Deep Dive](../03-pod-deep-dive/) |
+| 06 저장소 | [Storage & Security](../04-storage-security/), [StatefulSet](../05-advanced/01-statefulset/README.md) |
+| 07 인증/인가 | [x509/API](../04-storage-security/03-x509-kubeconfig-api/README.md), [RBAC/Admission](../04-storage-security/04-serviceaccount-rbac/README.md) |
+| 08 Ingress/운영 | [Advanced](../05-advanced/), [Lab 42 최종 진단](../06-architecture/01-architecture-observability-capstone/README.md) |
+
+## 보존한 자산
+
+- `01-pods` ~ `08-operations`의 설명과 `setup.yaml` 등은 이전 실습 재현 및 링크 호환용이다.
+- [START](./START.md), [ADDONS](./ADDONS.md), [PLATFORM](./PLATFORM.md)은 현재 Lab 및 CKA 경로에서 계속 참조한다.
+- [CHECKPOINTS](./CHECKPOINTS.md), [REVIEW_ANSWERS](./REVIEW_ANSWERS.md), `curriculum.json`은 이전 8단계의 기록·매핑용이다. **현재 진도 산정은 루트 README만 기준으로 한다.**
+- 이미 완료한 Lab의 기록은 보존한다. 공식 Lab의 고유 실습이 수행되지 않은 경우에만 해당 Lab 안에서 보강 과제를 진행한다.
+
+## 이전 8단계 원본 (레거시 재현용)
 
 1. [시작 준비](./START.md)에서 현재 클러스터·Linux 셸·kubeconfig·레포 경로를 확인한다.
 2. 아래 01–08을 순서대로 실행한다. 각 문서의 명령은 **저장소 루트** 기준이다. 연결된 확장 문서는 해당 문서의 폴더 이동 안내를 따른다.
@@ -79,3 +99,4 @@
 [42개 기초 목차](../README.md#커리큘럼) · [16개 확장 목차](../07-cka-preview/README.md) · [개념 지도](../07-cka-preview/CONCEPT_BRIDGE.md). 각 기초 문서 상단의 독립 가이드 링크와 curriculum.json에 모든 연결을 기록했다. 기존 완료 체크는 변경하지 않았다.
 
 이 자료는 정적 링크/명령 문법/API 스키마 검증을 수행하지만, 사용자 VM에서 모두 실행한 기록은 아니다. 실제 완료 증거는 본인이 실행해 CHECKPOINTS 기록에 남긴다. [검증 기록](../07-cka-preview/VALIDATION.md).
+
