@@ -44,6 +44,16 @@ kubectl get events --sort-by=.lastTimestamp
 
 원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
 
+## 실습 완료 기록 (2026-11-03)
+
+- ✅ Blue/Green Deployment 각 2개 Pod Ready, Service의 Blue 응답 및 EndpointSlice 검증.
+- ✅ Service selector를 blue → green으로 변경하여 HTTP green 및 Green Endpoint 확인.
+- ✅ selector를 green → blue로 되돌려 기존 Pod를 재생성하지 않고 트래픽 복구.
+- ✅ 잘못된 selector bluue로 EndpointSlice 대상 0개 및 Connection refused 재현. Pod 4개는 Ready 유지.
+- ✅ selector 복구 후 HTTP blue, Blue Endpoint 2개 Ready 확인.
+- ✅ lab-bluegreen Namespace 삭제 후 NotFound 확인.
+- 복습 문제 2개 진행 예정.
+
 ## 완료 검증
 
 1. RollingUpdate와 Blue/Green의 차이를 설명한다.
