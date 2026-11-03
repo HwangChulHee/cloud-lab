@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/07-security/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../04-storage-security/03-x509-kubeconfig-api/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -76,7 +76,7 @@ kubectl get events --sort-by=.lastTimestamp
 - `enforce`/ `warn`/`audit`, `privileged`/`baseline`/`restricted`의 의미와 Linux securityContext(capabilities, seccomp, 권한 상승 금지)의 관계를 설명한다.
 - 실패 확인 후 해당 테스트 Namespace를 정리하고 다른 Lab에 PSA 제한을 남기지 않는다.
 
-자세한 예제와 검증 근거는 [Admission과 Pod Security](../../09-internals/07-admission-pod-security/README.md)를 참고한다. 이 주제는 기존 SA 토큰과 Role/RoleBinding 실습의 추가 심화이며 별도 기초 필수 Lab으로 중복 산입하지 않는다.
+자세한 예제와 검증 근거는 [Admission과 Pod Security](../../04-storage-security/04-serviceaccount-rbac/README.md)를 참고한다. 이 주제는 기존 SA 토큰과 Role/RoleBinding 실습의 추가 심화이며 별도 기초 필수 Lab으로 중복 산입하지 않는다.
 
 
 ## 내부 동작 심화 통합 — 07-admission-pod-security
@@ -90,7 +90,7 @@ API 요청은 인증과 인가 후 Mutating/Validating Admission을 거쳐 저�
 ### 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 07-security 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../README.md)의 07-security 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ### 예시: 권한이 충분한데 Pod가 거절된다
@@ -148,4 +148,4 @@ RBAC의 forbidden과 PSA 위반 오류 메시지를 구분한다. restricted 위
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/security/pod-security-admission/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
