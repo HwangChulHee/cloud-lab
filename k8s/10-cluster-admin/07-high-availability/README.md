@@ -74,3 +74,38 @@ kubectl -n kube-system get pods -l component=etcd -o wide
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
 [10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
+
+
+## HA 설계 검증 — quorum과 API 가용성
+
+**실습 목표:** 단순히 Control Plane Pod 3개를 만드는 것이 아니라 **API 진입점(LB)과 etcd 데이터 정족수**가 서로 다른 책임을 지닌다는 것을 설명한다.
+
+| 구성 | etcd 과반수 | 허용 가능한 etcd 노드 장애 | API 서버 가용성의 전제 |
+|---|---:|---:|---|
+| etcd 멤버 1개 | 1 | 0 | 해당 VM이 죽으면 단일 장애점 |
+| etcd 멤버 3개 | 2 | 1 | LB가 살아 있는 API Server로 연결 |
+| etcd 멤버 5개 | 3 | 2 | LB, 네트워크와 API 서버 상태 별도 확인 |
+
+**주의:** etcd 2개만으로 구성하면 quorum=2여서 1대 장애를 견디지 못한다. API Server가 여러 개라고 해서 etcd HA가 자동으로 달성되지 않는다. 별도 LB가 모든 API Server와 연결 가능한지 확인하고, LB 자신의 SPOF도 설계에서 검토한다.
+
+### 사전 관찰 — 기존 클러스터에서 안전하게 수행
+
+```bash
+kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}{"\n"}'
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -l component=kube-apiserver -o wide
+kubectl -n kube-system get pods -l component=etcd -o wide
+kubectl get --raw=/readyz
+```
+
+Static Pod의 label은 설치 형태에 따라 다를 수 있으므로 `kubectl -n kube-system get pods`로 실제 목록을 함께 확인한다. 여기서는 **읽기만** 하고 Control Plane을 중단하지 않는다.
+
+### 별도 HA VM 선택 과제
+
+1. [공식 kubeadm HA](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)의 stacked-etcd 또는 external-etcd 토폴로지 중 하나를 선택한다.
+2. 3개 Control Plane과 하나 이상의 API LB를 설계하고 LB health check·DNS·고정 진입점을 정의한다.
+3. 버전 호환 kubeadm, CRI, CNI를 설치하고 `kubeadm init --control-plane-endpoint`와 `kubeadm join --control-plane`을 사용해 별도 VM을 구성한다. **실제 토큰·인증서 키는 공개하지 않는다.**
+4. 한 Control Plane의 장애를 **폐기 가능한 VM**에서만 재현하고, API 요청과 etcd quorum/멤버 상태를 각각 검증한다.
+5. 장애 복구 뒤 `kubectl get nodes`, API `/readyz`, 테스트 Deployment/Service 요청까지 확인한다.
+
+**완료 기준:** 개념 경로에서는 HA 설계도·SPOF·quorum 계산과 사고 시나리오를 설명하면 된다. 선택 구축 경로는 실제 VM과 LB/etcd 상태를 증거로 남겼을 때만 별도로 완료 표시한다. 3개의 Control Plane 실습을 기존 1+2 Vagrant 클러스터에서 진행하지 않는다.
