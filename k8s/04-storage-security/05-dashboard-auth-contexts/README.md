@@ -1,57 +1,67 @@
-# Lab 37 — Dashboard Auth & kubeconfig Contexts
+# Lab 37 — kubeconfig Context와 인증 범위 (Dashboard 선택)
 
-> 학습 단계: **가이드 축소**
+> **필수:** context의 cluster/user/namespace 전환 및 오류 진단 · **선택:** 이미 설치된 Dashboard UI 로그인. Dashboard를 새로 설치하지 않아도 기본 과제를 완료할 수 있다.
 
-## 강의 없이 시작하기
+## 1. Concept / Recall
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [통합 API 인증 실습](../03-x509-kubeconfig-api/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+kubeconfig는 **클러스터 연결 정보**, **사용자 인증 정보**, **context(클러스터·사용자·기본 Namespace의 조합)**를 관리한다. Context 전환은 RBAC 권한을 새로 부여하지 않는다. Context의 namespace는 명령에 `-n`이 없을 때 기본 조회 범위를 결정한다.
 
-## 목표
+`admin.conf`나 `kubectl config view --raw` 출력에는 관리자 키/토큰이 들어갈 수 있으므로 GitHub에 저장하거나 터미널 출력 전체를 공유하지 않는다.
 
-ServiceAccount token 인증과 kubeconfig context 사용 흐름을 정리한다. 독립 과정에서는 API의 허용/거부를 직접 확인하고, Dashboard 로그인은 이미 UI가 설치된 경우의 선택 과제로 진행한다.
+## 2. Build — 원본 kubeconfig를 변경하지 않고 연습
 
-## Recall
-
-시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
-
-## Build & Observe
-
-1. Dashboard ServiceAccount/RoleBinding/Token 관계를 확인한다.
-2. UI가 이미 설치됐다면 Token으로 로그인한다. 미설치 환경은 독립 가이드의 curl/kubectl 권한 비교로 본 단계를 진행한다.
-3. 현재 kubeconfig의 context를 조회하고 이름을 명확히 정리한다.
-4. 선택 과제로 두 번째 클러스터 kubeconfig 병합 절차를 문서화한다.
-
-필요에 따라 다음 명령을 사용한다.
+이 명령은 kubeconfig를 민감한 임시 파일로 복사한다. 임시 파일은 600 권한으로 만들고 실습 종료 시 삭제한다.
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl config current-context
+kubectl config get-contexts
+kubectl create namespace lab-context
+umask 077
+CTX_TMP=$(mktemp)
+kubectl config view --raw > "$CTX_TMP"
+chmod 600 "$CTX_TMP"
+CTX_CLUSTER=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}')
+CTX_USER=$(kubectl config view --minify -o jsonpath='{.contexts[0].context.user}')
+kubectl --kubeconfig="$CTX_TMP" config set-context lab-context --cluster="$CTX_CLUSTER" --user="$CTX_USER" --namespace=lab-context
+kubectl --kubeconfig="$CTX_TMP" config use-context lab-context
+kubectl --kubeconfig="$CTX_TMP" config get-contexts
+kubectl --kubeconfig="$CTX_TMP" get pods
+kubectl --kubeconfig="$CTX_TMP" get pods -n default
 ```
 
-## Break & Diagnose
+**예상:** `lab-context`에서 `get pods`는 `lab-context` Namespace, `-n default`는 default를 조회한다. 원본 `kubectl config current-context`는 바뀌지 않는다.
 
-1. 권한이 제한된 ServiceAccount Token으로 Dashboard에서 보이는 범위를 비교한다.
+## 3. Break & Diagnose — Context는 올바르지만 Namespace가 없는 경우
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+```bash
+kubectl --kubeconfig="$CTX_TMP" config set-context lab-context --namespace=missing-lab-namespace
+kubectl --kubeconfig="$CTX_TMP" get pods
+kubectl --kubeconfig="$CTX_TMP" config get-contexts
+```
 
-## Recover
+**예상:** 없는 Namespace이므로 `get pods`가 NotFound 계열 오류를 낸다. 이 현상을 API Server 미연결, 인증 실패, RBAC Forbidden과 구분한다. 특정 Context를 선택했다고 해서 ServiceAccount/RoleBinding이 만들어지는 것은 아니다.
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+## 4. Recover / Cleanup
 
-## 완료 검증
+```bash
+kubectl --kubeconfig="$CTX_TMP" config set-context lab-context --namespace=lab-context
+kubectl --kubeconfig="$CTX_TMP" get pods
+kubectl config current-context
+rm -f "$CTX_TMP"
+unset CTX_TMP CTX_CLUSTER CTX_USER
+kubectl delete namespace lab-context
+```
 
-1. Token, kubeconfig, context가 각각 무엇을 선택/인증하는지 설명한다.
+원본 kubeconfig로 현재 context와 기존 cluster를 다시 확인한다. 복사된 임시 파일에 관리 권한이 들어 있으므로 실습 중 공유하지 않는다.
 
-## Cleanup
+## 5. 선택 확장: 기존 Dashboard UI
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+대상 클러스터에 Dashboard가 **이미 설치되어 있는 경우에만**, [Lab 35의 제한된 Token](../03-x509-kubeconfig-api/README.md) 또는 [Lab 36의 RoleBinding](../04-serviceaccount-rbac/README.md)을 사용해 허용된 리소스 범위를 비교한다. Dashboard를 사용하지 않는 경우에는 `kubectl auth can-i --as`와 API 응답으로 인증/인가 차이를 검증한다. 무분별하게 cluster-admin 권한의 Dashboard Token을 만들지 않는다.
 
-## 설명하기
+## 인출 질문 / 완료 기준
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+- kubeconfig의 cluster·user·context 세 요소는 각각 무엇을 선택하는가?
+- `-n`과 context namespace가 충돌할 때 무엇이 우선하는가?
+- `NotFound`, `Unauthorized`, `Forbidden`를 어떤 증거로 구별하는가?
+
+임시 context 설정 → Namespace 변경으로 조회 범위 변화 → 잘못된 Namespace 오류 → Context 복원 → 임시 자격증명 파일 삭제까지 확인하면 완료한다.
