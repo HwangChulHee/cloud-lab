@@ -198,4 +198,4 @@ kubectl -n lab-self-pods get events --sort-by=.lastTimestamp
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
+[Kubernetes 공식 커리큘럼](../../README.md)
