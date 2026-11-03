@@ -1,6 +1,6 @@
 # HA API 엔드포인트·etcd quorum
 
-> 분류: **CKA 필수 개념·선택 구축** · 선수 학습: [독립 학습](../../README.md)의 ADM-01, ADM-02 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수 개념·선택 구축** · 선수 학습: [ADM-01 클러스터 구축](../01-kubeadm-bootstrap/README.md), [ADM-02 etcd](../02-etcd-backup-restore/README.md) · 환경: 기존 클러스터는 읽기 관찰만, 실제 HA 구성·장애 주입은 별도 VM
 
 ## Overview — 무엇을 이해해야 하는가
 
