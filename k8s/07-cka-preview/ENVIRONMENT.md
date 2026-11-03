@@ -13,7 +13,7 @@ kubectl api-resources --api-group=gateway.networking.k8s.io
 kubectl top nodes
 ```
 
-레포에 기록된 환경은 Windows + Vagrant + Rocky Linux 8.8, Kubernetes 1.27.2, containerd다. 강의 설치 자료는 별도 1.34/Rocky 9.6 환경이다. 실제 출력이 다르면 현재 출력을 기준으로 판단한다.
+레포에 기록된 환경은 Windows + Vagrant + Rocky Linux 8.8, Kubernetes 1.27.2, containerd다. 원본 강의의 설치 예시는 Kubernetes 1.34/Rocky 9.6으로 작성되었으나 **현재 신규 구축의 권장 환경은 [PLATFORM의 Kubernetes 1.36 / Ubuntu 24.04](../guides/PLATFORM.md)**이다. 기존 1.27 VM과 강의 당시 1.34 버전의 기록은 바꾸지 않으며, 실제 환경은 현재 출력과 공식 호환표로 판단한다.
 
 ## 어디서 명령을 실행할까?
 
@@ -29,10 +29,10 @@ kubectl top nodes
 | 환경 | 가능한 예습 | 선행 조건 |
 |---|---|---|
 | 기존 1.27.2 클러스터 | 01–06, 08, 10–12, 16, 09의 정상 관찰 | TLS 도구, Metrics Server, storage provisioner, Ingress Controller, 정책 집행 CNI는 각 실습별 필요 |
-| 별도 1.34 예습 클러스터 | 07 Gateway, 13 Helm, 실제 cert-manager 추가 관찰 | 버전에 맞는 Gateway API CRD/Controller와 Ingress Controller, Helm, 충분한 VM 자원 |
+| 별도 1.36 예습 클러스터 | 07 Gateway, 13 Helm, 실제 cert-manager 추가 관찰 | 버전에 맞는 Gateway API CRD/Controller와 Ingress Controller, Helm, 충분한 VM 자원 |
 | 폐기 가능한 kubeadm control-plane VM | 09의 장애 주입/복구 | 호스트 SSH, sudo, crictl, VM 스냅샷 |
-| CNI 없는 새 1.34 클러스터 | 14 | kubeadm 초기화 완료, 겹치지 않는 Pod/Service/VM 네트워크 |
-| 별도 Ubuntu 22.04 VM | 15 | Docker, OS/아키텍처에 맞는 cri-dockerd 패키지, sudo, crictl |
+| CNI 없는 새 1.36 클러스터 | 14 | kubeadm 초기화 완료, 겹치지 않는 Pod/Service/VM 네트워크 |
+| 별도 Ubuntu VM(예: 24.04) | 15 | Docker, OS/아키텍처에 맞는 cri-dockerd 패키지, sudo, crictl |
 
 ### 공용 애드온 준비 기준
 
