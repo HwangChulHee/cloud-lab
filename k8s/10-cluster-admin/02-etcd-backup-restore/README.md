@@ -58,6 +58,14 @@ sudo ls -l /etc/kubernetes/pki/etcd
 
 **전제:** 외부 etcd가 아닌 단일 Control Plane의 kubeadm static Pod etcd. VM 스냅샷을 만든 다음 Control Plane 호스트의 root 권한 셸에서 수행한다. 아래 TLS 파일은 사용 중인 etcd manifest에서 실제 경로를 검증하며 개인 키를 GitHub에 저장하지 않는다.
 
+**순서:** 백업 대상이 될 시험 ConfigMap을 먼저 생성하고, 스냅샷을 저장하고, 나중에 ConfigMap 값을 변경한다. `kubectl` 명령은 API Server에 접근 가능한 cp1 셸에서 실행한다.
+
+```bash
+kubectl create namespace preview-etcd
+kubectl -n preview-etcd create configmap restore-marker --from-literal=state=before-snapshot
+kubectl -n preview-etcd get configmap restore-marker -o jsonpath='{.data.state}{"\n"}'
+```
+
 ```bash
 sudo grep -E 'listen-client-urls|cert-file|key-file|trusted-ca-file|data-dir' /etc/kubernetes/manifests/etcd.yaml
 sudo mkdir -p /var/backups/cka-etcd
@@ -70,7 +78,14 @@ sudo env ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \\
 sudo etcdutl snapshot status /var/backups/cka-etcd/snapshot.db -w table
 ```
 
-cp1에서 테스트 namespace와 ConfigMap을 만든 뒤 스냅샷을 촬영하고, **그 다음에** ConfigMap 값을 바꾸어 스냅샷 시점과 현재 상태를 구분한다. 스냅샷 저장과 상태 검증이 성공하기 전에는 복원 실습으로 이동하지 않는다.
+스냅샷 저장 및 `etcdutl snapshot status` 검증이 끝났으면 **그 다음에** ConfigMap 값을 변경한다.
+
+```bash
+kubectl -n preview-etcd patch configmap restore-marker --type=merge -p '{"data":{"state":"after-snapshot"}}'
+kubectl -n preview-etcd get configmap restore-marker -o jsonpath='{.data.state}{"\n"}'
+```
+
+복원 뒤 `before-snapshot` 값이 다시 확인되면 복원 시점 검증에 성공한 것이다. 스냅샷 저장과 상태 검증이 성공하기 전에는 복원 실습으로 이동하지 않는다.
 
 **복원 실습은 반드시 폐기 가능한 별도 VM 스냅샷으로 되돌릴 준비가 된 상황에서만 실행한다.** API Server 쓰기 동작을 중단하고 기존 etcd data-dir를 덮어쓰지 않은 새 디렉터리로 `etcdutl snapshot restore ... --data-dir=...`를 사용한다. 그 다음 `/etc/kubernetes/manifests/etcd.yaml`의 `etcd-data` hostPath 경로와 etcd `--data-dir`를 일치시키고, 단일 Control Plane을 다시 기동한다. 복원 뒤 API health, etcd health와 이전 ConfigMap 값을 검증한다. 구성마다 절차가 달라져 **원격 멤버가 있는 etcd에 이 명령을 그대로 적용하면 안 된다.** [공식 etcd 복원](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/) 절차를 해당 버전과 함께 확인한다.
 
