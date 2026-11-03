@@ -4,7 +4,7 @@
 
 기초 연결: [클러스터 관찰](../../00-foundation/01-cluster-verification/README.md) · [NetworkPolicy 예습](../../07-cka-preview/08-networkpolicy/README.md)
 
-[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../guides/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
