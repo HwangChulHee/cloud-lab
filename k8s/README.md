@@ -1,134 +1,71 @@
 # Kubernetes Guided Labs
 
-현재 로컬 3노드 클러스터를 이용해 Kubernetes를 **누적형 + 관찰형 + 장애복구형**으로 익히는 42개 기초 주제와 **16개 CKA 확장 실습**을 연결한 과정이다. 기본 진입점은 강의 없이 진행하는 [8단계 독립 학습](./08-independent/README.md)이다.
+로컬 3노드 클러스터에서 Kubernetes를 **개념 이해 → 직접 구축 → 정상 관찰 → 장애 재현 → 원인 분석 → 복구** 순서로 학습하는 저장소입니다. 이론과 실습은 **서로 독립적으로** 진행률을 기록합니다.
 
-> 개념 회상 → 생성 → 정상 검증 → 조건 변경 → 일부러 실패 → Events/상태 추적 → 복구 → 설명
+## 학습 현황
 
+> 마지막 실습 갱신: **2026-11-03**
 
-## 강의 없이 기초와 CKA를 함께 진행하기
+| 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
+|---|---:|---:|---|---|
+| **이론** | **32 / 73** | **43.8%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) |
+| **실습** | **20 / 73** | **27.4%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
 
-[독립 학습 순서](./08-independent/README.md)에서 시작 준비 → 8단계 가이드 → 연결된 확장 실습 순으로 진행한다. 개념 설명, 실행용 YAML, 예상 결과, 실패·복구·정리를 제공한다. 처음에는 풀이를 보고 실행하고 두 번째에는 요구사항만 보고 재구축한다.
+| 실습 트랙 | 완료 / 전체 | 진행률 |
+|---|---:|---:|
+| 기초 (00–06) | 20 / 42 | 47.6% |
+| CKA 확장 (07) | 0 / 16 | 0% |
+| 내부 원리 심화 (09) | 0 / 8 | 0% |
+| 클러스터 관리 (10) | 0 / 7 | 0% |
+| **전체** | **20 / 73** | **27.4%** |
 
-기존 42개 목차는 주제별 복습에 사용하고, [16개 확장 실습](./07-cka-preview/README.md)은 독립 과정의 지정된 시점에 실행한다. 별도 VM이 필요한 설치/복구는 [플랫폼 경로](./08-independent/PLATFORM.md)로 분리한다. 기존 완료 체크는 유지한다.
+- 현재 실습 위치: **02 Controllers — 4/8 완료 (50%)**. Foundation **2/2**, Core Objects **14/14** 완료.
+- 최근 실습 기록: Blue/Green의 selector 전환·복구, 빈 EndpointSlice 장애 재현, Namespace 정리 및 **복습 2/2 완료**.
+- 이론 최근 완료: **Pod Deep Dive 08** (세부 학습 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 32개 / 실습 20개** 체크 상태를 보존합니다.
+- 8단계 독립 학습 경로는 기존 73개와 내용을 연결하는 **별도 안내 경로**이며, 완료 개수에 중복 산입하지 않습니다.
 
-[입문·CKA 내용 대조와 보강 기록](./CONTENT_REVIEW.md)에서 두 자료의 연결, 오해 방지 설명, 남은 개선 범위를 확인한다.
+## 어디서 시작할까?
 
-## 실습 철학
+| 목적 | 시작점 |
+|---|---|
+| **현재 진행 중인 VM 실습 이어가기** | [Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md) |
+| 개념부터 강의 없이 순서대로 실습하기 | [08 — 독립 학습 8단계](./08-independent/README.md) · [시작 준비](./08-independent/START.md) |
+| 주제별 이론·실습 체크 확인하기 | [42개 기초 커리큘럼](#기초-커리큘럼-42개) |
+| CKA 확장 문제 실습하기 | [07 — CKA 확장 16개](./07-cka-preview/README.md) |
+| Linux / Kubernetes 내부 동작 탐구하기 | [09 — 내부 원리 심화 8개](./09-internals/README.md) |
+| 클러스터 설치·운영·복구 학습하기 | [10 — 클러스터 관리 7개](./10-cluster-admin/README.md) |
+| 강의자료와 학습 내용의 대응 관계 확인하기 | [내용 검토 및 연결 기록](./CONTENT_REVIEW.md) |
 
-1. **동작을 본다.** YAML 작성으로 끝내지 않고 요청, 상태, Endpoint, Event, Log, Metric 변화를 확인한다.
-2. **지식은 누적한다.** 앞에서 배운 Pod/Label/Service/Volume이 뒤의 Deployment, Probe, Ingress, HPA, StatefulSet의 전제가 된다.
-3. **각 실습은 독립 복구 가능하게 한다.** 삭제/재실행할 수 있고, Node label/taint 등은 실습 종료 시 원복한다.
-4. **성공보다 실패를 중요하게 본다.** selector 오타, Pending, 403, Probe 실패, quota 초과 등을 일부러 만든다.
-5. **뒤로 갈수록 가이드를 줄인다.** 초반은 따라 하고 중반은 조건 중심, 후반은 증상/요구사항 중심으로 진행한다.
-6. **최종 목표는 상태를 보고 추론하는 것.** 왜 Pending인지, 왜 트래픽이 안 가는지, 왜 403인지 스스로 좁혀간다.
+### 학습 방식과 완료 기준
 
-## 현재 환경
+**Recall → Build → Observe → Break → Diagnose → Recover → Cleanup → Explain**
 
-```text
-Windows Host
-└─ VirtualBox + Vagrant
-   ├─ k8s-master  192.168.56.30
-   ├─ k8s-worker1 192.168.56.31
-   └─ k8s-worker2 192.168.56.32
+각 Lab에서는 정상 실행을 확인하고, 의도적으로 실패를 재현하며, 상태와 Events에 근거해 원인을 진단한 뒤 복구합니다. 리소스 정리 및 핵심 내용을 자신의 말로 설명하는 단계까지 마쳐야 실습 완료로 기록합니다.
 
-Kubernetes 1.27.2
-Container Runtime: containerd
-```
+- **이론 완료(✅)**: 설명과 단원별 복습 완료. 실제 VM 수행과 구분합니다.
+- **실습 완료(✅)**: 정상·장애·복구·Cleanup을 실제 클러스터에서 검증한 상태입니다.
+- **미완료(⬜)**: 미진행 또는 아직 검증되지 않은 상태입니다.
+- 각 실습의 자세한 절차·증거·복습 결과는 **개별 Lab README**에 기록합니다. 확장/관리 실습은 별도 체크합니다.
 
-> admin.conf는 root만 읽을 수 있으므로 master에서 단일 명령은 `sudo KUBECONFIG=/etc/kubernetes/admin.conf kubectl ...`로 실행한다. Linux 셸 전체를 실습에 사용하려면 아래처럼 본인 kubeconfig를 준비한다. Windows PowerShell에서 bash 문법을 그대로 실행하지 않는다.
+## 학습 범위
 
-```bash
-mkdir -p "$HOME/.kube"
-# 기존 config가 있으면 덮어쓰지 말고 별도 파일/환경변수로 사용한다.
-test ! -e "$HOME/.kube/config" && sudo install -m 600 -o "$(id -u)" -g "$(id -g)" /etc/kubernetes/admin.conf "$HOME/.kube/config"
-kubectl config current-context
-kubectl get nodes -o wide
-```
+| 구분 | 경로 | 모듈 수 | 주요 내용 |
+|---|---|---:|---|
+| Foundation | [00-foundation](./00-foundation/) | 2 | 클러스터 검증, kubectl 관찰 |
+| Core Objects | [01-core-objects](./01-core-objects/) | 14 | Pod, Service, Volume, PV/PVC, ConfigMap, Namespace |
+| Controllers | [02-controllers](./02-controllers/) | 8 | ReplicaSet, Deployment, DaemonSet, Job, CronJob |
+| Pod Deep Dive | [03-pod-deep-dive](./03-pod-deep-dive/) | 8 | Lifecycle, Probe, QoS, Affinity, Scheduling |
+| Storage & Security | [04-storage-security](./04-storage-security/) | 5 | StorageClass/CSI, 인증, RBAC |
+| Advanced | [05-advanced](./05-advanced/) | 4 | StatefulSet, Ingress, HPA |
+| Architecture | [06-architecture](./06-architecture/) | 1 | 아키텍처·관측성 종합 |
+| CKA 확장 | [07-cka-preview](./07-cka-preview/README.md) | 16 | 시험 관련 확장 실습 |
+| 내부 심화 | [09-internals](./09-internals/README.md) | 8 | 컨트롤러·네트워크·스케줄러 내부 |
+| 클러스터 관리 | [10-cluster-admin](./10-cluster-admin/README.md) | 7 | 설치, 운영, 장애 대응 |
+| **합계** | | **73** | |
 
-이 kubeconfig는 관리자 권한을 담고 있으므로 저장소에 넣지 않는다. 버전별 애드온 조건과 실행 위치는 [환경 안내](./07-cka-preview/ENVIRONMENT.md)를 따른다.
+## 기초 커리큘럼 (42개)
 
-## 자료의 사용 방식과 변경 규칙
-
-기초 42개 문서는 주제별 목표·추가 과제이며, 각 문서 상단에 독립 학습 가이드를 연결했다. 실행 파일은 독립 과정과 확장 폴더에서 제공한다. 모든 기초 폴더에 중복 YAML을 두지는 않는다. Dashboard UI·Longhorn 제품 설치는 선택 확장이고, 기본 과정은 API/RBAC와 Local Path로 같은 핵심 개념을 관찰한다. 별도 플랫폼 경로까지 진행해도 CKA 전체 시험 대비 완료를 뜻하지는 않는다.
-
-- 독립 Pod의 command, volume, nodeSelector, affinity, resources 등 변경은 기본 1.27 환경에서 **YAML 수정 → 해당 실습 Pod 삭제 → 재생성**으로 한다. `kubectl edit pod`로 모두 변경할 수 있다고 가정하지 않는다.
-- Deployment는 Pod template을 수정하고 rollout을 기다린다. 기존 Pod가 직접 이동하는 것이 아니라 새 Pod가 생성된다.
-- PVC의 class/accessModes/volumeName 변경 실험은 새 PVC로 비교한다. 기존 데이터가 있으면 삭제하기 전에 PV의 reclaimPolicy부터 확인한다.
-- Job의 command/Pod template 변경은 새 Job으로 실행한다. QoS 비교도 새 Pod로 한다.
-- `kubectl get all`은 모든 리소스를 보여주지 않는다. ConfigMap, Secret, PVC, RBAC, Ingress 등은 종류를 직접 지정한다. `get ... -w`는 종류 하나씩 실행한다.
-- 앞 실습의 namespace를 암묵적으로 재사용하지 않고 `-n`을 명시한다. 노드 labels/taints는 변경 전 값을 기록하고 직접 바꾼 항목만 원복한다.
-
-
-## 공통 흐름
-
-```text
-Recall → Build → Observe → Break → Diagnose → Recover → Cleanup → Explain
-```
-
-기본 진단 도구 (`POD_NAME`, `NODE_NAME`, `RESOURCE_TYPE`, `RESOURCE_NAME`은 조회한 실제 값으로 바꾼다):
-
-```bash
-kubectl get RESOURCE_TYPE -o wide
-kubectl describe RESOURCE_TYPE RESOURCE_NAME
-kubectl get events --sort-by=.lastTimestamp
-kubectl logs POD_NAME
-kubectl get endpoints
-```
-
-## 내부 원리·CKA 관리 확장
-
-기존 8단계를 유지하면서 관련 단계 직후 [09 내부 동작 심화](./09-internals/README.md)와 [10 클러스터 관리](./10-cluster-admin/README.md)를 병행한다. 기존 42+16 번호와 완료 체크는 유지한다. 별도 모듈은 실제 수행 여부를 별도로 기록한다.
-
-### 전체 실습 진행 현황 (2026-11-03)
-
-| 트랙 | 전체 모듈 | 실습 완료 | 진행률 |
-|---|---:|---:|---:|
-| 기초 주제 (00–06) | 42 | 20 | 47.6% |
-| CKA 확장 (07) | 16 | 0 | 0% |
-| 내부 동작 심화 (09) | 8 | 0 | 0% |
-| 클러스터 관리 (10) | 7 | 0 | 0% |
-| **합계** | **73** | **20** | **27.4%** |
-
-- 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
-- 최근 실습 완료: **02-controllers / 04-deployment-bluegreen** (2026-11-03). Blue/Green 동시 실행, Service selector 전환과 원복, selector 오타로 Endpoint 0 장애 재현·복구, Namespace 삭제 검증. 복습 2/2 완료.
-- 다음 실습: [02-controllers / 05-daemonset](./02-controllers/05-daemonset/README.md).
-- 이론 학습(아래 32/73)과 실제 실습(20/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
-- 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
-
-## 이론 학습 진행 현황 (대화형 학습)
-
-이 표는 ChatGPT 대화에서 진행한 **개념 설명과 단원별 누적 복습** 기준이다. 아래 42개 기초 실습 표는 `이론`과 `실습` 상태를 별도로 표시한다. 이론 이해는 VM에서의 구축·장애 재현·복구 완료를 의미하지 않는다.
-
-- 기준: 기초 42개 + CKA 확장 16개 + 내부 심화 INT 8개 + 클러스터 관리 ADM 7개 = **총 73개 학습 모듈**
-- 이론 완료: **32/73 (43.8%)** · 기존 기초/CKA **32/58**, INT **0/8**, ADM **0/7**
-- 최근 이론 완료: **Pod Deep Dive 08 — Scheduling Troubleshooting** (핵심 개념 4/4 및 종합 복습 2/2)
-- 다음 이론 예정: **Storage & Security 01 — Longhorn & StorageClass**
-- 상태 표기: ✅ 이론 및 누적 복습 완료 / 🔄 이론 진행 중 / ⬜ 이론 미진행. 실제 실습의 완료 표기와 별개로 관리한다.
-
-| 구분 | 항목 | 이론 상태 |
-|---|---|:---:|
-| Foundation 01 | [Cluster Verification](./00-foundation/01-cluster-verification/README.md) | ✅ |
-| Foundation 02 | [kubectl Observation Basics](./00-foundation/02-kubectl-observation-basics/README.md) | ✅ |
-| Core Objects 01 | [Pod Multi-Container](./01-core-objects/01-pod-multicontainer/README.md) | ✅ |
-| Core Objects 02 | [Labels & Selectors](./01-core-objects/02-label-selector/README.md) | ✅ |
-| Core Objects 03 | [Basic Scheduling & Resources](./01-core-objects/03-node-scheduling-resources/README.md) | ✅ |
-| Core Objects 04 | [Service ClusterIP](./01-core-objects/04-service-clusterip/README.md) | ✅ |
-| Core Objects 05 | [Service NodePort](./01-core-objects/05-service-nodeport/README.md) | ✅ |
-| Core Objects 06 | [Service DNS](./01-core-objects/06-service-dns/README.md) | ✅ |
-| Core Objects 07 | [Headless, Endpoint, ExternalName](./01-core-objects/07-headless-endpoint-externalname/README.md) | ✅ |
-| Core Objects 08 | [Volume emptyDir](./01-core-objects/08-volume-emptydir/README.md) | ✅ |
-| Core Objects 09 | [Volume hostPath](./01-core-objects/09-volume-hostpath/README.md) | ✅ |
-| Core Objects 10 | [Static PV/PVC](./01-core-objects/10-pv-pvc-static/README.md) | ✅ |
-| Core Objects 11 | [ConfigMap & Secret Env](./01-core-objects/11-configmap-secret-env/README.md) | ✅ |
-| Core Objects 12 | [ConfigMap & Secret Mount](./01-core-objects/12-configmap-secret-mount/README.md) | ✅ |
-| Core Objects 13 | [Namespace Isolation](./01-core-objects/13-namespace/README.md) | ✅ |
-| Core Objects 14 | [ResourceQuota & LimitRange](./01-core-objects/14-resourcequota-limitrange/README.md) | ✅ |
-
-완료되지 않은 나머지 단원은 미진행으로 간주한다. 선택 심화와 필수 수행 여부는 각 모듈의 기준을 따른다.
-
-## 커리큘럼
-
-아래 **이론** 상태는 대화형 개념 학습 및 누적 복습 결과이며, **실습** 상태는 실제 클러스터 작업 기준이다. ✅ 완료 / 🔄 진행 중 / ⬜ 미완료.
+이 표 하나에서 기초 42개 모듈의 **이론과 실습 상태**를 함께 관리합니다. 각 이름을 누르면 해당 Lab 가이드로 이동합니다.
 
 ### Foundation
 
@@ -207,22 +144,50 @@ kubectl get endpoints
 |---:|---|:---:|:---:|
 | 42 | [Architecture & Observability Capstone](./06-architecture/01-architecture-observability-capstone/README.md) | ⬜ | ⬜ |
 
-## 완료 기준
-
-- 정상 동작을 실제 요청/상태로 확인했다.
-- 의도한 장애를 재현했다.
-- `describe / events / logs / endpoints / top` 중 적절한 도구로 원인을 찾았다.
-- 최소 변경으로 복구했다.
-- 마지막 확인 질문을 자신의 말로 답할 수 있다.
-- 실습 리소스와 Node 설정을 정리했다.
-
-## 진단 기본 순서
+## 실습 환경 및 실행
 
 ```text
-Object 존재?
-→ spec과 status는?
-→ label/selector 연결은?
-→ Events는?
-→ Container 상태/로그는?
-→ Node/Network/Storage/Permission 조건은?
+Windows (Vagrant + VirtualBox)
+├── k8s-master   192.168.56.30
+├── k8s-worker1  192.168.56.31
+└── k8s-worker2  192.168.56.32
+
+Kubernetes 1.27.2 · containerd · Calico
 ```
+
+호스트 PowerShell에서 `vagrant ssh master-node`로 접속합니다. Master VM에서 `kubectl`이 인증되지 않으면 관리자 kubeconfig를 설정해야 합니다. 자세한 명령과 주의 사항은 [독립 실습 시작 준비](./08-independent/START.md), [확장 실습 환경](./07-cka-preview/ENVIRONMENT.md)을 참고합니다.
+
+```bash
+# Master VM에서 클러스터 상태 점검
+kubectl get nodes -o wide
+kubectl get pods -A
+```
+
+**주의:** `/etc/kubernetes/admin.conf`는 관리자 자격 증명을 포함하므로 GitHub에 커밋하지 않습니다. 시스템에 따라 `sudo KUBECONFIG=/etc/kubernetes/admin.conf kubectl ...`가 필요합니다.
+
+## 실습 중 장애 확인 순서
+
+```text
+객체가 존재하는가?
+→ spec / status는 무엇인가?
+→ Label / Selector / Endpoint가 연결되는가?
+→ Events와 컨테이너 로그는?
+→ Node / Network / Storage / Permission의 문제인가?
+```
+
+```bash
+kubectl get pods -n <namespace> -o wide
+kubectl describe pod <pod-name> -n <namespace>
+kubectl get events -n <namespace> --sort-by=.lastTimestamp
+kubectl logs <pod-name> -n <namespace>
+```
+
+설정 변경이나 삭제는 **해당 Lab의 안내와 현재 클러스터 상태를 확인한 뒤** 수행합니다. 실습 Namespace를 명시하고, 변경한 Node label/taint는 원복하며, 데이터 삭제 전 PVC/PV의 회수 정책을 확인합니다. `kubectl get all`은 모든 리소스를 보여주지 않으므로 Secret·PVC·EndpointSlice 등은 별도로 조회합니다.
+
+## 학습 자료 및 확장 경로
+
+- [독립 학습 단계별 체크포인트](./08-independent/CHECKPOINTS.md) · [복습 해설](./08-independent/REVIEW_ANSWERS.md)
+- [실습용 애드온](./08-independent/ADDONS.md) · [별도 VM/플랫폼 실습](./08-independent/PLATFORM.md)
+- [CKA 내용 연결 지도](./07-cka-preview/CONCEPT_BRIDGE.md) · [검증 기록](./07-cka-preview/VALIDATION.md)
+
+> **범위 안내:** 이 저장소의 이론/실습 완료 수치는 사용자 VM에서 실제 검증한 기록을 기준으로 합니다. 선택적 제품 설치나 일부 플랫폼 운영 실습은 별도 범위이며, 모듈 완료만으로 최신 CKA 시험 전체 대비를 보장하지 않습니다.
