@@ -4,7 +4,7 @@
 
 ## Metrics Server
 
-08의 HPA 실습에 필요하다. `kubectl top nodes`가 정상이면 설치는 생략한다.
+Lab 41의 HPA 실습에 필요하다. `kubectl top nodes`가 정상이면 설치는 생략한다.
 
 ```bash
 kubectl -n kube-system get deploy metrics-server
@@ -34,7 +34,7 @@ kubectl top nodes
 
 ## Local Path Provisioner
 
-06의 동적 저장소용이다. 먼저 `kubectl get sc`와 `kubectl -n local-path-storage get deploy`로 확인한다. 같은 provisioner가 이미 있으면 재사용한다. 이 과정은 default StorageClass annotation을 변경하지 않고 각 PVC에 class를 지정한다.
+Lab 34·38의 동적 저장소용이다. 먼저 `kubectl get sc`와 `kubectl -n local-path-storage get deploy`로 확인한다. 같은 provisioner가 이미 있으면 재사용한다. 이 과정은 default StorageClass annotation을 변경하지 않고 각 PVC에 class를 지정한다.
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/deploy/local-path-storage.yaml
@@ -43,11 +43,11 @@ kubectl get sc
 kubectl -n local-path-storage logs deploy/local-path-provisioner --tail=30
 ```
 
-[공식 설치와 제약](https://github.com/rancher/local-path-provisioner)은 Kubernetes 1.12+와 노드 로컬 디렉터리 사용, 용량 제한 미지원 등을 설명한다. 설치 Pod가 Ready인 것과 PVC가 실제로 Bound가 되는 것은 다르다. 06의 StatefulSet이 생성한 두 PVC까지 확인한다.
+[공식 설치와 제약](https://github.com/rancher/local-path-provisioner)은 Kubernetes 1.12+와 노드 로컬 디렉터리 사용, 용량 제한 미지원 등을 설명한다. 설치 Pod가 Ready인 것과 PVC가 실제로 Bound가 되는 것은 다르다. Lab 38의 StatefulSet이 생성한 두 PVC까지 확인한다.
 
 ## Traefik Ingress
 
-08의 HTTP/TLS와 확장 06에 사용할 독립 Controller다. Helm이나 Traefik CRD 없이 표준 Ingress만 사용한다. `lab-traefik` 클래스는 기존 Controller의 default class를 바꾸지 않는다. 학습용 고정 이미지 v3.6.1과 표준 apps/v1/networking.k8s.io/v1 리소스를 사용한다.
+Lab 39–40의 HTTP/TLS와 CKA 확장 06에 사용할 독립 Controller다. Helm이나 Traefik CRD 없이 표준 Ingress만 사용한다. `lab-traefik` 클래스는 기존 Controller의 default class를 바꾸지 않는다. 학습용 고정 이미지 v3.6.1과 표준 apps/v1/networking.k8s.io/v1 리소스를 사용한다.
 
 ```bash
 kubectl get ingressclass
@@ -57,7 +57,7 @@ kubectl -n lab-self-ingress logs deploy/traefik --tail=40
 kubectl get ingressclass lab-traefik
 ```
 
-Controller는 lab-self-edge, preview-ingress, preview-gateway 세 namespace만 감시한다. Secret/Service/Ingress 읽기는 각 namespace의 Role로, Node/IngressClass 읽기는 전용 ClusterRole로 준다. 08 문서대로 실제 HTTP/TLS 요청을 확인해야 준비 완료다. Ingress의 ADDRESS가 비어 있어도 port-forward 기반 실습은 가능하다.
+Controller는 lab-self-edge, preview-ingress, preview-gateway 세 namespace만 감시한다. Secret/Service/Ingress 읽기는 각 namespace의 Role로, Node/IngressClass 읽기는 전용 ClusterRole로 준다. Lab 40 문서대로 실제 HTTP/TLS 요청을 확인해야 준비 완료다. Ingress의 ADDRESS가 비어 있어도 port-forward 기반 실습은 가능하다.
 
 확장 06의 ingressClassName placeholder는 `lab-traefik`, Controller는 namespace `lab-self-ingress`의 Service `traefik`으로 설정한다. 해당 확장의 setup이 namespace를 다시 생성해도 Role/RoleBinding은 삭제되지 않는다. namespace 정리 후 재실행한다면 `traefik.yaml`도 다시 apply해 권한을 복구한다.
 
@@ -73,4 +73,4 @@ Controller는 lab-self-edge, preview-ingress, preview-gateway 세 namespace만 �
 - Local Path: 이 provisioner의 PVC/PV를 모두 정리하고 실제 데이터 삭제까지 확인한 뒤 설치 때 사용한 v0.0.37 URL을 `kubectl delete -f`에 전달한다. 다른 실습이 이 provisioner를 쓰면 유지한다.
 - Metrics Server: 기존부터 설치된 것은 유지한다. 본인이 설치했고 앞으로 HPA/metrics를 쓰지 않을 때 설치 때 사용한 v0.7.2 URL을 `kubectl delete -f`에 전달한다.
 
-[독립 학습 순서](./README.md)
+[공식 65개 모듈 목차](../README.md)
