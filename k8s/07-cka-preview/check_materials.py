@@ -4,12 +4,12 @@ Run from any directory: python3 k8s/07-cka-preview/check_materials.py
 Requires PyYAML. This is an offline content check, not a live cluster test.
 """
 from pathlib import Path
-import json
 import re
 import subprocess
 import yaml
 
 base = Path(__file__).resolve().parent
+repo_root = base.parent.parent
 errors = []
 docs = shells = objects = 0
 for path in base.parent.rglob('*.md'):
@@ -20,6 +20,14 @@ for path in base.parent.rglob('*.md'):
         target = target.split('#')[0]
         if target and not (path.parent / target).exists():
             errors.append(f'{path.relative_to(base.parent)}: broken link {target}')
+    # Catch renamed/missing YAML or script files mentioned in runnable examples.
+    # URLs, shell variables and wildcard placeholders are intentionally excluded.
+    for command_path in re.findall(
+        r'(?<![\w/])(k8s/[A-Za-z0-9_./-]+\.(?:yaml|yml|py))(?=[\s\x27\x22\x60]|$)',
+        text,
+    ):
+        if not (repo_root / command_path).is_file():
+            errors.append(f'{path.relative_to(base.parent)}: missing referenced asset {command_path}')
     docs += 1
     for script in re.findall(r'```bash\n(.*?)\n```', text, re.S):
         shells += 1
@@ -64,8 +72,8 @@ for path in base.parent.rglob('*.yaml'):
                 for mount in container.get('volumeMounts', []):
                     if mount['name'] not in volumes:
                         errors.append(f'{path}: missing volume {mount["name"]}')
-    except yaml.YAMLError as e:
-        errors.append(f'{path}: {e}')
+    except (yaml.YAMLError, KeyError, TypeError, ValueError) as e:
+        errors.append(f'{path.relative_to(base.parent)}: invalid YAML/object: {e}')
 
 # Canonical curriculum after the 08/09 consolidation.
 # No standalone 8-stage curriculum or duplicate internals directory is required.
@@ -88,4 +96,4 @@ if len(labs) != 16:
     errors.append(f'Expected 16 labs, got {len(labs)}')
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'OK: {len(labs)} labs, {docs} documents, {objects} YAML objects, {shells} shell blocks; relative links checked across k8s/')
+print(f'OK: 42 core + 16 CKA + 7 admin = 65 modules; {docs} Markdown docs, {objects} YAML objects, {shells} Bash blocks; links and runnable asset paths checked')
