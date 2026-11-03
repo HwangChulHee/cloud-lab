@@ -1,6 +1,6 @@
 # etcd snapshot·restore·검증
 
-> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 ADM-01 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 ADM-01 단계 · 환경: 반드시 VM 스냅샷이 있는 별도 kubeadm 실습 클러스터(기존 1.27 VM 사용 금지)
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -53,6 +53,26 @@ sudo ls -l /etc/kubernetes/pki/etcd
 폐기 가능한 kubeadm Control Plane에서 VM 스냅샷을 먼저 만든다. 1) 테스트 ConfigMap 생성. 2) etcd manifest에서 접속 endpoint·CA/cert/key를 확인. 3) ETCDCTL_API=3 etcdctl --endpoints=... --cacert=... --cert=... --key=... snapshot save /safe/snapshot.db. 4) etcdutl snapshot status로 스냅샷 확인. 5) 테스트 ConfigMap 변경. 6) control plane을 정지한 복구 창에서 etcdutl snapshot restore ... --data-dir=<new-dir> 로 복원. 7) manifest의 data-dir 인자 및 hostPath를 변경·복원 데이터 소유권을 맞춰 재기동. 8) API/etcd health와 ConfigMap 복원 시점 상태를 확인. 구체적인 endpoint/인자는 환경에서 읽은 값으로만 채운다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
+
+## 실행 가능한 백업 및 복구 검증
+
+**전제:** 외부 etcd가 아닌 단일 Control Plane의 kubeadm static Pod etcd. VM 스냅샷을 만든 다음 Control Plane 호스트의 root 권한 셸에서 수행한다. 아래 TLS 파일은 사용 중인 etcd manifest에서 실제 경로를 검증하며 개인 키를 GitHub에 저장하지 않는다.
+
+```bash
+sudo grep -E 'listen-client-urls|cert-file|key-file|trusted-ca-file|data-dir' /etc/kubernetes/manifests/etcd.yaml
+sudo mkdir -p /var/backups/cka-etcd
+sudo chmod 700 /var/backups/cka-etcd
+sudo env ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \\
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\
+  --cert=/etc/kubernetes/pki/etcd/server.crt \\
+  --key=/etc/kubernetes/pki/etcd/server.key \\
+  snapshot save /var/backups/cka-etcd/snapshot.db
+sudo etcdutl snapshot status /var/backups/cka-etcd/snapshot.db -w table
+```
+
+cp1에서 테스트 namespace와 ConfigMap을 만든 뒤 스냅샷을 촬영하고, **그 다음에** ConfigMap 값을 바꾸어 스냅샷 시점과 현재 상태를 구분한다. 스냅샷 저장과 상태 검증이 성공하기 전에는 복원 실습으로 이동하지 않는다.
+
+**복원 실습은 반드시 폐기 가능한 별도 VM 스냅샷으로 되돌릴 준비가 된 상황에서만 실행한다.** API Server 쓰기 동작을 중단하고 기존 etcd data-dir를 덮어쓰지 않은 새 디렉터리로 `etcdutl snapshot restore ... --data-dir=...`를 사용한다. 그 다음 `/etc/kubernetes/manifests/etcd.yaml`의 `etcd-data` hostPath 경로와 etcd `--data-dir`를 일치시키고, 단일 Control Plane을 다시 기동한다. 복원 뒤 API health, etcd health와 이전 ConfigMap 값을 검증한다. 구성마다 절차가 달라져 **원격 멤버가 있는 etcd에 이 명령을 그대로 적용하면 안 된다.** [공식 etcd 복원](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/) 절차를 해당 버전과 함께 확인한다.
 
 ## 고장 가설과 복구
 
