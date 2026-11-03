@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-liveness
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: lab-liveness
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.28-alpine
+        command: ["sh", "-c", "touch /tmp/live; exec nginx -g 'daemon off;'"]
+        livenessProbe:
+          exec:
+            command: ["test", "-f", "/tmp/live"]
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          failureThreshold: 2
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 64Mi}
