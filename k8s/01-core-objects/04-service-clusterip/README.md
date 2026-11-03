@@ -143,7 +143,7 @@ DNS 성공 + HTTP 실패면 DNS가 아닌 selector/EndpointSlice/앱 listen/전�
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/reference/networking/virtual-ips/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
+[현재 통합 Kubernetes 학습 목차](../../README.md)
 
 ## Linux Pod 네트워크 심화 — netns, veth, Calico
 
