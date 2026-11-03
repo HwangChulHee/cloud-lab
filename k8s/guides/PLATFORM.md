@@ -73,12 +73,12 @@ kubelet --version
 
 ## 4. Control Plane(cp1) — init
 
-Pod CIDR은 **선택한 CNI의 설치 설정과 반드시 일치**시킨다. 예시는 Calico 기본 대역 `192.168.0.0/16`을 사용하지만 VM 네트워크와 겹치면 다른 대역을 선택하고 Calico 설정도 함께 바꾼다.
+Pod CIDR은 **선택한 CNI의 설치 설정과 반드시 일치**시킨다. 예시는 VM LAN과 겹치지 않는 Pod CIDR `10.244.0.0/16`을 사용하지만 VM 네트워크와 겹치면 다른 대역을 선택하고 Calico 설정도 함께 바꾼다.
 
 ```bash
 sudo kubeadm init \
   --apiserver-advertise-address=192.168.56.40 \
-  --pod-network-cidr=192.168.0.0/16 \
+  --pod-network-cidr=10.244.0.0/16 \
   --cri-socket=unix:///run/containerd/containerd.sock
 mkdir -p "$HOME/.kube"
 sudo install -o "$(id -u)" -g "$(id -g)" -m 600 /etc/kubernetes/admin.conf "$HOME/.kube/config"
@@ -101,10 +101,11 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
 curl -fsSLo /tmp/calico-custom-resources.yaml \
   https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+sed -i 's@cidr: 192.168.0.0/16@cidr: 10.244.0.0/16@' /tmp/calico-custom-resources.yaml
 grep -nE 'cidr:|encapsulation:|ipPools:' /tmp/calico-custom-resources.yaml
 ```
 
-**필수 검토:** `/tmp/calico-custom-resources.yaml`의 `Installation.spec.calicoNetwork.ipPools` CIDR이 `kubeadm init --pod-network-cidr`와 동일한지 확인한다. 다르면 파일을 수정한 뒤에만 적용한다. VM LAN/Service 네트워크와 겹치면 안 된다. 이 예제는 `192.168.0.0/16`을 가정한다.
+**필수 검토:** Calico 다운로드 매니페스트의 기본 CIDR `192.168.0.0/16`을 아래 명령으로 `10.244.0.0/16`으로 바꾼다. 이후 `/tmp/calico-custom-resources.yaml`의 `Installation.spec.calicoNetwork.ipPools` CIDR이 `kubeadm init --pod-network-cidr`와 동일한지 확인한다. 다르면 파일을 수정한 뒤에만 적용한다. VM LAN/Service 네트워크와 겹치면 안 된다. 이 예제는 `10.244.0.0/16`을 가정한다.
 
 ```bash
 kubectl apply -f /tmp/calico-custom-resources.yaml
