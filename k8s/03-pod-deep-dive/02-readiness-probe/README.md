@@ -20,42 +20,42 @@ Readiness 실패는 일반 Service의 트래픽 대상에서 빠지게 하며 �
 
 ## Build & Observe
 
-1. readiness exec probe Pod와 Service를 만든다.
-2. Ready=false일 때 EndpointSlice에 주소가 남아 있어도 conditions.ready=false라 일반 Service 트래픽 대상에서 제외되는지 확인한다. legacy Endpoints에서는 notReadyAddresses도 비교한다. publishNotReadyAddresses는 기본 false로 둔다.
-3. ready.txt를 생성해 probe 성공 후 Endpoint 편입을 관찰한다.
-4. Events와 Conditions를 함께 본다.
-
-필요에 따라 다음 명령을 사용한다.
-
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl apply -f k8s/03-pod-deep-dive/02-readiness-probe/readiness.yaml
+kubectl -n lab-readiness rollout status deploy/web --timeout=120s
+kubectl -n lab-readiness wait --for=condition=Ready pod/client --timeout=120s
+kubectl -n lab-readiness get pods -o wide
+kubectl -n lab-readiness get endpointslices -l kubernetes.io/service-name=web -o yaml
+kubectl -n lab-readiness exec client -- wget -qO- http://web
 ```
+
+**예상:** web Ready=True, EndpointSlice ready=True, HTTP 200. Probe는 kubelet이 Pod 내의 파일 존재를 테스트하고, Ready 상태를 API에 보고하면 EndpointSlice Controller가 전달 대상을 갱신한다.
 
 ## Break & Diagnose
 
-1. ready.txt를 다시 제거해 트래픽 대상에서 빠지는지 확인한다.
+```bash
+kubectl -n lab-readiness exec deploy/web -- rm /tmp/ready
+kubectl -n lab-readiness get pods -o wide
+kubectl -n lab-readiness get endpointslices -l kubernetes.io/service-name=web -o yaml
+kubectl -n lab-readiness describe pod -l app=web
+kubectl -n lab-readiness exec client -- wget -T 3 -qO- http://web
+```
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+**예상:** Probe 주기 뒤 Ready=False, EndpointSlice `conditions.ready=false`, HTTP 실패. Pod는 여전히 Running이고 restartCount는 증가하지 않는다. kube-proxy 규칙/요청 전파 지연은 관찰을 통해 구분한다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+```bash
+kubectl -n lab-readiness exec deploy/web -- touch /tmp/ready
+kubectl -n lab-readiness rollout status deploy/web --timeout=120s
+kubectl -n lab-readiness get endpointslices -l kubernetes.io/service-name=web
+kubectl -n lab-readiness exec client -- wget -qO- http://web
+```
 
-## 완료 검증
+## 완료 검증 / Cleanup / Explain
 
-1. Readiness 실패 시 Pod가 재시작되는지 여부를 설명한다.
+Running과 Ready의 차이, Service DNS가 성공해도 HTTP가 실패할 수 있는 이유, Liveness 실패와 Readiness 실패의 복구 결과 차이를 설명한다.
 
-## Cleanup
-
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
-
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+```bash
+kubectl delete namespace lab-readiness
+```
