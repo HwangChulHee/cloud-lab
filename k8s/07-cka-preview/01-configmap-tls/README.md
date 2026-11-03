@@ -4,7 +4,7 @@
 
 기초 연결: [ConfigMap 파일 마운트](../../01-core-objects/12-configmap-secret-mount/README.md) · [롤링 업데이트](../../02-controllers/03-deployment-rollingupdate-rollback/README.md)
 
-[독립 과정에서의 위치](../../08-independent/02-configuration/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../01-core-objects/12-configmap-secret-mount/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
