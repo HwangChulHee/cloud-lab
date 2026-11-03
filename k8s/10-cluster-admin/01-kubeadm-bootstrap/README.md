@@ -1,6 +1,6 @@
 # kubeadm·CRI·CNI 설치 순서
 
-> 분류: **CKA 필수** · 선수 학습: [플랫폼 준비](../../08-independent/PLATFORM.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [플랫폼 준비](../../guides/PLATFORM.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -35,7 +35,7 @@ kubeadm은 API Server/etcd 등 Control Plane을 부트스트랩하는 도구이�
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [플랫폼 준비](../../08-independent/PLATFORM.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [플랫폼 준비](../../guides/PLATFORM.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령
@@ -51,7 +51,7 @@ sudo crictl info
 
 ## 따라 하기 — 순서와 예상 결과
 
-기존 08-independent/PLATFORM.md의 Ubuntu 전용 VM 준비→kubeadm init/join→CNI 설치 순서를 따른다. init 직후/ CNI 설치 후 Ready 변화와 kube-system Pod를 비교한다.
+기존 guides/PLATFORM.md의 Ubuntu 전용 VM 준비→kubeadm init/join→CNI 설치 순서를 따른다. init 직후/ CNI 설치 후 Ready 변화와 kube-system Pod를 비교한다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
 
@@ -74,4 +74,4 @@ Node NotReady면 kubelet journal, CRI socket 및 CNI Pod/설정 순서로 확인
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
