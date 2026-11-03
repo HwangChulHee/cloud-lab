@@ -74,3 +74,60 @@ PDB minAvailable가 너무 높다면 drain이 멈춘다. --force나 --disable-ev
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
 [10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
+
+
+## 실제 작업형 Lab — cordon, drain, PDB, uncordon
+
+**실행 환경:** ADM-01에서 구성한 **별도 폐기 가능한 Worker 2대 + Control Plane**. 원래 Kubernetes 1.27 학습 VM에서 Node drain을 수행하지 않는다. 지금 VM에 남아 있는 다른 학습 workload, DaemonSet, local storage, PDB를 먼저 확인하고, 데이터 손실 가능성이 있다면 실행을 중단한다.
+
+```bash
+kubectl get nodes -o wide
+kubectl get pods -A -o wide
+kubectl get pdb -A
+kubectl apply -f k8s/10-cluster-admin/06-node-maintenance/pdb-drain.yaml
+kubectl -n lab-node-maintenance rollout status deploy/web --timeout=180s
+kubectl -n lab-node-maintenance get pods,pdb -o wide
+```
+
+**예상:** Worker마다 web Pod 하나씩 Ready, PDB `minAvailable=2`이므로 허용 가능한 자발적 중단(`ALLOWED DISRUPTIONS`)이 0.
+
+### PDB가 drain을 차단하는 이유
+
+테스트 Pod가 배치된 Worker 중 하나를 `DRAIN_NODE`에 지정한다. 다른 사용자 워크로드가 있는 Node는 사용하지 않는다.
+
+```bash
+DRAIN_NODE=worker1
+kubectl cordon "$DRAIN_NODE"
+kubectl -n lab-node-maintenance get pods -o wide
+kubectl drain "$DRAIN_NODE" --ignore-daemonsets --timeout=30s
+kubectl -n lab-node-maintenance get pdb,pods -o wide
+```
+
+**예상:** `minAvailable=2` 상태에서 해당 Pod의 eviction이 차단될 수 있어 drain 명령이 timeout으로 끝난다. **실패는 의도된 테스트 결과**이며, `cordon`/drain이 설정한 `SchedulingDisabled`는 자동으로 복구되지 않는다. 이 상태에서 `--disable-eviction` 또는 `--force` 같은 강제 삭제 우회책으로 PDB를 무시하지 않는다.
+
+### 정책을 변경해 안전하게 drain 완료
+
+```bash
+kubectl uncordon "$DRAIN_NODE"
+kubectl -n lab-node-maintenance patch pdb web -p '{"spec":{"minAvailable":1}}'
+kubectl -n lab-node-maintenance get pdb web
+kubectl drain "$DRAIN_NODE" --ignore-daemonsets --timeout=120s
+kubectl get node "$DRAIN_NODE"
+kubectl -n lab-node-maintenance get pods -o wide
+kubectl uncordon "$DRAIN_NODE"
+kubectl -n lab-node-maintenance rollout status deploy/web --timeout=180s
+```
+
+**예상:** 이제 1개 Pod eviction이 허용된다. 다른 Worker에 이미 Pod가 있고 `required` anti-affinity를 사용하므로 새 Pod는 drain 중 Pending일 수 있지만, uncordon 뒤 원래 Worker에 배치돼 2/2 Ready로 돌아온다. `drain`과 `cordon`은 서로 다르며 drain은 Eviction API/PDB를 고려한다.
+
+### Cleanup / 완료 검증
+
+```bash
+kubectl uncordon "$DRAIN_NODE"
+kubectl delete namespace lab-node-maintenance
+kubectl get nodes -o wide
+```
+
+Node가 Ready와 Scheduling 가능 상태로 복귀했는지 확인한다. `kubectl get nodes`의 STATUS가 Ready이면 언제나 scheduling 가능하다고 가정하지 않는다.
+
+**인출:** drain이 PDB로 막힌 이유, PDB `minAvailable`과 Deployment `replicas`의 관계, `NoExecute`/Eviction/Pod 재생성의 차이. 완료는 실제 VM에서 PDB 차단과 정책 변경 뒤 drain/uncordon을 관찰하고 원복했을 때만 기록한다.
