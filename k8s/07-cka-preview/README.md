@@ -4,7 +4,7 @@
 
 [입문·CKA 내용 대조 기록](../CONTENT_REVIEW.md): 개념 설명 보강과 남은 실습 범위를 확인한다.
 
-CKA의 클러스터 설치·etcd 복구·업그레이드·Node 유지보수·HA·Kustomize는 [관리 경로](../10-cluster-admin/README.md)에서 보강하며, 네트워크·Pod/Storage/Security의 내부 동작은 [심화 경로](../09-internals/README.md)에서 관찰한다. 기존 16개 예습 번호는 변경하지 않는다.
+CKA의 클러스터 설치·etcd 복구·업그레이드·Node 유지보수·HA·Kustomize는 [관리 경로](../10-cluster-admin/README.md)에서 보강하며, 네트워크·Pod/Storage/Security의 내부 동작은 [심화 경로](../README.md)에서 관찰한다. 기존 16개 예습 번호는 변경하지 않는다.
 
 ## 어떻게 진행할까?
 
@@ -14,7 +14,7 @@ CKA의 클러스터 설치·etcd 복구·업그레이드·Node 유지보수·HA�
 4. 검증하고 정리한다. 아래 기록에 예상과 실제 차이를 남기고 자신의 말로 원인을 설명한다.
 5. 같은 실습을 힌트 없이 한 번 더 한다. 속도보다 원인 설명을 먼저 익힌다.
 
-권장 순서는 [독립 과정](../08-independent/README.md)의 선행 개념을 따른다. Pod/설정/Controller → Service → Probe/자원·배치 → 저장소 → RBAC/CRD → Ingress/TLS/HPA/정책 순으로 진행하고, 설치·제어 평면·Gateway/Helm은 [별도 플랫폼 경로](../08-independent/PLATFORM.md)에서 진행한다. 새 클러스터에서 NetworkPolicy 검증은 CNI 설치 후 수행한다.
+권장 순서는 [독립 과정](../README.md)의 선행 개념을 따른다. Pod/설정/Controller → Service → Probe/자원·배치 → 저장소 → RBAC/CRD → Ingress/TLS/HPA/정책 순으로 진행하고, 설치·제어 평면·Gateway/Helm은 [별도 플랫폼 경로](../guides/PLATFORM.md)에서 진행한다. 새 클러스터에서 NetworkPolicy 검증은 CNI 설치 후 수행한다.
 
 42개를 모두 끝낸 후에만 예습할 필요는 없다. **기초 하나와 관련 예습 하나를 짝지어** 진행한다. 전체 실습 번호와 예습 번호는 별도이며 기존 완료 상태는 바꾸지 않는다.
 
