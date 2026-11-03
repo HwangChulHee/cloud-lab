@@ -82,7 +82,7 @@ PDB minAvailable가 너무 높다면 drain이 멈춘다. --force나 --disable-ev
 
 ```bash
 kubectl get nodes -o wide
-# DRAIN_NODE는 실제 kubectl get nodes 출력의 이름을 사용한다.
+# DRAIN_NODE는 `kubectl get nodes`에서 확인한 별도 VM의 실제 이름을 사용한다. 예시 `worker1`은 PLATFORM의 호스트 이름 기준이다.
 kubectl get pods -A -o wide
 kubectl get pdb -A
 kubectl apply -f k8s/10-cluster-admin/06-node-maintenance/pdb-drain.yaml
@@ -97,7 +97,7 @@ kubectl -n lab-node-maintenance get pods,pdb -o wide
 테스트 Pod가 배치된 Worker 중 하나를 `DRAIN_NODE`에 지정한다. 다른 사용자 워크로드가 있는 Node는 사용하지 않는다.
 
 ```bash
-DRAIN_NODE=k8s-worker1
+DRAIN_NODE=worker1
 kubectl cordon "$DRAIN_NODE"
 kubectl -n lab-node-maintenance get pods -o wide
 kubectl drain "$DRAIN_NODE" --ignore-daemonsets --timeout=30s
