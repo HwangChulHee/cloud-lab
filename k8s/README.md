@@ -8,16 +8,15 @@
 
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
-| **이론** | **32 / 73** | **43.8%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) |
-| **실습** | **20 / 73** | **27.4%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
+| **이론** | **32 / 65** | **49.2%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) |
+| **실습** | **20 / 65** | **30.8%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
 |---|---:|---:|
 | 기초 (00–06) | 20 / 42 | 47.6% |
 | CKA 확장 (07) | 0 / 16 | 0% |
-| 내부 원리 심화 (09) | 0 / 8 | 0% |
 | 클러스터 관리 (10) | 0 / 7 | 0% |
-| **전체** | **20 / 73** | **27.4%** |
+| **전체** | **20 / 65** | **30.8%** |
 
 - 현재 실습 위치: **02 Controllers — 4/8 완료 (50%)**. Foundation **2/2**, Core Objects **14/14** 완료.
 - 최근 실습 기록: Blue/Green의 selector 전환·복구, 빈 EndpointSlice 장애 재현, Namespace 정리 및 **복습 2/2 완료**.
@@ -29,10 +28,9 @@
 | 목적 | 시작점 |
 |---|---|
 | **현재 진행 중인 VM 실습 이어가기** | [Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md) |
-| 강의 없이 처음부터 순서대로 실습하기 | [기초 커리큘럼 42개](#기초-커리큘럼-42개) · [VM 환경 준비](./08-independent/START.md) |
+| 강의 없이 처음부터 순서대로 실습하기 | [기초 커리큘럼 42개](#기초-커리큘럼-42개) · [VM 환경 준비](./guides/START.md) |
 | 주제별 이론·실습 체크 확인하기 | [42개 기초 커리큘럼](#기초-커리큘럼-42개) |
 | CKA 확장 문제 실습하기 | [07 — CKA 확장 16개](./07-cka-preview/README.md) |
-| Linux / Kubernetes 내부 동작 탐구하기 | [09 — 선택적 내부 심화](./09-internals/README.md) (중복 개념은 기초 Lab에 통합) |
 | 클러스터 설치·운영·복구 학습하기 | [10 — 클러스터 관리 7개](./10-cluster-admin/README.md) |
 | 강의자료와 학습 내용의 대응 관계 확인하기 | [내용 검토 및 연결 기록](./CONTENT_REVIEW.md) |
 
@@ -53,7 +51,7 @@
 - **CKA 문제 풀이:** 07의 16개는 강의 연계 및 시험 목적이 다르므로 기초와 중복되어도 별도 수행한다.
 - **내부 동작:** 09의 8개는 참고·선택 심화 경로다. Watch, Scheduler/Eviction, CSI, Admission, 계층별 장애 진단의 핵심 내용을 해당 기초 Lab에 통합했다. 별도 심화 수행 여부는 구분한다.
 - **클러스터 관리:** 10의 7개는 별도 VM을 요구하는 CKA/운영 절차를 포함한다.
-- **기존 독립 과정:** 08-independent는 이전 학습 자료와 YAML·스크립트·참조 링크를 보호하기 위해 보존한 **레거시 자료**다. 신규 학습을 08에서 시작하거나 중복으로 완료하지 않는다. [이관 안내](./08-independent/README.md)를 참고한다.
+- **기존 독립 과정:** 08-independent는 이전 학습 자료와 YAML·스크립트·참조 링크를 보호하기 위해 보존한 **레거시 자료**다. 신규 학습을 08에서 시작하거나 중복으로 완료하지 않는다. [이관 안내](./README.md)를 참고한다.
 
 이전 73개 모듈 총계와 완료 체크는 **기존 진도 보존을 위해 유지**한다. 향후 심화 모듈의 독립 학습 단위를 재편할 때 기존 완료 32/20을 재계산 없이 소실하지 않는다. 같은 개념을 다른 폴더에서 다시 구축하는 것과 CKA의 시험형 재훈련은 구분한다.
 
@@ -69,7 +67,6 @@
 | Advanced | [05-advanced](./05-advanced/) | 4 | StatefulSet, Ingress, HPA |
 | Architecture | [06-architecture](./06-architecture/) | 1 | 아키텍처·관측성 종합 |
 | CKA 확장 | [07-cka-preview](./07-cka-preview/README.md) | 16 | 시험 관련 확장 실습 |
-| 내부 심화 | [09-internals](./09-internals/README.md) | 8 | 컨트롤러·네트워크·스케줄러 내부 |
 | 클러스터 관리 | [10-cluster-admin](./10-cluster-admin/README.md) | 7 | 설치, 운영, 장애 대응 |
 | **합계** | | **73** | |
 
@@ -165,7 +162,7 @@ Windows (Vagrant + VirtualBox)
 Kubernetes 1.27.2 · containerd · Calico
 ```
 
-호스트 PowerShell에서 `vagrant ssh master-node`로 접속합니다. Master VM에서 `kubectl`이 인증되지 않으면 관리자 kubeconfig를 설정해야 합니다. 자세한 명령과 주의 사항은 [독립 실습 시작 준비](./08-independent/START.md), [확장 실습 환경](./07-cka-preview/ENVIRONMENT.md)을 참고합니다.
+호스트 PowerShell에서 `vagrant ssh master-node`로 접속합니다. Master VM에서 `kubectl`이 인증되지 않으면 관리자 kubeconfig를 설정해야 합니다. 자세한 명령과 주의 사항은 [독립 실습 시작 준비](./guides/START.md), [확장 실습 환경](./07-cka-preview/ENVIRONMENT.md)을 참고합니다.
 
 ```bash
 # Master VM에서 클러스터 상태 점검
@@ -196,8 +193,8 @@ kubectl logs <pod-name> -n <namespace>
 
 ## 학습 자료 및 확장 경로
 
-- [기존 독립 학습 체크포인트 (참고)](./08-independent/CHECKPOINTS.md) · [기존 복습 해설](./08-independent/REVIEW_ANSWERS.md)
-- [공통 애드온 설치 참고](./08-independent/ADDONS.md) · [안전한 별도 VM/플랫폼 실습](./08-independent/PLATFORM.md)
+- [기존 독립 학습 체크포인트 (참고)](./README.md) · [기존 복습 해설](./README.md)
+- [공통 애드온 설치 참고](./guides/ADDONS.md) · [안전한 별도 VM/플랫폼 실습](./guides/PLATFORM.md)
 - [CKA 내용 연결 지도](./07-cka-preview/CONCEPT_BRIDGE.md) · [검증 기록](./07-cka-preview/VALIDATION.md)
 
 > **범위 안내:** 이 저장소의 이론/실습 완료 수치는 사용자 VM에서 실제 검증한 기록을 기준으로 합니다. 선택적 제품 설치나 일부 플랫폼 운영 실습은 별도 범위이며, 모듈 완료만으로 최신 CKA 시험 전체 대비를 보장하지 않습니다.
