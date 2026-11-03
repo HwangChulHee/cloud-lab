@@ -1,54 +1,85 @@
-# Lab 39 — Ingress Routing
+# Lab 39 — Ingress: Host / Path 라우팅
 
-> 학습 단계: **가이드 축소**
+> **필수** · 기존 1.27 Vagrant 클러스터 · 공용 Traefik 필요 · `lab-self-edge` Namespace
 
-## 강의 없이 시작하기
+## 1. Overview / Recall
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../05-advanced/03-ingress-canary-tls/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+Ingress는 HTTP(S) 요청의 host/path 규칙을 선언하는 API 객체이고, 실제 트래픽을 전달하는 주체는 **Ingress Controller**다. IngressClass가 존재해도 Controller/Backend가 없다면 요청은 성공하지 않는다.
 
-## 목표
+시작 전에 Service → EndpointSlice → Pod 전달 과정과 IngressClass의 역할을 설명한다.
 
-Ingress Controller를 통한 path/host routing을 구성한다.
+## 2. 준비와 정상 구축
 
-## Recall
+[애드온 설치 가이드](../../guides/ADDONS.md#traefik-ingress)의 Traefik을 확인하고 **없을 때만** 설치한다. 공용 Controller를 이 Lab에서 삭제하지 않는다.
 
-Service가 backend Pod를 선택하는 과정과 Ingress object / Ingress Controller의 역할 차이를 먼저 설명한다.
+```bash
+kubectl get ingressclass
+kubectl -n lab-self-ingress get deploy,svc traefik
+kubectl apply -f k8s/05-advanced/02-ingress-routing/routing-lab.yaml
+kubectl -n lab-self-edge rollout status deploy/shopping --timeout=120s
+kubectl -n lab-self-edge rollout status deploy/customer --timeout=120s
+kubectl -n lab-self-edge get ingress,svc,pods -o wide
+kubectl -n lab-self-edge get endpointslices
+```
 
-## Build & Observe
+**예상:** shopping/customer Pod 각각 Ready, 두 Service의 EndpointSlice에 준비된 주소가 존재한다.
 
-1. 실제 설치된 Ingress Controller와 IngressClass를 확인한다. 일반 host/path 실습은 해당 구현을 사용한다. 커뮤니티 ingress-nginx는 2026년 3월 유지보수 종료 대상이므로 신규 설치는 유지보수되는 다른 구현을 사용한다. NGINX Inc.의 구현과 이름만으로 혼동하지 않는다.
-2. shopping/customer/order backend와 Service를 준비한다.
-3. Path 기반 라우팅을 만든다.
-4. Host 기반 라우팅을 추가한다.
-5. 요청 URL과 실제 도달 backend를 비교한다.
+## 3. Host / Path와 직접 연결을 구분
 
-## Break & Diagnose
+첫 셸에서 아래 명령을 실행하고 그대로 유지한다.
 
-Ingress Controller 자체를 제거하는 식의 큰 장애는 만들지 않는다.
+```bash
+kubectl -n lab-self-ingress port-forward svc/traefik 8080:80
+```
 
-1. Ingress rule의 backend Service 이름을 존재하지 않는 이름으로 바꾼다.
-2. 또는 path를 의도적으로 잘못 설정해 원하는 backend로 가지 않는 상태를 만든다.
-3. Ingress describe, Controller log, Service/Endpoint를 따라가며 원인을 찾는다.
+같은 머신의 **두 번째 셸**에서 실행한다.
 
-## Recover
+```bash
+curl -fsS -H 'Host: shop.study.local' http://127.0.0.1:8080/shopping
+curl -fsS -H 'Host: shop.study.local' http://127.0.0.1:8080/customer
+curl -fsS -H 'Host: customer.study.local' http://127.0.0.1:8080/
+curl -i -H 'Host: wrong.study.local' http://127.0.0.1:8080/shopping
+```
 
-잘못된 backend Service 이름/path를 복구하고 같은 요청이 정상 routing되는지 확인한다.
+**예상:** 순서대로 `shopping`, `customer`, `customer`가 나오고, 마지막 요청은 이 Ingress의 규칙과 매칭되지 않아 404 계열 응답이 나온다. Host와 Path는 함께 평가된다.
 
-## 완료 검증
+## 4. Break — 존재하지 않는 Backend
 
-1. Ingress object만 존재해도 실제 라우팅을 수행하는 것은 아니라는 점을 설명한다.
-2. 요청이 실패할 때 Ingress → Service → Endpoint → Pod 순서로 추적한다.
+```bash
+kubectl -n lab-self-edge patch ingress shop-routes --type=json \
+  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"missing-shopping"}]'
+kubectl -n lab-self-edge describe ingress shop-routes
+kubectl -n lab-self-edge get svc,endpointslices
+curl -i -H 'Host: shop.study.local' http://127.0.0.1:8080/shopping
+curl -fsS -H 'Host: shop.study.local' http://127.0.0.1:8080/customer
+kubectl -n lab-self-ingress logs deploy/traefik --tail=50
+```
 
-## Cleanup
+**예상:** shopping만 실패하고 customer는 계속 성공한다. `kubectl get pods`가 Running이라고 해서 Ingress 라우팅이 정상이라는 증거는 아니다. 오류 응답 상태는 Controller 구현에 따라 다르므로 특정 숫자 하나를 강제하지 않는다.
 
-Ingress와 이 Lab에서 만든 backend/Service를 삭제한다. 공용 Ingress Controller는 다음 실습에서 사용하므로 유지한다.
+## 5. Recover
 
-## 설명하기
+```bash
+kubectl -n lab-self-edge patch ingress shop-routes --type=json \
+  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"shopping"}]'
+curl -fsS -H 'Host: shop.study.local' http://127.0.0.1:8080/shopping
+kubectl -n lab-self-edge get ingress shop-routes -o yaml
+```
 
-> Ingress는 라우팅 규칙을 선언하고, 실제 규칙을 읽어 트래픽을 처리하는 것은 ______이다.
+**예상:** `shopping` 응답이 다시 나온다. 단순 재시작이 아니라 **잘못 변경한 Service 참조만 원복**했는지 확인한다.
 
-## 연결된 확장 실습
+## 6. Cleanup / Explain
 
-- [Ingress의 host와 path 라우팅](../../07-cka-preview/06-ingress-routing/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+port-forward 셸은 Ctrl+C로 종료한다. 다른 Lab의 자산이 없다면 아래처럼 앱 오브젝트만 제거한다.
 
-- [Ingress에서 Gateway API로 전환](../../07-cka-preview/07-gateway-migration/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+```bash
+kubectl delete -f k8s/05-advanced/02-ingress-routing/routing-lab.yaml --ignore-not-found
+```
+
+주의: 위 YAML에는 `lab-self-edge` Namespace가 포함되어 있다. 이미 Lab 40 등에서 이를 재사용 중이라면 **Namespace를 삭제하지 말고** `deployment/shopping deployment/customer service/shopping service/customer ingress/shop-routes`만 삭제한다. 공용 Traefik과 RBAC는 유지한다.
+
+**인출 질문:** (1) Ingress와 Controller의 책임 구분 (2) Service와 EndpointSlice가 정상인데 외부 HTTP만 실패하는 세 가지 원인 (3) Host 불일치와 backend Service 불일치를 구별할 증거는?
+
+완료 기준: host/path 조합 3개 성공 → 한 backend만 실패 → Controller/Ingress/Service 증거 기록 → 최소 수정 복구 → 공유 리소스를 보존한 정리.
+
+다음: [Lab 40 Ingress TLS/Canary](../03-ingress-canary-tls/README.md). [Gateway API 전환 연습](../../07-cka-preview/07-gateway-migration/README.md)은 별도 CKA 문제로 유지한다.
