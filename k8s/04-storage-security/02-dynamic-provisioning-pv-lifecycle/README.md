@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/06-storage/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../05-advanced/01-statefulset/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -87,7 +87,7 @@ kubectl describe pod <pod> -n <namespace>
 - CSI 드라이버에 따라 ControllerPublish(Attach) 단계가 없을 수 있다. **Local Path Provisioner는 CSI 전체 경로를 보여주는 증거가 아니다.**
 - `WaitForFirstConsumer`에서는 소비 Pod의 스케줄링 제약과 볼륨 결정을 함께 다루므로 PVC만 만들어 놓고 Pending인 상태가 반드시 장애는 아니다.
 
-이 주제를 검증할 때는 저장소 운영 전반을 깨뜨리는 대신 잘못된 StorageClass를 가진 테스트 PVC처럼 범위가 제한된 장애를 우선 사용한다. [CSI 상세 관찰](../../09-internals/06-csi-volume-lifecycle/README.md).
+이 주제를 검증할 때는 저장소 운영 전반을 깨뜨리는 대신 잘못된 StorageClass를 가진 테스트 PVC처럼 범위가 제한된 장애를 우선 사용한다. [CSI 상세 관찰](../../04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md).
 
 
 ## 내부 동작 심화 통합 — 06-csi-volume-lifecycle
@@ -101,7 +101,7 @@ PVC는 저장 요구이며 PV는 해당 요청과 결합되는 리소스다. Sto
 ### 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 06-storage 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../README.md)의 06-storage 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ### 예시: PVC가 Bound인데 파일이 보이지 않는다면?
@@ -153,4 +153,4 @@ PVC Pending은 StorageClass/provisioner/소비 Pod/토폴로지를, Pod FailedMo
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
