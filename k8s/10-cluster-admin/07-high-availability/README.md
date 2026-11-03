@@ -1,6 +1,6 @@
 # HA API 엔드포인트·etcd quorum
 
-> 분류: **CKA 필수 개념·선택 구축** · 선수 학습: [독립 학습](../../08-independent/README.md)의 ADM-01, ADM-02 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수 개념·선택 구축** · 선수 학습: [독립 학습](../../README.md)의 ADM-01, ADM-02 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -35,7 +35,7 @@ Control Plane HA는 API Server 다중화뿐 아니라 안정된 controlPlaneEndp
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)에서 [ADM-01](../01-kubeadm-bootstrap/README.md)과 [ADM-02](../02-etcd-backup-restore/README.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../README.md)에서 [ADM-01](../01-kubeadm-bootstrap/README.md)과 [ADM-02](../02-etcd-backup-restore/README.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령
@@ -73,4 +73,4 @@ kubectl -n kube-system get pods -l component=etcd -o wide
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
