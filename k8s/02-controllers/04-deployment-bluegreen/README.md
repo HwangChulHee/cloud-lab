@@ -52,7 +52,7 @@ kubectl get events --sort-by=.lastTimestamp
 - ✅ 잘못된 selector bluue로 EndpointSlice 대상 0개 및 Connection refused 재현. Pod 4개는 Ready 유지.
 - ✅ selector 복구 후 HTTP blue, Blue Endpoint 2개 Ready 확인.
 - ✅ lab-bluegreen Namespace 삭제 후 NotFound 확인.
-- 복습 문제 2개 진행 예정.
+- ✅ 복습 2/2 완료: Service selector 변경에 따른 API Server → EndpointSlice Controller → kube-proxy 흐름, Pod 레이블 불일치 시 Endpoint 장애 및 진단 절차 설명.
 
 ## 완료 검증
 
