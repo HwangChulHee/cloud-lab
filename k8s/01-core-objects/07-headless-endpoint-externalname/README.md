@@ -99,3 +99,85 @@ kubectl get events --sort-by=.lastTimestamp
 4. 백엔드 Pod를 재생성한 뒤 수동 EndpointSlice가 **자동 갱신되지 않는다**는 점을 관찰하고 올바른 IP로 복구한다.
 
 기존 실행 예제: [수동 EndpointSlice YAML](../../08-independent/04-networking/manual-endpoint.yaml), [네트워크 재현 환경](../../08-independent/04-networking/setup.yaml). 예제의 placeholder를 실제 주소로 변경해야 하며, 현재 Lab에서 쓰는 namespace와 자동 생성 EndpointSlice를 혼동하지 않는다.
+
+
+## 통합 확장 실습 — Service·EndpointSlice 종합 연결
+
+이 절은 이전 독립 8단계 과정의 고유 실습·장애 재현을 이 Lab에 합친 것이다. 별도의 8단계 진도를 만들지 않는다. `extended-*.yaml` 자산은 이 Lab에 보존되어 있으며 별도 `lab-self-*` Namespace를 생성하므로 기존 완료 실습을 덮어쓰지 않는다.
+
+#### 따라 하기
+
+```bash
+kubectl apply -f k8s/01-core-objects/07-headless-endpoint-externalname/extended-setup.yaml
+kubectl -n lab-self-network rollout status deploy/web --timeout=120s
+kubectl -n lab-self-network wait --for=condition=Ready pod/client pod/named --timeout=120s
+kubectl -n lab-self-network exec client -- nslookup web
+kubectl -n lab-self-network exec client -- nslookup web.lab-self-network.svc.cluster.local
+kubectl -n lab-self-network exec client -- wget -qO- http://web
+kubectl -n lab-self-network get svc web
+kubectl -n lab-self-network get endpointslices -l kubernetes.io/service-name=web -o wide
+kubectl -n lab-self-network exec client -- nslookup named.headless.lab-self-network.svc.cluster.local
+kubectl -n lab-self-network exec client -- nslookup outside
+```
+
+web DNS 응답은 Service IP이고 named의 DNS 응답은 Pod IP다. cluster domain을 변경한 환경이면 cluster.local을 실제 값으로 바꾼다. outside 조회는 클러스터 외부 DNS가 가능한 환경에서 CNAME/외부 주소를 보여준다. 외부 DNS가 막혀도 web의 내부 DNS와는 별개 문제다.
+
+#### 변경 → 실패 → 복구
+
+```bash
+kubectl -n lab-self-network patch svc web --type=merge -p '{"spec":{"selector":{"app":"missing"}}}'
+kubectl -n lab-self-network get endpointslices -l kubernetes.io/service-name=web -o yaml
+kubectl -n lab-self-network exec client -- nslookup web
+kubectl -n lab-self-network exec client -- wget -T 3 -qO- http://web
+```
+
+전파가 끝나기 전에는 이전 backend로 성공할 수 있다. EndpointSlice와 wget을 다시 조회해 실제 HTTP 실패를 확인한 뒤 아래 복구를 실행한다. API/exec 자체의 오류는 Service 전달 실패의 증거로 쓰지 않는다. 변화가 없다면 selector와 EndpointSlice를 먼저 확인한다.
+
+```bash
+kubectl -n lab-self-network patch svc web --type=merge -p '{"spec":{"selector":{"app":"web"}}}'
+kubectl -n lab-self-network exec client -- wget -T 3 -qO- http://web
+```
+
+DNS는 성공해도 HTTP는 실패할 수 있다. selector 복구 후 nginx HTML이 돌아와야 한다. 즉시 실패하면 같은 wget을 다시 실행해 성공을 확인한다. EndpointSlice controller와 데이터 평면 반영에는 지연이 있을 수 있다.
+
+#### selector 없는 Service를 수동으로 연결하기
+
+```bash
+BACKEND_IP=$(kubectl -n lab-self-network get pod -l app=web -o jsonpath='{.items[0].status.podIP}')
+sed "s/REPLACE_BACKEND_IP/$BACKEND_IP/" k8s/01-core-objects/07-headless-endpoint-externalname/manual-endpoint.yaml > /tmp/lab-self-endpoint.yaml
+kubectl apply -f /tmp/lab-self-endpoint.yaml
+kubectl -n lab-self-network exec client -- wget -T 3 -qO- http://manual
+```
+
+nginx HTML을 예상한다. web Pod가 교체되면 수동 EndpointSlice의 주소는 자동 갱신되지 않는다. 주소 갱신의 주체를 selector 기반 Service와 비교한다.
+
+#### NodePort와 LoadBalancer로 확장
+
+[외부 트래픽 정책 실습](../05-service-nodeport/README.md#트래픽-정책과-loadbalancer-비교-실습)을 실행한다. 별도 lab-service-path namespace를 만들고, Windows에서 두 worker를 호출해 Cluster/Local 결과표를 채운 뒤 그 namespace를 정리한다. 외부 LB 구현 없이 Pending인 상태는 LB 동작 완료와 구분해 기록한다.
+
+#### 내부 패킷 경로 심화 (정리 전에 진행)
+
+아래 namespace를 삭제하기 전에 [INT-03 Linux Pod 네트워크](../../09-internals/03-linux-pod-network/README.md)와 [INT-04 Service 데이터 평면](../../09-internals/04-service-dataplane/README.md)을 실행한다. 삭제한 후 심화 문서를 진행하려면 이 단계의 setup.yaml을 다시 apply하고 Pod Ready를 확인한다. EndpointSlice·kube-proxy 커널 규칙과 신규 요청을 비교하는 데 실제 Service 리소스가 필요하다.
+
+#### 누적 복습 — 다음 단계 전에
+
+앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
+
+1. Pod IP와 Service IP 차이는?
+2. DNS 성공·HTTP 실패의 가능한 원인 둘은?
+3. readiness와 EndpointSlice는 어떤 관계인가?
+
+관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
+
+#### 완료와 정리
+
+`이름 → Service → EndpointSlice → Pod` 중 어디가 잘못되면 DNS만 성공하는지 설명한다.
+
+```bash
+kubectl delete namespace lab-self-network
+rm -f /tmp/lab-self-endpoint.yaml
+```
+
+다음: [05 자원·Probe·배치](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md).
+
+[독립 학습 순서](../../08-independent/README.md)
