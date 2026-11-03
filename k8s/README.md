@@ -162,7 +162,7 @@ Windows (Vagrant + VirtualBox)
 Kubernetes 1.27.2 · containerd · Calico
 ```
 
-호스트 PowerShell에서 `vagrant ssh master-node`로 접속합니다. Master VM에서 `kubectl`이 인증되지 않으면 관리자 kubeconfig를 설정해야 합니다. 자세한 명령과 주의 사항은 [독립 실습 시작 준비](./guides/START.md), [확장 실습 환경](./07-cka-preview/ENVIRONMENT.md)을 참고합니다.
+호스트 PowerShell에서 `vagrant ssh master-node`로 접속합니다. Master VM에서 `kubectl`이 인증되지 않으면 관리자 kubeconfig를 설정해야 합니다. 자세한 명령과 주의 사항은 [실습 환경 시작 준비](./guides/START.md), [확장 실습 환경](./07-cka-preview/ENVIRONMENT.md)을 참고합니다.
 
 ```bash
 # Master VM에서 클러스터 상태 점검
@@ -193,7 +193,7 @@ kubectl logs <pod-name> -n <namespace>
 
 ## 학습 자료 및 확장 경로
 
-- [기존 독립 학습 체크포인트 (참고)](./README.md) · [기존 복습 해설](./README.md)
+- [기초 42개 진도표](#기초-커리큘럼-42개) · [CKA 실습](./07-cka-preview/README.md) · [클러스터 관리](./10-cluster-admin/README.md)
 - [공통 애드온 설치 참고](./guides/ADDONS.md) · [안전한 별도 VM/플랫폼 실습](./guides/PLATFORM.md)
 - [CKA 내용 연결 지도](./07-cka-preview/CONCEPT_BRIDGE.md) · [검증 기록](./07-cka-preview/VALIDATION.md)
 
