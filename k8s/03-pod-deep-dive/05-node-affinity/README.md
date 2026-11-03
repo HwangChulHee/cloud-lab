@@ -20,42 +20,36 @@ required는 후보 노드를 걸러내고 preferred는 후보의 점수에 영�
 
 ## Build & Observe
 
-1. worker1/2에 서로 다른 label을 붙인다.
-2. required affinity로 특정 Node에 배치한다.
-3. 존재하지 않는 label required로 Pending을 만든다.
-4. 같은 조건을 preferred로 바꿔 fallback 배치를 확인한다.
-
-필요에 따라 다음 명령을 사용한다.
+Worker1/2의 실제 이름을 먼저 확인한다. 아래는 기본 Vagrant 환경의 Worker 이름을 가정한다.
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl get nodes -L cloud-lab/affinity-zone
+kubectl label node k8s-worker1 cloud-lab/affinity-zone=west
+kubectl label node k8s-worker2 cloud-lab/affinity-zone=east
+kubectl apply -f k8s/03-pod-deep-dive/05-node-affinity/affinity.yaml
+kubectl -n lab-node-affinity get pods -o wide
+kubectl -n lab-node-affinity describe pod impossible
 ```
+
+**예상:** required는 worker1에만, impossible은 Pending + FailedScheduling, preferred는 선호 조건을 만족하는 Node가 없어도 가능한 worker에 배치된다. Preferred는 강제 제약이 아니다. 실제 Scheduler의 다른 Score 요소 때문에 preferred Pod의 정확한 Node는 고정하지 않는다.
 
 ## Break & Diagnose
 
-1. preferred weight를 다르게 설정해 선호도를 비교한다.
+`required` Pod가 놓인 뒤 worker1의 `cloud-lab/affinity-zone` label을 변경하면 **IgnoredDuringExecution**으로 인해 기존 Pod를 즉시 퇴거시키지 않는다는 점을 관찰한다.
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+```bash
+kubectl label node k8s-worker1 cloud-lab/affinity-zone=other --overwrite
+kubectl -n lab-node-affinity get pods -o wide
+kubectl -n lab-node-affinity describe pod impossible
+```
 
-## Recover
+## Recover / Cleanup
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+```bash
+kubectl label node k8s-worker1 cloud-lab/affinity-zone=west --overwrite
+kubectl delete namespace lab-node-affinity
+kubectl label node k8s-worker1 cloud-lab/affinity-zone-
+kubectl label node k8s-worker2 cloud-lab/affinity-zone-
+```
 
-## 완료 검증
-
-1. required와 preferred 차이를 설명한다.
-
-## Cleanup
-
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
-
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+기존에 같은 key가 있었다면 **원래 값으로 복원**한다. 인출: required Filter와 preferred Score의 차이, nodeSelectorTerms 사이 OR / matchExpressions 사이 AND, IgnoredDuringExecution의 의미.
