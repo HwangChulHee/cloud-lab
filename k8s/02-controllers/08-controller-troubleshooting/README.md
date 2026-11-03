@@ -53,3 +53,16 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+
+## 내부 동작 심화: Watch와 Reconciliation
+
+Deployment → ReplicaSet → Pod의 소유 관계를 `ownerReferences`로 확인한다. Deployment Controller는 ReplicaSet의 원하는 상태를, ReplicaSet Controller는 Pod 개수를 맞추며, **kubelet이 Deployment 전체 복제본 수를 관리하는 것은 아니다**.
+
+```bash
+kubectl get deployments,replicasets,pods -n <namespace>
+kubectl get deployment <name> -n <namespace> -o jsonpath='{.metadata.generation}{" / "}{.status.observedGeneration}{"\n"}'
+kubectl get pods -n <namespace> -o custom-columns=NAME:.metadata.name,OWNER:.metadata.ownerReferences[0].name,UID:.metadata.uid
+```
+
+`spec.replicas`와 `status.readyReplicas`는 서로 다른 값일 수 있다. Watch가 변경을 효율적으로 전달하더라도 재연결·재조회·재조정이 필요할 수 있다. Pod 삭제 후 새 Pod가 생성되는 동안 API 객체 상태와 실제 실행 상태를 따로 기록한다. 심화 참고: [Reconciliation 관찰 절차](../../09-internals/02-reconciliation-watch/README.md).
