@@ -90,7 +90,7 @@ kubectl get endpoints
 | **합계** | **73** | **20** | **27.4%** |
 
 - 기초 `00-foundation`: **2/2 완료**; `01-core-objects`: **14/14 완료**.
-- 최근 실습 완료: **02-controllers / 04-deployment-bluegreen** (2026-11-03). Blue/Green 동시 실행, Service selector 전환과 원복, selector 오타로 Endpoint 0 장애 재현·복구, Namespace 삭제 검증. 복습 2문제 진행 예정.
+- 최근 실습 완료: **02-controllers / 04-deployment-bluegreen** (2026-11-03). Blue/Green 동시 실행, Service selector 전환과 원복, selector 오타로 Endpoint 0 장애 재현·복구, Namespace 삭제 검증. 복습 2/2 완료.
 - 다음 실습: [02-controllers / 05-daemonset](./02-controllers/05-daemonset/README.md).
 - 이론 학습(아래 32/73)과 실제 실습(20/73)은 **서로 독립적인 진행률**이다. 독립 8단계는 별도 통합 학습 경로이므로 위 73개에 중복 산입하지 않는다.
 - 실습을 완료할 때마다 이 표, 해당 기초 표의 실습 상태, 개별 Lab의 완료 기록을 함께 갱신한다. 증거 없는 심화/CKA 과정은 체크하지 않는다.
