@@ -42,7 +42,7 @@ CKA의 클러스터 설치·etcd 복구·업그레이드·Node 유지보수·HA�
 | 12 | [PriorityClass와 스케줄링 우선순위](./12-priorityclass/README.md) | [Scheduling](../03-pod-deep-dive/08-scheduling-troubleshooting/README.md) / [QoS](../03-pod-deep-dive/04-qos/README.md) | 기존 클러스터 / 선점 관찰은 전용 노드 | ⬜ |
 | 13 | [Helm으로 Argo CD 설치와 템플릿 비교](./13-helm-argocd/README.md) | [Controller](../02-controllers/01-replicaset/README.md) / [RBAC](../04-storage-security/04-serviceaccount-rbac/README.md) | 별도 1.36 예습 클러스터 + Helm 3 + Python/PyYAML | ⬜ |
 | 14 | [CNI 설치와 NetworkPolicy 집행 확인](./14-cni-install/README.md) | [클러스터 관찰](../00-foundation/01-cluster-verification/README.md) / [NetworkPolicy 예습](../07-cka-preview/08-networkpolicy/README.md) | CNI 없는 별도 1.36 kubeadm 클러스터 | ⬜ |
-| 15 | [CRI와 Linux 네트워크 매개변수 준비](./15-cri-linux-preparation/README.md) | [클러스터 runtime 확인](../00-foundation/01-cluster-verification/README.md) | 별도 Ubuntu 24.04 VM + Docker + 로컬 cri-dockerd 패키지 | ⬜ |
+| 15 | [CRI와 Linux 네트워크 매개변수 준비](./15-cri-linux-preparation/README.md) | [클러스터 runtime 확인](../00-foundation/01-cluster-verification/README.md) | 별도 Ubuntu 22.04 VM + Docker + Jammy용 cri-dockerd 패키지 | ⬜ |
 | 16 | [CRD 조회와 kubectl explain 문서 추출](./16-crd-discovery/README.md) | [API/kubeconfig](../04-storage-security/03-x509-kubeconfig-api/README.md) / [kubectl 관찰](../00-foundation/02-kubectl-observation-basics/README.md) | 기존 클러스터 | ⬜ |
 
 ## 독립 실행 기록
