@@ -1,6 +1,6 @@
 # kubeadm 업그레이드 순서와 버전 스큐
 
-> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 ADM-01 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 ADM-01 단계 · 환경: ADM-01의 별도 1.36 VM에서 다음 지원 minor로 업그레이드(기존 1.27 VM 금지)
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -55,6 +55,25 @@ sudo apt-mark showhold
 별도 PLATFORM VM에서 시작 버전, 목표 버전 및 apt repository minor 경로를 명시해 표를 만든다. VM 스냅샷과 etcd snapshot을 먼저 확보한다. 대상 minor의 kubeadm 패키지를 설치한 뒤 kubeadm upgrade plan으로 제약을 확인하고 공식 upgrade apply 과정을 진행한다. Control Plane kubelet 업데이트·재시작 후 Worker를 한 대씩 cordon/drain → kubeadm upgrade node → kubelet 패키지 업데이트·재시작 → uncordon한다. 각 노드의 버전과 Ready를 기록한다.
 
 **관찰 기록:** 실행 전 예상 → 실제 spec/status/Events 또는 Linux 상태 → 예상과 다른 이유. 단순히 명령이 오류 없이 종료됐다는 이유로 정상 동작을 확인했다고 처리하지 않는다.
+
+## 단계별 실전 작업 체크리스트
+
+실습 대상은 새로 구성한 별도 kubeadm Control Plane 1대 + Worker 2대다. 현재 버전과 지원 skew를 [공식 업그레이드 가이드](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)로 확인한다.
+
+```bash
+kubectl get nodes -o wide
+kubeadm version
+apt-cache madison kubeadm
+sudo kubeadm upgrade plan
+```
+
+1. **스냅샷 및 etcd 백업:** ADM-02의 백업 성공과 테스트 앱의 Ready를 확인한다.
+2. **Control Plane:** 목표 minor의 `pkgs.k8s.io` APT 저장소로 변경한 다음 `kubeadm`만 목표 patch로 설치한다. `kubeadm upgrade plan` 결과와 실제 지원 버전을 확인하고 `kubeadm upgrade apply TARGET_VERSION`를 실행한다.
+3. **Control Plane kubelet:** drain이 필요한 환경이면 현재 Pod/PDB/DaemonSet을 확인한 뒤 drain한다. 목표 버전의 `kubelet/kubectl` 설치 후 kubelet을 restart하고 Node Ready 및 Component 상태를 검증한다.
+4. **Worker 순차 업그레이드:** 각 Worker를 `kubectl drain NODE --ignore-daemonsets`로 비운 뒤 해당 Worker에서 `kubeadm upgrade node` → kubelet 갱신·재시작 → Control Plane에서 `kubectl uncordon NODE`. 다음 Worker로 넘어가기 전 Ready와 재스케줄 Pod 상태를 확인한다.
+5. **최종 확인:** `kubectl get nodes -o wide`, 시스템 Pod, DNS, 테스트 Service 응답을 비교한다.
+
+실제 패키지 버전 문자열, cluster snapshot, 변경 전후 버전 출력 및 rollback 수단을 기록한다. 패키지 저장소/버전은 **실행할 때 공식 문서와 `apt-cache madison`에서 확인**하고 강제로 latest를 설치하지 않는다. 위험한 업그레이드를 기존 학습 VM에서 실습하지 않는다.
 
 ## 고장 가설과 복구
 
