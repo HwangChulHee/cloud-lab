@@ -1,0 +1,30 @@
+name: Kubernetes Lab Materials Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'k8s/**'
+      - '.github/workflows/k8s-materials-validation.yml'
+  pull_request:
+    paths:
+      - 'k8s/**'
+      - '.github/workflows/k8s-materials-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install YAML parser
+        run: python -m pip install 'PyYAML>=6,<7'
+      - name: Python syntax check
+        run: python -m compileall -q k8s
+      - name: Check Markdown links, Bash snippets and YAML structure
+        run: python k8s/07-cka-preview/check_materials.py
