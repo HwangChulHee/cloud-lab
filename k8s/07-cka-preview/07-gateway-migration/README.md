@@ -4,7 +4,7 @@
 
 기초 연결: [Ingress TLS](../../05-advanced/03-ingress-canary-tls/README.md) · [Ingress Routing](../../05-advanced/02-ingress-routing/README.md)
 
-[독립 과정에서의 위치](../../08-independent/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../guides/PLATFORM.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
@@ -76,7 +76,7 @@ kubectl apply -f solution.yaml
 
 </details>
 
-[Gateway Canary 가중치·헤더 비교](../../08-independent/CANARY.md)를 이어 할 경우 아래 정리를 하기 전에 실행한다.
+[Gateway Canary 가중치·헤더 비교](../../07-cka-preview/07-gateway-migration/README.md)를 이어 할 경우 아래 정리를 하기 전에 실행한다.
 
 ## 4. 정리 및 재실행
 
