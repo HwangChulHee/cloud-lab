@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-cronjob
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: clock
+  namespace: lab-cronjob
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: worker
+            image: busybox:1.37
+            command: ["sh", "-c", "echo started; sleep 90; echo completed"]
+            resources:
+              requests: {cpu: 10m, memory: 16Mi}
+              limits: {cpu: 100m, memory: 64Mi}
