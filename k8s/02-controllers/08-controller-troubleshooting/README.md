@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/03-controllers/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../02-controllers/08-controller-troubleshooting/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -65,7 +65,7 @@ kubectl get deployment <name> -n <namespace> -o jsonpath='{.metadata.generation}
 kubectl get pods -n <namespace> -o custom-columns=NAME:.metadata.name,OWNER:.metadata.ownerReferences[0].name,UID:.metadata.uid
 ```
 
-`spec.replicas`와 `status.readyReplicas`는 서로 다른 값일 수 있다. Watch가 변경을 효율적으로 전달하더라도 재연결·재조회·재조정이 필요할 수 있다. Pod 삭제 후 새 Pod가 생성되는 동안 API 객체 상태와 실제 실행 상태를 따로 기록한다. 심화 참고: [Reconciliation 관찰 절차](../../09-internals/02-reconciliation-watch/README.md).
+`spec.replicas`와 `status.readyReplicas`는 서로 다른 값일 수 있다. Watch가 변경을 효율적으로 전달하더라도 재연결·재조회·재조정이 필요할 수 있다. Pod 삭제 후 새 Pod가 생성되는 동안 API 객체 상태와 실제 실행 상태를 따로 기록한다. 심화 참고: [Reconciliation 관찰 절차](../../02-controllers/08-controller-troubleshooting/README.md).
 
 
 ## 내부 동작 심화 통합 — 02-reconciliation-watch
