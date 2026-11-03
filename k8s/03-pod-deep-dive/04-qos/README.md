@@ -22,45 +22,28 @@ requests/limits 조합에 따른 QoS Class를 비교한다.
 
 ## Build & Observe
 
-1. Guaranteed/Burstable/BestEffort Pod를 각각 만든다.
-2. `status.qosClass`와 resources를 비교한다.
-3. 노드 자원 압박 개념과 어떤 Pod가 더 보호되는지 정리한다.
-
-필요에 따라 다음 명령을 사용한다.
-
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl apply -f k8s/03-pod-deep-dive/04-qos/qos.yaml
+kubectl -n lab-qos get pod -o wide
+kubectl -n lab-qos get pod best burst guaranteed cpu-only -o custom-columns=NAME:.metadata.name,QOS:.status.qosClass
+kubectl -n lab-qos describe pod guaranteed
+kubectl -n lab-qos get pod cpu-only -o yaml
 ```
+
+**예상:** best=BestEffort, burst=Burstable, guaranteed=Guaranteed, cpu-only=Burstable. CPU만 request=limit이라도 **메모리 request/limit가 없으므로** Guaranteed가 아니다.
 
 ## Break & Diagnose
 
-1. requests/limits 조합을 바꾼 새 Pod를 별도 이름으로 만들어 QoS를 비교한다. 기본 1.27 환경에서는 실행 중인 Pod의 resources를 직접 수정하지 않는다. 최신 resize 기능도 QoS 변경을 허용한다고 가정하지 않는다.
+QoS는 Pod spec의 리소스 정의로 결정되는 분류다. CPU limit에 도달하면 일반적으로 throttling이 발생하고, 메모리 limit을 넘으면 OOMKilled가 발생할 수 있다. Node MemoryPressure에 의한 Eviction과 다르다. 단순 QoS 순위만으로 축출 순서를 확정하지 않는다. 학습 클러스터 전체를 OOM으로 몰아넣지 않는다.
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+## Recover / Cleanup
 
-## Recover
+잘못된 request/limit가 있을 경우 동일한 기존 Pod의 필드를 강제로 수정하는 대신 새 실험 Pod를 사용해 비교한다.
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+```bash
+kubectl delete namespace lab-qos
+```
 
-## 완료 검증
+## 완료 검증 / 설명하기
 
-1. 세 QoS Class 조건을 설명한다.
-
-## Cleanup
-
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
-
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
-
-## 연결된 확장 실습
-
-- [PriorityClass와 스케줄링 우선순위](../../07-cka-preview/12-priorityclass/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+네 Pod의 resources와 status.qosClass를 근거로 분류를 설명한다. Guaranteed가 CPU만 설정해도 성립하는가? CPU throttling과 OOMKilled와 Evicted의 원인이 무엇인가? Priority가 Eviction에 미치는 영향은?
