@@ -61,3 +61,36 @@ kubectl get events --sort-by=.lastTimestamp
 ## 설명하기
 
 > 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+
+
+## 따라 하기 — CronJob 예약 실행·수동 실행·중첩 제어
+
+시작 전에 현재 컨텍스트와 시각을 확인한다. `* * * * *`는 **매분** 실행하며 90초 작업이므로 중첩을 관찰할 수 있다.
+
+```bash
+kubectl apply -f k8s/02-controllers/07-cronjob/cronjob-lab.yaml
+kubectl -n lab-cronjob get cronjob clock
+kubectl -n lab-cronjob create job manual --from=cronjob/clock
+kubectl -n lab-cronjob get jobs,pods -o wide
+kubectl -n lab-cronjob describe cronjob clock
+```
+
+**예상:** 직접 만든 `manual` Job은 바로 시작한다. 예약 Job은 다음 분 경계 이후 생성될 수 있다. `Forbid`는 CronJob이 관리하는 예약 Job끼리 겹치지 않게 하므로 **수동 Job까지 절대 직렬화하지 않는다**.
+
+```bash
+kubectl -n lab-cronjob patch cronjob clock --type=merge -p '{"spec":{"suspend":true}}'
+kubectl -n lab-cronjob get cronjob clock -o yaml
+kubectl -n lab-cronjob get jobs,pods
+kubectl -n lab-cronjob patch cronjob clock --type=merge -p '{"spec":{"suspend":false}}'
+kubectl -n lab-cronjob patch cronjob clock --type=merge -p '{"spec":{"concurrencyPolicy":"Replace"}}'
+kubectl -n lab-cronjob describe cronjob clock
+```
+
+**예상:** suspend는 미래의 예약 실행을 멈추지만 **진행 중인 Job은 종료하지 않는다**. `Replace`는 이후 예약 시 이전 실행 중 Job을 교체할 수 있다. CronJob의 LastScheduleTime과 Job 생성 시각을 구별한다. 예약 시점을 실제로 관찰하지 못했다면 동시 실행 정책까지 완료 처리하지 않는다.
+
+```bash
+kubectl -n lab-cronjob patch cronjob clock --type=merge -p '{"spec":{"suspend":true}}'
+kubectl delete namespace lab-cronjob
+```
+
+**인출:** Allow/Forbid/Replace, suspend와 이미 실행 중인 Job 관계, idempotent 작업 설계 이유를 설명한다.
