@@ -78,3 +78,44 @@ kubectl kustomize /tmp/cloud-lab-kustomize/dev
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
 [10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
+
+
+## 실행형 심화: Overlay 변경과 Patch 복구
+
+기존의 `/tmp/cloud-lab-kustomize` 디렉터리 및 base/dev 파일을 위 관찰 명령으로 생성한 뒤 진행한다. **클러스터에 적용하기 전 렌더링을 검사**하며, 기존 default Namespace에 임의 배포하지 않는다.
+
+```bash
+kubectl kustomize /tmp/cloud-lab-kustomize/dev
+sed -i 's/count: 2/count: 3/' /tmp/cloud-lab-kustomize/dev/kustomization.yaml
+kubectl kustomize /tmp/cloud-lab-kustomize/dev
+cat >> /tmp/cloud-lab-kustomize/dev/kustomization.yaml <<'EOF'
+patches:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: missing
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 5
+EOF
+kubectl kustomize /tmp/cloud-lab-kustomize/dev
+```
+
+**예상:** 2 → 3으로 바뀐 replicas는 Overlay에만 적용되고 Base 파일의 replicas=1은 유지된다. `missing` 대상의 patch는 적용 대상을 찾지 못해 오류가 발생하는지 확인한다. 구현/버전에 따라 JSON6902 patch 대상이 없을 때 출력이 달라질 수 있으므로 실제 렌더 결과도 검사한다.
+
+```bash
+sed -i '/^patches:/,$d' /tmp/cloud-lab-kustomize/dev/kustomization.yaml
+kubectl kustomize /tmp/cloud-lab-kustomize/dev
+kubectl create namespace lab-kustomize
+kubectl -n lab-kustomize apply --dry-run=server -k /tmp/cloud-lab-kustomize/dev
+kubectl -n lab-kustomize apply -k /tmp/cloud-lab-kustomize/dev
+kubectl -n lab-kustomize rollout status deploy/dev-web --timeout=180s
+kubectl -n lab-kustomize get deploy,pods -o wide
+kubectl -n lab-kustomize delete -k /tmp/cloud-lab-kustomize/dev
+kubectl delete namespace lab-kustomize
+rm -rf /tmp/cloud-lab-kustomize
+```
+
+**완료:** Base/Overlay/patch가 적용되는 시점, 렌더링과 API 객체 생성의 차이, Patch 대상 불일치를 수정한 증거, namespace 정리를 설명한다. `kubectl apply -k`는 별도의 Kustomize binary 없이도 동작할 수 있지만 설치된 `kubectl`의 Kustomize 버전과 지원 필드를 확인한다.
