@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/01-pods/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../01-core-objects/01-pod-multicontainer/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -132,7 +132,7 @@ kubectl delete namespace lab-self-pods
 
 다음: [02 설정 주입](../12-configmap-secret-mount/README.md). 더 연습하려면 [기초 02 관찰](../../00-foundation/02-kubectl-observation-basics/README.md), [Sidecar 로그](../../07-cka-preview/10-sidecar-logging/README.md)를 순서대로 실행한다. Sidecar 예제는 Deployment를 쓰므로 먼저 03의 Controller 설명을 읽어도 된다.
 
-[독립 학습 순서](../../08-independent/README.md)
+[독립 학습 순서](../../README.md)
 
 
 ## 내부 동작 심화 통합 — 01-pod-creation-pipeline
