@@ -148,4 +148,4 @@ RBAC의 forbidden과 PSA 위반 오류 메시지를 구분한다. restricted 위
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/security/pod-security-admission/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
+[Kubernetes 공식 커리큘럼](../../README.md)
