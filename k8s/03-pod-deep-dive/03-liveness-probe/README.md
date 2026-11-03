@@ -22,41 +22,41 @@ Liveness 실패는 kubelet이 해당 컨테이너를 종료하고 restartPolicy�
 
 ## Build & Observe
 
-1. HTTP `/health` liveness probe를 설정한다.
-2. 정상 상태의 restartCount를 기록한다.
-3. 애플리케이션을 500 상태로 만들고 failureThreshold 이후 재시작을 관찰한다.
-
-필요에 따라 다음 명령을 사용한다.
-
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl apply -f k8s/03-pod-deep-dive/03-liveness-probe/liveness.yaml
+kubectl -n lab-liveness rollout status deploy/web --timeout=120s
+kubectl -n lab-liveness get pods -l app=web -o wide
+kubectl -n lab-liveness get pods -l app=web -o custom-columns=NAME:.metadata.name,UID:.metadata.uid,RESTARTS:.status.containerStatuses[0].restartCount
 ```
+
+**예상:** Ready=True, restartCount=0. 이 liveness는 kubelet의 exec Probe로 `/tmp/live` 파일을 검사한다. 파일은 매번 컨테이너가 기동할 때 생성된다.
 
 ## Break & Diagnose
 
-1. probe path를 고의로 틀려 재시작 루프를 만든 뒤 복구한다.
+```bash
+kubectl -n lab-liveness exec deploy/web -- rm /tmp/live
+kubectl -n lab-liveness get pods -w
+# 두 번 이상의 probe 실패를 관찰하고 Ctrl+C
+kubectl -n lab-liveness describe pod -l app=web
+kubectl -n lab-liveness get pods -l app=web -o custom-columns=NAME:.metadata.name,UID:.metadata.uid,RESTARTS:.status.containerStatuses[0].restartCount
+```
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+**예상:** `Liveness probe failed` Event 뒤 kubelet이 컨테이너를 재시작한다. Deployment나 ReplicaSet이 반드시 새 Pod를 만든다는 뜻은 아니다. **같은 UID와 restartCount 증가**를 확인한다. 재시작 후 `/tmp/live` 파일이 다시 생성돼 정상으로 돌아오는지 본다.
 
 ## Recover
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+```bash
+kubectl -n lab-liveness rollout status deploy/web --timeout=120s
+kubectl -n lab-liveness exec deploy/web -- test -f /tmp/live
+kubectl -n lab-liveness get pods -l app=web -o wide
+```
 
-## 완료 검증
+앱 오류를 liveness가 고칠 수 없는 경우에는 단순 재시작만 반복돼 CrashLoopBackOff로 이어질 수 있다. 느린 초기 기동에는 Startup Probe를 사용하고, 외부 DB 장애를 무조건 Liveness에 연결하지 않는다.
 
-1. Readiness와 Liveness의 실패 결과 차이를 설명한다.
+## 완료 검증 / Cleanup / Explain
 
-## Cleanup
+Pod UID 유지 여부, restartCount 증가, Event 내용, 복구 후 Ready 상태를 기록하고 Startup/Readiness/Liveness의 역할 차이를 설명한다.
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
-
-## 설명하기
-
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+```bash
+kubectl delete namespace lab-liveness
+```
