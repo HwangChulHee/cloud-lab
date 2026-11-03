@@ -1,6 +1,6 @@
 # CNI 설치·Node 라우팅·NetworkPolicy
 
-> 분류: **CKA 필수** · 선수 학습: [기본 학습](../../README.md), [내부 심화 목차](../../README.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [Lab 06 ClusterIP](../../01-core-objects/04-service-clusterip/README.md), [ADM-01](../01-kubeadm-bootstrap/README.md) · 환경: 기존 1.27.2 환경에서는 읽기 관찰만, CNI 설치·변경은 별도 1.36 VM
 
 ## Overview — 무엇을 이해해야 하는가
 
