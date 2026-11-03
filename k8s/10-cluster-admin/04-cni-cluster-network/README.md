@@ -104,10 +104,10 @@ kubectl get networkpolicies -A
 kubectl get nodes -o wide
 kubectl -n kube-system get pods -o wide
 kubectl get pods -A -o wide
-kubectl describe node k8s-worker1
+kubectl describe node worker1
 ```
 
-실제 별도 클러스터 Node 이름은 위 예제와 다를 수 있으므로 `kubectl get nodes`의 값을 사용한다. CNI DaemonSet이 성공해도 Pod 간 통신을 자동으로 증명한 것은 아니다.
+이 예시의 Node 이름은 [PLATFORM](../../guides/PLATFORM.md)의 `worker1` 기준이며 실제 별도 클러스터 Node 이름은 다를 수 있으므로 `kubectl get nodes`의 값을 사용한다. CNI DaemonSet이 성공해도 Pod 간 통신을 자동으로 증명한 것은 아니다.
 
 ### 단계 C — 같은 Node / 다른 Node 요청
 
