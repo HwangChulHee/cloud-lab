@@ -1,6 +1,6 @@
 # Kustomize Base·Overlay·patch
 
-> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 03-controllers 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 02-controllers Deployment 단계 · 환경: 기존 1.27.2 환경에서도 렌더링·네임스페이스 격리 배포 가능; 호스트 변경은 별도 VM만 사용
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -35,7 +35,7 @@ Kustomize는 Kubernetes 리소스의 공통 Base 위에 환경별 변경(overlay
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../README.md)의 03-controllers 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../README.md)의 02-controllers Deployment 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령
