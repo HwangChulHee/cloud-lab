@@ -1,6 +1,6 @@
 # 07. Ingress에서 Gateway API로 전환
 
-> 독립 실행 가능한 확장 실습 · 참고 주제: task-gateway · 환경: 별도 1.34 예습 클러스터 + Ingress/Gateway Controller
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-gateway · 환경: 별도 1.36 예습 클러스터 + Ingress/Gateway Controller
 
 기초 연결: [Ingress TLS](../../05-advanced/03-ingress-canary-tls/README.md) · [Ingress Routing](../../05-advanced/02-ingress-routing/README.md)
 
@@ -98,7 +98,7 @@ rm -f /tmp/preview-gateway.key /tmp/preview-gateway.crt
 ## Gateway Canary — 이전 확장 실습 병합
 
 
-별도 1.34 환경의 [07 Gateway](./README.md) 1–3단계에서 HTTPS를 정상 확인한 뒤, **07의 정리 전에** 진행한다. 이미 정리했다면 Gateway/TLS/HTTPRoute를 해당 문서대로 다시 구축한다. Gateway 데이터 평면 Service를 9443:443으로 port-forward한 첫 셸을 유지하고 같은 머신의 두 번째 셸에서 실행한다.
+별도 1.36 환경의 [07 Gateway](./README.md) 1–3단계에서 HTTPS를 정상 확인한 뒤, **07의 정리 전에** 진행한다. 이미 정리했다면 Gateway/TLS/HTTPRoute를 해당 문서대로 다시 구축한다. Gateway 데이터 평면 Service를 9443:443으로 port-forward한 첫 셸을 유지하고 같은 머신의 두 번째 셸에서 실행한다.
 
 ### 먼저 이해할 것
 
