@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/05-resources-scheduling/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -72,7 +72,7 @@ kubectl get events --sort-by=.lastTimestamp
 | 컨테이너 `OOMKilled` | 실행 중 메모리 제한/커널 OOM | `lastState.terminated.reason`, restartCount |
 | Node 압박에 의한 `Evicted` | kubelet eviction | Pod status/message와 Node Conditions/Events |
 
-Scheduler는 `kubectl top`의 실시간 CPU가 가장 낮은 노드를 단순 선택하지 않는다. CPU limit 초과 시 throttling과 메모리 초과 시 OOMKilled, NodePressure Eviction을 구별한다. QoS 외에도 requests 초과 사용과 Priority가 eviction 판단에 영향을 미칠 수 있다. 독립 추가 실습을 새로 만들기보다는 Lab 25–32에서 얻은 결과를 이곳에 종합한다. [내부 참고](../../09-internals/05-scheduler-eviction/README.md).
+Scheduler는 `kubectl top`의 실시간 CPU가 가장 낮은 노드를 단순 선택하지 않는다. CPU limit 초과 시 throttling과 메모리 초과 시 OOMKilled, NodePressure Eviction을 구별한다. QoS 외에도 requests 초과 사용과 Priority가 eviction 판단에 영향을 미칠 수 있다. 독립 추가 실습을 새로 만들기보다는 Lab 25–32에서 얻은 결과를 이곳에 종합한다. [내부 참고](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md).
 
 
 ## 통합 확장 실습 — 자원·배치·Probe 종합
@@ -197,4 +197,4 @@ rm -f /tmp/lab-self-placement.yaml
 
 taint 원복 명령을 먼저 성공시킨다. 다음: [06 영속 저장소](../../05-advanced/01-statefulset/README.md).
 
-[독립 학습 순서](../../08-independent/README.md)
+[독립 학습 순서](../../README.md)
