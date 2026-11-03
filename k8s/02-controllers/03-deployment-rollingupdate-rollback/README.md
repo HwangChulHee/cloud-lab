@@ -57,7 +57,7 @@ kubectl get events --sort-by=.lastTimestamp
 - ✅ 존재하지 않는 이미지로 ErrImagePull 및 ImagePullBackOff, rollout timeout 재현; 기존 정상 Pod 3개 유지와 Service HTTP 200 확인.
 - ✅ rollout undo 후 기존 정상 Pod 3개 유지, 실패한 ReplicaSet replicas=0 확인.
 - ✅ Namespace lab-rolling 삭제 후 NotFound 확인.
-- 복습 2문제 진행 예정.
+- ✅ 복습 **2/2 완료**: maxSurge=1/maxUnavailable=0에서 신규 이미지 장애 시 기존 가용 Pod 유지, replicas=4/maxSurge=1/maxUnavailable=1에서 Available 3개 및 신규 오류 Pod 2개까지의 교체 흐름 설명.
 
 ## 완료 검증
 
