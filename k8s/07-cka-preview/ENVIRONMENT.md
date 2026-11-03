@@ -32,7 +32,7 @@ kubectl top nodes
 | 별도 1.36 예습 클러스터 | 07 Gateway, 13 Helm, 실제 cert-manager 추가 관찰 | 버전에 맞는 Gateway API CRD/Controller와 Ingress Controller, Helm, 충분한 VM 자원 |
 | 폐기 가능한 kubeadm control-plane VM | 09의 장애 주입/복구 | 호스트 SSH, sudo, crictl, VM 스냅샷 |
 | CNI 없는 새 1.36 클러스터 | 14 | kubeadm 초기화 완료, 겹치지 않는 Pod/Service/VM 네트워크 |
-| 별도 Ubuntu VM(예: 24.04) | 15 | Docker, OS/아키텍처에 맞는 cri-dockerd 패키지, sudo, crictl |
+| 별도 Ubuntu 22.04 VM (Jammy용 cri-dockerd `.deb` 실습) | 15 | Docker, OS/아키텍처에 맞는 cri-dockerd 패키지, sudo, crictl |
 
 ### 공용 애드온 준비 기준
 
