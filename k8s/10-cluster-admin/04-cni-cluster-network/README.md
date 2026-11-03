@@ -1,6 +1,6 @@
 # CNI 설치·Node 라우팅·NetworkPolicy
 
-> 분류: **CKA 필수** · 선수 학습: [기본 학습](../../08-independent/README.md), [내부 심화 목차](../../09-internals/README.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
+> 분류: **CKA 필수** · 선수 학습: [기본 학습](../../README.md), [내부 심화 목차](../../README.md) · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
 ## Overview — 무엇을 이해해야 하는가
 
@@ -35,7 +35,7 @@ CNI는 kubelet/runtime이 Pod 네트워크를 설정할 때 호출하는 인터�
 ## 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [기본 학습](../../08-independent/README.md), [내부 심화 목차](../../09-internals/README.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [기본 학습](../../README.md), [내부 심화 목차](../../README.md)를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ## 관찰 명령
@@ -74,4 +74,4 @@ CNI 설치 뒤 CoreDNS Pending이면 kube-system Pod 이벤트와 CNI daemonset 
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[10-cluster-admin 목차](../README.md) · [전체 독립 학습](../../README.md)
