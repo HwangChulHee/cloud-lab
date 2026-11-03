@@ -70,3 +70,19 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [제어 평면 장애를 호스트에서 복구하기](../../07-cka-preview/09-control-plane-recovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## 종합 장애 과제 — 원인 분리형 진단
+
+이 과제는 기존 개념을 나열하는 복습 대신, **같은 사용자 증상이 다른 계층에서 발생하는 상황**을 구분하는 최종 검증이다. Deployment + Service + ConfigMap + Probe로 최소 앱 스택을 만들고 가능하다면 Ingress/NetworkPolicy를 연결한다.
+
+| 시나리오 | 주입 | 구분해야 할 증거 | 복구 |
+|---|---|---|---|
+| A. 서비스 이름은 해석되지만 HTTP 실패 | Service selector를 없는 label로 변경 | DNS 정상, EndpointSlice 대상 없음, Pod Ready | selector 원복 후 새 연결 검증 |
+| B. Pod Running인데 요청 대상에서 제외 | readiness를 의도적으로 실패시킴 | Pod Running vs Ready, EndpointSlice ready condition | Probe/앱 상태 복구 |
+| C. Pod 생성/배치 실패 | Quota 초과 또는 불가능한 nodeAffinity | `FailedCreate` vs `FailedScheduling` | Quota/request/배치 조건 중 실제 원인만 수정 |
+| D. Ingress/TLS 실패 (선택) | TLS Secret 이름 불일치 | Ingress 객체/Controller 로그/인증서 검증 | Secret 참조 원복 |
+
+**평가 방법:** 장애 이름을 보지 않고 `kubectl get/describe`, Events, Pod 직접 접근, Service/EndpointSlice, Ingress 순서로 가설과 반증을 기록한다. 복구 전에 다른 원인 하나를 배제할 근거를 명시한다. 장애 전/후 상태, 정확한 변경 사항, 재발 방지 조치를 1페이지 운영 보고서로 정리한다. `curl -k` 성공이나 DNS 응답만으로 HTTPS/애플리케이션 복구를 판정하지 않는다.
+
+연계 심화: [계층별 장애 추론](../../09-internals/08-system-failure-analysis/README.md). 이전 독립 경로의 [Ingress/TLS 재현 명령](../../08-independent/08-operations/README.md)은 **기존 참고 자산**으로 남겨 두되 이 Capstone이 공식 완료 기준이다.
