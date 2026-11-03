@@ -5,7 +5,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/04-networking/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../01-core-objects/07-headless-endpoint-externalname/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -98,7 +98,7 @@ kubectl get events --sort-by=.lastTimestamp
 3. 테스트 Pod에서 `wget -qO- http://manual`로 응답을 확인한다.
 4. 백엔드 Pod를 재생성한 뒤 수동 EndpointSlice가 **자동 갱신되지 않는다**는 점을 관찰하고 올바른 IP로 복구한다.
 
-기존 실행 예제: [수동 EndpointSlice YAML](../../08-independent/04-networking/manual-endpoint.yaml), [네트워크 재현 환경](../../08-independent/04-networking/setup.yaml). 예제의 placeholder를 실제 주소로 변경해야 하며, 현재 Lab에서 쓰는 namespace와 자동 생성 EndpointSlice를 혼동하지 않는다.
+기존 실행 예제: [수동 EndpointSlice YAML](../../01-core-objects/07-headless-endpoint-externalname/manual-endpoint.yaml), [네트워크 재현 환경](../../01-core-objects/07-headless-endpoint-externalname/extended-setup.yaml). 예제의 placeholder를 실제 주소로 변경해야 하며, 현재 Lab에서 쓰는 namespace와 자동 생성 EndpointSlice를 혼동하지 않는다.
 
 
 ## 통합 확장 실습 — Service·EndpointSlice 종합 연결
@@ -157,7 +157,7 @@ nginx HTML을 예상한다. web Pod가 교체되면 수동 EndpointSlice의 주�
 
 #### 내부 패킷 경로 심화 (정리 전에 진행)
 
-아래 namespace를 삭제하기 전에 [INT-03 Linux Pod 네트워크](../../09-internals/03-linux-pod-network/README.md)와 [INT-04 Service 데이터 평면](../../09-internals/04-service-dataplane/README.md)을 실행한다. 삭제한 후 심화 문서를 진행하려면 이 단계의 setup.yaml을 다시 apply하고 Pod Ready를 확인한다. EndpointSlice·kube-proxy 커널 규칙과 신규 요청을 비교하는 데 실제 Service 리소스가 필요하다.
+아래 namespace를 삭제하기 전에 [INT-03 Linux Pod 네트워크](../../01-core-objects/04-service-clusterip/README.md)와 [INT-04 Service 데이터 평면](../../01-core-objects/04-service-clusterip/README.md)을 실행한다. 삭제한 후 심화 문서를 진행하려면 이 단계의 setup.yaml을 다시 apply하고 Pod Ready를 확인한다. EndpointSlice·kube-proxy 커널 규칙과 신규 요청을 비교하는 데 실제 Service 리소스가 필요하다.
 
 #### 누적 복습 — 다음 단계 전에
 
@@ -180,4 +180,4 @@ rm -f /tmp/lab-self-endpoint.yaml
 
 다음: [05 자원·Probe·배치](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md).
 
-[독립 학습 순서](../../08-independent/README.md)
+[독립 학습 순서](../../README.md)
