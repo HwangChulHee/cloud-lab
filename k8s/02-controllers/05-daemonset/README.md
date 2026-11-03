@@ -1,60 +1,84 @@
-# Lab 21 — DaemonSet
+# Lab 21 — DaemonSet: 적합한 Node마다 Pod 하나
 
-> 학습 단계: **중간 가이드**
+> **필수 실습** · 기존 Vagrant 3노드 클러스터 · namespace: `lab-daemonset` · 관련 개념: Label/Selector(Lab 04), Deployment(Lab 17–20)
 
-## 강의 없이 시작하기
+## 1. Overview / Recall
 
-이 README가 이 주제의 **공식 학습·실습 기록**입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [이전 독립 코스의 추가 실행 자산](../../02-controllers/08-controller-troubleshooting/README.md)은 고유 예제나 YAML이 필요할 때 참고하며 별도로 중복 완료하지 않습니다.
+목표는 **DaemonSet Controller가 적합한 Node마다 하나의 Pod를 유지**하는 과정을 관찰하고, 배치 조건 변화가 기존 Pod에 어떤 영향을 주는지 설명하는 것이다.
 
-## 목표
+먼저 답해 본다.
 
-Node마다 하나의 Pod를 유지하는 Controller 특성을 확인한다.
+1. Deployment `replicas: 2`와 DaemonSet이 서로 다른 점은?
+2. Control Plane에 `NoSchedule` taint가 있어도 DaemonSet이 항상 그곳에 배치될까?
+3. Node label이 바뀌면 기존 Pod는 누가 정리할까?
 
-## 핵심 개념과 오해 방지
+## 2. Build — 대상 Node를 명시적으로 준비
 
-DaemonSet은 모든 노드에 무조건 생성하는 것이 아니라 nodeSelector/affinity/taint 등 조건을 만족하는 노드마다 Pod를 유지한다. control-plane taint가 있는 노드까지 포함하는지는 toleration을 확인한다. hostPort와 NodePort는 다르다. hostPort는 해당 Pod가 배치된 노드의 포트를 사용하며, 다른 Pod와의 포트 충돌도 스케줄링에 영향을 줄 수 있다.
-
-## Recall
-
-시작 전에 이 실습에서 재사용되는 이전 개념을 말로 설명한다. 막히면 바로 수정하지 말고 `get → describe → events` 순서로 확인한다.
-
-## Build & Observe
-
-1. DaemonSet을 만들고 worker별 Pod 수를 확인한다.
-2. hostPort 또는 노드별 요청으로 각각의 Pod를 호출한다.
-3. nodeSelector를 추가해 특정 Node 집합으로 제한한다.
-
-필요에 따라 다음 명령을 사용한다.
+**변경 범위:** Worker 2대에만 이 Lab 전용 label을 붙인다. Control Plane taint를 제거하지 않는다. 실행 전 같은 label이 사용 중이지 않은지 확인한다.
 
 ```bash
-kubectl get pods -o wide
-kubectl get all
-kubectl describe pod POD_NAME
-kubectl get events --sort-by=.lastTimestamp
+kubectl config current-context
+kubectl get nodes -o wide --show-labels
+kubectl get nodes -L cloud-lab/daemonset
+# 기본 Vagrant 클러스터의 실제 Node 이름 확인 후 실행
+kubectl label node k8s-worker1 cloud-lab/daemonset=yes
+kubectl label node k8s-worker2 cloud-lab/daemonset=yes
+kubectl apply -f k8s/02-controllers/05-daemonset/daemonset.yaml
+kubectl -n lab-daemonset rollout status ds/node-web --timeout=180s
+kubectl -n lab-daemonset get ds,pods -o wide
 ```
 
-## Break & Diagnose
+**예상:** DESIRED=2, CURRENT=2, READY=2, 두 Pod의 `spec.nodeName`이 각각 Worker 1/2. 이미지 pull이 늦다면 `describe pod`의 Events로 확인한다.
 
-1. 노드 label을 제거해 DaemonSet 배치 변화를 관찰한다.
+## 3. Observe — Controller와 실제 HTTP 비교
 
-1. 예상 상태와 실제 상태를 비교한다.
-2. Conditions / Events를 확인한다.
-3. Service 관련이면 selector와 Endpoint를 본다.
-4. Container 관련이면 logs와 restartCount를 본다.
-5. Scheduling 관련이면 Node label, requests, affinity, taint를 본다.
+```bash
+kubectl -n lab-daemonset describe ds node-web
+kubectl -n lab-daemonset get pods -l app=node-web -o wide --show-labels
+kubectl -n lab-daemonset get pods -l app=node-web -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.metadata.ownerReferences[0].kind}{" "}{.spec.nodeName}{" "}{.status.podIP}{"\n"}{end}'
+```
 
-## Recover
+각 Worker에서 nginx가 구동 중인지 확인할 때는 해당 Pod IP를 조회해 **실제 접근 가능한 셸**에서 `curl -I http://POD_IP/`를 실행한다. Pod IP가 host 네트워크에서 라우팅 불가능하면 테스트 Pod 또는 `kubectl port-forward`로 접근한다. Ready와 네트워크 도달성은 별도로 검증한다.
 
-원인을 찾은 뒤 **최소 변경**으로 정상 상태로 되돌리고, 복구 전/후 출력 차이를 기록한다.
+## 4. Break & Diagnose — Node 대상 축소
 
-## 완료 검증
+```bash
+kubectl label node k8s-worker2 cloud-lab/daemonset-
+kubectl -n lab-daemonset get pods -l app=node-web -o wide
+kubectl -n lab-daemonset get ds node-web
+kubectl -n lab-daemonset describe ds node-web
+kubectl -n lab-daemonset get events --sort-by=.lastTimestamp
+```
 
-1. DaemonSet이 Deployment와 다른 사용 패턴을 설명한다.
+**예상:** Worker2가 더 이상 DaemonSet의 대상이 아니므로 해당 Pod가 정리되고 DESIRED가 1로 감소한다. 이것은 컨테이너 CrashLoopBackOff나 Deployment replica 부족과 **다른 원인**이다. 삭제 전후 변화가 즉시 보이지 않으면 Reconciliation 지연과 Events를 확인한다.
 
-## Cleanup
+## 5. Recover — Label 복구와 재생성 확인
 
-이 Lab에서 만든 리소스만 삭제한다. Node label/taint, Namespace, StorageClass처럼 다음 실습에 영향을 줄 수 있는 설정은 반드시 원복한다.
+```bash
+kubectl label node k8s-worker2 cloud-lab/daemonset=yes
+kubectl -n lab-daemonset rollout status ds/node-web --timeout=180s
+kubectl -n lab-daemonset get ds,pods -o wide
+```
 
-## 설명하기
+**예상:** 다시 DESIRED=2, READY=2. Worker2에 새로 생긴 Pod는 **기존과 이름 또는 UID가 달라질 수 있다.** DaemonSet Controller가 API Server에 Pod를 생성하고 Scheduler/kubelet이 Node에서 실행한다는 역할 분담을 설명한다.
 
-> 이 실습에서 정상 상태를 결정한 핵심 조건은 ______였고, 실패했을 때 가장 먼저 확인할 것은 ______이다.
+## 6. Cleanup — Node Label까지 원상 복구
+
+```bash
+kubectl delete namespace lab-daemonset
+kubectl label node k8s-worker1 cloud-lab/daemonset-
+kubectl label node k8s-worker2 cloud-lab/daemonset-
+kubectl get nodes -L cloud-lab/daemonset
+```
+
+실습 전 이미 동일 label을 쓰고 있었다면 **기존 값으로 복원**하고 덮어쓰지 않는다. `kubectl get all`은 모든 리소스를 포함하지 않으므로 Namespace 삭제 완료와 Node Label 복원까지 확인한다.
+
+## 7. Explain — 인출 퀴즈 및 완료 기준
+
+- Node가 Ready여도 DaemonSet이 Pod를 만들지 않는 이유 두 가지는?
+- `nodeSelector`에 맞지 않게 바뀐 Node의 Pod는 어떻게 되는가?
+- DaemonSet Pod가 `Pending`이면 Node label, taint, 요청 자원 중 어떤 증거부터 볼 것인가?
+
+**완료:** 두 Worker에 각각 한 Pod가 Ready → label 변경으로 대상 1대 → 복원 후 다시 2대 Ready → Namespace/Node Label 정리 → 3개 질문을 자신의 말로 설명한다.
+
+참고: [Kubernetes DaemonSet 공식 문서](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) · [Controller Troubleshooting](../08-controller-troubleshooting/README.md).
