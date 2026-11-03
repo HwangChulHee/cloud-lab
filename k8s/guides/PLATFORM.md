@@ -1,27 +1,142 @@
-# 별도 Kubernetes 클러스터 운영 실습 가이드
+# 별도 Kubernetes 클러스터 구축 — CKA 관리 실습 환경
 
-기본 00–06 Lab은 기존 Vagrant 3노드 클러스터에서 진행하며, 파괴적 클러스터 변경은 격리된 VM 또는 스냅샷 복원 가능한 환경에서만 연습한다.
+> **실행 대상:** 기존 Rocky Linux 8 / Kubernetes 1.27.2 학습 클러스터가 아닌 **새로 만든 폐기 가능한 Ubuntu 24.04 VM 3대**. VM 스냅샷을 먼저 생성한다. kubeadm/etcd/업그레이드 실습은 기존 학습 클러스터에서 절대 진행하지 않는다.
 
-## 선수 조건과 운영 원칙
+## 0. 버전과 주소 계획
 
-- 실제 Kubernetes/컨테이너 런타임 버전, CNI, OS와 공식 문서 호환성을 먼저 확인한다.
-- 기존 1.27.2 기본 학습 클러스터를 임의로 업그레이드하지 않는다.
-- etcd snapshot/restore, kubeadm upgrade, HA control plane은 반드시 백업·복구 계획과 별도 VM을 확보한 다음 수행한다.
-- 설치·관리 실행 절차는 [ADM-01~07](../10-cluster-admin/README.md)를 공식 학습 경로로 사용한다.
+2026-11-03 기준 공식 지원 minor는 **1.35 / 1.36 / 1.37**이며, 본 예제는 학습 환경의 재현성을 위해 **1.36** 패키지 저장소를 사용한다. 실제 설치 가능한 최신 patch를 같은 minor에서 선택하고 control-plane 및 worker의 kubeadm/kubelet 버전을 맞춘다. 다음 설치 전에 [공식 릴리스](https://kubernetes.io/releases/), [kubeadm 설치](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) 문서에서 호환성을 확인한다.
 
-## 구성과 순서
+| VM | 역할 | 예시 주소 |
+|---|---|---|
+| cp1 | Control Plane | 192.168.56.40 |
+| worker1 | Worker | 192.168.56.41 |
+| worker2 | Worker | 192.168.56.42 |
 
-1. 별도 클러스터에 kubeadm bootstrap을 완료하고 노드 Ready를 확인한다.
-2. 사용 중인 CNI의 설치 상태와 네트워크 정책 집행 조건을 확인한다.
-3. etcd snapshot을 저장하고 무결성을 확인한다. 복원은 폐기 가능한 환경에서 검증한다.
-4. kubeadm/컴포넌트 업그레이드는 버전별 공식 가이드를 기준으로 진행한다.
-5. Gateway API, Helm, Ingress, Canary는 [CKA 확장 과정](../07-cka-preview/README.md)에서 독립적으로 학습한다.
+위 IP는 **예시**다. 실제 NIC/IP, RAM, CPU, 연결성을 점검하고 사용자 VM에 맞게 대체한다. 각 VM은 2 CPU 이상, 충분한 RAM, 서로 통신 가능한 고유 hostname, 인터넷 또는 내부 mirror가 필요하다. VM 주소와 Pod CIDR/Service CIDR이 겹치면 안 된다.
 
-## 참고
+## 1. 모든 VM — OS·커널 준비
 
-- [CKA 환경 조건](../07-cka-preview/ENVIRONMENT.md)
-- [Gateway 전환](../07-cka-preview/07-gateway-migration/README.md)
-- [CNI](../07-cka-preview/14-cni-install/README.md)
-- [제어 평면 복구](../07-cka-preview/09-control-plane-recovery/README.md)
+각 VM에서 실행한다.
 
-이 가이드는 작업 순서·안전 조건을 설명한다. 버전별 패키지 설치 명령은 실행 환경을 확인한 뒤 공식 Kubernetes 문서를 참고한다.
+```bash
+sudo swapoff -a
+sudo modprobe overlay
+sudo modprobe br_netfilter
+cat <<'EOF' | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+cat <<'EOF' | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+sudo sysctl --system
+free -h
+ip -br addr
+```
+
+재부팅 후에도 swap이 활성화되는 환경이면 **새 VM에서만** `/etc/fstab`의 swap 항목과 systemd swap 설정을 점검해 영구적으로 비활성화한다. 커널 모듈은 배포판/런타임 및 CNI에 따라 다를 수 있다. VM 방화벽은 무조건 끄지 말고 [필수 포트](https://kubernetes.io/docs/reference/networking/ports-and-protocols/)와 선택한 CNI의 요구 사항을 허용한다.
+
+## 2. 모든 VM — containerd 설치와 CRI 확인
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl enable --now containerd
+sudo systemctl restart containerd
+sudo systemctl is-active containerd
+sudo grep -n 'SystemdCgroup' /etc/containerd/config.toml
+```
+
+`/etc/containerd/config.toml`의 `disabled_plugins`에 `cri`가 있다면 제거한 뒤 재시작한다. kubelet과 containerd의 cgroup driver는 `systemd`로 통일한다. `containerd` 패키지의 CRI 지원 및 실제 socket은 설치 후 확인한다.
+
+## 3. 모든 VM — kubeadm, kubelet, kubectl 설치
+
+```bash
+K8S_MINOR=v1.36
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL "https://pkgs.k8s.io/core:/stable:/$K8S_MINOR/deb/Release.key" |
+  sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$K8S_MINOR/deb/ /" |
+  sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+kubeadm version
+kubelet --version
+```
+
+멀티라인 파이프는 줄 끝 문법을 유지한다. `kubelet`은 `kubeadm init/join` 전에는 정상 실행되지 않을 수 있다. 이때 서비스 상태만 보고 설치 실패로 결론 내리지 않는다.
+
+## 4. Control Plane(cp1) — init
+
+Pod CIDR은 **선택한 CNI의 설치 설정과 반드시 일치**시킨다. 예시는 Calico 기본 대역 `192.168.0.0/16`을 사용하지만 VM 네트워크와 겹치면 다른 대역을 선택하고 Calico 설정도 함께 바꾼다.
+
+```bash
+sudo kubeadm init \
+  --apiserver-advertise-address=192.168.56.40 \
+  --pod-network-cidr=192.168.0.0/16 \
+  --cri-socket=unix:///run/containerd/containerd.sock
+mkdir -p "$HOME/.kube"
+sudo install -o "$(id -u)" -g "$(id -g)" -m 600 /etc/kubernetes/admin.conf "$HOME/.kube/config"
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -o wide
+```
+
+**예상:** API Server는 응답하나 CNI 미설치 시 Node NotReady/CoreDNS Pending일 수 있다. `kubeadm init`이 출력한 Join 명령과 token은 민감 정보이므로 공개 저장소·스크린샷에 게시하지 않는다.
+
+## 5. CNI 설치 (Control Plane)
+
+[Calico 공식 설치 문서](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)를 기준으로 **해당 Kubernetes 버전과 호환되는** Calico 릴리스, Operator/CRD와 IPPool을 확인해 적용한다. 임의의 latest YAML을 바로 실행하거나 현재 1.27 실습 VM의 CNI를 제거해서는 안 된다.
+
+CNI 설치가 끝나면:
+
+```bash
+kubectl get nodes -o wide
+kubectl get pods -n kube-system -o wide
+kubectl get pods -A -o wide
+```
+
+CNI가 준비되기 전의 NotReady와 준비 후 Ready를 기록하고, 실패 시 `kubectl describe node`, kubelet journal, CNI Pod Events를 순서대로 확인한다.
+
+## 6. Worker — Join
+
+cp1에서 `kubeadm token create --print-join-command`로 현재 유효한 join 명령을 생성한다. Worker에서 그 명령에 `--cri-socket unix:///run/containerd/containerd.sock`을 붙여 실행한다. 외부 문서의 토큰·CA 해시를 복사해 쓰지 않는다.
+
+```bash
+# cp1
+kubeadm token create --print-join-command
+
+# 두 Worker에서 각각 위 출력값을 검증해 sudo로 실행
+# sudo kubeadm join ... --cri-socket unix:///run/containerd/containerd.sock
+
+# cp1
+kubectl get nodes -o wide
+kubectl -n kube-system get pods -o wide
+```
+
+**예상:** 3개 Node Ready, CoreDNS Ready. 이후 테스트 Deployment/Service를 생성해 같은 노드와 다른 노드 간 Pod 통신을 검증한다.
+
+## 7. 증거·오류·복구
+
+| 장애 | 1차 확인 | 복구 범위 |
+|---|---|---|
+| kubeadm preflight 실패 | swap, CRI socket, 포트, hostname | OS/CRI 설정 수정 후 재시도 |
+| init 이후 Node NotReady | kubelet journal, CNI 설치/Pod CIDR | CNI 구성 수정 |
+| join timeout | cp1:6443 TCP 연결, token, CA hash | 연결/토큰 복구 |
+| CoreDNS Pending | Node Ready, CNI Pod 상태, taint | CNI 및 스케줄링 상태 수정 |
+| 새 Pod가 Running인데 HTTP 실패 | Pod IP, Service EndpointSlice, kube-proxy/CNI | 실제 문제 계층만 수정 |
+
+각 단계마다 **예상 출력 → 실제 출력 → 가설 → 수정 → 재확인**을 기록한다. 성공 판단은 `kubectl get nodes`뿐 아니라 DNS와 크로스 노드 통신까지 포함한다.
+
+## 8. 이후 관리 실습
+
+- [ADM-01 kubeadm bootstrap](../10-cluster-admin/01-kubeadm-bootstrap/README.md)
+- [ADM-02 etcd Snapshot/Restore](../10-cluster-admin/02-etcd-backup-restore/README.md)
+- [ADM-03 kubeadm Upgrade](../10-cluster-admin/03-kubeadm-upgrade/README.md)
+- [ADM-04 CNI 및 네트워크](../10-cluster-admin/04-cni-cluster-network/README.md)
+
+etcd 복원·kubeadm 업그레이드·HA는 **VM snapshot을 복원할 수 있는 별도 연습 환경**에서 수행한다. 이 문서는 설치 재현 가이드이며 모든 버전·CNI 조합의 실기 검증을 마쳤다는 의미는 아니다.
