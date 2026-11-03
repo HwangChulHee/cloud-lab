@@ -1,5 +1,7 @@
 # Watch와 Reconciliation의 실제 책임
 
+> **현행 학습 안내:** 공식 기본 학습은 [k8s/README의 00–06 Lab](../../README.md#기초-커리큘럼-42개)을 따릅니다. 아래 `08-independent` 경로와 `lab-self-*` namespace는 예전 독립 코스의 재현 자산이며, 반드시 다시 생성해야 하는 선수 학습은 아닙니다. 기존 기본 Lab의 리소스를 우선 활용하고 필요한 경우에만 별도 테스트 namespace를 사용합니다. 이 심화의 완료는 기본 Lab 완료와 구분합니다.
+
 > 분류: **필수 개념** · 선수 학습: [독립 학습](../../08-independent/README.md)의 03-controllers 단계 · 환경: 기존 1.27.2 환경을 우선하고 호스트 변경/설치는 별도 VM만 사용
 
 ## Overview — 무엇을 이해해야 하는가
