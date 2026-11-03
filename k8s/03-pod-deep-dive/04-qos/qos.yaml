@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-qos
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: best
+  namespace: lab-qos
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sleep", "3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: burst
+  namespace: lab-qos
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sleep", "3600"]
+    resources:
+      requests: {cpu: 10m, memory: 16Mi}
+      limits: {cpu: 100m, memory: 64Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: guaranteed
+  namespace: lab-qos
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sleep", "3600"]
+    resources:
+      requests: {cpu: 50m, memory: 32Mi}
+      limits: {cpu: 50m, memory: 32Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-only
+  namespace: lab-qos
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sleep", "3600"]
+    resources:
+      requests: {cpu: 50m}
+      limits: {cpu: 50m}
