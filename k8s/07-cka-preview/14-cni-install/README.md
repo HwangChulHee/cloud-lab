@@ -1,6 +1,6 @@
 # 14. CNI 설치와 NetworkPolicy 집행 확인
 
-> 독립 실행 가능한 확장 실습 · 참고 주제: task-cni · 환경: CNI 없는 별도 1.34 kubeadm 클러스터
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-cni · 환경: CNI 없는 별도 1.36 kubeadm 클러스터
 
 기초 연결: [클러스터 관찰](../../00-foundation/01-cluster-verification/README.md) · [NetworkPolicy 예습](../../07-cka-preview/08-networkpolicy/README.md)
 
