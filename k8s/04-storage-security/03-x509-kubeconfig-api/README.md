@@ -58,3 +58,12 @@ kubectl get events --sort-by=.lastTimestamp
 ## 연결된 확장 실습
 
 - [CRD 조회와 kubectl explain 문서 추출](../../07-cka-preview/16-crd-discovery/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
+
+
+## 독립 심화: 인증서와 토큰으로 API 직접 요청
+
+관리자 kubeconfig의 현재 API server와 CA, **테스트 전용** 클라이언트 인증서를 사용해 `curl --cacert ... --cert ... --key ... "$API_SERVER/api/v1/nodes"` 요청을 검증한다. 이는 관리자 권한이므로 개인 키·토큰·`kubectl config view --raw` 출력은 절대 커밋하지 않는다.
+
+그다음 제한된 ServiceAccount에 대해 `kubectl create token <sa> -n <namespace> --duration=10m`으로 짧은 유효기간의 토큰을 발급하고 `Authorization: Bearer`를 사용해 허용된 Pod 목록 요청과 금지된 Secret 목록 요청의 HTTP 상태를 비교한다. 인증(Authentication), 인가(Authorization), Admission 거절을 구분하며 **403만 보고 인증 실패로 단정하지 않는다**.
+
+파일 격리는 `umask 077`, `mktemp -d`로 수행하고 종료 시 키·토큰 파일을 제거한다. 실행 명령 예제: [x509/RBAC 직접 요청](../../08-independent/07-security/README.md). 기존 전역 kubeconfig를 덮어쓰지 말고 별도의 임시 `--kubeconfig` 파일로 context 변화를 확인한다.
