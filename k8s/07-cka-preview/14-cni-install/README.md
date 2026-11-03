@@ -27,7 +27,7 @@ kubeadm-config의 `networking.podSubnet`과 서비스 CIDR, VM 네트워크를 �
 
 ## 2. 직접 바꿔보기
 
-1. manifest 방식으로 Calico v3.31.1 Operator를 설치한다.
+1. Kubernetes 1.36에 맞는 Calico v3.33.0 CRD를 먼저 등록하고 동일 버전 Operator를 설치한다.
 2. 같은 버전 custom-resources를 받아 클러스터 Pod CIDR에 맞춘다.
 3. Installation을 배포하고 노드·시스템 Pod 상태를 확인한다.
 4. 08 NetworkPolicy의 허용 전/후 테스트로 실제 집행을 검증한다. Helm은 사용하지 않는다.
@@ -40,7 +40,7 @@ kubeadm-config의 `networking.podSubnet`과 서비스 CIDR, VM 네트워크를 �
 kubectl get tigerastatus
 kubectl get nodes
 kubectl get pods -A
-kubectl get ippools.crd.projectcalico.org -o yaml
+kubectl get ippools -o yaml
 ```
 
 Calico 컴포넌트 정상, 노드 Ready, 시스템 Pod 정상에 더해 08의 기본 차단·최소 허용·other 차단이 모두 동작해야 한다. Pod 간 통신만 성공한 것으로 완료하지 않는다.
@@ -49,10 +49,13 @@ Calico 컴포넌트 정상, 노드 Ready, 시스템 Pod 정상에 더해 08의 �
 <summary>막힐 때 보는 힌트와 예시 풀이</summary>
 
 ```bash
+curl -fL -o /tmp/preview-calico-crds.yaml \
+  https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
 curl -fL -o /tmp/preview-tigera-operator.yaml \
-  https://raw.githubusercontent.com/projectcalico/calico/v3.31.1/manifests/tigera-operator.yaml
+  https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
 curl -fL -o /tmp/preview-calico-custom.yaml \
-  https://raw.githubusercontent.com/projectcalico/calico/v3.31.1/manifests/custom-resources.yaml
+  https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+kubectl create -f /tmp/preview-calico-crds.yaml
 kubectl create -f /tmp/preview-tigera-operator.yaml
 vi /tmp/preview-calico-custom.yaml
 ```
@@ -73,7 +76,7 @@ kubectl get tigerastatus -w
 08 NetworkPolicy 리소스를 정리한다. CNI 제거 대신 **전용 VM을 CNI 설치 전 스냅샷으로 복원하거나 폐기**한다. 단순히 Operator만 삭제하는 것은 완전한 CNI 정리가 아니다.
 
 ```bash
-rm -f /tmp/preview-tigera-operator.yaml /tmp/preview-calico-custom.yaml
+rm -f /tmp/preview-calico-crds.yaml /tmp/preview-tigera-operator.yaml /tmp/preview-calico-custom.yaml
 ```
 
 ## 스스로 설명할 질문
