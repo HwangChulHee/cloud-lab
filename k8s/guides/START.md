@@ -27,7 +27,7 @@ Linux VM에 저장소가 없을 때만 clone한다. 이미 있으면 해당 저�
 git clone https://github.com/HwangChulHee/cloud-lab.git
 cd cloud-lab
 pwd
-ls k8s/08-independent
+ls k8s/00-foundation
 ```
 
 Pod 생성은 API Server의 승인·저장, Controller의 원하는 상태 조정, scheduler의 노드 선택, kubelet/runtime의 실행으로 이어진다. 독립 Pod는 Controller의 개수 복구 대상이 아니다. [개념 지도](../07-cka-preview/CONCEPT_BRIDGE.md)의 1번 표로 구성 요소 역할을 먼저 읽는다.
