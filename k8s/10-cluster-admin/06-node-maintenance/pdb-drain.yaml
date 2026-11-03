@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-node-maintenance
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: lab-node-maintenance
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {app: web}
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: web
+        image: nginx:1.28-alpine
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet: {path: /, port: 80}
+          periodSeconds: 3
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 64Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web
+  namespace: lab-node-maintenance
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels: {app: web}
