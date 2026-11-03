@@ -4,7 +4,7 @@
 
 ## 강의 없이 시작하기
 
-이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../08-independent/08-operations/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
+이 README가 공식 학습·실습 기록입니다. 아래의 개념 → 구성 → 관찰 → 장애/복구 → 정리 절차를 따라 진행합니다. [예전 독립 코스의 실행 자산](../../05-advanced/03-ingress-canary-tls/README.md)은 보충 참고자료이며 별도 중복 이수 대상이 아닙니다.
 
 ## 목표
 
@@ -85,7 +85,7 @@ kubectl get events --sort-by=.lastTimestamp
 
 **평가 방법:** 장애 이름을 보지 않고 `kubectl get/describe`, Events, Pod 직접 접근, Service/EndpointSlice, Ingress 순서로 가설과 반증을 기록한다. 복구 전에 다른 원인 하나를 배제할 근거를 명시한다. 장애 전/후 상태, 정확한 변경 사항, 재발 방지 조치를 1페이지 운영 보고서로 정리한다. `curl -k` 성공이나 DNS 응답만으로 HTTPS/애플리케이션 복구를 판정하지 않는다.
 
-연계 심화: [계층별 장애 추론](../../09-internals/08-system-failure-analysis/README.md). 이전 독립 경로의 [Ingress/TLS 재현 명령](../../08-independent/08-operations/README.md)은 **기존 참고 자산**으로 남겨 두되 이 Capstone이 공식 완료 기준이다.
+연계 심화: [계층별 장애 추론](../../06-architecture/01-architecture-observability-capstone/README.md). 이전 독립 경로의 [Ingress/TLS 재현 명령](../../05-advanced/03-ingress-canary-tls/README.md)은 **기존 참고 자산**으로 남겨 두되 이 Capstone이 공식 완료 기준이다.
 
 
 ## 내부 동작 심화 통합 — 08-system-failure-analysis
@@ -99,7 +99,7 @@ HTTP 실패는 DNS, Service/EndpointSlice, kube-proxy/CNI, NetworkPolicy, Ingres
 ### 시작 전 상태와 예측
 
 1. `kubectl config current-context`, `kubectl version`, `kubectl get nodes -o wide`로 대상 클러스터를 확인한다.
-2. [독립 학습](../../08-independent/README.md)의 08-operations 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
+2. [독립 학습](../../README.md)의 08-operations 단계를 완료하고 대상 namespace/객체가 존재하는지 확인한다. 이전 실습에서 cleanup했다면 먼저 다시 생성한다.
 3. 명령 실행 전에 예상할 객체 상태, Node 구성, 관련 컴포넌트 및 실패 시 증거를 기록한다.
 
 ### 관찰 명령
@@ -155,4 +155,4 @@ kubectl get events -A --sort-by=.lastTimestamp
 - [이 주제의 공식 Kubernetes 문서](https://kubernetes.io/docs/tasks/debug/)
 - [Kubernetes 디버깅](https://kubernetes.io/docs/tasks/debug/)
 
-[09-internals 목차](../README.md) · [전체 독립 학습](../../08-independent/README.md)
+[09-internals 목차](../README.md) · [전체 독립 학습](../../README.md)
