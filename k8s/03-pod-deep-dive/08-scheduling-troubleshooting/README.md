@@ -79,7 +79,7 @@ Scheduler는 `kubectl top`의 실시간 CPU가 가장 낮은 노드를 단순 �
 
 이 절은 이전 독립 8단계 과정의 고유 실습·장애 재현을 이 Lab에 합친 것이다. 별도의 8단계 진도를 만들지 않는다. `extended-*.yaml` 자산은 이 Lab에 보존되어 있으며 별도 `lab-self-*` Namespace를 생성하므로 기존 완료 실습을 덮어쓰지 않는다.
 
-> 주의: 합쳐진 배치 예제는 현재 42개 Lab의 개별 사례를 우선 사용한다. 아래 일부 명령의 대체 입력 파일은 재검증 후 진행한다.
+> 주의: 합쳐진 배치 예제는 현재 42개 Lab의 개별 사례를 우선 사용한다. 원본 통합 YAML을 4개 파일로 분리했다. 아래 명령은 확장 QoS·Probe·Affinity·상태 관찰을 위한 입력 파일을 순서대로 설치한다.
 
 #### 따라 하기
 
@@ -88,8 +88,11 @@ worker의 실제 hostname label 값을 고른다. 기본 환경은 worker 두 �
 ```bash
 kubectl get nodes -L kubernetes.io/hostname
 PLACEMENT_WORKER=REPLACE_WORKER_HOSTNAME
-sed "s/REPLACE_WORKER_HOSTNAME/$PLACEMENT_WORKER/" k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-setup.yaml > /tmp/lab-self-placement.yaml
+kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-setup.yaml
+kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-health.yaml
+sed "s/REPLACE_WORKER_HOSTNAME/$PLACEMENT_WORKER/" k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-placement.yaml > /tmp/lab-self-placement.yaml
 kubectl apply -f /tmp/lab-self-placement.yaml
+kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-status.yaml
 kubectl -n lab-self-placement rollout status deploy/health --timeout=120s
 kubectl -n lab-self-placement rollout status deploy/place --timeout=120s
 kubectl -n lab-self-placement rollout status deploy/spread --timeout=120s
