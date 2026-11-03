@@ -8,7 +8,7 @@
 
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
-| **이론** | **32 / 65** | **49.2%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) |
+| **이론** | **32 / 65** | **49.2%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) |
 | **실습** | **20 / 65** | **30.8%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
@@ -130,7 +130,7 @@
 
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
-| 33 | [Longhorn & StorageClass](./04-storage-security/01-longhorn-storageclass/README.md) | ⬜ | ⬜ |
+| 33 | [StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) | ⬜ | ⬜ |
 | 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ⬜ | ⬜ |
 | 35 | [X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) | ⬜ | ⬜ |
 | 36 | [ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) | ⬜ | ⬜ |
