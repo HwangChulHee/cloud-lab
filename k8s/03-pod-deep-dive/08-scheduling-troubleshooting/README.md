@@ -62,142 +62,86 @@ kubectl get events --sort-by=.lastTimestamp
 - [PriorityClass와 스케줄링 우선순위](../../07-cka-preview/12-priorityclass/README.md): 정상 구축부터 변경·진단·복구까지 이어서 연습한다.
 
 
-## 운영 심화 연결: Scheduler Filter/Score와 Eviction 판단
+## 종합 진단: 같은 Ready 실패, 서로 다른 책임 계층
 
-기존 스케줄링 장애 실습에 다음 세 가지 **서로 다른 실패 계층**을 분리해 기록한다.
+Lab 25–31에서 이미 수행한 QoS/Probe/Affinity/Taint 실습을 처음부터 반복하는 대신, **여러 실패가 섞인 상태에서 먼저 증거를 보고 원인 계층을 구분**한다. 핵심은 Scheduler Filter/Score, kubelet Probe/Restart, Container 종료 상태의 차이를 설명하는 것이다.
 
-| 증상 | 책임 주체/계층 | 최초 확인 증거 |
-|---|---|---|
-| `Pending` + `FailedScheduling` | Scheduler의 Filter 조건 (requests, affinity, taint, PVC 토폴로지) | `describe pod`의 Events와 PodScheduled |
-| 컨테이너 `OOMKilled` | 실행 중 메모리 제한/커널 OOM | `lastState.terminated.reason`, restartCount |
-| Node 압박에 의한 `Evicted` | kubelet eviction | Pod status/message와 Node Conditions/Events |
+### 1. 관찰 환경 구축
 
-Scheduler는 `kubectl top`의 실시간 CPU가 가장 낮은 노드를 단순 선택하지 않는다. CPU limit 초과 시 throttling과 메모리 초과 시 OOMKilled, NodePressure Eviction을 구별한다. QoS 외에도 requests 초과 사용과 Priority가 eviction 판단에 영향을 미칠 수 있다. 독립 추가 실습을 새로 만들기보다는 Lab 25–32에서 얻은 결과를 이곳에 종합한다. [내부 참고](../../03-pod-deep-dive/08-scheduling-troubleshooting/README.md).
-
-
-## 통합 확장 실습 — 자원·배치·Probe 종합
-
-이 절은 이전 독립 8단계 과정의 고유 실습·장애 재현을 이 Lab에 합친 것이다. 별도의 8단계 진도를 만들지 않는다. `extended-*.yaml` 자산은 이 Lab에 보존되어 있으며 별도 `lab-self-*` Namespace를 생성하므로 기존 완료 실습을 덮어쓰지 않는다.
-
-> 주의: 합쳐진 배치 예제는 현재 42개 Lab의 개별 사례를 우선 사용한다. 원본 통합 YAML을 4개 파일로 분리했다. 아래 명령은 확장 QoS·Probe·Affinity·상태 관찰을 위한 입력 파일을 순서대로 설치한다.
-
-#### 따라 하기
-
-worker의 실제 hostname label 값을 고른다. 기본 환경은 worker 두 개이며, spread는 서로 다른 노드에 배치돼야 한다.
+`extended-setup.yaml`은 Namespace와 QoS 비교 Pod를, `extended-health.yaml`은 Readiness/Liveness를, `extended-status.yaml`은 완료/Crash 사례를, `extended-placement.yaml`은 Affinity 배치를 제공한다. 관련 자산은 본 Lab에만 보존한다.
 
 ```bash
 kubectl get nodes -L kubernetes.io/hostname
-PLACEMENT_WORKER=REPLACE_WORKER_HOSTNAME
+PLACEMENT_WORKER=k8s-worker1
 kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-setup.yaml
 kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-health.yaml
 sed "s/REPLACE_WORKER_HOSTNAME/$PLACEMENT_WORKER/" k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-placement.yaml > /tmp/lab-self-placement.yaml
 kubectl apply -f /tmp/lab-self-placement.yaml
 kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-status.yaml
-kubectl -n lab-self-placement rollout status deploy/health --timeout=120s
-kubectl -n lab-self-placement rollout status deploy/place --timeout=120s
-kubectl -n lab-self-placement rollout status deploy/spread --timeout=120s
-kubectl -n lab-self-placement rollout status deploy/near --timeout=120s
-kubectl -n lab-self-placement get pods -o wide
-kubectl -n lab-self-placement get pod best burst guaranteed -o custom-columns=NAME:.metadata.name,QOS:.status.qosClass
+kubectl -n lab-self-placement get deploy,pods -o wide
 ```
 
-BestEffort, Burstable, Guaranteed와 spread의 서로 다른 nodeName을 예상한다. near는 place와 같은 노드에 배치되는 positive affinity를 비교한다. 노드 한 개만 쓸 수 있는 환경에서는 spread 한 개가 Pending인 것이 예상 결과다. 과목 완료를 위해서는 두 worker 환경을 준비하거나 그 환경 제약을 해결한다.
+실제 `kubernetes.io/hostname` label이 `k8s-worker1`이 아니라면 `PLACEMENT_WORKER`에 조회한 label 값을 넣는다. `place`는 지정 Node에, `near`는 `place`와 같은 Node에, `spread`는 서로 다른 Node에 배치될 것으로 예측한다.
 
-#### phase와 표시 상태를 나눠 보기
+### 2. 증상만 보고 장애 위치 분류
+
+| 실험 | 대상 | 예상 증거 | 확인할 컴포넌트 |
+|---|---|---|---|
+| A | `crash` Pod | 재시작·종료 코드·CrashLoopBackOff | kubelet/runtime |
+| B | `health` Readiness 실패 | Running but Ready=False, EndpointSlice ready=false | kubelet/EndpointSlice |
+| C | `place` 신규 Pod 배치 실패 | Pending + FailedScheduling | Scheduler Filter |
+
+**A: 컨테이너 종료 분석**
 
 ```bash
-kubectl -n lab-self-placement get pod finished crash
-kubectl -n lab-self-placement get pod finished crash -o custom-columns=NAME:.metadata.name,PHASE:.status.phase
-kubectl -n lab-self-placement logs finished
+kubectl -n lab-self-placement get pod crash -o jsonpath='{.status.phase}{" / "}{.status.containerStatuses[0].restartCount}{"\n"}'
 kubectl -n lab-self-placement describe pod crash
-kubectl -n lab-self-placement delete pod crash --wait=true
-kubectl -n lab-self-placement run crash --image=busybox:1.37 --restart=Never -- sleep 3600
-kubectl -n lab-self-placement wait --for=condition=Ready pod/crash --timeout=120s
+kubectl -n lab-self-placement logs crash --previous
 ```
 
-finished는 Completed 표시와 Succeeded phase, crash는 반복 실패 뒤 CrashLoopBackOff 표시와 컨테이너 waiting reason을 비교한다. CrashLoopBackOff를 별도 Pod phase로 외우지 않는다. 복구한 crash는 새 UID이며 Running이다.
-
-#### LimitRange 기본값과 거부 확인
-
-QoS 초기 비교를 먼저 끝내고 다음을 실행한다.
-
-```bash
-kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-limits.yaml
-kubectl -n lab-self-placement get pod best -o jsonpath='{.status.qosClass}{"\n"}'
-kubectl -n lab-self-placement run defaulted --image=busybox:1.37 --restart=Never -- sleep 3600
-kubectl -n lab-self-placement get pod defaulted -o yaml
-kubectl apply -f k8s/03-pod-deep-dive/08-scheduling-troubleshooting/extended-over.yaml
-```
-
-기존 best는 BestEffort로 남고 새 defaulted에는 request/limit 기본값이 채워진다. 마지막 Pod는 CPU max 300m을 넘겨 생성이 거부된다. 실제 Pod가 없으므로 scheduler Pending 장애와 다르다. 나머지 단계의 sleep/nginx Pod는 허용 범위 안의 자원을 사용한다.
-
-#### Probe 실패와 복구
+**B: Probe 실패 분석**
 
 ```bash
 HEALTH_POD=$(kubectl -n lab-self-placement get pod -l app=health -o jsonpath='{.items[0].metadata.name}')
 kubectl -n lab-self-placement exec "$HEALTH_POD" -- rm /tmp/ready
-kubectl -n lab-self-placement wait --for=condition=Ready=false pod/"$HEALTH_POD" --timeout=60s
-kubectl -n lab-self-placement get pod "$HEALTH_POD"
+kubectl -n lab-self-placement get pod "$HEALTH_POD" -o wide
 kubectl -n lab-self-placement get endpointslices -l kubernetes.io/service-name=health -o yaml
+```
+
+**C: 새 Pod의 배치 실패 분석**
+
+```bash
+kubectl -n lab-self-placement patch deploy place --type=merge -p '{"spec":{"template":{"spec":{"nodeSelector":{"cloud-lab/impossible":"true"}}}}}'
+kubectl -n lab-self-placement get pods -l app=place -o wide
+kubectl -n lab-self-placement get events --sort-by=.lastTimestamp
+```
+
+기존 RollingUpdate Pod가 남아 **서비스가 살아 있는 동안에도 신규 Pod만 Pending일 수 있다.** 이것은 Deployment controller가 충분한 가용성을 유지하려고 기존 Pod를 즉시 삭제하지 않기 때문이다.
+
+### 3. 최소 복구 및 동일 조건 재검증
+
+```bash
 kubectl -n lab-self-placement exec "$HEALTH_POD" -- touch /tmp/ready
-kubectl -n lab-self-placement wait --for=condition=Ready pod/"$HEALTH_POD" --timeout=120s
-kubectl -n lab-self-placement exec "$HEALTH_POD" -- rm /tmp/live
-kubectl -n lab-self-placement get pod "$HEALTH_POD" -w
-```
-
-readiness 실패가 반영되면 0/1이 되고 endpoint의 ready=false를 볼 수 있다. 이때 restartCount는 늘지 않는다. liveness 실패 뒤에는 같은 Pod의 restartCount가 늘고 시작 command가 파일을 다시 만들면서 Ready로 돌아온다. watch를 Ctrl+C로 종료한다. UID가 유지되는지도 확인한다.
-
-#### 배치 실패와 복구
-
-```bash
-kubectl -n lab-self-placement patch deploy place --type=merge -p '{"spec":{"template":{"spec":{"nodeSelector":{"cloud-lab/missing":"true"}}}}}'
-kubectl -n lab-self-placement get pods -l app=place
-kubectl -n lab-self-placement get events --sort-by=.lastTimestamp
 kubectl -n lab-self-placement patch deploy place --type=merge -p '{"spec":{"template":{"spec":{"nodeSelector":null}}}}'
+kubectl -n lab-self-placement rollout status deploy/health --timeout=120s
 kubectl -n lab-self-placement rollout status deploy/place --timeout=120s
+kubectl -n lab-self-placement get pods -o wide
 ```
 
-일치하는 노드가 없어 새 Pod가 Pending에 남는다. 기존 Pod가 남아 있는 rolling 상태와 독립 Pod Pending을 구분한다. preferred는 우선순위이지 강제 조건이 아니다. [Node Affinity](../05-node-affinity/README.md)와 [Pod Affinity](../06-pod-affinity-antiaffinity/README.md)의 AND/OR·topology 설명을 읽는다.
+`crash`는 독립 Pod이므로 잘못된 command를 제자리 수정하지 않고 별도의 정상 Pod로 교체하거나 테스트 종료 시 Namespace와 함께 삭제한다. 이를 Controller의 복제본 복구와 구분한다.
 
-#### taint/toleration 비교
-
-이번 전용 key가 이미 있는 노드에서는 아래 변경을 하지 않는다. 기존 값이 없음을 먼저 확인하고, 학습 worker에서만 실행한다. NoSchedule은 기존 Pod를 퇴거시키지 않으므로 template annotation을 바꿔 새 Pod를 만든다.
-
-```bash
-PLACEMENT_NODE=$(kubectl -n lab-self-placement get pod -l app=place -o jsonpath='{.items[0].spec.nodeName}')
-kubectl get node "$PLACEMENT_NODE" -o jsonpath='{.spec.taints}{"\n"}'
-kubectl taint node "$PLACEMENT_NODE" cloud-lab/self-study=true:NoSchedule
-kubectl -n lab-self-placement patch deploy place --type=merge -p '{"spec":{"template":{"metadata":{"annotations":{"study":"taint"}}}}}'
-kubectl -n lab-self-placement get pods -l app=place
-kubectl -n lab-self-placement get events --sort-by=.lastTimestamp
-kubectl -n lab-self-placement patch deploy place --type=merge -p '{"spec":{"template":{"spec":{"tolerations":[{"key":"cloud-lab/self-study","operator":"Equal","value":"true","effect":"NoSchedule"}]}}}}}'
-kubectl -n lab-self-placement rollout status deploy/place --timeout=120s
-kubectl taint node "$PLACEMENT_NODE" cloud-lab/self-study:NoSchedule-
-```
-
-#### Quota와 Priority로 확장하기
-
-[11 자원 예산](../../07-cka-preview/11-resource-budget/README.md)을 구축→힌트→복구→정리까지 실행한다. ReplicaSet FailedCreate와 이번 Pending을 비교한다. 이어 [12 PriorityClass](../../07-cka-preview/12-priorityclass/README.md)를 진행한다. 이 두 문서의 풀이를 첫 회에는 참고하고 두 번째에는 닫고 실행한다. 선점 실험은 그 문서의 전용 노드 조건을 따른다.
-
-#### 누적 복습 — 다음 단계 전에
-
-앞 단계의 개념을 현재 증상에 다시 연결한다. 문서를 닫고 세 질문에 답하며, 어려운 질문은 실제 spec/status/Events를 근거로 다시 설명한다.
-
-1. FailedScheduling과 OOMKilled의 차이는?
-2. request와 limit 중 배치에 직접 사용되는 값은?
-3. Pod Ready와 Pod Scheduled가 다른 이유는?
-
-관련 내부 심화를 할 경우 이 단계의 **namespace를 정리하기 전에** 진행한다. 개념만 읽을 때는 리소스 재생성을 강제하지 않는다.
-
-#### 완료와 정리
-
-Ready=false, Pending, OOMKilled, API Forbidden을 같은 문제로 취급하지 않고 첫 확인 대상을 말한다. 실제 OOM/노드 메모리 압박 주입은 이 단계에 필요하지 않다.
+### 4. Runbook / Cleanup / 인출
 
 ```bash
 kubectl delete namespace lab-self-placement
 rm -f /tmp/lab-self-placement.yaml
 ```
 
-taint 원복 명령을 먼저 성공시킨다. 다음: [06 영속 저장소](../../05-advanced/01-statefulset/README.md).
+실패 상태만 보여주고 어떤 실험인지 감춘 상태에서 아래를 수행할 수 있으면 완료다.
 
-[독립 학습 순서](../../README.md)
+1. **처음 확인할 세 명령**을 선택한다. 모든 경우에 무작정 `kubectl logs`부터 보지는 않는다.
+2. `Pending + FailedScheduling`, `Running + Ready=False`, `CrashLoopBackOff`의 책임 계층을 분류한다.
+3. 두 개 이상의 가설을 세우고 가장 판별력 있는 증거로 반증한다.
+4. 최소 수정으로 복구하고 변경 전후 Pod/Events/Service 상태를 비교한다.
+
+**선택 확장:** LimitRange 기본값과 Admission 거절은 `extended-limits.yaml`, `extended-over.yaml`을 사용해 Lab 16의 내용을 복습한다. 이 선택 확장은 Lab 32 완료를 위한 별도 필수 단계가 아니다.
