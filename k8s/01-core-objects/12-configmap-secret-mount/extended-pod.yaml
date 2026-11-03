@@ -14,13 +14,24 @@ spec:
         configMapKeyRef:
           name: settings
           key: mode
+    - name: LAB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: credentials
+          key: password
     volumeMounts:
     - name: config
       mountPath: /config
     - name: config
       mountPath: /fixed/mode
       subPath: mode
+    - name: secret
+      mountPath: /credentials
+      readOnly: true
   volumes:
+  - name: secret
+    secret:
+      secretName: credentials
   - name: config
     configMap:
       name: settings
