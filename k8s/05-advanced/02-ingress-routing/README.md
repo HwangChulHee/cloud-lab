@@ -73,10 +73,10 @@ kubectl -n lab-self-edge get ingress shop-routes -o yaml
 port-forward 셸은 Ctrl+C로 종료한다. 다른 Lab의 자산이 없다면 아래처럼 앱 오브젝트만 제거한다.
 
 ```bash
-kubectl delete -f k8s/05-advanced/02-ingress-routing/routing-lab.yaml --ignore-not-found
+kubectl -n lab-self-edge delete ingress/shop-routes deployment/shopping deployment/customer service/shopping service/customer --ignore-not-found
 ```
 
-주의: 위 YAML에는 `lab-self-edge` Namespace가 포함되어 있다. 이미 Lab 40 등에서 이를 재사용 중이라면 **Namespace를 삭제하지 말고** `deployment/shopping deployment/customer service/shopping service/customer ingress/shop-routes`만 삭제한다. 공용 Traefik과 RBAC는 유지한다.
+이 YAML에는 공용 Traefik이 감시하는 `lab-self-edge` Namespace도 포함되어 있다. 위 명령은 **앱 리소스만 삭제하며 Namespace와 Traefik RBAC를 보존**한다. 모든 Ingress 실습을 끝낸 뒤 [애드온 정리](../../guides/ADDONS.md#애드온-정리)를 따른다.
 
 **인출 질문:** (1) Ingress와 Controller의 책임 구분 (2) Service와 EndpointSlice가 정상인데 외부 HTTP만 실패하는 세 가지 원인 (3) Host 불일치와 backend Service 불일치를 구별할 증거는?
 
