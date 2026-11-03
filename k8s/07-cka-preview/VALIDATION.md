@@ -1,5 +1,40 @@
 # 예습 자료 검증 기록
 
+## 2026-11-03 개편 이후 정적 점검 및 문서 정리
+
+**범위:** 기본 42개 + CKA 확장 16개 + 관리 7개(65개). 기존 32개 이론·20개 실습 완료 기록은 변경하지 않았다. `08-independent`와 `09-internals`는 삭제된 상태를 GitHub 경로 조회로 확인했다.
+
+### 확인 및 수정한 사항
+
+- [x] 신규 클러스터 플랫폼 가이드의 지원 버전·Calico CRD/Operator 예시를 Kubernetes 1.36/Calico 3.33.0 기준으로 일치시켰다. 원본 강의의 Kubernetes 1.34 환경은 **이전 교육자료의 버전**으로 따로 표기한다.
+- [x] 1.27 기존 Vagrant 실습과 1.36 별도 운영 VM을 구분하고, CKA 15의 Jammy 전용 cri-dockerd 과제는 별도 Ubuntu 22.04 환경으로 유지했다.
+- [x] 10 관리 목차의 삭제된 `INT-03`, 오래된 `03-controllers`·`05-resources-scheduling` 선수 경로를 실제 기본 Lab로 연결했다.
+- [x] CKA 확장 16개 및 관리 7개 README의 상대 Markdown 목적지를 최신 Lab/공통 가이드 목록과 대조했다. Gateway 문서 끝의 잘못된 `./PLATFORM.md`·자기 자신을 가리키는 안내를 수정했다.
+- [x] 공통 가이드, CKA 목차, 환경/개념 문서 등 주요 진입 문서의 상대 Markdown 경로를 대조했다.
+- [x] `check_materials.py`에서 상대 Markdown 경로·Bash 구문·YAML 파싱·42/16/7 모듈 수에 더해 README에 등장하는 로컬 `k8s/...yaml`/`.py` 실행 자산의 존재 여부도 검사하도록 확장했다.
+- [x] 변경된 ConfigMap 재생성 Pod YAML이 기존 생성용 Pod와 Secret/env/volumeMount/requests/limits 설정에서 일치하는 것을 문서 내용으로 대조했다.
+
+### 검사 결과의 의미와 한계
+
+이번 재검토에서 **GitHub 파일 조회 및 문서 내용 대조로 확인한 것**과 **로컬 실행·CI 검증 성공 여부**는 구분한다.
+
+- **확인:** 위에 명시한 경로·링크와 신규 설치 가이드의 문서 정합성, 변경 커밋 반영.
+- **실행 결과 미확인:** `python3 k8s/07-cka-preview/check_materials.py` 전체 실행, GitHub Actions 실행 성공, `kubectl --dry-run=server`, kubeconform 최신 스키마 검사, Vagrant/별도 kubeadm VM의 실제 실습.
+- GitHub Actions `.github/workflows/k8s-materials-validation.yml`은 `main` push/PR 시 검사하도록 정의돼 있으나, 워크플로가 존재한다는 사실만으로 성공을 보장하지 않는다.
+
+### 재확인
+
+저장소 루트에서:
+
+```bash
+python3 -m pip install 'PyYAML>=6,<7'
+python3 -m compileall -q k8s
+python3 k8s/07-cka-preview/check_materials.py
+```
+
+실기 검증은 개인 클러스터에서 별도로 수행한다. 기존 1.27 VM에 kubeadm init/reset, etcd 복원, CNI 교체, drain 실습을 무조건 실행하지 않는다.
+
+
 > 아래 2026-09-30~10-20 검증은 변경 당시의 기록이다. 2026-11-03에 `08-independent`와 `09-internals`를 기본 Lab에 병합하고 원본 디렉터리를 삭제했다. 기존 검사 수치와 원래 파일명은 역사적 사실로 보존한다. 이는 65개 체계에서 모든 VM 실습을 실행 검증했다는 뜻이 아니다.
 
 ## 2026-10-20 내부 심화·클러스터 관리 확장 (브랜치 반영)
