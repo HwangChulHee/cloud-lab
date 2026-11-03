@@ -4,7 +4,7 @@
 
 기초 연결: [정적 PV/PVC](../../01-core-objects/10-pv-pvc-static/README.md) · [PV 수명주기](../../04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md)
 
-[독립 과정에서의 위치](../../08-independent/06-storage/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
+[독립 과정에서의 위치](../../05-advanced/01-statefulset/README.md). 처음에는 예시 풀이를 참고해 구축하고, 두 번째에는 요구사항만 보고 실행한다. 강의 수강은 선행 조건이 아니다.
 
 ## 먼저 이해할 것
 
