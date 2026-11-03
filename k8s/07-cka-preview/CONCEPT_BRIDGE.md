@@ -4,7 +4,7 @@
 
 ## 컴포넌트 내부 추적
 
-구성요소 역할표를 읽은 후 [INT-01 Pod 생성](../09-internals/01-pod-creation-pipeline/README.md), [INT-02 Reconciliation](../09-internals/02-reconciliation-watch/README.md), [INT-04 Service 전달](../09-internals/04-service-dataplane/README.md)을 연결한다. EndpointSlice 자체가 패킷을 전달하지 않는다. kube-proxy 또는 CNI 대체 데이터 평면이 구성한 Linux/네트워크 규칙이 실제 트래픽을 처리한다.
+구성요소 역할표를 읽은 후 [INT-01 Pod 생성](../01-core-objects/01-pod-multicontainer/README.md), [INT-02 Reconciliation](../02-controllers/08-controller-troubleshooting/README.md), [INT-04 Service 전달](../01-core-objects/04-service-clusterip/README.md)을 연결한다. EndpointSlice 자체가 패킷을 전달하지 않는다. kube-proxy 또는 CNI 대체 데이터 평면이 구성한 Linux/네트워크 규칙이 실제 트래픽을 처리한다.
 
 ## 1. 워크로드: 생성 요청부터 실행까지
 
