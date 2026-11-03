@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-pod-lifecycle
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: running
+  namespace: lab-pod-lifecycle
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sleep", "3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: completed
+  namespace: lab-pod-lifecycle
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sh", "-c", "echo completed; exit 0"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: crash
+  namespace: lab-pod-lifecycle
+spec:
+  restartPolicy: Always
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sh", "-c", "echo failing; exit 1"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-image
+  namespace: lab-pod-lifecycle
+spec:
+  containers:
+  - name: app
+    image: example.invalid/cloud-lab/no-image:9999
+    command: ["sleep", "3600"]
