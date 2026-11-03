@@ -105,7 +105,7 @@ sed -i 's@cidr: 192.168.0.0/16@cidr: 10.244.0.0/16@' /tmp/calico-custom-resource
 grep -nE 'cidr:|encapsulation:|ipPools:' /tmp/calico-custom-resources.yaml
 ```
 
-**필수 검토:** Calico 다운로드 매니페스트의 기본 CIDR `192.168.0.0/16`을 아래 명령으로 `10.244.0.0/16`으로 바꾼다. 이후 `/tmp/calico-custom-resources.yaml`의 `Installation.spec.calicoNetwork.ipPools` CIDR이 `kubeadm init --pod-network-cidr`와 동일한지 확인한다. 다르면 파일을 수정한 뒤에만 적용한다. VM LAN/Service 네트워크와 겹치면 안 된다. 이 예제는 `10.244.0.0/16`을 가정한다.
+**필수 검토:** Calico 다운로드 매니페스트의 기본 CIDR `192.168.0.0/16`을 위 명령으로 `10.244.0.0/16`으로 바꾼다. 이후 `/tmp/calico-custom-resources.yaml`의 `Installation.spec.calicoNetwork.ipPools` CIDR이 `kubeadm init --pod-network-cidr`와 동일한지 확인한다. 다르면 파일을 수정한 뒤에만 적용한다. VM LAN/Service 네트워크와 겹치면 안 된다. 이 예제는 `10.244.0.0/16`을 가정한다.
 
 ```bash
 kubectl apply -f /tmp/calico-custom-resources.yaml
