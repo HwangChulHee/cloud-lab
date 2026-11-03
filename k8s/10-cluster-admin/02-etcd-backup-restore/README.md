@@ -1,6 +1,6 @@
 # etcd snapshot·restore·검증
 
-> 분류: **CKA 필수** · 선수 학습: [독립 학습](../../README.md)의 ADM-01 단계 · 환경: 반드시 VM 스냅샷이 있는 별도 kubeadm 실습 클러스터(기존 1.27 VM 사용 금지)
+> 분류: **CKA 필수** · 선수 학습: [ADM-01 클러스터 구축](../01-kubeadm-bootstrap/README.md) · 환경: 반드시 VM 스냅샷이 있는 별도 kubeadm 실습 클러스터(기존 1.27 VM 사용 금지)
 
 ## Overview — 무엇을 이해해야 하는가
 
