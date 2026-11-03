@@ -1,6 +1,6 @@
 # 13. Helm으로 Argo CD 설치와 템플릿 비교
 
-> 독립 실행 가능한 확장 실습 · 참고 주제: task-helm-argocd · 환경: 별도 1.34 예습 클러스터 + Helm 3 + Python/PyYAML
+> 독립 실행 가능한 확장 실습 · 참고 주제: task-helm-argocd · 환경: 별도 1.36 예습 클러스터 + Helm 3 + Python/PyYAML
 
 기초 연결: [Controller](../../02-controllers/01-replicaset/README.md) · [RBAC](../../04-storage-security/04-serviceaccount-rbac/README.md)
 
