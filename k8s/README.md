@@ -8,7 +8,7 @@
 
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
-| **이론** | **32 / 65** | **49.2%** | Pod Deep Dive 08 — Scheduling Troubleshooting | [Storage & Security 01 — StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) |
+| **이론** | **33 / 65** | **50.8%** | Storage & Security 01 — StorageClass (Longhorn 선택) | [Lab 34 — Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) |
 | **실습** | **20 / 65** | **30.8%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
@@ -20,7 +20,7 @@
 
 - 현재 실습 위치: **02 Controllers — 4/8 완료 (50%)**. Foundation **2/2**, Core Objects **14/14** 완료.
 - 최근 실습 기록: Blue/Green의 selector 전환·복구, 빈 EndpointSlice 장애 재현, Namespace 정리 및 **복습 2/2 완료**.
-- 이론 최근 완료: **Pod Deep Dive 08** (세부 학습 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 32개 / 실습 20개** 체크 상태를 보존합니다.
+- 이론 최근 완료: **Storage & Security 01 — StorageClass (Longhorn 선택)** (세부 학습 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 33개 / 실습 20개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
 ## 어디서 시작할까?
@@ -53,7 +53,7 @@
 - **클러스터 관리:** 10의 7개는 별도 VM을 요구하는 CKA/운영 절차를 포함한다.
 - **기존 독립 과정:** 08의 고유 실습은 기존 Lab으로, 공용 가이드는 [guides](./guides/START.md)로, Canary 예제는 07로 이전한다. 08은 별도 학습 과정으로 유지하지 않는다.
 
-총 65개 공식 학습 모듈(기초 42 + CKA 16 + 클러스터 관리 7)로 정리하며 기존 이론 32개·실습 20개의 완료 기록은 보존한다. 같은 개념을 다른 폴더에서 다시 구축하는 것과 CKA의 시험형 재훈련은 구분한다.
+총 65개 공식 학습 모듈(기초 42 + CKA 16 + 클러스터 관리 7)로 정리하며 기존 학습 기록을 보존한다. 같은 개념을 다른 폴더에서 다시 구축하는 것과 CKA의 시험형 재훈련은 구분한다.
 
 ## 학습 범위
 
@@ -130,7 +130,7 @@
 
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
-| 33 | [StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) | ⬜ | ⬜ |
+| 33 | [StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) | ✅ | ⬜ |
 | 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ⬜ | ⬜ |
 | 35 | [X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) | ⬜ | ⬜ |
 | 36 | [ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) | ⬜ | ⬜ |
