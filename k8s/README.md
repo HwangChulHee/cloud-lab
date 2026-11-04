@@ -8,7 +8,7 @@
 
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
-| **이론** | **33 / 65** | **50.8%** | Storage & Security 01 — StorageClass (Longhorn 선택) | [Lab 34 — Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) |
+| **이론** | **34 / 65** | **52.3%** | Lab 34 — Dynamic Provisioning & PV Lifecycle | [Lab 35 — X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) |
 | **실습** | **20 / 65** | **30.8%** | [Lab 20 — Blue/Green](./02-controllers/04-deployment-bluegreen/README.md) | **[Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
@@ -20,7 +20,7 @@
 
 - 현재 실습 위치: **02 Controllers — 4/8 완료 (50%)**. Foundation **2/2**, Core Objects **14/14** 완료.
 - 최근 실습 기록: Blue/Green의 selector 전환·복구, 빈 EndpointSlice 장애 재현, Namespace 정리 및 **복습 2/2 완료**.
-- 이론 최근 완료: **Storage & Security 01 — StorageClass (Longhorn 선택)** (세부 학습 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 33개 / 실습 20개** 체크 상태를 보존합니다.
+- 이론 최근 완료: **Lab 34 — Dynamic Provisioning & PV Lifecycle** (세부 학습 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 34개 / 실습 20개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
 ## 어디서 시작할까?
@@ -131,7 +131,7 @@
 | # | Lab | 이론 | 실습 |
 |---:|---|:---:|:---:|
 | 33 | [StorageClass (Longhorn 선택)](./04-storage-security/01-longhorn-storageclass/README.md) | ✅ | ⬜ |
-| 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ⬜ | ⬜ |
+| 34 | [Dynamic Provisioning & PV Lifecycle](./04-storage-security/02-dynamic-provisioning-pv-lifecycle/README.md) | ✅ | ⬜ |
 | 35 | [X509, kubeconfig & API](./04-storage-security/03-x509-kubeconfig-api/README.md) | ⬜ | ⬜ |
 | 36 | [ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) | ⬜ | ⬜ |
 | 37 | [Dashboard Auth & kubeconfig Contexts](./04-storage-security/05-dashboard-auth-contexts/README.md) | ⬜ | ⬜ |
