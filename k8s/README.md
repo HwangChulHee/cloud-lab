@@ -19,7 +19,7 @@
 | **전체** | **22 / 65** | **33.8%** |
 
 - 현재 실습 위치: **02 Controllers — 6/8 완료 (75.0%)**. Foundation **2/2**, Core Objects **14/14** 완료.
-- 최근 실습 기록: Lab 22 Job의 completions/parallelism 검증, 실패 Pod 2개 및 BackoffLimitExceeded 관찰, 새 recovered Job 성공, 기본값 조회 및 Namespace 삭제 확인. **복습 진행 예정**.
+- 최근 실습 기록: Lab 22 Job의 completions/parallelism 검증, 실패 Pod 2개 및 BackoffLimitExceeded 관찰, 새 recovered Job 성공, 기본값 조회 및 Namespace 삭제 확인. **복습 3/3 완료(OnFailure 집계 방식 해설 보강)**.
 - 이론 최근 완료: **Lab 35 — X509, kubeconfig & API** (핵심 개념 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 35개 / 실습 22개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
