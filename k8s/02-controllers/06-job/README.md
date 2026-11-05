@@ -44,3 +44,12 @@ kubectl delete namespace lab-job
 ```
 
 **인출:** completions와 parallelism 차이, restartPolicy=Never에서 실패 Pod와 새로운 Pod 관계, `backoffLimit`와 `activeDeadlineSeconds` 차이를 설명한다. 성공/실패/복구와 Namespace 삭제까지 검증해야 완료한다.
+
+## 실습 완료 기록 (2026-11-05)
+
+- ✅ `batch`: `completions=3`, `parallelism=2`, `restartPolicy=Never`; Pod 3개가 Completed, Job은 3/3 완료. 실제 HTTP 서비스와 무관한 완료형 워크로드임을 관찰.
+- ✅ `failing`: `exit 1`에 따른 Error Pod 2개 생성 후 `BackoffLimitExceeded` 이벤트 확인. `kubectl logs`의 `deliberate-failure`, 종료 사유 `Error exitCode=1` 확인.
+- ✅ `recovered`: 새 Job 생성 및 `Complete` 조건 확인, 로그 `recovered` 출력. 기존 실패 Job은 변경되지 않음.
+- ✅ 새 Job 기본값을 jsonpath로 확인: `completions=1 parallelism=1 backoffLimit=6 restartPolicy=Never`.
+- ✅ `lab-job` Namespace 삭제 후 `NotFound` 확인.
+- ⏳ 복습: 진행 예정. `activeDeadlineSeconds`와 `restartPolicy=OnFailure`는 이번 VM에서 별도로 재현하지 않았음.
