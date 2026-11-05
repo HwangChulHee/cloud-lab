@@ -9,25 +9,25 @@
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
 | **이론** | **35 / 65** | **53.8%** | Lab 35 — X509, kubeconfig & API | [Lab 36 — ServiceAccount & RBAC](./04-storage-security/04-serviceaccount-rbac/README.md) |
-| **실습** | **21 / 65** | **32.3%** | [Lab 21 — DaemonSet](./02-controllers/05-daemonset/README.md) | **[Lab 22 — Job](./02-controllers/06-job/README.md)** |
+| **실습** | **22 / 65** | **33.8%** | [Lab 22 — Job](./02-controllers/06-job/README.md) | **[Lab 23 — CronJob](./02-controllers/07-cronjob/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
 |---|---:|---:|
-| 기초 (00–06) | 21 / 42 | 50.0% |
+| 기초 (00–06) | 22 / 42 | 52.4% |
 | CKA 확장 (07) | 0 / 16 | 0% |
 | 클러스터 관리 (10) | 0 / 7 | 0% |
-| **전체** | **21 / 65** | **32.3%** |
+| **전체** | **22 / 65** | **33.8%** |
 
-- 현재 실습 위치: **02 Controllers — 5/8 완료 (62.5%)**. Foundation **2/2**, Core Objects **14/14** 완료.
-- 최근 실습 기록: DaemonSet의 Worker별 Pod 배치, Worker 1 일시적 NotReady 상태 관찰(원인 미확정), Worker 2 Label 제거·복원에 따른 Pod 삭제·재생성, Namespace 및 Node Label 원복 확인. **복습 3/3 진행(진단 명령어 해설 보강)**.
-- 이론 최근 완료: **Lab 35 — X509, kubeconfig & API** (핵심 개념 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 35개 / 실습 21개** 체크 상태를 보존합니다.
+- 현재 실습 위치: **02 Controllers — 6/8 완료 (75.0%)**. Foundation **2/2**, Core Objects **14/14** 완료.
+- 최근 실습 기록: Lab 22 Job의 completions/parallelism 검증, 실패 Pod 2개 및 BackoffLimitExceeded 관찰, 새 recovered Job 성공, 기본값 조회 및 Namespace 삭제 확인. **복습 진행 예정**.
+- 이론 최근 완료: **Lab 35 — X509, kubeconfig & API** (핵심 개념 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 35개 / 실습 22개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
 ## 어디서 시작할까?
 
 | 목적 | 시작점 |
 |---|---|
-| **현재 진행 중인 VM 실습 이어가기** | [Lab 22 — Job](./02-controllers/06-job/README.md) |
+| **현재 진행 중인 VM 실습 이어가기** | [Lab 23 — CronJob](./02-controllers/07-cronjob/README.md) |
 | 강의 없이 처음부터 순서대로 실습하기 | [기초 커리큘럼 42개](#기초-커리큘럼-42개) · [VM 환경 준비](./guides/START.md) |
 | 주제별 이론·실습 체크 확인하기 | [42개 기초 커리큘럼](#기초-커리큘럼-42개) |
 | CKA 확장 문제 실습하기 | [07 — CKA 확장 16개](./07-cka-preview/README.md) |
@@ -109,7 +109,7 @@
 | 19 | [RollingUpdate & Rollback](./02-controllers/03-deployment-rollingupdate-rollback/README.md) | ✅ | ✅ |
 | 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ✅ | ✅ |
 | 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ✅ | ✅ |
-| 22 | [Job](./02-controllers/06-job/README.md) | ✅ | ⬜ |
+| 22 | [Job](./02-controllers/06-job/README.md) | ✅ | ✅ |
 | 23 | [CronJob](./02-controllers/07-cronjob/README.md) | ✅ | ⬜ |
 | 24 | [Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md) | ✅ | ⬜ |
 
