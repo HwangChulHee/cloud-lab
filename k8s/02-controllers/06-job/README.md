@@ -52,4 +52,4 @@ kubectl delete namespace lab-job
 - ✅ `recovered`: 새 Job 생성 및 `Complete` 조건 확인, 로그 `recovered` 출력. 기존 실패 Job은 변경되지 않음.
 - ✅ 새 Job 기본값을 jsonpath로 확인: `completions=1 parallelism=1 backoffLimit=6 restartPolicy=Never`.
 - ✅ `lab-job` Namespace 삭제 후 `NotFound` 확인.
-- ⏳ 복습: 진행 예정. `activeDeadlineSeconds`와 `restartPolicy=OnFailure`는 이번 VM에서 별도로 재현하지 않았음.
+- ✅ 복습 3/3 완료: completions/parallelism, Never와 OnFailure의 재시도 단위 및 backoffLimit 집계, backoffLimit 대 activeDeadlineSeconds 구분. OnFailure의 집계 방식은 해설로 보강함. `activeDeadlineSeconds`와 `restartPolicy=OnFailure`는 이번 VM에서 별도로 재현하지 않았음.
