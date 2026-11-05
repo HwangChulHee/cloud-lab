@@ -9,17 +9,17 @@
 | 구분 | 완료 / 전체 | 진행률 | 최근 완료 | 다음 모듈 |
 |---|---:|---:|---|---|
 | **이론** | **36 / 65** | **55.4%** | Lab 36 — ServiceAccount & RBAC | [Lab 37 — Dashboard Auth & kubeconfig Contexts](./04-storage-security/05-dashboard-auth-contexts/README.md) |
-| **실습** | **22 / 65** | **33.8%** | [Lab 22 — Job](./02-controllers/06-job/README.md) | **[Lab 23 — CronJob](./02-controllers/07-cronjob/README.md)** |
+| **실습** | **23 / 65** | **35.4%** | [Lab 24 — Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md) | **[Lab 24 — Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md)** |
 
 | 실습 트랙 | 완료 / 전체 | 진행률 |
 |---|---:|---:|
-| 기초 (00–06) | 22 / 42 | 52.4% |
+| 기초 (00–06) | 23 / 42 | 54.8% |
 | CKA 확장 (07) | 0 / 16 | 0% |
 | 클러스터 관리 (10) | 0 / 7 | 0% |
-| **전체** | **22 / 65** | **33.8%** |
+| **전체** | **23 / 65** | **35.4%** |
 
-- 현재 실습 위치: **02 Controllers — 6/8 완료 (75.0%)**. Foundation **2/2**, Core Objects **14/14** 완료.
-- 최근 실습 기록: Lab 22 Job의 completions/parallelism 검증, 실패 Pod 2개 및 BackoffLimitExceeded 관찰, 새 recovered Job 성공, 기본값 조회 및 Namespace 삭제 확인. **복습 3/3 완료(OnFailure 집계 방식 해설 보강)**.
+- 현재 실습 위치: **02 Controllers — 7/8 완료 (87.5%)**. Foundation **2/2**, Core Objects **14/14** 완료.
+- 최근 실습 기록: Lab 23 CronJob의 예약 실행, Forbid JobAlreadyActive 이벤트, 수동 Job과 OwnerReference 구분, suspend 중 기존 Pod 지속, Replace SuccessfulDelete/SuccessfulCreate, Namespace 삭제 확인. **복습 0/3 진행 예정**.
 - 이론 최근 완료: **Lab 36 — ServiceAccount & RBAC** (핵심 개념 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 36개 / 실습 22개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
@@ -110,7 +110,7 @@
 | 20 | [Blue/Green with Service Selector](./02-controllers/04-deployment-bluegreen/README.md) | ✅ | ✅ |
 | 21 | [DaemonSet](./02-controllers/05-daemonset/README.md) | ✅ | ✅ |
 | 22 | [Job](./02-controllers/06-job/README.md) | ✅ | ✅ |
-| 23 | [CronJob](./02-controllers/07-cronjob/README.md) | ✅ | ⬜ |
+| 23 | [CronJob](./02-controllers/07-cronjob/README.md) | ✅ | ✅ |
 | 24 | [Controller Troubleshooting](./02-controllers/08-controller-troubleshooting/README.md) | ✅ | ⬜ |
 
 ### Pod Deep Dive
