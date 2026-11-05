@@ -51,3 +51,13 @@ kubectl delete namespace lab-cronjob
 ```
 
 **인출:** Allow/Forbid/Replace, suspend와 이미 실행 중인 Job 관계, idempotent 작업 설계 이유를 설명한다.
+
+## 실습 완료 기록 (2026-11-05)
+
+- ✅ `lab-cronjob` Namespace와 `clock` CronJob 생성; `schedule="* * * * *"`, `Forbid`, 90초 작업 확인. 처음 16초 동안 Job이 없었고 이후 예약 실행으로 Job/Pod 생성 확인.
+- ✅ `Forbid`: CronJob Events의 `JobAlreadyActive` 및 `Not starting job because prior execution is running and concurrency policy is Forbid` 확인.
+- ✅ `kubectl create job manual --from=cronjob/clock`으로 수동 Job 생성. 예약 Job과 수동 Job의 동시 Running 확인. 중요: 수동 Job의 `ownerReferences[0].name`도 `clock`으로 표시됨. 그러나 CronJob `status.active`는 예약 Job만 표시함; OwnerReference와 스케줄러의 활성 실행 추적을 혼동하지 않는다.
+- ✅ `suspend=true`: CronJob SUSPEND=True 및 ACTIVE=1, 기존 `clock-29897922` Pod의 Running 확인. **패치 직후 출력이므로 다음 예약 시각의 미실행은 직접 재검증하지 않았음.**
+- ✅ `Replace`: `startingDeadlineSeconds=30`과 함께 적용. 이전 Pod `clock-29897941-5pthg` Terminating / 새 Pod `clock-29897942-vzkk8` Running 동시 관찰. CronJob Event에서 `SuccessfulDelete Deleted job clock-29897936`, `SuccessfulCreate Created job clock-29897937` 확인.
+- ✅ `suspend=true` 후 `kubectl delete namespace lab-cronjob`; Namespace `NotFound`로 Cleanup 검증.
+- ⏳ 인출 복습 0/3: Allow/Forbid/Replace, suspend 및 스케줄링, 멱등성 설명 예정. `Allow` 정책은 실제 VM에서 따로 실행하지 않았음.
