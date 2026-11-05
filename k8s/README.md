@@ -19,7 +19,7 @@
 | **전체** | **21 / 65** | **32.3%** |
 
 - 현재 실습 위치: **02 Controllers — 5/8 완료 (62.5%)**. Foundation **2/2**, Core Objects **14/14** 완료.
-- 최근 실습 기록: DaemonSet의 Worker별 Pod 배치, Worker 1 일시적 NotReady 상태 관찰(원인 미확정), Worker 2 Label 제거·복원에 따른 Pod 삭제·재생성, Namespace 및 Node Label 원복 확인. **복습 진행 예정**.
+- 최근 실습 기록: DaemonSet의 Worker별 Pod 배치, Worker 1 일시적 NotReady 상태 관찰(원인 미확정), Worker 2 Label 제거·복원에 따른 Pod 삭제·재생성, Namespace 및 Node Label 원복 확인. **복습 3/3 진행(진단 명령어 해설 보강)**.
 - 이론 최근 완료: **Lab 35 — X509, kubeconfig & API** (핵심 개념 4/4, 종합 복습 2/2). 아래 기초 목차는 **이론 35개 / 실습 21개** 체크 상태를 보존합니다.
 - **공식 기본 경로는 00–06의 42개 Lab**입니다. 08 독립 과정의 고유 실습은 기존 Lab에 병합하고 별도 중복 진도를 제거했습니다.
 
