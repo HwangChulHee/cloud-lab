@@ -83,7 +83,7 @@ kubectl get nodes -L cloud-lab/daemonset
 - ✅ Worker 2 Label 복원 → `DESIRED=2 / READY=2`; 기존 Pod `node-web-mcnhx` 대신 신규 `node-web-8crt4` 생성 확인.
 - ✅ Namespace `lab-daemonset` 삭제 후 `NotFound`, Worker 1/2 실습 Label 제거 및 3대 모두 Ready 확인.
 - ⚪ Pod에 대한 실제 HTTP curl 요청은 수행하지 않았으므로 HTTP 도달성은 검증되지 않음.
-- 📝 복습 질문 진행 예정.
+- ✅ 복습 3/3 진행: (1) Deployment replicas vs DaemonSet Node당 1개, (2) unreachable:NoExecute에 대한 DaemonSet 자동 toleration, (3) DESIRED 부족의 nodeSelector/taint 원인 구분. 3번의 진단 명령어(`describe ds`, `get nodes --show-labels/-L`, `describe node`)는 해설을 통해 보강했으며 자체 인출은 미완료.
 
 ## 7. Explain — 인출 퀴즈 및 완료 기준
 
