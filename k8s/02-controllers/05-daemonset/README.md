@@ -73,6 +73,18 @@ kubectl get nodes -L cloud-lab/daemonset
 
 실습 전 이미 동일 label을 쓰고 있었다면 **기존 값으로 복원**하고 덮어쓰지 않는다. `kubectl get all`은 모든 리소스를 포함하지 않으므로 Namespace 삭제 완료와 Node Label 복원까지 확인한다.
 
+## 실습 기록 (2026-11-05)
+
+- ✅ 시작 전 Node 3대 Ready 및 `cloud-lab/daemonset` Label 부재 확인.
+- ✅ Worker 1/2에 `cloud-lab/daemonset=yes` 설정 후 `node-web` DaemonSet 생성.
+- ✅ 최종 `DESIRED=2 / CURRENT=2 / READY=2`; Worker 1/2에 각각 1개 Pod Running 확인.
+- ✅ 관찰 도중 Worker 1이 잠시 `NotReady` 및 `node.kubernetes.io/unreachable:NoExecute` 상태가 됨. 당시 DaemonSet은 `DESIRED=1 / MISSCHEDULED=1`, Worker 1 Pod는 `ContainerCreating` 및 `Pulling image` 상태였음. 이후 수동 개입 없이 Worker 1과 DaemonSet이 정상화됨. **근본 원인은 확인되지 않았으며 이미지 Pull이 Node 장애를 유발했다는 증거는 없음.**
+- ✅ Worker 2 Label 제거 → 대상 Node 1대, `DESIRED=1 / READY=1`; Worker 2 Pod 삭제 확인.
+- ✅ Worker 2 Label 복원 → `DESIRED=2 / READY=2`; 기존 Pod `node-web-mcnhx` 대신 신규 `node-web-8crt4` 생성 확인.
+- ✅ Namespace `lab-daemonset` 삭제 후 `NotFound`, Worker 1/2 실습 Label 제거 및 3대 모두 Ready 확인.
+- ⚪ Pod에 대한 실제 HTTP curl 요청은 수행하지 않았으므로 HTTP 도달성은 검증되지 않음.
+- 📝 복습 질문 진행 예정.
+
 ## 7. Explain — 인출 퀴즈 및 완료 기준
 
 - Node가 Ready여도 DaemonSet이 Pod를 만들지 않는 이유 두 가지는?
