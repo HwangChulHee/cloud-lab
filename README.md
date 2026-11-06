@@ -12,6 +12,7 @@ AWS SAA-C03은 **2026-10-19 합격 완료**했습니다. 기존 강의별 학습
 | [Kubernetes](./k8s/README.md) | 기초, CKA 예습, 독립 실습, 장애 진단 |
 | [Networking](./networking/README.md) | CCNA → CCNP Enterprise → VPN·보안·데이터센터·ISP·하이브리드 클라우드 |
 | [Technical Interview](./interview/README.md) | Linux, Networking, AWS, Docker, K8s, Terraform, CI/CD, Monitoring, Troubleshooting |
+| [Industry Case Research](./research/smileshark-case-studies-2026-11.md) | 스마일샤크 17개 고객 사례의 기술·운영·비용 분석 및 포트폴리오 재설계 참고 |
 
 ## 학습 흐름
 
@@ -30,4 +31,5 @@ aws/
 k8s/        Kubernetes 기초 + CKA + 독립 실습
 networking/ CCNA/CCNP 기반 나선형 네트워크 실습
 interview/  클라우드 / DevOps 기술면접 대비
+research/   실제 고객사례 기반 인프라 문제·솔루션 분석
 ```
